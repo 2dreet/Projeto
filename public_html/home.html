@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html ng-app="app">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,8 +12,12 @@
             #homePage h1{
                 font-size: 12pt;
             }
-            
+
             .list-group-item:hover{
+                background: #cccccc;
+            }
+
+            .selecionado{
                 background: #cccccc;
             }
         </style>
@@ -26,21 +30,38 @@
                 <h1>  Exemplo de manipulação de Objetos "Pessoa" </h1>
                 <div class="row" ng-controller="indexControler">
                     <div class="input-group" style="padding-left: 15px; padding-right: 15px;">
-                        <input type="text" class="form-control" ng-model="pessoa.nome" >
+                        <input type="text" class="form-control" ng-model="pessoa.nome" />
                         <span class="input-group-addon">
                             <button class="glyphicon glyphicon-plus" ng-click="addPessoa()"></button>
                         </span>
                     </div>
 
-                    <ul class="list-group" style="margin-top: 10px;padding-left: 15px; padding-right: 15px;">
-                        <li class="list-group-item" ng-repeat="p in listaPessoa" ng-bind="p.nome">                             </li>
+                    <ul id="pessoasLista" class="list-group" style="margin-top: 10px;padding-left: 15px; padding-right: 15px;">
+                        <li class="list-group-item" ng-repeat="p in listaPessoa" >{{p.nome}} <span class="badge">{{$index + 1}}</span></li>
                     </ul>
                 </div>
             </div>
-            <script src="js/angular/angular.js"></script>
-            <script src="js/angular/angular-route.js"></script>
-            <script src="js/bootstrap/jquery-1.11.2.js"></script>
-            <script src="js/bootstrap/bootstrap.min.js"></script>
+        </div>
+
+        <script src="js/angular/angular.js"></script>
+        <script src="js/angular/angular-route.js"></script>
+        <script src="js/bootstrap/jquery-1.11.2.js"></script>
+        <script src="js/bootstrap/bootstrap.min.js"></script>
+
+        <script src="js/module/appModule.js"></script>
+        <script src="js/entities/Pessoa.js"></script>
+
+        <!-- controllers -->
+        <script src="js/controller/indexControler.js"></script>
+
+
+        <script>
+            $('#pessoasLista li').click(function () {
+//                $('.list-group-item').removeClass('selecionado');
+//                $(this).addClass('selecionado');
+alert('a');
+            });
+        </script>
 
     </body>
 </html>
