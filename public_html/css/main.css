@@ -1,0 +1,76 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    height: 100%;
+}
+
+#app-meio{
+    height: calc(100% - 52px);
+}
+
+#app-meio-row{
+    height: 100%;
+}
+
+#nav-topo{
+    padding-bottom: 0px;
+    margin: 0;
+}
+
+#menu-lateral{
+    height: 100%;
+    padding: 0px;
+    margin: 0;
+    padding-top: 10px;
+    box-shadow: 2px 2px 2px #999999;
+}
+
+#menu-lateral ul{
+    width: 100%;    
+}
+
+#conteudo{
+    padding-top: 10px;
+    
+}
+
+@media screen and (max-width: 767px) {
+    .row-offcanvas {
+        position: relative;
+        -webkit-transition: all .25s ease-out;
+        -moz-transition: all .25s ease-out;
+        transition: all .25s ease-out;
+    }
+
+    .row-offcanvas-right {
+        right: 0;
+    }
+
+    .row-offcanvas-left {
+        left: 0;
+    }
+
+    .row-offcanvas-right #menu-lateral {
+        right: -50%;
+    }
+
+    .row-offcanvas-left #menu-lateral {
+        left: -50%;
+    }
+
+    .row-offcanvas-right.active {
+        right: calc(50% + 14px);
+    }
+
+    .row-offcanvas-left.active {
+        left: calc(50% + 14px);
+    }
+
+    #menu-lateral {
+        position: absolute;
+        top: 0;
+        width: 50%;
+    }
+
+}

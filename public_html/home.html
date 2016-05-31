@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--        <base href="/">-->
+        <title>Projeto</title>
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+        <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
+        <link rel="stylesheet" href="css/main.css">
+        <style>
+            #homePage h1{
+                font-size: 12pt;
+            }
+            
+            .list-group-item:hover{
+                background: #cccccc;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="homePage" class="panel panel-default">
+            <div class="panel-heading">Home</div>
+            <div class="panel-body">
+                <h1>  Exemplo de manipulação de Objetos "Pessoa" </h1>
+                <div class="row" ng-controller="indexControler">
+                    <div class="input-group" style="padding-left: 15px; padding-right: 15px;">
+                        <input type="text" class="form-control" ng-model="pessoa.nome" >
+                        <span class="input-group-addon">
+                            <button class="glyphicon glyphicon-plus" ng-click="addPessoa()"></button>
+                        </span>
+                    </div>
+
+                    <ul class="list-group" style="margin-top: 10px;padding-left: 15px; padding-right: 15px;">
+                        <li class="list-group-item" ng-repeat="p in listaPessoa" ng-bind="p.nome">                             </li>
+                    </ul>
+                </div>
+            </div>
+            <script src="js/angular/angular.js"></script>
+            <script src="js/angular/angular-route.js"></script>
+            <script src="js/bootstrap/jquery-1.11.2.js"></script>
+            <script src="js/bootstrap/bootstrap.min.js"></script>
+
+    </body>
+</html>

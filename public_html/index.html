@@ -1,0 +1,77 @@
+<!doctype html>
+<html ng-app="app">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--        <base href="/">-->
+        <title>Projeto</title>
+        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+        <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <nav id="nav-topo" class="navbar navbar-inverse container-fluid">
+            <div class="navbar-header">
+                <button id="btn-menu-lateral" type="button" class="navbar-toggle pull-left">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <button id="btn-menu-topo" type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+
+            <div id="menu-topo" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#/home">Home</a></li>
+                    <li><a href="#/info">Info</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div id="app-meio" class="container-fluid">
+            <div id="app-meio-row"  class="row row-offcanvas row-offcanvas-left">
+                <div id="menu-lateral" class="col-xs-6 col-sm-3 col-md-3 col-lg-2" role="navigation">
+                    <ul class="nav nav-pills nav-stacked">
+                        <li><a href="#/home">Home</a></li>
+                        <li><a href="#/info">Info</a></li>
+                    </ul>
+                </div>
+                <div ng-view id="conteudo" class="col-xs-12 col-sm-9 col-md-9 col-lg-10 content" >
+
+                </div>
+            </div>
+        </div>
+
+        <script src="js/angular/angular.js"></script>
+        <script src="js/angular/angular-route.js"></script>
+        <script src="js/bootstrap/jquery-1.11.2.js"></script>
+        <script src="js/bootstrap/bootstrap.min.js"></script>
+        <script src="js/masterPage.js"></script>
+        
+        <script src="js/module/appModule.js"></script>
+        <script src="js/entities/Pessoa.js"></script>
+        <!-- controllers -->
+        <script src="js/controller/indexControler.js"></script>
+
+        <script>
+            $('#btn-menu-lateral').click(function () {
+                $('.row-offcanvas').toggleClass('active');
+            });
+
+            $('#menu-topo ul li').click(function () {
+                $('#menu-topo ul li').removeClass('active');
+                $(this).addClass('active');
+            });
+
+            $('#menu-lateral ul li').click(function () {
+                $('#menu-lateral ul li').removeClass('active');
+                $(this).addClass('active');
+            });
+        </script>
+    </body>
+</html>
