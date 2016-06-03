@@ -7,3 +7,12 @@ app.factory('Pessoa', function(){
     }
     return Pessoa;
 });
+
+app.factory('Produto', function(){
+    var Produto = function(){
+        this.codigo = "";
+        this.descricao = "";
+        this.valor = "";
+    }
+    return Produto;
+});

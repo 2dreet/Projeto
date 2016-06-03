@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngResource', 'ngRoute']);
+var app = angular.module('app', ['ngRoute', 'ngResource']);
 app.config(function ($routeProvider, $locationProvider) {
     $routeProvider
             .when('/', {
@@ -9,16 +9,5 @@ app.config(function ($routeProvider, $locationProvider) {
             })
             .otherwise({
                 redirectTo: '/'
-            });
-});
-
-app.factory('UserFactory', function NoteNgResourceFactory($resource) {
-    return $resource("http://localhost:8081/WebJoseWS/texto", {},
-            {
-                create: {
-                    method: 'POST'
-
-                }
-
             });
 });

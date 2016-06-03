@@ -8,18 +8,7 @@
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
         <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
         <link rel="stylesheet" href="css/main.css">
-        
-        <script src="js/angular/angular.js"></script>
-        <script src="js/angular/angular-resource.js"></script>
-        <script src="js/angular/angular-route.js"></script>
-        <script src="js/bootstrap/jquery-1.11.2.js"></script>
-        <script src="js/bootstrap/bootstrap.min.js"></script>
 
-        <script src="js/module/appModule.js"></script>
-        <script src="js/entities/Pessoa.js"></script>
-
-        <!-- controllers -->
-        <script src="js/controller/indexControler.js"></script>
         <style>
             #homePage h1{
                 font-size: 12pt;
@@ -41,20 +30,46 @@
             <div class="panel-body">
                 <h1>  Exemplo de manipulação de Objetos "Pessoa" </h1>
                 <div class="row" ng-controller="indexControler">
-                    <button ng-click="post()" > clique aqui</button>
+
+                    <div class="input-group">
+                        <span class="input-group-addon" id="codigoProduto">Codigo</span>
+                        <input type="text" class="form-control" id="basic-url" aria-describedby="codigoProduto" ng-model="produto.codigo" >
+                        
+                        <span class="input-group-addon" id="descricaoProduto">Descrição</span>
+                        <input type="text" class="form-control" id="basic-url" aria-describedby="descricaoProduto" ng-model="produto.descricao">
+                        
+                        <span class="input-group-addon" id="valorProduto">Valor</span>
+                        <input type="text" class="form-control" id="basic-url" aria-describedby="valorProduto" ng-model="produto.valor">
+                    </div>
+                    <button id="botao" ng-click="post()" > clique aqui</button>
+                    <ul class="list-group" >
+                        <li class="list-group-item" ng-repeat="p in listaProduto" > {{ p.descricao }}</li>
+                    </ul>
+                    
                 </div>
             </div>
         </div>
 
-        
+        <script src="js/angular/angular.js"></script>
+        <script src="js/angular/angular-resource.js"></script>
+        <script src="js/angular/angular-route.js"></script>
+        <script src="js/bootstrap/jquery-1.11.2.js"></script>
+        <script src="js/bootstrap/bootstrap.min.js"></script>
+        <script src="js/masterPage.js"></script>
 
+        <script src="js/masterPage.js"></script>
+        <script src="js/module/appModule.js"></script>
+        <script src="js/entities/entidades.js"></script>
+        <script src="js/factory/factory.js"></script>
 
+        <!-- controllers -->
+        <script src="js/controller/indexControler.js"></script>
         <script>
-            $('#pessoasLista li').click(function () {
+                        $('#botao').click(function () {
 //                $('.list-group-item').removeClass('selecionado');
 //                $(this).addClass('selecionado');
-alert('a');
-            });
+                            alert('a');
+                        });
         </script>
 
     </body>
