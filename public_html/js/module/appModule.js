@@ -13,12 +13,12 @@ app.config(function ($routeProvider, $locationProvider) {
 });
 
 app.factory('UserFactory', function NoteNgResourceFactory($resource) {
-    return $resource("/WebJoseWS/texto", {}, {
-        'get': {
-            method: 'GET', 
-            cache: false,
-            isArray:false,
-            headers:{'Content-Type':'application/json; charset=UTF-8'} 
-        }
-    });
+    return $resource("http://localhost:8081/WebJoseWS/texto", {},
+            {
+                create: {
+                    method: 'POST'
+
+                }
+
+            });
 });
