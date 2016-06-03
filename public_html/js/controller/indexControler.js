@@ -2,7 +2,6 @@ app.controller("indexControler", function ($scope, UserFactory, $http, Produto) 
     $scope.produto = new Produto();
     $scope.listaProduto = [];
     $scope.post = function () {
-        var obj = {valor: "Aqui"};
         $http({
             method: 'POST',
             crossDomain: true,
