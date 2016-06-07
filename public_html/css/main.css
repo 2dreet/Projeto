@@ -22,17 +22,56 @@ html, body {
     height: 100%;
     padding: 0px;
     margin: 0;
-    padding-top: 10px;
+    padding-top: 0px;
     box-shadow: 2px 2px 2px #999999;
+    background-color: #2e353d;
 }
 
 #menu-lateral ul{
     width: 100%;    
 }
 
+#menu-lateral ul li{
+    border-bottom: 1px solid #181c20;
+}
+
+#menu-lateral ul li a{
+    color: #ffffff;
+}
+
+#menu-lateral ul li.active a{
+    color: #ffffff;
+    border-left: 3px solid #d19b3d;
+    background: #4f5b69;
+    color: #ffffff;
+}
+
+#headerLateral h1 {
+    font-family:  Arial;
+    text-transform: uppercase;
+    font-size: 14pt;
+}
+
+#headerLateral {
+    color: #ffffff;
+    line-height: 40px;
+    display: block;
+    text-align: center;
+    background: #181c20;
+    width: 100%;    
+    margin-left: 0px;
+}
+
+#menu-lateral ul li a:hover{
+    color: #ffffff;
+    border-left: 3px solid #d19b3d;
+    background: #4f5b69;
+    color: #ffffff;
+}
+
 #conteudo{
     padding-top: 10px;
-    
+
 }
 
 @media screen and (max-width: 767px) {

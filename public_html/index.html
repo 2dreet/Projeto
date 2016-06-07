@@ -6,11 +6,15 @@
         <!--        <base href="/">-->
         <title>Projeto</title>
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+        <link rel="stylesheet" href="css/bootstrap/bootstrap.css">
         <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <script src="js/bootstrap/jquery-1.11.2.js"></script>
+        
         <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
-        <nav id="nav-topo" class="navbar navbar-inverse container-fluid">
+        <nav id="nav-topo" class="navbar navbar-default container-fluid">
             <div class="navbar-header">
                 <button id="btn-menu-lateral" type="button" class="navbar-toggle pull-left">
                     <span class="icon-bar"></span>
@@ -36,8 +40,13 @@
         <div id="app-meio" class="container-fluid">
             <div id="app-meio-row"  class="row row-offcanvas row-offcanvas-left">
                 <div id="menu-lateral" class="col-xs-6 col-sm-3 col-md-3 col-lg-2" role="navigation">
-                    <ul class="nav nav-pills nav-stacked">
-                        <li><a href="#/home">Home</a></li>
+                    <div class="row" id="headerLateral">
+                        <div class="col-md-12" role="navigation">
+                            <h1>Bem Vindo</h1>
+                        </div>
+                    </div>
+                    <ul class="nav nav-stacked">
+                        <li><a href="#/home"> <span class="glyphicon glyphicon-home" aria-hidden="true"></span> UI Elements</a>
                         <li><a href="#/info">Info</a></li>
                     </ul>
                 </div>
@@ -50,18 +59,17 @@
         <script src="js/angular/angular.js"></script>
         <script src="js/angular/angular-resource.js"></script>
         <script src="js/angular/angular-route.js"></script>
-        <script src="js/bootstrap/jquery-1.11.2.js"></script>
         <script src="js/bootstrap/bootstrap.min.js"></script>
         <script src="js/masterPage.js"></script>
-        
+
         <script src="js/masterPage.js"></script>
         <script src="js/module/appModule.js"></script>
         <script src="js/entities/entidades.js"></script>
         <script src="js/factory/factory.js"></script>
-     
+
         <!-- controllers -->
         <script src="js/controller/indexControler.js"></script>
-        
+
         <script>
             $('#btn-menu-lateral').click(function () {
                 $('.row-offcanvas').toggleClass('active');
@@ -77,7 +85,7 @@
                 $(this).addClass('active');
             });
         </script>
-        
-        
+
+
     </body>
 </html>

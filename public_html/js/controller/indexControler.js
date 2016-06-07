@@ -5,7 +5,7 @@ app.controller("indexControler", function ($scope, UserFactory, $http, Produto) 
         $http({
             method: 'POST',
             crossDomain: true,
-            url: 'http://localhost:8081/WsJose/teste',
+            url: 'http://192.168.1.90:8081/WsJose/teste',
             headers: {'Content-Type': 'application/json'},
             data: $scope.produto
         }).then(function successCallback(response) {
