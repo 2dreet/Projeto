@@ -13,34 +13,48 @@ html, body {
     height: 100%;
 }
 
+#pagina{
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+#nav-meio{
+    padding-left: 10px;
+}
+
 #app-meio{
     height: calc(100% - 52px);
+    width: calc(100% - 350px);
+    float: left;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 #app-meio-row{
     height: 100%;
-}
-
-#nav-topo{
-    padding-bottom: 0px;
-    margin: 0;
+    width: 100%;
 }
 
 #menu-lateral{
+    width: 350px;
     height: 100%;
-    padding: 0px;
-    margin: 0;
-    padding-top: 0px;
-    box-shadow: 2px 2px 2px #999999;
     background-color: #2e353d;
+    float: left;
+    padding: 0;
+    margin: 0;
 }
 
 #menu-lateral ul{
     width: 100%;    
+    padding-left: 10px;
+    padding: 0;
+    margin: 0;
 }
 
 #menu-lateral ul li{
     border-bottom: 1px solid #181c20;
+
 }
 
 #menu-lateral ul li a{
@@ -78,8 +92,8 @@ html, body {
 }
 
 #conteudo{
-    padding-top: 10px;
-
+    width: 100%;
+    padding: 0px;
 }
 
 @media screen and (max-width: 767px) {
@@ -107,17 +121,20 @@ html, body {
     }
 
     .row-offcanvas-right.active {
-        right: calc(50% + 14px);
+        right: calc(50%);
     }
 
     .row-offcanvas-left.active {
-        left: calc(50% + 14px);
+        left: calc(50% );
     }
 
     #menu-lateral {
         position: absolute;
         top: 0;
         width: 50%;
+    }
+    #app-meio{
+        width: 100%;
     }
 
 }
