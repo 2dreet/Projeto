@@ -111,6 +111,21 @@ html, body {
     padding: 0px;
 }
 
+.header-panel{
+    text-transform: uppercase;
+    font-size: 10pt;
+}
+
+#tabela-fornecedor{
+    padding-top: 25px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.tabela-header{
+    background: #cccccc;
+}
+
 @media screen and (max-width: 767px) {
     .row-offcanvas {
         position: relative;
