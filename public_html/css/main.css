@@ -19,7 +19,6 @@ html, body {
 }
 
 #nav-meio{
-    /*padding-left: 10px;*/
     border-top: 3px solid #518d8a;
 }
 
@@ -47,7 +46,6 @@ html, body {
 
 #menu-lateral ul{
     width: 100%;    
-    /*padding-left: 10px;*/
     padding: 0;
     margin: 0;
 }
@@ -126,7 +124,8 @@ html, body {
     background: #cccccc;
 }
 
-@media screen and (max-width: 767px) {
+
+@media screen and (max-width: 770px) {
     .row-offcanvas {
         position: relative;
         -webkit-transition: all .25s ease-out;
@@ -164,6 +163,15 @@ html, body {
         width: 50%;
     }
     #app-meio{
+        width: 100%;
+    }
+    
+    #filtrarFornecedor{
+        width: 100%;
+    }
+    
+    #cadastrarFornecedor{
+        margin-top: 10px;
         width: 100%;
     }
 
