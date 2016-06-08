@@ -1,71 +1,22 @@
-<!doctype html>
-<html ng-app="app">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!--        <base href="/">-->
-        <title>Home</title>
-        <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
-        <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
-        <link rel="stylesheet" href="css/main.css">
+<div class="container-fluid" ng-controller="inicioControler">
+    <div id="pedidoSemBoleto" class="panel panel-default">
+        <div class="panel-heading">Pedidos Sem Boleto</div>
+        <div class="panel-body">
 
-        <style>
-            #homePage h1{
-                font-size: 12pt;
-            }
-
-            .list-group-item:hover{
-                background: #cccccc;
-            }
-
-            .selecionado{
-                background: #cccccc;
-            }
-        </style>
-    </head>
-
-    <body>
-        <div id="pedidoSemBoleto" class="panel panel-default">
-            <div class="panel-heading">Pedidos Sem Boleto</div>
-            <div class="panel-body">
-                
-            </div>
         </div>
-        
-        <div id="pedidoNaoPago" class="panel panel-default">
-            <div class="panel-heading">Pedidos Avulso Não Pagos</div>
-            <div class="panel-body">
-                
-            </div>
+    </div>
+
+    <div id="pedidoNaoPago" class="panel panel-default">
+        <div class="panel-heading">Pedidos Avulso Não Pagos</div>
+        <div class="panel-body">
+
         </div>
-        
-        <div id="boletosNaoPagos" class="panel panel-default">
-            <div class="panel-heading">Boletos Não Pagos</div>
-            <div class="panel-body">
-                
-            </div>
+    </div>
+
+    <div id="boletosNaoPagos" class="panel panel-default">
+        <div class="panel-heading">Boletos Não Pagos</div>
+        <div class="panel-body">
+
         </div>
-
-        <script src="js/angular/angular.js"></script>
-        <script src="js/angular/angular-resource.js"></script>
-        <script src="js/angular/angular-route.js"></script>
-        <script src="js/bootstrap/jquery-1.11.2.js"></script>
-        <script src="js/masterPage.js"></script>
-
-        <script src="js/masterPage.js"></script>
-        <script src="js/module/appModule.js"></script>
-        <script src="js/entities/entidades.js"></script>
-        <script src="js/factory/factory.js"></script>
-
-        <!-- controllers -->
-        <script src="js/controller/indexControler.js"></script>
-        <script>
-                        $('#botao').click(function () {
-//                $('.list-group-item').removeClass('selecionado');
-//                $(this).addClass('selecionado');
-                            alert('a');
-                        });
-        </script>
-
-    </body>
-</html>
+    </div>
+</div>

@@ -21,14 +21,14 @@
                     </div>
                 </div>
                 <ul class="nav nav-stacked">
-                    <li class="active"><a href="#/home" > <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Inicio</a></li>
-                    <li><a href="#/fornecedor"><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> Fornecedor</a></li>
-                    <li><a href="#/cliente"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Cliente</a></li>
-                    <li><a href="#/produto"><span class="glyphicon glyphicon-gift" aria-hidden="true"></span> Produto</a></li>
-                    <li><a href="#/boleto"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Boleto</a></li>
-                    <li><a href="#/pedido"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Pedido</a></li>
-                    <li><a href="#/usuario"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Usuário</a></li>
-                    <li><a href="#/info"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Info</a></li>
+                    <li id="btnHome"><a href="#/home" > <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Inicio</a></li>
+                    <li id="btnFornecedor" ><a href="#/fornecedor"><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> Fornecedor</a></li>
+                    <li id="btnCliente" ><a href="#/cliente"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Cliente</a></li>
+                    <li id="btnProduto" ><a href="#/produto"><span class="glyphicon glyphicon-gift" aria-hidden="true"></span> Produto</a></li>
+                    <li id="btnBoleto" ><a href="#/boleto"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Boleto</a></li>
+                    <li id="btnPedido" ><a href="#/pedido"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Pedido</a></li>
+                    <li id="btnUsuario" ><a href="#/usuario"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Usuário</a></li>
+                    <li id="btnInfor" ><a href="#/info"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Info</a></li>
                 </ul>
             </nav>
 
@@ -69,16 +69,11 @@
         <script src="js/factory/factory.js"></script>
 
         <!-- controllers -->
-        <script src="js/controller/indexControler.js"></script>
+        <script src="js/controller/controler.js"></script>
 
         <script>
             $('#btn-menu-lateral').click(function () {
                 $('.row-offcanvas').toggleClass('active');
-            });
-
-            $('#menu-topo ul li').click(function () {
-                $('#menu-topo ul li').removeClass('active');
-                $(this).addClass('active');
             });
 
             $('#menu-lateral ul li').click(function () {

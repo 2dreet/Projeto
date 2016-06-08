@@ -19,7 +19,7 @@ html, body {
 }
 
 #nav-meio{
-    padding-left: 10px;
+    /*padding-left: 10px;*/
     border-top: 3px solid #518d8a;
 }
 
@@ -47,17 +47,13 @@ html, body {
 
 #menu-lateral ul{
     width: 100%;    
-    padding-left: 10px;
+    /*padding-left: 10px;*/
     padding: 0;
     margin: 0;
 }
 
 #menu-lateral ul li{
     border-bottom: 1px solid #181c20;
-}
-
-#menu-lateral ul li a span{
-    padding-right: 5px;
 }
 
 .info-usuario{
@@ -97,6 +93,10 @@ html, body {
     margin: 0;
     padding: 0;
     border-bottom: 1px solid #181c20;
+}
+
+#menu-lateral ul li a {
+   border-left: 3px solid #2e353d;
 }
 
 #menu-lateral ul li a:hover{
