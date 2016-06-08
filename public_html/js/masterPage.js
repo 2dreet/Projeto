@@ -9,4 +9,3 @@ $('#navbar-top').on('show.bs.collapse', function () {
         $('#nav-lateral').collapse('hide');
     }
 });
-

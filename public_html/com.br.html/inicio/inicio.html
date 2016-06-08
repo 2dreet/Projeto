@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!--        <base href="/">-->
-        <title>Projeto</title>
+        <title>Home</title>
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
         <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
         <link rel="stylesheet" href="css/main.css">
@@ -25,28 +25,24 @@
     </head>
 
     <body>
-        <div id="homePage" class="panel panel-default">
-            <div class="panel-heading">Home</div>
+        <div id="pedidoSemBoleto" class="panel panel-default">
+            <div class="panel-heading">Pedidos Sem Boleto</div>
             <div class="panel-body">
-                <h1>  Exemplo de manipulação de Objetos "Pessoa" </h1>
-                <div class="row" ng-controller="indexControler">
-
-                    <div class="input-group">
-                        <span class="input-group-addon" id="codigoProduto">Codigo</span>
-                        <input type="text" class="form-control" id="basic-url" aria-describedby="codigoProduto" ng-model="produto.codigo" >
-                        
-                        <span class="input-group-addon" id="descricaoProduto">Descrição</span>
-                        <input type="text" class="form-control" id="basic-url" aria-describedby="descricaoProduto" ng-model="produto.descricao">
-                        
-                        <span class="input-group-addon" id="valorProduto">Valor</span>
-                        <input type="text" class="form-control" id="basic-url" aria-describedby="valorProduto" ng-model="produto.valor">
-                    </div>
-                    <button id="botao" ng-click="post()" > clique aqui</button>
-                    <ul class="list-group" >
-                        <li class="list-group-item" ng-repeat="p in listaProduto" > {{ p.descricao }}</li>
-                    </ul>
-                    
-                </div>
+                
+            </div>
+        </div>
+        
+        <div id="pedidoNaoPago" class="panel panel-default">
+            <div class="panel-heading">Pedidos Avulso Não Pagos</div>
+            <div class="panel-body">
+                
+            </div>
+        </div>
+        
+        <div id="boletosNaoPagos" class="panel panel-default">
+            <div class="panel-heading">Boletos Não Pagos</div>
+            <div class="panel-body">
+                
             </div>
         </div>
 
