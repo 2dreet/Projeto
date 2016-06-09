@@ -1,8 +1,8 @@
 app.controller("inicioControler", function ($scope, UserFactory, $http, Produto) {
-    
+
 //    $('#menu-lateral ul li').removeClass('active');
     $('#btnHome').addClass('active');
-    
+
     $scope.produto = new Produto();
     $scope.listaProduto = [];
     $scope.post = function () {
@@ -23,14 +23,9 @@ app.controller("inicioControler", function ($scope, UserFactory, $http, Produto)
 
 
 app.controller("fornecedorControler", function ($scope, UserFactory, $http, Produto) {
-    
 //    $('#menu-lateral ul li').removeClass('active');
     $('#btnFornecedor').addClass('active');
-    
-    $scope.alerta = function(){
-        alert('asdasd');
-    };
-    
+
     $scope.produto = new Produto();
     $scope.listaProduto = [];
     $scope.post = function () {
@@ -47,14 +42,19 @@ app.controller("fornecedorControler", function ($scope, UserFactory, $http, Prod
             // or server returns response with an error status.
         });
     };
+
+    $scope.fecharDialog = function (idModal) {
+        $(idModal).modal('hide');
+    };
+
 });
 
 
 app.controller("produtoControler", function ($scope, UserFactory, $http, Produto) {
-     
+
 //    $('#menu-lateral ul li').removeClass('active');
     $('#btnProduto').addClass('active');
-    
+
     $scope.produto = new Produto();
     $scope.listaProduto = [];
     $scope.post = function () {
@@ -74,10 +74,10 @@ app.controller("produtoControler", function ($scope, UserFactory, $http, Produto
 });
 
 app.controller("clienteControler", function ($scope, UserFactory, $http, Produto) {
-    
+
 //    $('#menu-lateral ul li').removeClass('active');
     $('#btnCliente').addClass('active');
-    
+
     $scope.produto = new Produto();
     $scope.listaProduto = [];
     $scope.post = function () {
@@ -97,10 +97,10 @@ app.controller("clienteControler", function ($scope, UserFactory, $http, Produto
 });
 
 app.controller("boletoControler", function ($scope, UserFactory, $http, Produto) {
-    
+
 //    $('#menu-lateral ul li').removeClass('active');
     $('#btnBoleto').addClass('active');
-    
+
     $scope.produto = new Produto();
     $scope.listaProduto = [];
     $scope.post = function () {
@@ -120,10 +120,10 @@ app.controller("boletoControler", function ($scope, UserFactory, $http, Produto)
 });
 
 app.controller("pedidoControler", function ($scope, UserFactory, $http, Produto) {
-    
+
 //    $('#menu-lateral ul li').removeClass('active');
     $('#btnPedido').addClass('active');
-    
+
     $scope.produto = new Produto();
     $scope.listaProduto = [];
     $scope.post = function () {
@@ -143,10 +143,10 @@ app.controller("pedidoControler", function ($scope, UserFactory, $http, Produto)
 });
 
 app.controller("usuarioControler", function ($scope, UserFactory, $http, Produto) {
-    
+
 //    $('#menu-lateral ul li').removeClass('active');
     $('#btnUsuario').addClass('active');
-    
+
     $scope.produto = new Produto();
     $scope.listaProduto = [];
     $scope.post = function () {
@@ -166,10 +166,10 @@ app.controller("usuarioControler", function ($scope, UserFactory, $http, Produto
 });
 
 app.controller("infoControler", function ($scope, UserFactory, $http, Produto) {
-     
+
 //    $('#menu-lateral ul li').removeClass('active');
     $('#btnInfor').addClass('active');
-    
+
     $scope.produto = new Produto();
     $scope.listaProduto = [];
     $scope.post = function () {
