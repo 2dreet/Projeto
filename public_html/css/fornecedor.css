@@ -1,0 +1,17 @@
+
+#tabela-fornecedor{
+    padding-top: 25px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+@media screen and (max-width: 770px) {
+    #filtrarFornecedor{
+        width: 100%;
+    }
+
+    #cadastrarFornecedor{
+        margin-top: 10px;
+        width: 100%;
+    }
+}

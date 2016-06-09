@@ -1,8 +1,10 @@
+@import url("fornecedor.css");
 
 @font-face {
     font-family: 'Glyphicons Halflings';
     src: url('../fonts/glyphicons-halflings-regular.eot');
     src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
+
 }
 
 html, body {
@@ -94,7 +96,7 @@ html, body {
 }
 
 #menu-lateral ul li a {
-   border-left: 3px solid #2e353d;
+    border-left: 3px solid #2e353d;
 }
 
 #menu-lateral ul li a:hover{
@@ -114,16 +116,16 @@ html, body {
     font-size: 10pt;
 }
 
-#tabela-fornecedor{
-    padding-top: 25px;
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
 .tabela-header{
     background: #cccccc;
 }
 
+.botaoComIcone{
+    padding-right: 5px;
+}
+
+.campoImput:valid {background:#006600;color:#fff }
+.campoImput:invalid {background:#ff3333;color:#fff }
 
 @media screen and (max-width: 770px) {
     .row-offcanvas {
@@ -162,17 +164,13 @@ html, body {
         top: 0;
         width: 50%;
     }
+    
     #app-meio{
         width: 100%;
-    }
-    
-    #filtrarFornecedor{
-        width: 100%;
-    }
-    
-    #cadastrarFornecedor{
-        margin-top: 10px;
-        width: 100%;
+        padding: 0;
     }
 
+    #nav-meio{
+        padding-left: 5px;
+    }
 }
