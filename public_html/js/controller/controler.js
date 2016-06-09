@@ -1,6 +1,6 @@
 app.controller("inicioControler", function ($scope, UserFactory, $http, Produto) {
 
-//    $('#menu-lateral ul li').removeClass('active');
+    $('#menu-lateral ul li').removeClass('active');
     $('#btnHome').addClass('active');
 
     $scope.produto = new Produto();
@@ -23,7 +23,7 @@ app.controller("inicioControler", function ($scope, UserFactory, $http, Produto)
 
 
 app.controller("fornecedorControler", function ($scope, UserFactory, $http, Produto) {
-//    $('#menu-lateral ul li').removeClass('active');
+    $('#menu-lateral ul li').removeClass('active');
     $('#btnFornecedor').addClass('active');
 
     $scope.produto = new Produto();
@@ -52,7 +52,7 @@ app.controller("fornecedorControler", function ($scope, UserFactory, $http, Prod
 
 app.controller("produtoControler", function ($scope, UserFactory, $http, Produto) {
 
-//    $('#menu-lateral ul li').removeClass('active');
+    $('#menu-lateral ul li').removeClass('active');
     $('#btnProduto').addClass('active');
 
     $scope.produto = new Produto();
@@ -75,7 +75,7 @@ app.controller("produtoControler", function ($scope, UserFactory, $http, Produto
 
 app.controller("clienteControler", function ($scope, UserFactory, $http, Produto) {
 
-//    $('#menu-lateral ul li').removeClass('active');
+    $('#menu-lateral ul li').removeClass('active');
     $('#btnCliente').addClass('active');
 
     $scope.produto = new Produto();
@@ -98,7 +98,7 @@ app.controller("clienteControler", function ($scope, UserFactory, $http, Produto
 
 app.controller("boletoControler", function ($scope, UserFactory, $http, Produto) {
 
-//    $('#menu-lateral ul li').removeClass('active');
+    $('#menu-lateral ul li').removeClass('active');
     $('#btnBoleto').addClass('active');
 
     $scope.produto = new Produto();
@@ -121,7 +121,7 @@ app.controller("boletoControler", function ($scope, UserFactory, $http, Produto)
 
 app.controller("pedidoControler", function ($scope, UserFactory, $http, Produto) {
 
-//    $('#menu-lateral ul li').removeClass('active');
+    $('#menu-lateral ul li').removeClass('active');
     $('#btnPedido').addClass('active');
 
     $scope.produto = new Produto();
