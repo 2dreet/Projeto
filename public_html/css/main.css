@@ -15,21 +15,22 @@ html, body {
 }
 
 #pagina{
-    height: 100%;
+    height: calc(100%);
     padding: 0;
     margin: 0;
 }
 
 #nav-meio{
     border-top: 3px solid #518d8a;
+    -moz-border-radius:0px;
+    -webkit-border-radius:0px;
+    border-radius:0px;
 }
 
 #app-meio{
-    height: calc(100% - 52px);
+    height: 100%;
     width: calc(100% - 350px);
     float: left;
-    padding-left: 10px;
-    padding-right: 10px;
 }
 
 #app-meio-row{
@@ -164,7 +165,7 @@ html, body {
         top: 0;
         width: 50%;
     }
-    
+
     #app-meio{
         width: 100%;
         padding: 0;
