@@ -1,4 +1,4 @@
-app.controller("inicioControler", function ($scope, UserFactory, $http, Produto) {
+app.controller("inicioControler", function ($scope, $http, Produto) {
 
     $('#menu-lateral ul li').removeClass('active');
     $('#btnHome').addClass('active');
@@ -22,30 +22,39 @@ app.controller("inicioControler", function ($scope, UserFactory, $http, Produto)
 });
 
 
-app.controller("fornecedorControler", function ($scope, UserFactory, $http, Produto) {
+app.controller("fornecedorControler", function ($scope, $http, Fornecedor) {
     $('#menu-lateral ul li').removeClass('active');
     $('#btnFornecedor').addClass('active');
 
-    $scope.produto = new Produto();
-    $scope.listaProduto = [];
-    $scope.post = function () {
+    $scope.fornecedorAtual = new Fornecedor();
+    $scope.listaFornecedores = [];
+
+
+    $scope.getListaFornecedorAll = function () {
         $http({
-            method: 'POST',
+            method: 'GET',
             crossDomain: true,
-            url: 'http://192.168.1.90:8081/WsJose/teste',
-            headers: {'Content-Type': 'application/json'},
-            data: $scope.produto
+            url: urlWs + "fornecedor/getAllfornecedor",
+            headers: {'Content-Type': 'application/json'}
         }).then(function successCallback(response) {
-            $scope.listaProduto.push(response.data);
-        }, function errorCallback(response) {
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
+            $scope.listaFornecedores = response.data;
         });
+    };
+
+
+    $scope.novoFornecedor = function () {
+        $scope.fornecedorAtual = new Fornecedor();
+    };
+
+    $scope.preparaFornecedor = function (fornecedor) {
+        $scope.fornecedorAtual = fornecedor;
     };
 
     $scope.fecharDialog = function (idModal) {
         $(idModal).modal('hide');
     };
+
+    $scope.getListaFornecedorAll();
 
 });
 
@@ -73,7 +82,7 @@ app.controller("produtoControler", function ($scope, UserFactory, $http, Produto
     };
 });
 
-app.controller("clienteControler", function ($scope, UserFactory, $http, Produto) {
+app.controller("clienteControler", function ($scope, $http, Produto) {
 
     $('#menu-lateral ul li').removeClass('active');
     $('#btnCliente').addClass('active');
@@ -96,7 +105,7 @@ app.controller("clienteControler", function ($scope, UserFactory, $http, Produto
     };
 });
 
-app.controller("boletoControler", function ($scope, UserFactory, $http, Produto) {
+app.controller("boletoControler", function ($scope, $http, Produto) {
 
     $('#menu-lateral ul li').removeClass('active');
     $('#btnBoleto').addClass('active');
@@ -119,7 +128,7 @@ app.controller("boletoControler", function ($scope, UserFactory, $http, Produto)
     };
 });
 
-app.controller("pedidoControler", function ($scope, UserFactory, $http, Produto) {
+app.controller("pedidoControler", function ($scope, $http, Produto) {
 
     $('#menu-lateral ul li').removeClass('active');
     $('#btnPedido').addClass('active');
@@ -142,7 +151,7 @@ app.controller("pedidoControler", function ($scope, UserFactory, $http, Produto)
     };
 });
 
-app.controller("usuarioControler", function ($scope, UserFactory, $http, Produto) {
+app.controller("usuarioControler", function ($scope, $http, Produto) {
 
 //    $('#menu-lateral ul li').removeClass('active');
     $('#btnUsuario').addClass('active');
@@ -165,7 +174,7 @@ app.controller("usuarioControler", function ($scope, UserFactory, $http, Produto
     };
 });
 
-app.controller("infoControler", function ($scope, UserFactory, $http, Produto) {
+app.controller("infoControler", function ($scope, $http, Produto) {
 
 //    $('#menu-lateral ul li').removeClass('active');
     $('#btnInfor').addClass('active');

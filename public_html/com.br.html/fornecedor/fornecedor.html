@@ -12,7 +12,7 @@
                     </div>
                 </div>
                 <div id="cadastrarFornecedor" class="col-sm-6">
-                    <button  type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#cadastroFornecedorDialog">
+                    <button  type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#cadastroFornecedorDialog" ng-click="novoFornecedor()">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Cadastrar Fornecedor
                     </button>
                 </div>
@@ -23,18 +23,21 @@
                         <tr class="tabela-header">
                             <th style="width: 100px;">Código</th>
                             <th >Descrição</th>
-                            <th style="width: 70px; text-align: center">Opções</th>
+                            <th style="width: 220px;" class="visible-md visible-lg">Email</th>
+                            <th style="width: 120px;" class="visible-md visible-lg" >Telefone</th>
+                            <th style="width: 55px; text-align: center">Menu</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>John</td>
-                            <td>
-                                <ul class="nav nav-pills" role="tablist">
-                                    <li><button type="button" class="btn btn-default btn-warning btn-xs" data-toggle="modal" data-target="#cadastroFornecedorDialogAlterar" ><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button></li>
-                                    <li><button type="button" class="btn btn-default btn-danger btn-xs" data-toggle="modal" data-target="#cadastroFornecedorDialogDeletar" ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button></li>
-                                </ul>
+                        <tr ng-repeat="f in listaFornecedores">
+                            <td ng-bind="f.id"></td>
+                            <td ng-bind="f.descricao"></td>
+                            <td class="visible-md visible-lg" ng-bind="f.email"></td>
+                            <td class="visible-md visible-lg" ng-bind="f.telefone"> </td>
+                            <td style="padding-left: 12px">
+                                <button class="btn btn-default dropdown-toggle btn-sm" type="button" data-toggle="modal" data-target="#cadastroFornecedorDialogFuncoes" ng-click="preparaFornecedor(f)">
+                                    <span class="caret"></span>
+                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -72,9 +75,19 @@
                         <h4 class="modal-title">Cadastro Fornecedor</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="input-group">
-                            <span class="input-group-addon" id="fornecedorDescricao">Fornecedor</span>
-                            <input name="descricaoFornecedor" required="required" type="text" class="form-control" placeholder="Descrição Forneceor" aria-describedby="fornecedorDescricao">
+                        <div class="input-group" style="width: 100%;">
+                            <span style="width: 120px" class="input-group-addon" id="fornecedorDescricao">Fornecedor</span>
+                            <input type="text" class="form-control" placeholder="Descrição Fornecedor" aria-describedby="fornecedorDescricao" ng-model="fornecedorAtual.descricao">
+                        </div>
+
+                        <div class="input-group" style="padding-top: 20px; width: 100%;">
+                            <span style="width: 120px"  class="input-group-addon" id="fornecedorEmail">Email</span>
+                            <input type="email" class="form-control" placeholder="Email Fornecedor" aria-describedby="fornecedorEmail" ng-model="fornecedorAtual.email">
+                        </div>
+
+                        <div class="input-group" style="padding-top: 20px; width: 100%;">
+                            <span style="width: 120px" class="input-group-addon" id="fornecedorTelefone">Telefone</span>
+                            <input ui-mask="(999) 9999-9999" placeholder="(###) ####-####" type="tel" required="required" class="form-control"  aria-describedby="fornecedorTelefone" ng-model="fornecedorAtual.telefone">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -97,9 +110,19 @@
                         <h4 class="modal-title">Alterar Fornecedor</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="input-group">
-                            <span class="input-group-addon" id="fornecedorDescricaoAlterar">Fornecedor</span>
-                            <input name="descricaoFornecedor" required="required" type="text" class="form-control" placeholder="Descrição Forneceor" aria-describedby="fornecedorDescricaoAlterar">
+                        <div class="input-group" style="width: 100%;">
+                            <span style="width: 120px" class="input-group-addon" id="fornecedorDescricaoAlterar">Fornecedor</span>
+                            <input type="text" class="form-control" placeholder="Descrição Fornecedor" aria-describedby="fornecedorDescricaoAlterar" ng-model="fornecedorAtual.descricao">
+                        </div>
+
+                        <div class="input-group" style="padding-top: 20px; width: 100%;">
+                            <span style="width: 120px"  class="input-group-addon" id="fornecedorEmailAlterar">Email</span>
+                            <input type="email" class="form-control" placeholder="Email Fornecedor" aria-describedby="fornecedorEmailAlterar" ng-model="fornecedorAtual.email">
+                        </div>
+
+                        <div class="input-group" style="padding-top: 20px; width: 100%;">
+                            <span style="width: 120px" class="input-group-addon" id="fornecedorTelefoneAlterar">Telefone</span>
+                            <input ui-mask="(999) 9999-9999" placeholder="(###) ####-####" type="text" required="required" class="form-control"  aria-describedby="fornecedorTelefoneAlterar" ng-model="fornecedorAtual.telefone">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -123,15 +146,87 @@
                     </div>
                     <div class="modal-body">
                         <div class="alert alert-warning" role="alert"><span class="glyphicon glyphicon-warning-sign botaoComIcone" aria-hidden="true"></span> Deseja Deletar o Fornecedor ?</div>
-                        <div class="input-group">
-                            <span class="input-group-addon" id="fornecedorDescricaoDeletar">Fornecedor</span>
-                            <input type="text" readonly="false" class="form-control" placeholder="Descrição Forneceor" aria-describedby="fornecedorDescricaoDeletar">
+
+                        <div class="input-group" style="width: 100%;">
+                            <span style="width: 120px" class="input-group-addon" id="fornecedorDescricaoDeletar">Fornecedor</span>
+                            <input type="text" readonly="readonly" class="form-control" placeholder="Descrição Fornecedor" aria-describedby="fornecedorDescricaoVisualizar" ng-model="fornecedorAtual.descricao">
+                        </div>
+
+                        <div class="input-group" style="padding-top: 20px; width: 100%;">
+                            <span style="width: 120px"  class="input-group-addon" id="fornecedorEmailDeletar">Email</span>
+                            <input type="text" readonly="readonly" class="form-control" placeholder="Email Fornecedor" aria-describedby="fornecedorEmailDeletar" ng-model="fornecedorAtual.email">
+                        </div>
+
+                        <div class="input-group" style="padding-top: 20px; width: 100%;">
+                            <span style="width: 120px" class="input-group-addon" id="fornecedorTelefoneDeletar">Telefone</span>
+                            <input type="text" readonly="readonly" class="form-control" ui-mask="(999) 9999-9999" placeholder="(###) ####-####" aria-describedby="fornecedorTelefoneDeletar" ng-model="fornecedorAtual.telefone">
                         </div>
                     </div>
                     <div class="modal-footer">
                         <div class="input-group" style="width: 100%">
                             <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#cadastroFornecedorDialogDeletar')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
                             <button type="submit" class="btn btn-default pull-right btn-success " ><span class="glyphicon glyphicon-ok botaoComIcone" aria-hidden="true"></span>Confirmar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="cadastroFornecedorDialogVisualizar" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Fornecedor</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group" style="width: 100%;">
+                            <span style="width: 120px" class="input-group-addon" id="fornecedorDescricaoVisualizar">Fornecedor</span>
+                            <input type="text" readonly="readonly" class="form-control" placeholder="Descrição Fornecedor" aria-describedby="fornecedorDescricaoVisualizar" ng-model="fornecedorAtual.descricao">
+                        </div>
+
+                        <div class="input-group" style="padding-top: 20px; width: 100%;">
+                            <span style="width: 120px"  class="input-group-addon" id="fornecedorEmailVisualizar">Email</span>
+                            <input type="text" readonly="readonly" class="form-control" placeholder="Descrição Fornecedor" aria-describedby="fornecedorEmailVisualizar" ng-model="fornecedorAtual.email">
+                        </div>
+
+                        <div class="input-group" style="padding-top: 20px; width: 100%;">
+                            <span style="width: 120px" class="input-group-addon" id="fornecedorTelefoneVisualizar">Telefone</span>
+                            <input type="text" readonly="readonly" class="form-control" ui-mask="(999) 9999-9999" placeholder="(###) ####-####" aria-describedby="fornecedorTelefoneVisualizar" ng-model="fornecedorAtual.telefone">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="input-group" style="width: 100%;">
+                            <button type="button" class="btn btn-default center-block btn-primary " ng-click="fecharDialog('#cadastroFornecedorDialogVisualizar')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="cadastroFornecedorDialogFuncoes" role="dialog" style="width: 210px; margin: auto">
+        <div class="modal-dialog" style="width: 200px">
+            <div class="modal-content" style="width: 200px">
+                <form>
+                    <div class="modal-header" style="width: 200px">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Funções</h4>
+                    </div>
+                    <div class="modal-body" style="width: 200px">
+                        <div class="list-group">
+                            <a class="list-group-item" data-toggle="modal" data-target="#cadastroFornecedorDialogVisualizar" ng-click="fecharDialog('#cadastroFornecedorDialogFuncoes')"><span class="glyphicon glyphicon-list-alt btn btn-default btn-primary" aria-hidden="true"></span>  Vizualizar</a>
+                            <a class="list-group-item" data-toggle="modal" data-target="#cadastroFornecedorDialogAlterar" ng-click="fecharDialog('#cadastroFornecedorDialogFuncoes')"><span class="glyphicon glyphicon-pencil btn btn-default btn-warning " aria-hidden="true"></span>  Editar</a>
+                            <a class="list-group-item" data-toggle="modal" data-target="#cadastroFornecedorDialogDeletar" ng-click="fecharDialog('#cadastroFornecedorDialogFuncoes')"><span class="glyphicon glyphicon-trash btn btn-default btn-danger" aria-hidden="true"></span>  Deletar</a>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="width: 200px">
+                        <div class="input-group" style="width: 100%;">
+                            <button type="button" class="btn btn-default center-block btn-primary " ng-click="fecharDialog('#cadastroFornecedorDialogFuncoes')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
                         </div>
                     </div>
                 </form>
