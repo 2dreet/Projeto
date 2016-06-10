@@ -25,20 +25,14 @@
                             <th >Descrição</th>
                             <th style="width: 220px;" class="visible-md visible-lg">Email</th>
                             <th style="width: 120px;" class="visible-md visible-lg" >Telefone</th>
-                            <th style="width: 55px; text-align: center">Menu</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="f in listaFornecedores">
+                        <tr ng-repeat="f in listaFornecedores" data-toggle="modal" data-target="#cadastroFornecedorDialogFuncoes" ng-click="preparaFornecedor(f)">
                             <td ng-bind="f.id"></td>
                             <td ng-bind="f.descricao"></td>
                             <td class="visible-md visible-lg" ng-bind="f.email"></td>
                             <td class="visible-md visible-lg" ng-bind="f.telefone"> </td>
-                            <td style="padding-left: 12px">
-                                <button class="btn btn-default dropdown-toggle btn-sm" type="button" data-toggle="modal" data-target="#cadastroFornecedorDialogFuncoes" ng-click="preparaFornecedor(f)">
-                                    <span class="caret"></span>
-                                </button>
-                            </td>
                         </tr>
                     </tbody>
                 </table> 

@@ -22,11 +22,11 @@ app.controller("inicioControler", function ($scope, $http, Produto) {
 });
 
 
-app.controller("fornecedorControler", function ($scope, $http, Fornecedor) {
+app.controller("fornecedorControler", function ($scope, $http) {
     $('#menu-lateral ul li').removeClass('active');
     $('#btnFornecedor').addClass('active');
 
-    $scope.fornecedorAtual = new Fornecedor();
+    $scope.fornecedorAtual = {};
     $scope.listaFornecedores = [];
 
 
@@ -43,7 +43,7 @@ app.controller("fornecedorControler", function ($scope, $http, Fornecedor) {
 
 
     $scope.novoFornecedor = function () {
-        $scope.fornecedorAtual = new Fornecedor();
+        $scope.fornecedorAtual = {};
     };
 
     $scope.preparaFornecedor = function (fornecedor) {

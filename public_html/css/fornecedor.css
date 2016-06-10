@@ -1,8 +1,8 @@
 
 #tabela-fornecedor{
     padding-top: 25px;
-    padding-left: 15px;
-    padding-right: 15px;
+    /*padding-left: 15px;*/
+    /*padding-right: 15px;*/
 }
 
 @media screen and (max-width: 770px) {
