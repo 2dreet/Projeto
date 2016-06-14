@@ -1,3 +1,8 @@
+function refazerLogin($cookies) {
+    $cookies.remove('www.gerven.com.br.token');
+    $(window.document.location).attr('href', "login.html");
+}
+
 app.controller("inicioControler", function ($scope, $http) {
 
     $('#menu-lateral ul li').removeClass('active');
@@ -29,21 +34,26 @@ app.controller("fornecedorControler", function ($scope, $http, $cookies) {
     $scope.listaFornecedores = [];
 
     $scope.getListaFornecedorAll = function () {
-        var tokenRetorno = {'token': $cookies.get('www.gerven.com.br.token')};
-        $http({
-            method: 'POST',
-            crossDomain: true,
-            url: urlWs + "fornecedor/getAllfornecedor",
-            data: tokenRetorno,
-            headers: {'Content-Type': 'application/json'}
-        }).then(function successCallback(response) {
-            if (!response.data[1].token) {
-                $cookies.remove('www.gerven.com.br.token');
-                $(window.document.location).attr('href', "login.html");
-            } else {
-                $scope.listaFornecedores = response.data[0].dados;
-            }
-        });
+        var token = $cookies.get('www.gerven.com.br.token');
+        if (token != null) {
+            var tokenRetorno = {'token': token};
+            
+            $http({
+                method: 'POST',
+                crossDomain: true,
+                url: urlWs + "fornecedor/getAllfornecedor",
+                data: tokenRetorno,
+                headers: {'Content-Type': 'application/json'}
+            }).then(function successCallback(response) {
+                if (!response.data[1].token) {
+                    refazerLogin($cookies);
+                } else {
+                    $scope.listaFornecedores = response.data[0].dados;
+                }
+            });
+        } else {
+            refazerLogin($cookies);
+        }
     };
 
     $scope.novoFornecedor = function () {
@@ -55,23 +65,27 @@ app.controller("fornecedorControler", function ($scope, $http, $cookies) {
     };
 
     $scope.updateFornecedor = function () {
-        var envio = {'dados': $scope.fornecedorAtual, 'token': $cookies.get('www.gerven.com.br.token')};
-        $http({
-            method: 'POST',
-            crossDomain: true,
-            url: urlWs + "fornecedor/updateFornecedor",
-            data: envio,
-            headers: {'Content-Type': 'application/json'}
-        }).then(function successCallback(response) {
-            $scope.fecharDialog('#cadastroFornecedorDialogAlterar');
-            if (!response.data.token) {
-                $cookies.remove('www.gerven.com.br.token');
-                $(window.document.location).attr('href', "login.html");
-            } else {
-                alert('Salvado com sucesso!');
-                $scope.getListaFornecedorAll();
-            }
-        });
+        var token = $cookies.get('www.gerven.com.br.token');
+        if (token != null) {
+            var envio = {'dados': $scope.fornecedorAtual, 'token': token};
+            $http({
+                method: 'POST',
+                crossDomain: true,
+                url: urlWs + "fornecedor/updateFornecedor",
+                data: envio,
+                headers: {'Content-Type': 'application/json'}
+            }).then(function successCallback(response) {
+                $scope.fecharDialog('#cadastroFornecedorDialogAlterar');
+                if (!response.data.token) {
+                    refazerLogin($cookies);
+                } else {
+                    alert('Salvado com sucesso!');
+                    $scope.getListaFornecedorAll();
+                }
+            });
+        } else {
+            refazerLogin($cookies);
+        }
     };
 
     $scope.fecharDialog = function (idModal) {
