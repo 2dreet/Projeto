@@ -39,16 +39,16 @@
     </head>
 
     <body>
-        <div id="login-page" class="container-fluid">
+        <div id="login-page" class="container-fluid" >
             <div id="painel-login" class="panel panel-default">
-                <div class="panel-body" style="">
+                <div class="panel-body" style="" ng-controller="usuarioControler">
                     <form>
 
                         <div class="row" style="padding-left: 10px; padding-right: 10px; padding-top: 80px">
                             <ul class="nav nav-pills nav-stacked">
                                 <li><input type="text" class="form-control" placeholder="Usuário"></li>
                                 <li><input type="text" class="form-control" placeholder="Senha" ></li>
-                                <li><button type="button" class="btn btn-primary" style="width: 100%">Entrar</button></li>
+                                <li><button type="button" class="btn btn-primary" style="width: 100%" ng-click="logar()">Entrar</button></li>
                             </ul>
                         </div>
 
@@ -61,5 +61,17 @@
                 </div>
             </div>
         </div>
+        <script src="js/angular/angular.js"></script>
+        <script src="js/angular/mask.js"></script>
+        <script src="js/angular/angular-resource.js"></script>
+        <script src="js/angular/angular-route.js"></script>
+        <script src="js/angular/angular-cookies.js"></script>
+
+        <script src="js/masterPage.js"></script>
+        <script src="js/module/appModule.js"></script>
+        <script src="js/factory/factory.js"></script>
+
+        <!-- controllers -->
+        <script src="js/controller/controler.js"></script>
     </body>
 </html>

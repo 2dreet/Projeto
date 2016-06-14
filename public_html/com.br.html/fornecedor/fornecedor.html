@@ -28,11 +28,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="f in listaFornecedores" data-toggle="modal" data-target="#cadastroFornecedorDialogFuncoes" ng-click="preparaFornecedor(f)">
-                            <td ng-bind="f.id"></td>
-                            <td ng-bind="f.descricao"></td>
-                            <td class="visible-md visible-lg" ng-bind="f.email"></td>
-                            <td class="visible-md visible-lg" ng-bind="f.telefone"> </td>
+                        <tr ng-repeat="fornecedor in listaFornecedores" data-toggle="modal" data-target="#cadastroFornecedorDialogFuncoes" ng-click="preparaFornecedor(fornecedor)">
+                            <td ng-bind="fornecedor.id"></td>
+                            <td ng-bind="fornecedor.descricao"></td>
+                            <td class="visible-md visible-lg" ng-bind="fornecedor.email"></td>
+                            <td class="visible-md visible-lg" ng-bind="fornecedor.telefone"> </td>
                         </tr>
                     </tbody>
                 </table> 

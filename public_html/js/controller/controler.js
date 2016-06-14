@@ -21,7 +21,7 @@ app.controller("inicioControler", function ($scope, $http) {
 });
 
 
-app.controller("fornecedorControler", function ($scope, $http) {
+app.controller("fornecedorControler", function ($scope, $http, $cookies) {
     $('#menu-lateral ul li').removeClass('active');
     $('#btnFornecedor').addClass('active');
 
@@ -29,13 +29,20 @@ app.controller("fornecedorControler", function ($scope, $http) {
     $scope.listaFornecedores = [];
 
     $scope.getListaFornecedorAll = function () {
+        var tokenRetorno = {'token': $cookies.get('www.gerven.com.br.token')};
         $http({
-            method: 'GET',
+            method: 'POST',
             crossDomain: true,
             url: urlWs + "fornecedor/getAllfornecedor",
+            data: tokenRetorno,
             headers: {'Content-Type': 'application/json'}
         }).then(function successCallback(response) {
-            $scope.listaFornecedores = response.data;
+            if (!response.data[1].token) {
+                $cookies.remove('www.gerven.com.br.token');
+                $(window.document.location).attr('href', "login.html");
+            } else {
+                $scope.listaFornecedores = response.data[0].dados;
+            }
         });
     };
 
@@ -48,21 +55,28 @@ app.controller("fornecedorControler", function ($scope, $http) {
     };
 
     $scope.updateFornecedor = function () {
+        var envio = {'dados': $scope.fornecedorAtual, 'token': $cookies.get('www.gerven.com.br.token')};
         $http({
             method: 'POST',
             crossDomain: true,
             url: urlWs + "fornecedor/updateFornecedor",
-            data: $scope.fornecedorAtual,
+            data: envio,
             headers: {'Content-Type': 'application/json'}
         }).then(function successCallback(response) {
             $scope.fecharDialog('#cadastroFornecedorDialogAlterar');
-            alert('Salvado com sucesso!\n'+response.data.descricao);
+            if (!response.data.token) {
+                $cookies.remove('www.gerven.com.br.token');
+                $(window.document.location).attr('href', "login.html");
+            } else {
+                alert('Salvado com sucesso!');
+                $scope.getListaFornecedorAll();
+            }
         });
     };
 
     $scope.fecharDialog = function (idModal) {
         $(idModal).modal('hide');
-        if(idModal == '#cadastroFornecedorDialogAlterar'){
+        if (idModal == '#cadastroFornecedorDialogAlterar') {
             $scope.getListaFornecedorAll();
         }
     };
@@ -160,26 +174,37 @@ app.controller("pedidoControler", function ($scope, $http) {
     };
 });
 
-app.controller("usuarioControler", function ($scope, $http) {
+app.controller("usuarioControler", function ($scope, $http, $cookies) {
 
 //    $('#menu-lateral ul li').removeClass('active');
     $('#btnUsuario').addClass('active');
 
-    $scope.listaProduto = [];
-    $scope.post = function () {
+    $scope.logar = function () {
         $http({
-            method: 'POST',
+            method: 'GET',
             crossDomain: true,
-            url: 'http://192.168.1.90:8081/WsJose/teste',
-            headers: {'Content-Type': 'application/json'},
-            data: $scope.produto
+            url: urlWs + "usuario/logar",
+            headers: {'Content-Type': 'application/json'}
         }).then(function successCallback(response) {
-            $scope.listaProduto.push(response.data);
-        }, function errorCallback(response) {
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
+            if (!response.data.token) {
+
+            } else {
+                $cookies.put('www.gerven.com.br.token', response.data.token);
+                verifica();
+            }
         });
+    }
+
+    var verifica = function () {
+        if ($cookies.get('www.gerven.com.br.token')) {
+            $(window.document.location).attr('href', "index.html");
+        } else {
+            alert('fazer Login');
+        }
     };
+
+    verifica();
+
 });
 
 app.controller("infoControler", function ($scope, $http) {
