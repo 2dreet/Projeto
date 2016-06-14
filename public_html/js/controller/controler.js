@@ -1,9 +1,8 @@
-app.controller("inicioControler", function ($scope, $http, Produto) {
+app.controller("inicioControler", function ($scope, $http) {
 
     $('#menu-lateral ul li').removeClass('active');
     $('#btnHome').addClass('active');
 
-    $scope.produto = new Produto();
     $scope.listaProduto = [];
     $scope.post = function () {
         $http({
@@ -29,7 +28,6 @@ app.controller("fornecedorControler", function ($scope, $http) {
     $scope.fornecedorAtual = {};
     $scope.listaFornecedores = [];
 
-
     $scope.getListaFornecedorAll = function () {
         $http({
             method: 'GET',
@@ -41,7 +39,6 @@ app.controller("fornecedorControler", function ($scope, $http) {
         });
     };
 
-
     $scope.novoFornecedor = function () {
         $scope.fornecedorAtual = {};
     };
@@ -50,8 +47,24 @@ app.controller("fornecedorControler", function ($scope, $http) {
         $scope.fornecedorAtual = fornecedor;
     };
 
+    $scope.updateFornecedor = function () {
+        $http({
+            method: 'POST',
+            crossDomain: true,
+            url: urlWs + "fornecedor/updateFornecedor",
+            data: $scope.fornecedorAtual,
+            headers: {'Content-Type': 'application/json'}
+        }).then(function successCallback(response) {
+            $scope.fecharDialog('#cadastroFornecedorDialogAlterar');
+            alert('Salvado com sucesso!\n'+response.data.descricao);
+        });
+    };
+
     $scope.fecharDialog = function (idModal) {
         $(idModal).modal('hide');
+        if(idModal == '#cadastroFornecedorDialogAlterar'){
+            $scope.getListaFornecedorAll();
+        }
     };
 
     $scope.getListaFornecedorAll();
@@ -59,12 +72,11 @@ app.controller("fornecedorControler", function ($scope, $http) {
 });
 
 
-app.controller("produtoControler", function ($scope, UserFactory, $http, Produto) {
+app.controller("produtoControler", function ($scope, $http) {
 
     $('#menu-lateral ul li').removeClass('active');
     $('#btnProduto').addClass('active');
 
-    $scope.produto = new Produto();
     $scope.listaProduto = [];
     $scope.post = function () {
         $http({
@@ -82,12 +94,11 @@ app.controller("produtoControler", function ($scope, UserFactory, $http, Produto
     };
 });
 
-app.controller("clienteControler", function ($scope, $http, Produto) {
+app.controller("clienteControler", function ($scope, $http) {
 
     $('#menu-lateral ul li').removeClass('active');
     $('#btnCliente').addClass('active');
 
-    $scope.produto = new Produto();
     $scope.listaProduto = [];
     $scope.post = function () {
         $http({
@@ -105,12 +116,11 @@ app.controller("clienteControler", function ($scope, $http, Produto) {
     };
 });
 
-app.controller("boletoControler", function ($scope, $http, Produto) {
+app.controller("boletoControler", function ($scope, $http) {
 
     $('#menu-lateral ul li').removeClass('active');
     $('#btnBoleto').addClass('active');
 
-    $scope.produto = new Produto();
     $scope.listaProduto = [];
     $scope.post = function () {
         $http({
@@ -128,12 +138,11 @@ app.controller("boletoControler", function ($scope, $http, Produto) {
     };
 });
 
-app.controller("pedidoControler", function ($scope, $http, Produto) {
+app.controller("pedidoControler", function ($scope, $http) {
 
     $('#menu-lateral ul li').removeClass('active');
     $('#btnPedido').addClass('active');
 
-    $scope.produto = new Produto();
     $scope.listaProduto = [];
     $scope.post = function () {
         $http({
@@ -151,12 +160,11 @@ app.controller("pedidoControler", function ($scope, $http, Produto) {
     };
 });
 
-app.controller("usuarioControler", function ($scope, $http, Produto) {
+app.controller("usuarioControler", function ($scope, $http) {
 
 //    $('#menu-lateral ul li').removeClass('active');
     $('#btnUsuario').addClass('active');
 
-    $scope.produto = new Produto();
     $scope.listaProduto = [];
     $scope.post = function () {
         $http({
@@ -174,12 +182,11 @@ app.controller("usuarioControler", function ($scope, $http, Produto) {
     };
 });
 
-app.controller("infoControler", function ($scope, $http, Produto) {
+app.controller("infoControler", function ($scope, $http) {
 
 //    $('#menu-lateral ul li').removeClass('active');
     $('#btnInfor').addClass('active');
 
-    $scope.produto = new Produto();
     $scope.listaProduto = [];
     $scope.post = function () {
         $http({
