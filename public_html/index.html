@@ -34,7 +34,7 @@
 
             <div id="app-meio">
                 <div id="app-meio-row" >
-                    <div id="nav-meio" class="navbar navbar-default ">
+                    <div id="nav-meio" class="navbar navbar-default " ng-controller="masterPageControler">
                         <button id="btn-menu-lateral" type="button" class="navbar-toggle pull-left btn-sm">
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
@@ -43,8 +43,8 @@
                         <div id="dados-usuario" class="header row">
                             <div class="col-md-12">
                                 <ul class="nav nav-pills pull-right">
-                                    <li><p class="info-usuario" ><span class="glyphicon glyphicon-user" aria-hidden="true"></span> José Augusto </p></li>
-                                    <li><a href="#/info"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></a></li>
+                                    <li><p class="info-usuario" ><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span ng-bind="pessoa.nome+' '+pessoa.sobre_nome"/></p></li>
+                                    <li><a href="#" ng-click="sair()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></a></button></li>
                                 </ul>
                             </div>
                         </div>
@@ -69,15 +69,15 @@
 
 
         <script>
-            $('#btn-menu-lateral').click(function () {
-                $('.row-offcanvas').toggleClass('active');
-            });
+                                        $('#btn-menu-lateral').click(function () {
+                                            $('.row-offcanvas').toggleClass('active');
+                                        });
 
-            $('#menu-lateral ul li').click(function () {
-                $('.row-offcanvas').toggleClass('active');
-                $('#menu-lateral ul li').removeClass('active');
-                $(this).addClass('active');
-            });
+                                        $('#menu-lateral ul li').click(function () {
+                                            $('.row-offcanvas').toggleClass('active');
+                                            $('#menu-lateral ul li').removeClass('active');
+                                            $(this).addClass('active');
+                                        });
         </script>
 
 

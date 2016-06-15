@@ -1,73 +1,70 @@
-function refazerLogin($cookies) {
-    $cookies.remove('www.gerven.com.br.token');
-    $(window.document.location).attr('href', "login.html");
-}
-
-app.controller("inicioControler", function ($scope, $http) {
+app.controller("inicioControler", function ($scope, $http, $cookies) {
 
     $('#menu-lateral ul li').removeClass('active');
     $('#btnHome').addClass('active');
-
-    $scope.listaProduto = [];
-    $scope.post = function () {
-        $http({
-            method: 'POST',
-            crossDomain: true,
-            url: 'http://192.168.1.90:8081/WsJose/teste',
-            headers: {'Content-Type': 'application/json'},
-            data: $scope.produto
-        }).then(function successCallback(response) {
-            $scope.listaProduto.push(response.data);
-        }, function errorCallback(response) {
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
-        });
-    };
+    
+    verificaToken($cookies);
 });
 
 
 app.controller("fornecedorControler", function ($scope, $http, $cookies) {
+    verificaToken($cookies);
+
     $('#menu-lateral ul li').removeClass('active');
     $('#btnFornecedor').addClass('active');
 
     $scope.fornecedorAtual = {};
     $scope.listaFornecedores = [];
+    $scope.valorBusca = {};
+
+
+    $scope.getListaFornecedorBusca = function () {
+        if (verificaToken($cookies)) {
+            var valorBusca = $scope.valorBusca.valor;
+            if (valorBusca === null || valorBusca.trim() === "") {
+                $scope.getListaFornecedorAll();
+            } else {
+                var envio = {'valor_busca': valorBusca, 'token': getToken($cookies)};
+                $http({
+                    method: 'POST',
+                    crossDomain: true,
+                    url: urlWs + "fornecedor/getFornecedor",
+                    data: envio,
+                    headers: {'Content-Type': 'application/json'}
+                }).then(function successCallback(response) {
+                    if (!response.data[1].token) {
+                        refazerLogin($cookies);
+                    } else {
+                        $scope.listaFornecedores = response.data[0].dados;
+                    }
+                }, function errorCallback(response) {
+                    alert('Erro no sistema!');
+                });
+            }
+        }
+    };
 
     $scope.getListaFornecedorAll = function () {
-        var token = $cookies.get('www.gerven.com.br.token');
-        if (token != null) {
-            var tokenRetorno = {'token': token};
-            
+        if (verificaToken($cookies)) {
             $http({
-                method: 'POST',
+                method: 'GET',
                 crossDomain: true,
-                url: urlWs + "fornecedor/getAllfornecedor",
-                data: tokenRetorno,
-                headers: {'Content-Type': 'application/json'}
+                url: urlWs + "fornecedor/getAllfornecedor/" + getToken($cookies)
             }).then(function successCallback(response) {
                 if (!response.data[1].token) {
                     refazerLogin($cookies);
                 } else {
                     $scope.listaFornecedores = response.data[0].dados;
                 }
+            }, function errorCallback(response) {
+                alert('Erro no sistema!');
             });
-        } else {
-            refazerLogin($cookies);
         }
     };
 
-    $scope.novoFornecedor = function () {
-        $scope.fornecedorAtual = {};
-    };
-
-    $scope.preparaFornecedor = function (fornecedor) {
-        $scope.fornecedorAtual = fornecedor;
-    };
-
     $scope.updateFornecedor = function () {
-        var token = $cookies.get('www.gerven.com.br.token');
-        if (token != null) {
-            var envio = {'dados': $scope.fornecedorAtual, 'token': token};
+        if (verificaToken($cookies) && $scope.validaFornecedor()) {
+            var envio = {'dados': $scope.fornecedorAtual, 'token': getToken($cookies)};
             $http({
                 method: 'POST',
                 crossDomain: true,
@@ -79,24 +76,99 @@ app.controller("fornecedorControler", function ($scope, $http, $cookies) {
                 if (!response.data.token) {
                     refazerLogin($cookies);
                 } else {
-                    alert('Salvado com sucesso!');
                     $scope.getListaFornecedorAll();
+                    alert('Salvado com sucesso!');
                 }
+            }, function errorCallback(response) {
+                alert('Erro no sistema!');
             });
-        } else {
-            refazerLogin($cookies);
         }
+    };
+
+    $scope.insertFornecedor = function () {
+        if (verificaToken($cookies) && $scope.validaFornecedor()) {
+            var envio = {'dados': $scope.fornecedorAtual, 'token': getToken($cookies)};
+            $http({
+                method: 'POST',
+                crossDomain: true,
+                url: urlWs + "fornecedor/insertFornecedor",
+                data: envio,
+                headers: {'Content-Type': 'application/json'}
+            }).then(function successCallback(response) {
+                $scope.fecharDialog('#cadastroFornecedorDialog');
+                if (!response.data.token) {
+                    refazerLogin($cookies);
+                } else {
+                    $scope.getListaFornecedorAll();
+                    alert('Cadastrado com sucesso!');
+                }
+            }, function errorCallback(response) {
+                alert('Erro no sistema!');
+            });
+        }
+    };
+
+    $scope.deleteFornecedor = function () {
+        if (verificaToken($cookies) && $scope.validaFornecedor()) {
+            var envio = {'dados': $scope.fornecedorAtual, 'token': getToken($cookies)};
+            $http({
+                method: 'POST',
+                crossDomain: true,
+                url: urlWs + "fornecedor/deleteFornecedor",
+                data: envio,
+                headers: {'Content-Type': 'application/json'}
+            }).then(function successCallback(response) {
+                $scope.fecharDialog('#cadastroFornecedorDialogDeletar');
+                if (!response.data.token) {
+                    refazerLogin($cookies);
+                } else {
+                    $scope.getListaFornecedorAll();
+                    alert('Deletador com sucesso!');
+                }
+            }, function errorCallback(response) {
+                alert('Erro no sistema!');
+            });
+        }
+    };
+
+    $scope.validaFornecedor = function () {
+        var retorno = false;
+        if ($scope.fornecedorAtual != null) {
+
+            if ($scope.fornecedorAtual.descricao != null && $scope.fornecedorAtual.descricao.trim() != "") {
+                retorno = true;
+            } else {
+                retorno = false;
+            }
+
+            if ($scope.fornecedorAtual.email != null && $scope.fornecedorAtual.email.trim() != "") {
+                retorno = true;
+            } else {
+                retorno = false;
+            }
+
+            if ($scope.fornecedorAtual.telefone != null && $scope.fornecedorAtual.telefone.trim() != "") {
+                retorno = true;
+            } else {
+                retorno = false;
+            }
+        }
+        return retorno;
+    };
+
+    $scope.novoFornecedor = function () {
+        $scope.fornecedorAtual = {};
+    };
+
+    $scope.preparaFornecedor = function (fornecedor) {
+        $scope.fornecedorAtual = Object.assign({}, fornecedor);
     };
 
     $scope.fecharDialog = function (idModal) {
         $(idModal).modal('hide');
-        if (idModal == '#cadastroFornecedorDialogAlterar') {
-            $scope.getListaFornecedorAll();
-        }
     };
 
     $scope.getListaFornecedorAll();
-
 });
 
 
@@ -193,31 +265,7 @@ app.controller("usuarioControler", function ($scope, $http, $cookies) {
 //    $('#menu-lateral ul li').removeClass('active');
     $('#btnUsuario').addClass('active');
 
-    $scope.logar = function () {
-        $http({
-            method: 'GET',
-            crossDomain: true,
-            url: urlWs + "usuario/logar",
-            headers: {'Content-Type': 'application/json'}
-        }).then(function successCallback(response) {
-            if (!response.data.token) {
-
-            } else {
-                $cookies.put('www.gerven.com.br.token', response.data.token);
-                verifica();
-            }
-        });
-    }
-
-    var verifica = function () {
-        if ($cookies.get('www.gerven.com.br.token')) {
-            $(window.document.location).attr('href', "index.html");
-        } else {
-            alert('fazer Login');
-        }
-    };
-
-    verifica();
+    $scope.usuario = {usuario: '', senha: ''};
 
 });
 
@@ -242,4 +290,90 @@ app.controller("infoControler", function ($scope, $http) {
         });
     };
 });
+
+app.controller("loginControler", function ($scope, $http, $cookies) {
+
+//    $('#menu-lateral ul li').removeClass('active');
+    $('#btnUsuario').addClass('active');
+
+    $scope.usuario = {usuario: '', senha: ''};
+    $scope.msgErro = null;
+
+    $scope.isMsgErro = function () {
+        if ($scope.msgErro !== null) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    $scope.logar = function () {
+        var usuario = $scope.usuario.usuario;
+        var senha = $scope.usuario.senha;
+        if (usuario !== null && usuario.trim() !== "" && usuario !== null && usuario.trim() !== "") {
+            var envio = {'dados': $scope.usuario};
+            $http({
+                method: 'POST',
+                crossDomain: true,
+                url: urlWs + "usuario/logar",
+                data: envio,
+                headers: {'Content-Type': 'application/json'}
+            }).then(function successCallback(response) {
+                if (response.data.msgErro) {
+                    $("#msgUsuario").html(getMensagem('erro', response.data.msgErro));
+                } else {
+                    setToken(response.data.token, $cookies);
+                    if (verificaToken($cookies)) {
+                        $(window.document.location).attr('href', "index.html");
+                    }
+                }
+            }, function errorCallback(response) {
+                alert('Erro Sistema');
+            });
+        }
+    };
+
+    $scope.verifica = function () {
+        if (verificaLogin($cookies)) {
+            $(window.document.location).attr('href', "index.html");
+        }
+    };
+
+    $scope.verifica();
+});
+
+
+app.controller("masterPageControler", function ($scope, $http, $cookies) {
+
+    $scope.pessoa = {nome : 'asdasdas'};
+
+    $scope.sair = function () {
+        refazerLogin($cookies);
+    };
+
+    $scope.verifica = function () {
+        if (verificaToken($cookies)) {
+            var envio = {'token': getToken($cookies)};
+            $http({
+                method: 'POST',
+                crossDomain: true,
+                url: urlWs + "usuario/getUsuario",
+                data: envio,
+                headers: {'Content-Type': 'application/json'}
+            }).then(function successCallback(response) {
+                if (!response.data[1].token) {
+                    refazerLogin($cookies);
+                } else {
+                    $scope.pessoa = response.data[0].dados;
+                }
+            }, function errorCallback(response) {
+                alert('Erro Sistema');
+            });
+        }
+    };
+
+    $scope.verifica();
+
+});
+
 
