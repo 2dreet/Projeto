@@ -1,0 +1,15 @@
+#tabela-produto{
+    padding-top: 25px;
+    padding-right: 10px;
+}
+
+@media screen and (max-width: 770px) {
+    #filtrarProduto{
+        width: 100%;
+    }
+
+    #cadastrarProduto{
+        margin-top: 10px;
+        width: 100%;
+    }
+}
