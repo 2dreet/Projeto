@@ -128,7 +128,11 @@ html, body {
 .campoImput:valid {background:#006600;color:#fff }
 .campoImput:invalid {background:#ff3333;color:#fff }
 
-@media screen and (max-width: 770px) {
+@media screen and (max-width: 970px) {
+    #btn-menu-lateral{
+        /*display:none;*/
+        display:block;
+    }
     .row-offcanvas {
         position: relative;
         -webkit-transition: all .25s ease-out;
