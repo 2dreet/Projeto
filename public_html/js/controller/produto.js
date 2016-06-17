@@ -3,7 +3,7 @@ app.controller("produtoControler", function ($scope, $http) {
     $('#menu-lateral ul li').removeClass('active');
     $('#btnProduto').addClass('active');
 
-    $scope.listaProduto = [{id:1},{id:1},{id:1},{id:1},{id:1},{id:1}];
+    $scope.listaProduto = [{id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}, {id: 1}];
     $scope.post = function () {
         $http({
             method: 'POST',
