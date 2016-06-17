@@ -17,42 +17,44 @@
                     </button>
                 </div>
             </div>
-            <div id="tabela-produto" class="row">
 
+            <div id="tabela-produto" class="row row-eq-height">
 
-                <div class="media col-md-6" style="margin: 0; padding: 0px; padding-left: 10px">
-                    <div class="panel panel-default">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 produto-lista" ng-repeat="p in listaProduto">
+                    <div class="panel panel-default produto-lista-conteudo">
                         <div class="panel-body">
                             <div class="media-left">
                                 <!--                        <a href="">-->
-                                <img class="media-object" src="img/CC_COPO.png" style="width: 100px; height: 100px;"/>
+                                <img class="media-object imagem-produto-lista" src="img/CC_COPO.png"/>
                                 <!--</a>-->
                             </div>
                             <div class="media-body">
                                 <h1 class="media-heading">Media heading</h1>
-                                ...
+                                <div class="row painel-fundo-produto">
+                                    <p>
+                                        <strong class="quantidade-estoque-produto-lista-label"> Estoque: </strong> <span class="quantidade-estoque-produto-lista">20</span> 
+                                    </p>
+
+                                    <p>
+                                        <strong class="quantidade-estoque-produto-lista-label"> Valor: </strong> <span class="valor-produto-lista">R$ 20,00</span> 
+                                    </p>
+                                    <p>
+                                        <strong class="quantidade-estoque-produto-lista-label"> Fornecedor: </strong> <span class="quantidade-estoque-produto-lista">Coca Cocola</span> 
+                                    </p>
+                                </div>
+
+                            </div>
+                            <div class="row painel-fundo-produto-observacao">
+                                <p>
+                                    <strong class="produto-observacao-titulo"> Observação </strong>
+                                </p>
+                                <p class="painel-fundo-produto-observacao-valor">
+                                    <span class="produto-observacao">O novo título da franquia traz de volta grandes elementos do tão adorado GTA San Andreas e muitas novidades. Desta vez há três protagonistas jogáveis, cada um com habilidades exclusivas: Michael, um homem rico de meia-idade, Franklin, um mal-encarado que vive nos subúrbios da cidade de Los Santos e Trevor, um ex-militar sociopata. No mínimo o que se podia esperar de um novo título da Rockstar.</span> 
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="media col-md-6" style="margin: 0; padding: 0px; padding-left: 10px">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <div class="media-left">
-                                <!--                        <a href="">-->
-                                <img class="media-object" src="img/CC_COPO.png" style="width: 100px; height: 100px;"/>
-                                <!--</a>-->
-                            </div>
-                            <div class="media-body">
-                                <h1 class="media-heading">Media heading</h1>
-                                ...
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
             </div>
         </div>
     </div>
@@ -65,11 +67,35 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">Cadastro Produto</h4>
                     </div>
-                    <div class="modal-body">
 
+                    <div class="media-body" style="padding-top: 10px; apadding-bottom: 10px; padding-left: 10px; padding-right: 10px">
+                        <div class="form-group" style="width: 100%;">
+                            <label for="produtoDescricao">Descrição</label>
+                            <input type="text" required="required" class="form-control" placeholder="Descrição Produto" id="produtoDescricao">
+                        </div>
+
+                        <div class="form-group" style="width: 100%;">
+                            <label for="produtoValor">Valor R$</label>
+                            <input type="text" required="required" class="form-control" placeholder="Valor Produto" id="produtoValor">
+                        </div>
+
+                        <div class="form-group" style="width: 100%;">
+                            <label for="produtoQuantidade">Quantidade</label>
+                            <input type="text" required="required" class="form-control" placeholder="Quantidade Produto" id="produtoQuantidade">
+                        </div>
+
+                        <div class="form-group" style="width: 100%;">
+                            <label for="produtoFornecedor">Fornecedor</label>
+                            <select class="selectpicker form-control" id="produtoFornecedor">
+                                <option>Mustard</option>
+                                <option>Ketchup</option>
+                                <option>Relish</option>
+                            </select>
+                        </div>
                     </div>
+
                     <div class="modal-footer">
-                        <div class="input-group" style="width: 100%">
+                        <div class="input-group" style="width: 100%;">
                             <button type="button" class="btn btn-default pull-left btn-danger " ><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
                             <button type="submit" class="btn btn-default pull-right btn-success " ><span class="glyphicon glyphicon-floppy-disk botaoComIcone" aria-hidden="true"></span>Salvar</button>
                         </div>

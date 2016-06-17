@@ -1,6 +1,6 @@
 app.controller("masterPageControler", function ($scope, $http, $cookies) {
 
-    $scope.pessoa = {nome: 'asdasdas'};
+    $scope.pessoa = {nome: ''};
 
     $scope.sair = function () {
         refazerLogin($cookies);

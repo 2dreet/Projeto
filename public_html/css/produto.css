@@ -3,13 +3,128 @@
     padding-right: 10px;
 }
 
+#tabela-produto h1{
+    font-size: 24px;
+    font-weight: bold;
+    color: #007799;
+}
+
+.painel-fundo-produto{
+    background: #f4f5f5; 
+    padding-top: 5px; 
+    padding-left: 10px; 
+    padding-bottom: 1px;
+    margin: 0;
+}
+
+.painel-fundo-produto-observacao p{
+    padding: 0;
+    margin: 0;
+}
+
+.painel-fundo-produto-observacao{
+    padding-top: 10px; 
+    padding-left: 10px; 
+    padding-bottom: 1px;
+    margin: 0;
+}
+
+.painel-fundo-produto-observacao-valor{
+    margin: 0;
+    height: 50px;
+    max-height: 50px;
+    min-height: 50px;
+    overflow-y: auto;
+}
+
+.produto-observacao-titulo{
+    color: #007799;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.produto-observacao{
+    color: #4c595e;
+}
+
+.produto-lista{
+    margin: 0; 
+    padding: 0px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+}
+
+.produto-lista-conteudo{
+    margin: 0; 
+    padding: 0px;
+    padding-left: 10px;
+    height: 100%;
+}
+
+.imagem-produto-lista{
+    width: 100px; 
+    height: 100px;
+}
+
+.valor-produto-lista{
+    color: #6eaf48;
+    font-weight: bold;
+}
+
+.quantidade-estoque-produto-lista-label {
+    color: #4c595e;
+}
+
+.quantidade-estoque-produto-lista {
+    color: #007799;
+    font-weight: bold;
+}
+
+.input-crud-produto{
+    padding-right: 15px; 
+    padding-top: 10px; 
+    padding-left: 10px; 
+    width: calc(100%);
+}
+
+@media screen and (max-width: 370px) {
+    .imagem-produto-lista{
+        width: 90px; 
+        height: 90px;
+    }
+}
+
 @media screen and (max-width: 770px) {
+
+    .input-crud-produto{
+        padding-right: 15px; 
+        padding-top: 10px; 
+        padding-left: 10px; 
+        width: calc(100% - 25px);
+    }
+
     #filtrarProduto{
         width: 100%;
     }
 
     #cadastrarProduto{
         margin-top: 10px;
+        /*width: 100%;*/
+    }
+
+    #produto-lista{
         width: 100%;
+        padding: 0px;
+        margin: 0; 
+    }
+
+    .produto-lista-conteudo{
+        padding: 0px;
+        margin: 0; 
+    }
+
+    .painel-fundo-produto-observacao{
+        padding-left: 0px; 
     }
 }
+
