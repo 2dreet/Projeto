@@ -29,7 +29,7 @@ html, body {
 
 #app-meio{
     height: 100%;
-    width: calc(100% - 350px);
+    width: calc(100% - 250px);
     float: left;
 }
 
@@ -39,7 +39,7 @@ html, body {
 }
 
 #menu-lateral{
-    width: 350px;
+    width: 250px;
     height: 100%;
     background-color: #2e353d;
     float: left;
@@ -149,25 +149,25 @@ html, body {
     }
 
     .row-offcanvas-right #menu-lateral {
-        right: -50%;
+        right: -250px;
     }
 
     .row-offcanvas-left #menu-lateral {
-        left: -50%;
+        left: -250px;
     }
 
     .row-offcanvas-right.active {
-        right: calc(50%);
+        right: calc(250px);
     }
 
     .row-offcanvas-left.active {
-        left: calc(50% );
+        left: calc(250px);
     }
 
     #menu-lateral {
         position: absolute;
         top: 0;
-        width: 50%;
+        width: 250px;
     }
 
     #app-meio{
