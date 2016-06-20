@@ -9,13 +9,12 @@ $("head").append("<script language='JavaScript' type='text/javascript' src='js/c
 $("head").append("<script language='JavaScript' type='text/javascript' src='js/controller/produto.js'></script>");
 $("head").append("<script language='JavaScript' type='text/javascript' src='js/controller/usuario.js'></script>");
 
-app.controller("produtoControler", function ($scope, $http, $cookies, $upload) {
+app.controller("produtoControler", function ($scope, $http, $cookies) {
 
     $('#menu-lateral ul li').removeClass('active');
     $('#btnProduto').addClass('active');
 
     $scope.produtoAtual = {};
-    $scope.imagemAtual = null;
     $scope.listaProduto = [];
     $scope.getImagem = urlWs + "produto/getProdutoImagem/";
 
@@ -44,16 +43,22 @@ app.controller("produtoControler", function ($scope, $http, $cookies, $upload) {
     };
 
 
-    $scope.onFileSelect = function ($files) {
+    $scope.onFileSelect = function () {
         $scope.message = "";
         if (verificaToken($cookies)) {
             var envio = {'dados': $scope.produtoAtual, 'token': getToken($cookies)};
-            console.log($scope.imagemAtual);
-            $scope.upload = $upload.upload({
+            var fd = new FormData();
+            var myFile = $('#cadastroProdutoDialogImagemProduto').prop('files');
+            fd.append('file', myFile[0]);
+            fd.append('envio', envio);
+
+            console.log(myFile);
+            $http({
                 url: 'produto/updateProduto',
                 method: 'POST',
-                file: $scope.imagemAtual,
-                data: envio
+                data: fd,
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
             }).success(function (data, status, headers, config) {
                 $scope.message = data;
             }).error(function (data, status) {
