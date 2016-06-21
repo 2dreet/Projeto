@@ -1,3 +1,7 @@
+var urlWs = "http://192.168.1.90:8088/WsJosePhp/";
+var debug = "?XDEBUG_SESSION_START=netbeans-xdebug";
+
+
 $("head").append("<script language='JavaScript' type='text/javascript' src='js/controller/fornecedor.js'></script>");
 $("head").append("<script language='JavaScript' type='text/javascript' src='js/controller/boleto.js'></script>");
 $("head").append("<script language='JavaScript' type='text/javascript' src='js/controller/cliente.js'></script>");
@@ -31,10 +35,10 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
                 crossDomain: true,
                 url: urlWs + "produto/getAllproduto/" + getToken($cookies)
             }).then(function successCallback(response) {
-                if (!response.data[1].token) {
+                if (!response.data.token) {
                     refazerLogin($cookies);
                 } else {
-                    $scope.listaProduto = response.data[0].dados;
+                    $scope.listaProduto = response.data.dados;
                 }
             }, function errorCallback(response) {
                 alert('Erro no sistema!');
@@ -42,31 +46,62 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
         }
     };
 
+    $scope.insertProduto = function () {
+        if ($scope.validaProduto()) {
+            alert('produto' + $scope.produtoAtual.fornecedor);
+        }
+    }
+
 
     $scope.onFileSelect = function () {
         $scope.message = "";
         if (verificaToken($cookies)) {
-            var envio = {'dados': $scope.produtoAtual, 'token': getToken($cookies)};
+            $scope.produtoAtual = {id: 1};
             var fd = new FormData();
             var myFile = $('#cadastroProdutoDialogImagemProduto').prop('files');
             fd.append('file', myFile[0]);
-            fd.append('envio', envio);
-
-            console.log(myFile);
+            fd.append('token', getToken($cookies));
+            fd.append('dados', angular.toJson($scope.produtoAtual));
             $http({
-                url: 'produto/updateProduto',
+                url: urlWs + 'produto/updateProduto' + debug,
                 method: 'POST',
                 data: fd,
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
-            }).success(function (data, status, headers, config) {
-                $scope.message = data;
-            }).error(function (data, status) {
-                $scope.message = data;
+            }).then(function successCallback(response) {
+                if (!response.data.token) {
+                    refazerLogin($cookies);
+                }
+            }, function errorCallback(response) {
+                alert('Erro no sistema!');
             });
         }
     };
 
+    $scope.validaProduto = function () {
+        var retorno = false;
+        if ($scope.produtoAtual != null) {
+
+            if ($scope.produtoAtual.descricao != null && $scope.produtoAtual.descricao.trim() != "") {
+                retorno = true;
+            } else {
+                retorno = false;
+            }
+
+            if ($scope.produtoAtual.valor != null && $scope.produtoAtual.valor.trim() != "" && $scope.produtoAtual.valor > 0) {
+                retorno = true;
+            } else {
+                retorno = false;
+            }
+
+            if ($scope.produtoAtual.estoque != null && $scope.produtoAtual.estoque.trim() != "" && $scope.produtoAtual.valor > 0) {
+                retorno = true;
+            } else {
+                retorno = false;
+            }
+        }
+        return retorno;
+    };
 
     $scope.preparaProduto = function (produto) {
         $scope.produtoAtual = Object.assign({}, produto);

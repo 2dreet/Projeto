@@ -1,6 +1,4 @@
-var urlWs = "http://192.168.1.90:8088/WsJosePhp/";
-
-var app = angular.module('app', ['ngRoute', 'ngResource', 'ui.mask', 'ngCookies']);
+var app = angular.module('app', ['ngRoute', 'ngResource', 'ui.mask', 'ngCookies', 'ui.utils.masks']);
 app.config(function ($routeProvider, $locationProvider) {
     $routeProvider
             .when('/', {

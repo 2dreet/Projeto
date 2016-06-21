@@ -69,36 +69,36 @@
                     </div>
 
                     <div class="media-body" style="padding-top: 10px; apadding-bottom: 10px; padding-left: 10px; padding-right: 10px">
-                        <!--                        <div class="form-group" style="width: 100%;">
-                                                    <label for="produtoDescricao">Descrição</label>
-                                                    <input type="text" required="required" class="form-control" placeholder="Descrição Produto" id="produtoDescricao">
-                                                </div>
-                        
-                                                <div class="form-group" style="width: 100%;">
-                                                    <label for="produtoValor">Valor R$</label>
-                                                    <input type="text" required="required" class="form-control" placeholder="Valor Produto" id="produtoValor">
-                                                </div>
-                        
-                                                <div class="form-group" style="width: 100%;">
-                                                    <label for="produtoQuantidade">Quantidade</label>
-                                                    <input type="text" required="required" class="form-control" placeholder="Quantidade Produto" id="produtoQuantidade">
-                                                </div>
-                        
-                                                <div class="form-group" style="width: 100%;">
-                                                    <label for="produtoFornecedor">Fornecedor</label>
-                                                    <select class="selectpicker form-control" id="produtoFornecedor">
-                                                        <option>Mustard</option>
-                                                        <option>Ketchup</option>
-                                                        <option>Relish</option>
-                                                    </select>
-                                                </div>
-                        
-                                                <label class="input-group-btn media-heading" style="padding-top: 60px">
-                                                    <span class="btn btn-primary media-heading" >
-                                                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                                                        Localizar Imagem <input type="file" style="display: none;" id="cadastroProdutoDialogImagemProduto">
-                                                    </span>
-                                                </label>-->
+                        <div class="form-group" style="width: 100%;">
+                            <label for="produtoDescricao">Descrição</label>
+                            <input type="text" required="required" class="form-control" placeholder="Descrição Produto" id="produtoDescricao" ng-model="produtoAtual.descricao">
+                        </div>
+
+                        <div class="form-group" style="width: 100%;">
+                            <label for="produtoValor">Valor R$</label>
+                            <input type="text" required="required" class="form-control" ui-number-mask="4" placeholder="Valor Produto" id="produtoValor" ng-model="produtoAtual.valor">
+                        </div>
+
+                        <div class="form-group" style="width: 100%;">
+                            <label for="produtoQuantidade">Quantidade</label>
+                            <input type="text" required="required" class="form-control" ui-mask="99999999"  id="produtoQuantidade" ng-model="produtoAtual.estoque">
+                        </div>
+
+                        <div class="form-group" style="width: 100%;">
+                            <label for="produtoFornecedor">Fornecedor</label>
+                            <select class="selectpicker form-control" id="produtoFornecedor" ng-model="produtoAtual.fornecedor">
+                                <option ng-value="1"> Mustard</option>
+                                <option>Ketchup</option>
+                                <option>Relish</option>
+                            </select>
+                        </div>
+
+                        <label class="input-group-btn media-heading" style="padding-top: 60px">
+                            <span class="btn btn-primary media-heading" >
+                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                Localizar Imagem <input type="file" style="display: none;" id="cadastroProdutoDialogImagemProduto">
+                            </span>
+                        </label>
                         <input type="file" id="cadastroProdutoDialogImagemProduto" name="cadastroProdutoDialogImagemProduto"/>
                         <button ng-click="onFileSelect()">Add</button>
                     </div>
@@ -106,7 +106,7 @@
                     <div class="modal-footer">
                         <div class="input-group" style="width: 100%;">
                             <button type="button" class="btn btn-default pull-left btn-danger " ><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
-                            <button type="submit" class="btn btn-default pull-right btn-success " ng-click="updateProduto()" ><span class="glyphicon glyphicon-floppy-disk botaoComIcone" aria-hidden="true"></span>Salvar</button>
+                            <button type="submit" class="btn btn-default pull-right btn-success " ng-click="insertProduto()" ><span class="glyphicon glyphicon-floppy-disk botaoComIcone" aria-hidden="true"></span>Salvar</button>
                         </div>
                     </div>
                 </form>
