@@ -22,7 +22,7 @@ app.controller("loginControler", function ($scope, $http, $cookies) {
             $http({
                 method: 'POST',
                 crossDomain: true,
-                url: urlWs + "usuario/logar",
+                url: urlWs + "usuario/logar"+debug,
                 data: envio,
                 headers: {'Content-Type': 'application/json'}
             }).then(function successCallback(response) {

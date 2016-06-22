@@ -1,4 +1,4 @@
-var urlWs = "http://192.168.1.90:8088/WsJosePhp/";
+var urlWs = "http://localhost:8084/WsJosePhp/";
 var debug = "?XDEBUG_SESSION_START=netbeans-xdebug";
 
 

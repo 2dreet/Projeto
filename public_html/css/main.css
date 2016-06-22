@@ -128,7 +128,7 @@ html, body {
 .campoImput:valid {background:#006600;color:#fff }
 .campoImput:invalid {background:#ff3333;color:#fff }
 
-@media screen and (max-width: 1400px) {
+@media screen and (max-width: 1300px) {
     #btn-menu-lateral{
         /*display:none;*/
         display:block;
