@@ -1,7 +1,7 @@
-<div class="container-fluid" ng-controller="produtoControler">
-    <div id="produto" class="panel panel-default">
+<div class="container-fluid" ng-controller="produtoControler" style="height: 100%; max-height: 100%; min-height: 100%;">
+    <div id="produto" class="panel panel-default" style="height: 100%; max-height: 100%; min-height: 100%;">
         <div class="panel-heading header-panel">Produtos</div>
-        <div class="panel-body">
+        <div class="panel-body" style="height: 100%; max-height: 100%; min-height: 100%;">
             <div class="row">
                 <div id="filtrarProduto" class="col-sm-6">
                     <div class="input-group">
@@ -12,7 +12,7 @@
                     </div>
                 </div>
                 <div id="cadastrarProduto" class="col-sm-6">
-                    <button  type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#cadastroProdutoDialog" ng-click="novoFornecedor()">
+                    <button  type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#cadastroProdutoDialog" ng-click="novoProduto()">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Cadastrar Produto
                     </button>
                 </div>
@@ -29,17 +29,17 @@
                                 <!--</a>-->
                             </div>
                             <div class="media-body">
-                                <h1 class="media-heading">Media heading</h1>
+                                <h1 class="media-heading" ng-bind="p.descricao"></h1>
                                 <div class="row painel-fundo-produto">
                                     <p>
-                                        <strong class="quantidade-estoque-produto-lista-label"> Estoque: </strong> <span class="quantidade-estoque-produto-lista">20</span> 
+                                        <strong class="quantidade-estoque-produto-lista-label"> Estoque: </strong> <span class="quantidade-estoque-produto-lista" ng-bind="p.estoque"></span> 
                                     </p>
 
                                     <p>
-                                        <strong class="quantidade-estoque-produto-lista-label"> Valor: </strong> <span class="valor-produto-lista">R$ 20,00</span> 
+                                        <strong class="quantidade-estoque-produto-lista-label"> Valor: </strong> <span class="valor-produto-lista" ng-bind="p.valor"></span> 
                                     </p>
                                     <p>
-                                        <strong class="quantidade-estoque-produto-lista-label"> Fornecedor: </strong> <span class="quantidade-estoque-produto-lista">Coca Cocola</span> 
+                                        <strong class="quantidade-estoque-produto-lista-label"> Fornecedor: </strong> <span class="quantidade-estoque-produto-lista" ng-bind="p.fornecedor.descricao"></span> 
                                     </p>
                                 </div>
 
@@ -49,7 +49,7 @@
                                     <strong class="produto-observacao-titulo"> Observação </strong>
                                 </p>
                                 <p class="painel-fundo-produto-observacao-valor">
-                                    <span class="produto-observacao">O novo título da franquia traz de volta grandes elementos do tão adorado GTA San Andreas e muitas novidades. Desta vez há três protagonistas jogáveis, cada um com habilidades exclusivas: Michael, um homem rico de meia-idade, Franklin, um mal-encarado que vive nos subúrbios da cidade de Los Santos e Trevor, um ex-militar sociopata. No mínimo o que se podia esperar de um novo título da Rockstar.</span> 
+                                    <span class="produto-observacao" ng-bind="p.observacao"></span> 
                                 </p>
                             </div>
                         </div>
@@ -81,32 +81,69 @@
 
                         <div class="form-group" style="width: 100%;">
                             <label for="produtoQuantidade">Quantidade</label>
-                            <input type="text" required="required" class="form-control" ui-mask="99999999"  id="produtoQuantidade" ng-model="produtoAtual.estoque">
+                            <input type="text" required="required" class="form-control" ui-number-mask="0"  placeholder="Quantidade Produto" id="produtoQuantidade" ng-model="produtoAtual.estoque">
                         </div>
 
                         <div class="form-group" style="width: 100%;">
                             <label for="produtoFornecedor">Fornecedor</label>
-                            <select class="selectpicker form-control" id="produtoFornecedor" ng-model="produtoAtual.fornecedor">
-                                <option ng-value="1"> Mustard</option>
-                                <option>Ketchup</option>
-                                <option>Relish</option>
-                            </select>
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" style="width: 100px" type="button" data-toggle="modal" data-target="#localizarFornecedorDialog" ng-click="limpaBuscaFornecedor()"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
+                                </span>
+                                <input type="text" class="form-control" ng-readonly="true" required="required" id="produtoFornecedor" ng-model="produtoAtual.fornecedor.descricao">
+                            </div>
                         </div>
 
-                        <label class="input-group-btn media-heading" style="padding-top: 60px">
-                            <span class="btn btn-primary media-heading" >
-                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                                Localizar Imagem <input type="file" style="display: none;" id="cadastroProdutoDialogImagemProduto">
-                            </span>
-                        </label>
-                        <input type="file" id="cadastroProdutoDialogImagemProduto" name="cadastroProdutoDialogImagemProduto"/>
-                        <button ng-click="onFileSelect()">Add</button>
+                        <div class="form-group" style="width: 100%;">
+                            <label for="cadastroProdutoDialogImagemProduto">Imagem Produto</label>
+                            <input type="file" class="filestyle" data-buttonText="Localizar" onchange="angular.element(this).scope().validaImagem(true)" data-buttonBefore="true" id="cadastroProdutoDialogImagemProduto" name="cadastroProdutoDialogImagemProduto" ng-model="produtoAtual.imagem">
+                        </div>
+
+                        <div class="form-group" style="width: 100%;">
+                            <label for="cadastroProdutoDialogImagemProduto">Observação</label>
+                            <textarea class="form-control" id="cadastroProdutoDialogObservacao"  placeholder="Observação Produto" style="resize: none;" name="cadastroProdutoDialogObservacao" ng-model="produtoAtual.observacao" rows="2"> </textarea>
+                        </div>
+
+                        <div id="msgProduto" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px"></div>
                     </div>
 
                     <div class="modal-footer">
                         <div class="input-group" style="width: 100%;">
-                            <button type="button" class="btn btn-default pull-left btn-danger " ><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
+                            <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#cadastroProdutoDialog')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
                             <button type="submit" class="btn btn-default pull-right btn-success " ng-click="insertProduto()" ><span class="glyphicon glyphicon-floppy-disk botaoComIcone" aria-hidden="true"></span>Salvar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="localizarFornecedorDialog" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Localizar Fornecedor</h4>
+                    </div>
+
+                    <div class="media-body" style="padding-top: 10px; apadding-bottom: 10px; padding-left: 10px; padding-right: 10px">
+                        <div class="input-group" style="padding-bottom: 10px">
+                            <input type="text" class="form-control" placeholder="Localizar..." ng-model="valorBuscaFornecedor.valor">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button" ng-click="getListaFornecedorBusca()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                            </span>
+                        </div>
+                        <div class="list-group" style="max-height: 300px; overflow-y: auto">
+                            <button type="button" class="list-group-item" ng-bind="fornecedor.descricao" ng-repeat="fornecedor in listaFornecedores" ng-click="selecionarFornecedor('#localizarFornecedorDialog', fornecedor)"></button>
+                        </div>
+                        <div id="msglocalizarFornecedorDialog" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px"></div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <div class="input-group" style="width: 100%;">
+                            <button type="button" class="btn btn-default center-block btn-primary " ng-click="fecharDialog('#localizarFornecedorDialog')" ><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
                         </div>
                     </div>
                 </form>

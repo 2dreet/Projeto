@@ -43,15 +43,19 @@ function refazerLogin($cookies) {
     $(window.document.location).attr('href', "login.html");
 }
 
-function getMensagem($tipoMenssagem, $texto){
-    if($tipoMenssagem === 'erro'){
-        return "<div class = 'alert alert-danger' role = 'alert' ><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><span class='glyphicon glyphicon-ban-circle' aria-hidden='true'> </span>" + $texto + "</div>";
-    } else if($tipoMenssagem === 'info'){
-        return "<div class = 'alert alert-info' role = 'alert' ><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><span class='glyphicon glyphicon-info-sign' aria-hidden='true'> </span>" + $texto + "</div>";
-    } else if($tipoMenssagem === 'sucesso') {
-        return "<div class = 'alert alert-success' role = 'alert' ><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><span class='glyphicon glyphicon-ok-sign' aria-hidden='true'> </span>" + $texto + "</div>";
-    } else if($tipoMenssagem === 'alerta') {
-        return "<div class = 'alert alert-warning' role = 'alert' ><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><span class='glyphicon glyphicon-warning-sign' aria-hidden='true'> </span>" + $texto + "</div>";
+function getMensagem($tipoMenssagem, $texto) {
+    if ($tipoMenssagem === 'erro') {
+        return "<div class = 'alert alert-danger' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ban-circle' aria-hidden='true'> </span>" + $texto + "</div>";
+    } else if ($tipoMenssagem === 'info') {
+        return "<div class = 'alert alert-info' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-info-sign' aria-hidden='true'> </span>" + $texto + "</div>";
+    } else if ($tipoMenssagem === 'sucesso') {
+        return "<div class = 'alert alert-success' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ok-sign' aria-hidden='true'> </span>" + $texto + "</div>";
+    } else if ($tipoMenssagem === 'alerta') {
+        return "<div class = 'alert alert-warning' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-warning-sign' aria-hidden='true'> </span>" + $texto + "</div>";
     }
-    
+
 }
+
+$(window).load(function () {
+
+});

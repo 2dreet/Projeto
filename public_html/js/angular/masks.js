@@ -867,7 +867,7 @@ if (objectTypes[typeof module]) {
 		var mask = '###0';
 
 		if(decimals > 0) {
-			mask += ',';
+			mask += '.';
 			for (var i = 0; i < decimals; i++) {
 				mask += '0';
 			}
@@ -1155,7 +1155,7 @@ if (objectTypes[typeof module]) {
 			link: function (scope, element, attrs, ctrl) {
 				var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
 					thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
-					decimals = $parse(attrs.uiNumberk)(scope);
+					decimals = $parse(attrs.uiNumberMask)(scope);
 
 				if (!ctrl) {
 					return;
@@ -1165,7 +1165,7 @@ if (objectTypes[typeof module]) {
 					thousandsDelimiter = '';
 				}
 
-				if(isNaN(decls)) {
+				if(isNaN(decimals)) {
 					decimals = 2;
 				}
 				var viewMask = numberViewMask(decimals, decimalDelimiter, thousandsDelimiter),

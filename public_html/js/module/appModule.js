@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngRoute', 'ngResource','ngCookies', 'ui.utils.masks']);
+var app = angular.module('app', ['ngRoute', 'ngResource', 'ngCookies', 'ui.utils.masks', 'ui.mask']);
 app.config(function ($routeProvider, $locationProvider) {
     $routeProvider
             .when('/', {

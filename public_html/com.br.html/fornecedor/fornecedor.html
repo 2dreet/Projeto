@@ -32,7 +32,7 @@
                             <td ng-bind="fornecedor.id"></td>
                             <td ng-bind="fornecedor.descricao"></td>
                             <td class="visible-md visible-lg" ng-bind="fornecedor.email"></td>
-                            <td class="visible-md visible-lg" ng-bind="fornecedor.telefone"> </td>
+                            <td class="visible-md visible-lg" ng-bind="fornecedor.telefone" > </td>
                         </tr>
                     </tbody>
                 </table> 
@@ -81,7 +81,7 @@
 
                         <div class="input-group" style="padding-top: 20px; width: 100%;">
                             <span style="width: 120px" class="input-group-addon" id="fornecedorTelefone">Telefone</span>
-                            <input ui-mask="(99) 9999-9999" placeholder="(##) ####-####" type="tel" required="required" class="form-control"  aria-describedby="fornecedorTelefone" ng-model="fornecedorAtual.telefone">
+                            <input ui-br-phone-number type="tel" required="required" placeholder="Telefone Fornecedor" class="form-control"  aria-describedby="fornecedorTelefone" ng-model="fornecedorAtual.telefone">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -116,7 +116,7 @@
 
                         <div class="input-group" style="padding-top: 20px; width: 100%;">
                             <span style="width: 120px" class="input-group-addon" id="fornecedorTelefoneAlterar">Telefone</span>
-                            <input ui-mask="(99) 9999-9999" placeholder="(##) ####-####" type="text" required="required" class="form-control"  aria-describedby="fornecedorTelefoneAlterar" ng-model="fornecedorAtual.telefone">
+                            <input ui-br-phone-number type="text" required="required" class="form-control"  placeholder="Telefone Fornecedor" aria-describedby="fornecedorTelefoneAlterar" ng-model="fornecedorAtual.telefone">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -153,7 +153,7 @@
 
                         <div class="input-group" style="padding-top: 20px; width: 100%;">
                             <span style="width: 120px" class="input-group-addon" id="fornecedorTelefoneDeletar">Telefone</span>
-                            <input type="text" readonly="readonly" class="form-control" ui-mask="(99) 9999-9999" placeholder="(##) ####-####" aria-describedby="fornecedorTelefoneDeletar" ng-model="fornecedorAtual.telefone">
+                            <input type="text" readonly="readonly" class="form-control"  placeholder="Telefone Fornecedor" ui-br-phone-number aria-describedby="fornecedorTelefoneDeletar" ng-model="fornecedorAtual.telefone">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -189,7 +189,7 @@
 
                         <div class="input-group" style="padding-top: 20px; width: 100%;">
                             <span style="width: 120px" class="input-group-addon" id="fornecedorTelefoneVisualizar">Telefone</span>
-                            <input type="text" readonly="readonly" class="form-control" ui-mask="(99) 9999-9999" placeholder="(##) ####-####" aria-describedby="fornecedorTelefoneVisualizar" ng-model="fornecedorAtual.telefone">
+                            <input type="text" readonly="readonly" class="form-control" ui-br-phone-number  placeholder="Telefone Fornecedor" aria-describedby="fornecedorTelefoneVisualizar" ng-model="fornecedorAtual.telefone">
                         </div>
                     </div>
                     <div class="modal-footer">
