@@ -35,10 +35,10 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
 
     $scope.getListaProdutoAll = function () {
         if (verificaToken($cookies)) {
-            $http({
+            $scope.loadinProduto = $http({
                 method: 'GET',
                 crossDomain: true,
-                url: urlWs + "produto/getAllproduto/" + getToken($cookies)
+                url: urlWs + "produto/getAllproduto/" + getToken($cookies) + debug
             }).then(function successCallback(response) {
                 if (!response.data.token) {
                     refazerLogin($cookies);
@@ -46,7 +46,7 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
                     $scope.listaProduto = response.data.dados;
                 }
             }, function errorCallback(response) {
-                alert('Erro no sistema!');
+                setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
             });
 
         }
@@ -66,7 +66,7 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
                     } else {
                         if (mostraMenssagemErro) {
                             $('#cadastroProdutoDialogImagemProduto').val(null);
-                            $("#msgProduto").html(getMensagem('erro', 'Tamanho da imagem permitido é 500bytes'));
+                            setMensagemTemporaria('erro', 'Tamanho da imagem permitido é 500bytes', 'msgProduto');
                         } else {
                             return false;
                         }
@@ -74,7 +74,7 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
                 } else {
                     if (mostraMenssagemErro) {
                         $('#cadastroProdutoDialogImagemProduto').val(null);
-                        $("#msgProduto").html(getMensagem('erro', 'Apenas imagem no formato jpg, jpeg e png!'));
+                        setMensagemTemporaria('erro', 'Apenas imagem no formato jpg, jpeg e png!', 'msgProduto');
                     } else {
                         return false;
                     }
@@ -104,9 +104,12 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
                 }).then(function successCallback(response) {
                     if (!response.data.token) {
                         refazerLogin($cookies);
+                    } else {
+                        $scope.fecharDialog("#cadastroProdutoDialog");
+                        setMensagemTemporaria('sucesso', 'Produto cadastrado!', '#msgProdutoGeral');
                     }
                 }, function errorCallback(response) {
-                    alert('Erro no sistema!');
+                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
                 });
             }
         }
@@ -132,7 +135,7 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
                         $scope.listaFornecedores = response.data[0].dados;
                     }
                 }, function errorCallback(response) {
-                    alert('Erro no sistema!');
+                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
                 });
             }
         }
@@ -151,7 +154,7 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
                     $scope.listaFornecedores = response.data[0].dados;
                 }
             }, function errorCallback(response) {
-                alert('Erro no sistema!');
+                setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
             });
         }
     };
@@ -183,7 +186,7 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
                 retorno = true;
             } else {
                 retorno = false;
-                $("#msgProduto").html(getMensagem('erro', 'Deve informar o fornecedor!'));
+                setMensagemTemporaria('erro', 'Deve informar o fornecedor!', '#msgProduto');
             }
         }
         return retorno;

@@ -1,6 +1,8 @@
 #tabela-produto{
-    padding-top: 25px;
+    margin-top: 25px;
     padding-right: 10px;
+    height: calc(100% - 70px);
+    overflow-y:  auto;
 }
 
 #tabela-produto h1{
@@ -85,6 +87,10 @@
     padding-top: 10px; 
     padding-left: 10px; 
     width: calc(100%);
+}
+
+.painel-main{
+    
 }
 
 @media screen and (max-width: 370px) {

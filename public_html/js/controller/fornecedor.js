@@ -1,8 +1,6 @@
 app.controller("fornecedorControler", function ($scope, $http, $cookies) {
     verificaToken($cookies);
 
-    $("head").append("<script language='JavaScript' type='text/javascript' src='js/masterPage.js'></script>");
-
     $('#menu-lateral ul li').removeClass('active');
     $('#btnFornecedor').addClass('active');
 

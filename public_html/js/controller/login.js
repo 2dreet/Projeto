@@ -27,7 +27,7 @@ app.controller("loginControler", function ($scope, $http, $cookies) {
                 headers: {'Content-Type': 'application/json'}
             }).then(function successCallback(response) {
                 if (response.data.msgErro) {
-                    $("#msgUsuario").html(getMensagem('erro', response.data.msgErro));
+                    setMensagemTemporaria('erro', response.data.msgErro, '#msgUsuario');
                 } else {
                     setToken(response.data.token, $cookies);
                     if (verificaToken($cookies)) {
