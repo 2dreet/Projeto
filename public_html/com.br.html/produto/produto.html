@@ -1,5 +1,5 @@
 <div class="container-fluid" ng-controller="produtoControler" style="height: calc(100%); max-height: calc(100%); min-height: calc(100%); overflow-x: hidden;">
-    <div id="produto" class="panel panel-default" style="height: calc(100% - 0px); max-height: calc(100% - 0px); min-height: calc(100% - 0px); padding: 0; margin: 0;">
+    <div id="produto" class="panel panel-default" style="height: calc(100% - 0px); max-height: calc(100% - 0px); min-height: calc(100% - 0px); padding: 0; margin: 0;" cg-busy="loadinProduto">
         <div class="panel-heading header-panel">Produtos</div>
         <div class="panel-body" style="height: calc(100% - 40px); max-height: calc(100% - 40px); min-height: calc(100% - 40px); overflow-x: hidden;" >
             <div class="row">
@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div id="msgProdutoGeral" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px"></div>
-            <div id="tabela-produto" class="row" cg-busy="loadinProduto">
+            <div id="tabela-produto" class="row" >
 
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 produto-lista" ng-repeat="p in listaProduto">
                     <div class="panel panel-default produto-lista-conteudo">
