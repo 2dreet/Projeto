@@ -25,7 +25,6 @@
 html, body {
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
     height: 100%;
 }
 
@@ -33,7 +32,6 @@ html, body {
     height: calc(100%);
     padding: 0;
     margin: 0;
-    overflow-x: hidden;
 }
 
 #nav-meio{
