@@ -6,6 +6,15 @@
     src: url('../fonts/glyphicons-halflings-regular.eot');
     src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
 }
+html, body {
+    margin: 0px;
+    padding: 0px;
+    height: calc(100%);
+    width: calc(100%);
+    max-height: calc(100%);
+    max-width: calc(100%);
+    overflow: hidden;
+}
 
 .glyphicon-refresh-animate {
     -animation: spin .7s infinite linear;
@@ -22,16 +31,12 @@
     to { transform: scale(1) rotate(360deg);}
 }
 
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-}
+
 
 #pagina{
     height: calc(100%);
-    padding: 0;
-    margin: 0;
+    margin: 0px;
+    padding: 0px;
 }
 
 #nav-meio{
@@ -39,17 +44,22 @@ html, body {
     -moz-border-radius:0px;
     -webkit-border-radius:0px;
     border-radius:0px;
+    padding-right: 15px;
 }
 
 #app-meio{
     height: 100%;
     width: calc(100% - 250px);
     float: left;
+    margin: 0px;
+    padding: 0px;
 }
 
 #app-meio-row{
     height: 100%;
     width: 100%;
+    margin: 0px;
+    padding: 0px;
 }
 
 #menu-lateral{
@@ -57,14 +67,15 @@ html, body {
     height: 100%;
     background-color: #2e353d;
     float: left;
-    padding: 0;
-    margin: 0;
+    margin: 0px;
+    padding: 0px;
 }
 
 #menu-lateral ul{
     width: 100%;    
-    padding: 0;
-    margin: 0;
+    margin: 0px;
+    padding: 0px;
+
 }
 
 #menu-lateral ul li{
@@ -127,7 +138,7 @@ html, body {
     max-height: calc(100% - 70px);
     min-height: calc(100% - 70px);
     padding: 0px;
-    margin: 0;
+    margin: 0px;
 }
 
 .header-panel{

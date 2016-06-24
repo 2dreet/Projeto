@@ -16,7 +16,7 @@ app.controller("fornecedorControler", function ($scope, $http, $cookies) {
                 $scope.getListaFornecedorAll();
             } else {
                 var envio = {'valor_busca': valorBusca, 'token': getToken($cookies)};
-                $http({
+                $scope.loadinFornecedor = $http({
                     method: 'POST',
                     crossDomain: true,
                     url: urlWs + "fornecedor/getFornecedor",
@@ -37,7 +37,7 @@ app.controller("fornecedorControler", function ($scope, $http, $cookies) {
 
     $scope.getListaFornecedorAll = function () {
         if (verificaToken($cookies)) {
-            $http({
+            $scope.loadinFornecedor = $http({
                 method: 'GET',
                 crossDomain: true,
                 url: urlWs + "fornecedor/getAllfornecedor/" + getToken($cookies)

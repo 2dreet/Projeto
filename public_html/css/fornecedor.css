@@ -1,9 +1,13 @@
 
 #tabela-fornecedor{
-    padding-top: 25px;
-    /*padding-left: 15px;*/
-    /*padding-right: 15px;*/
+    margin-top: 25px;
+    padding: 0;
+    height: calc(100% - 60px);
+    max-height: calc(100% - 60px);
+    min-height: calc(100% - 60px); 
+    overflow-x: auto;
 }
+
 
 @media screen and (max-width: 770px) {
     #filtrarFornecedor{

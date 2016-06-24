@@ -1,4 +1,4 @@
-var urlWs = "http://localhost:8084/WsJosePhp/";
+var urlWs = "http://localhost:8088/WsJosePhp/";
 var debug = "?XDEBUG_SESSION_START=netbeans-xdebug";
 
 $("head").append("<script language='JavaScript' type='text/javascript' src='js/controller/fornecedor.js'></script>");
@@ -107,6 +107,7 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
                     } else {
                         $scope.fecharDialog("#cadastroProdutoDialog");
                         setMensagemTemporaria('sucesso', 'Produto cadastrado!', '#msgProdutoGeral');
+                        $scope.getListaFornecedorAll();
                     }
                 }, function errorCallback(response) {
                     setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
@@ -156,6 +157,14 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
             }, function errorCallback(response) {
                 setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
             });
+        }
+    };
+
+    $scope.mostrarObsItem = function (produto) {
+        if (produto.observacao !== null && produto.observacao.trim() != "") {
+            return true;
+        } else {
+            return false;
         }
     };
 

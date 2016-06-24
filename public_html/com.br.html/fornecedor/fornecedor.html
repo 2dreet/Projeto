@@ -1,13 +1,13 @@
-<div class="container-fluid" ng-controller="fornecedorControler">
-    <div id="fornecedor" class="panel panel-default">
+<div class="container-fluid" ng-controller="fornecedorControler" style="height: calc(100%); max-height: calc(100%); min-height: calc(100%); overflow-x: hidden;">
+    <div id="fornecedor" class="panel panel-default" cg-busy="loadinFornecedor" style="height: calc(100% - 0px); max-height: calc(100% - 0px); min-height: calc(100% - 0px); padding: 0; margin: 0;">
         <div class="panel-heading header-panel">Fornecedores</div>
-        <div class="panel-body">
+        <div class="panel-body" style="height: calc(100% - 40px); max-height: calc(100% - 40px); min-height: calc(100% - 40px); overflow-x: hidden; ">
             <div class="row">
                 <div id="filtrarFornecedor" class="col-sm-6">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Localizar..." ng-model="valorBusca.valor">
                         <span class="input-group-btn">
-                            <button class="btn btn-primary" type="button" ng-click="getListaFornecedorBusca()" busy="Localizando..."><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                            <button class="btn btn-primary" type="button" ng-click="getListaFornecedorBusca()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                         </span>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                     <div class="modal-body">
                         <div class="input-group" style="width: 100%;">
                             <span style="width: 120px" class="input-group-addon" id="fornecedorDescricao">Fornecedor</span>
-                            <input type="text" required="required" class="form-control" placeholder="Descrição Fornecedor" aria-describedby="fornecedorDescricao" ng-model="fornecedorAtual.descricao">
+                            <input type="text" required="required" class="form-control" maxlength="32" placeholder="Descrição Fornecedor" aria-describedby="fornecedorDescricao" ng-model="fornecedorAtual.descricao">
                         </div>
 
                         <div class="input-group" style="padding-top: 20px; width: 100%;">
@@ -106,7 +106,7 @@
                     <div class="modal-body">
                         <div class="input-group" style="width: 100%;">
                             <span style="width: 120px" class="input-group-addon" id="fornecedorDescricaoAlterar">Fornecedor</span>
-                            <input type="text" required="required" class="form-control" placeholder="Descrição Fornecedor" aria-describedby="fornecedorDescricaoAlterar" ng-model="fornecedorAtual.descricao">
+                            <input type="text" required="required" class="form-control" maxlength="32" placeholder="Descrição Fornecedor" aria-describedby="fornecedorDescricaoAlterar" ng-model="fornecedorAtual.descricao">
                         </div>
 
                         <div class="input-group" style="padding-top: 20px; width: 100%;">
