@@ -1,4 +1,4 @@
-var urlWs = "http://192.168.1.90:8088/WsJosePhp/";
+var urlWs = "http://localhost:8084/WsJosePhp/";
 var debug = "?XDEBUG_SESSION_START=netbeans-xdebug";
 
 $("head").append("<script language='JavaScript' type='text/javascript' src='js/controller/fornecedor.js'></script>");
@@ -96,7 +96,7 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
                 fd.append('token', getToken($cookies));
                 fd.append('dados', angular.toJson($scope.produtoAtual));
                 $http({
-                    url: urlWs + 'produto/insertProduto' + debug,
+                    url: urlWs + 'produto/insertProduto',
                     method: 'POST',
                     data: fd,
                     transformRequest: angular.identity,
