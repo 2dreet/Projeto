@@ -1,4 +1,4 @@
-var urlWs = "http://localhost:8084/WsJosePhp/";
+var urlWs = "http://localhost:8088/WsJosePhp/";
 var debug = "?XDEBUG_SESSION_START=netbeans-xdebug";
 
 $("head").append("<script language='JavaScript' type='text/javascript' src='js/controller/fornecedor.js'></script>");
@@ -27,8 +27,9 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
     $scope.getImagem = urlWs + "produto/getProdutoImagem/";
 
     $scope.getImagem = function (idItem) {
-        if (verificaToken($cookies)) {
-            return urlWs + "produto/getProdutoImagem/" + idItem + "/" + getToken($cookies);
+        if (verificaToken($cookies) && idItem > 0) {
+            var random = (new Date()).toString();
+            return urlWs + "produto/getProdutoImagem/" + idItem + "/" + getToken($cookies) + "?cb=" + random;
         }
     };
 
@@ -37,7 +38,7 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
             $scope.loadinProduto = $http({
                 method: 'GET',
                 crossDomain: true,
-                url: urlWs + "produto/getAllproduto/" + getToken($cookies) + debug
+                url: urlWs + "produto/getAllproduto/" + getToken($cookies)
             }).then(function successCallback(response) {
                 if (!response.data.token) {
                     refazerLogin($cookies);
@@ -51,29 +52,29 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
         }
     };
 
-    $scope.validaImagem = function (mostraMenssagemErro) {
-        var campoImagem = $('#cadastroProdutoDialogImagemProduto').prop('files');
-        if (campoImagem !== null && $('#cadastroProdutoDialogImagemProduto').eq(0).val() != "") {
+    $scope.validaImagem = function (mostraMenssagemErro, idCampoImagem, idCampoMsg) {
+        var campoImagem = $(idCampoImagem).prop('files');
+        if (campoImagem !== null && $(idCampoImagem).eq(0).val() != "") {
             var imagem = campoImagem[0];
             if (imagem !== null) {
                 var nomeImagem = imagem.name;
-//                var extencao = nomeImagem.substr(nomeImagem.lastIndexOf('.') + 1)
                 var extencao = new RegExp("(.*?)\.(jpg|jpeg|png)$");
                 if ((extencao.test(nomeImagem))) {
                     if (imagem.size <= 500000) {
                         return true;
                     } else {
+                        $(idCampoImagem).val(null);
                         if (mostraMenssagemErro) {
-                            $('#cadastroProdutoDialogImagemProduto').val(null);
-                            setMensagemTemporaria('erro', 'Tamanho da imagem permitido é 500bytes', 'msgProduto');
+                            setMensagemTemporaria('erro', 'Tamanho da imagem permitido é 500bytes', idCampoMsg);
                         } else {
                             return false;
                         }
                     }
                 } else {
+                    $(idCampoImagem).val(null);
+
                     if (mostraMenssagemErro) {
-                        $('#cadastroProdutoDialogImagemProduto').val(null);
-                        setMensagemTemporaria('erro', 'Apenas imagem no formato jpg, jpeg e png!', 'msgProduto');
+                        setMensagemTemporaria('erro', 'Apenas imagem no formato jpg, jpeg e png!', idCampoMsg);
                     } else {
                         return false;
                     }
@@ -82,12 +83,24 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
         }
     };
 
+    $scope.mostrarImagem = function (idCampoImagem, idCampoMsg, idCampoDestino) {
+        if ($scope.validaImagem(true, idCampoImagem, idCampoMsg)) {
+            var campoImagem = $(idCampoImagem).prop('files');
+            var imagem = campoImagem[0];
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $(idCampoDestino).attr('src', e.target.result);
+            };
+            reader.readAsDataURL(imagem);
+        }
+    };
+
     $scope.insertProduto = function () {
         $scope.message = "";
         if (verificaToken($cookies)) {
             if ($scope.validaProduto()) {
                 var fd = new FormData();
-                if ($scope.validaImagem(false)) {
+                if ($scope.validaImagem(false, '#cadastroProdutoDialogImagemProduto', '#msgProduto')) {
                     var campoImagem = $('#cadastroProdutoDialogImagemProduto').prop('files');
                     var imagem = campoImagem[0];
                     fd.append('imagem', imagem);
@@ -106,9 +119,44 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
                     } else {
                         $scope.fecharDialog("#cadastroProdutoDialog");
                         setMensagemTemporaria('sucesso', 'Produto cadastrado!', '#msgProdutoGeral');
-                        $scope.getListaFornecedorAll();
+                        $scope.getListaProdutoAll();
                     }
                 }, function errorCallback(response) {
+                    $scope.fecharDialog("#cadastroProdutoDialog");
+                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
+                });
+            }
+        }
+    };
+
+    $scope.updateProduto = function () {
+        $scope.message = "";
+        if (verificaToken($cookies)) {
+            if ($scope.validaProduto()) {
+                var fd = new FormData();
+                if ($scope.validaImagem(false, '#cadastroProdutoDialogImagemProdutoAlterar', '#msgProdutoAlterar')) {
+                    var campoImagem = $('#cadastroProdutoDialogImagemProdutoAlterar').prop('files');
+                    var imagem = campoImagem[0];
+                    fd.append('imagem', imagem);
+                }
+                fd.append('token', getToken($cookies));
+                fd.append('dados', angular.toJson($scope.produtoAtual));
+                $http({
+                    url: urlWs + 'produto/updatetProduto',
+                    method: 'POST',
+                    data: fd,
+                    transformRequest: angular.identity,
+                    headers: {'Content-Type': undefined}
+                }).then(function successCallback(response) {
+                    if (!response.data.token) {
+                        refazerLogin($cookies);
+                    } else {
+                        $scope.fecharDialog("#cadastroProdutoDialogAlterar");
+                        setMensagemTemporaria('sucesso', 'Produto alterado!', '#msgProdutoGeral');
+                        $scope.getListaProdutoAll();
+                    }
+                }, function errorCallback(response) {
+                    $scope.fecharDialog("#cadastroProdutoDialogAlterar");
                     setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
                 });
             }
@@ -202,15 +250,35 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
 
     $scope.novoProduto = function () {
         $scope.produtoAtual = {observacao: ""};
+        $('#cadastroProdutoDialogImagemProdutoView').val(null);
     };
 
-    $scope.preparaProduto = function (produto) {
+    $scope.preparaProduto = function (produto, idModal) {
         $scope.produtoAtual = Object.assign({}, produto);
+        if (idModal !== null) {
+            $scope.abrirDialog(idModal);
+        }
+    };
+
+    $scope.preparaViewProduto = function (idModalPai, idModalFilho, idImagem) {
+        if (idModalPai !== null) {
+            $scope.fecharDialog(idModalPai);
+        }
+
+        if (idModalFilho !== null) {
+            $(idImagem).val(null);
+            $scope.produtoAtual = {imagem: ""};
+            $scope.abrirDialog(idModalFilho);
+        }
     };
 
     $scope.selecionarFornecedor = function (idModal, fornecedor) {
         $scope.produtoAtual.fornecedor = fornecedor;
         $scope.fecharDialog(idModal);
+    };
+
+    $scope.abrirDialog = function (idModal) {
+        $(idModal).modal('show');
     };
 
     $scope.fecharDialog = function (idModal) {

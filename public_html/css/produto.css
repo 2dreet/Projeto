@@ -16,6 +16,20 @@
     word-wrap: break-word;  
 }
 
+.font-produto{
+    font-weight: normal;
+    color: #4c595e;
+    font-size: 14px;
+    white-space: pre-wrap;      /* CSS3 */   
+    white-space: -moz-pre-wrap; /* Firefox */   
+    white-space: -o-pre-wrap;   /* Opera 7 */    
+    word-wrap: break-word;  
+}
+
+.product-item:hover{
+    opacity: 0.3;
+}
+
 .descricao-produto-lista{
     padding-top: 10px; 
     padding-bottom: 10px; 
@@ -126,7 +140,7 @@
     width: 150px;
     padding-top: 5px;
     padding-bottom: 5px;
-     
+
 }
 @media screen and (max-width: 600px) {
     .product-item{
