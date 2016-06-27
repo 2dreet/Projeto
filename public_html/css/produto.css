@@ -1,13 +1,15 @@
 #tabela-produto{
     margin-top: 25px;
-    height: calc(100% - 70px);
-    overflow-y:  auto;
+    height: calc(100% - 50px);
+    overflow: hidden;   
+    padding-bottom: 0px;
 }
+
 
 .font-titulo-produto{
     font-weight: bold;
-    color: #007799;
-    font-size: 18px;
+    color: #4c595e;
+    font-size: 14px;
     white-space: pre-wrap;      /* CSS3 */   
     white-space: -moz-pre-wrap; /* Firefox */   
     white-space: -o-pre-wrap;   /* Opera 7 */    
@@ -19,7 +21,7 @@
     padding-bottom: 10px; 
     padding-left: 10px; 
     padding-right: 10px;
-    
+
 }
 
 .painel-fundo-produto{
@@ -71,8 +73,8 @@
     margin: 0; 
     padding: 0px;
     padding-left: 10px;
-    min-height: 430px;
-    max-height: 430px;
+    min-height: 310px;
+    max-height: 310px;
 }
 
 .imagem-produto-lista{
@@ -83,6 +85,7 @@
 .valor-produto-lista{
     color: #6eaf48;
     font-weight: bold;
+    font-size: 24px;
 }
 
 .quantidade-estoque-produto-lista-label {
@@ -103,9 +106,9 @@
 
 #tabela-produto ul{
     padding: 0; 
-    height: calc(100% - 10px); 
-    max-height: calc(100% - 10px);
-    min-height: calc(100% - 10px); 
+    height: calc(100%); 
+    max-height: calc(100%);
+    min-height: calc(100%); 
     overflow-x: auto;
 }
 
@@ -123,6 +126,7 @@
     width: 150px;
     padding-top: 5px;
     padding-bottom: 5px;
+     
 }
 @media screen and (max-width: 600px) {
     .product-item{

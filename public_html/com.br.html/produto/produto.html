@@ -1,13 +1,13 @@
 <div class="container-fluid" ng-controller="produtoControler" style="height: calc(100%); max-height: calc(100%); min-height: calc(100%); overflow-x: hidden;">
-    <div id="produto" class="panel panel-default" style="height: calc(100% - 0px); max-height: calc(100% - 0px); min-height: calc(100% - 0px); padding: 0; margin: 0;" cg-busy="loadinProduto">
+    <div id="produto" class="panel panel-default" style="height: calc(100% - 0px); max-height: calc(100% - 0px); min-height: calc(100% - 0px); padding: 0; margin: 0; overflow-x: hidden;" cg-busy="loadinProduto">
         <div class="panel-heading header-panel">Produtos</div>
-        <div class="panel-body" style="height: calc(100% - 40px); max-height: calc(100% - 40px); min-height: calc(100% - 40px); overflow-x: hidden;" >
+        <div class="panel-body" style="height: calc(100% - 40px); max-height: calc(100% - 40px); min-height: calc(100% - 40px); padding-bottom: 0px; overflow: hidden" >
             <div class="row">
                 <div id="filtrarProduto" class="col-sm-8">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Localizar..." >
+                        <input type="text" class="form-control" placeholder="Localizar por nome" >
                         <span class="input-group-btn">
-                            <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span></button>
+                            <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span>Filtro Avançado</button>
                             <button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                         </span>
                     </div>
@@ -18,36 +18,28 @@
                     </button>
                 </div>
             </div>
-            <div id="msgProdutoGeral" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px"></div>
-            <div id="tabela-produto" class="row" >
+            <div id="msgProdutoGeral" class="row" style="padding-left: 10px; padding-right: 10px;"></div>
+            <div id="tabela-produto" class="row">
                 <ul>
                     <li ng-repeat="p in listaProduto" class="product-item">
-                        <div class="produto-lista-conteudo">
-                            <div style="height: 55px; padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: center; ">
-                                <strong class="font-titulo-produto" ng-bind="p.descricao"></strong>
+                        <a href="" style="text-decoration: none;">
+                            <div class="produto-lista-conteudo">
+                                <div class="imagem-produto-lista-div" >
+
+                                    <img class="media-object imagem-produto-lista" ng-src="{{getImagem(p.id)}}"/>
+                                </div>
+                                <div style="height: 55px; padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: center; ">
+                                    <strong class="font-titulo-produto text-uppercase" ng-bind="p.descricao"></strong>
+                                </div>
+                                <div style="height: 55px; padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: left; ">
+                                    <strong class=" quantidade-estoque-produto-lista"> Fornecedor: </strong> <strong class="quantidade-estoque-produto-lista-label" ng-bind="p.fornecedor.descricao"></strong> 
+                                    <strong class="quantidade-estoque-produto-lista"> Estoque: </strong> <strong class="quantidade-estoque-produto-lista-label" ng-bind="p.estoque"></strong><br/> 
+                                </div>
+                                <div style="height: 30px; padding-right: 10px; padding-left: 5px; padding-top: 0px; overflow: hidden; text-align: center; ">
+                                    <span class="valor-produto-lista" ui-number-mask="decimals" ng-bind="p.valor | currency"></span><br/>  
+                                </div>
                             </div>
-                            <div class="imagem-produto-lista-div" >
-                                <!--                        <a href="">-->
-                                <img class="media-object imagem-produto-lista" ng-src="{{getImagem(p.id)}}"/>
-                                <!--</a>-->
-                            </div>
-                            <div class="row painel-fundo-produto">
-                                <strong class="quantidade-estoque-produto-lista-label"> Valor: </strong> <span class="valor-produto-lista" ng-bind="p.valor"></span><br/>  
-                                <strong class="quantidade-estoque-produto-lista-label"> Estoque: </strong> <span class="quantidade-estoque-produto-lista" ng-bind="p.estoque"></span><br/> 
-                                <strong class="quantidade-estoque-produto-lista-label"> Fornecedor: </strong> <span class="quantidade-estoque-produto-lista" ng-bind="p.fornecedor.descricao"></span> 
-                            </div>
-                            <div class="row painel-fundo-produto-observacao">
-                                <p>
-                                    <strong class="produto-observacao-titulo"> Observação </strong>
-                                </p>
-                                <p class="painel-fundo-produto-observacao-valor">
-                                    <span class="produto-observacao" ng-bind="p.observacao"></span> 
-                                </p>
-                            </div>
-                            <div style="background: #ffcc00; width: 100%; height: 35px; margin-top: 5px">
-                                <button class="btn btn-warning" style="width: 100%"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><strong> Opções </strong></button>
-                            </div>
-                        </div>
+                        </a>
                     </li>
                 </ul>
             </div>

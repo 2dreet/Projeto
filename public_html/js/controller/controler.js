@@ -1,4 +1,4 @@
-var urlWs = "http://localhost:8088/WsJosePhp/";
+var urlWs = "http://localhost:8084/WsJosePhp/";
 var debug = "?XDEBUG_SESSION_START=netbeans-xdebug";
 
 $("head").append("<script language='JavaScript' type='text/javascript' src='js/controller/fornecedor.js'></script>");
@@ -21,7 +21,6 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
 
     $scope.listaFornecedores = [];
     $scope.valorBuscaFornecedor = {valor: ""};
-
 
     $scope.produtoAtual = {observacao: ""};
     $scope.listaProduto = [];
