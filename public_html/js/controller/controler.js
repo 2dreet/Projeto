@@ -1,6 +1,5 @@
-var urlWs = "http://localhost:8084/WsJosePhp/";
+var urlWs = "http://localhost:8088/WsJosePhp/";
 var debug = "?XDEBUG_SESSION_START=netbeans-xdebug";
-
 $("head").append("<script language='JavaScript' type='text/javascript' src='js/controller/fornecedor.js'></script>");
 $("head").append("<script language='JavaScript' type='text/javascript' src='js/controller/boleto.js'></script>");
 $("head").append("<script language='JavaScript' type='text/javascript' src='js/controller/cliente.js'></script>");
@@ -11,28 +10,45 @@ $("head").append("<script language='JavaScript' type='text/javascript' src='js/c
 $("head").append("<script language='JavaScript' type='text/javascript' src='js/controller/pedido.js'></script>");
 $("head").append("<script language='JavaScript' type='text/javascript' src='js/controller/produto.js'></script>");
 $("head").append("<script language='JavaScript' type='text/javascript' src='js/controller/usuario.js'></script>");
-
 app.controller("produtoControler", function ($scope, $http, $cookies) {
 
     $('#menu-lateral ul li').removeClass('active');
     $('#btnProduto').addClass('active');
-
     $(":file").filestyle({buttonBefore: true, buttonText: "Localizar"});
-
     $scope.listaFornecedores = [];
     $scope.valorBuscaFornecedor = {valor: ""};
+    $scope.corLinha = function (tipoMovimentacao) {
+        var cor = {color: 'black'};
+        if (tipoMovimentacao == 1) {
+            cor.color = '#0066CC';
+        } else if (tipoMovimentacao == 2) {
+            cor.color = '#6eaf48';
+        } else if (tipoMovimentacao == 3) {
+            cor.color = '#FF3333';
+        } else if (tipoMovimentacao == 4) {
+            cor.color = '#FF9933';
+        } else if (tipoMovimentacao == 5) {
+            cor.color = '#404040';
+        }
 
+        return cor;
+    };
     $scope.produtoAtual = {observacao: ""};
     $scope.listaProduto = [];
+    $scope.listaTipoMovimentacaoCorrecao = [
+        {id: 4, descricao: 'Cortesia'},
+        {id: 5, descricao: 'Correção'},
+        {id: 1, descricao: 'Entrada'},
+        {id: 3, descricao: 'Perda'}
+    ];
+    $scope.listaProdutoMovimentacao = [{data: '2002-04-26T09:00:00', observacao: 'entrada de produto', quantidade: '3', tipoMovimentacao: {id: '1', descricao: 'entrada'}}, {data: '2005-04-26T09:00:00', observacao: 'saida de produto', quantidade: '1', tipoMovimentacao: {id: '2', descricao: 'Saída'}}, {data: '2002-04-26T09:00:00', observacao: 'entrada de produto', quantidade: '3', tipoMovimentacao: {id: '3', descricao: 'entrada'}}, {data: '2005-04-26T09:00:00', observacao: 'saida de produto', quantidade: '1', tipoMovimentacao: {id: '4', descricao: 'Saída'}}, {data: '2002-04-26T09:00:00', observacao: 'entrada de produto', quantidade: '3', tipoMovimentacao: {id: '5', descricao: 'entrada'}}, {data: '2005-04-26T09:00:00', observacao: 'saida de produto', quantidade: '5', tipoMovimentacao: {id: '2', descricao: 'Saída'}}, {data: '2002-04-26T09:00:00', observacao: 'entrada de produto', quantidade: '3', tipoMovimentacao: {id: '1', descricao: 'entrada'}}, {data: '2005-04-26T09:00:00', observacao: 'saida de produto', quantidade: '1', tipoMovimentacao: {id: '2', descricao: 'Saída'}}];
     $scope.getImagem = urlWs + "produto/getProdutoImagem/";
-
     $scope.getImagem = function (idItem) {
         if (verificaToken($cookies) && idItem > 0) {
             var random = (new Date()).toString();
             return urlWs + "produto/getProdutoImagem/" + idItem + "/" + getToken($cookies) + "?cb=" + random;
         }
     };
-
     $scope.getListaProdutoAll = function () {
         if (verificaToken($cookies)) {
             $scope.loadinProduto = $http({
@@ -48,10 +64,8 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
             }, function errorCallback(response) {
                 setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
             });
-
         }
     };
-
     $scope.validaImagem = function (mostraMenssagemErro, idCampoImagem, idCampoMsg) {
         var campoImagem = $(idCampoImagem).prop('files');
         if (campoImagem !== null && $(idCampoImagem).eq(0).val() != "") {
@@ -72,7 +86,6 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
                     }
                 } else {
                     $(idCampoImagem).val(null);
-
                     if (mostraMenssagemErro) {
                         setMensagemTemporaria('erro', 'Apenas imagem no formato jpg, jpeg e png!', idCampoMsg);
                     } else {
@@ -82,7 +95,6 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
             }
         }
     };
-
     $scope.mostrarImagem = function (idCampoImagem, idCampoMsg, idCampoDestino) {
         if ($scope.validaImagem(true, idCampoImagem, idCampoMsg)) {
             var campoImagem = $(idCampoImagem).prop('files');
@@ -94,7 +106,6 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
             reader.readAsDataURL(imagem);
         }
     };
-
     $scope.insertProduto = function () {
         $scope.message = "";
         if (verificaToken($cookies)) {
@@ -128,7 +139,6 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
             }
         }
     };
-
     $scope.updateProduto = function () {
         $scope.message = "";
         if (verificaToken($cookies)) {
@@ -162,7 +172,6 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
             }
         }
     };
-
     $scope.deleteProduto = function () {
         if (verificaToken($cookies)) {
             var envio = {'dados': $scope.produtoAtual, 'token': getToken($cookies)};
@@ -186,8 +195,6 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
             });
         }
     };
-
-
     $scope.getListaFornecedorBusca = function () {
         if (verificaToken($cookies)) {
             var valorBusca = $scope.valorBuscaFornecedor.valor;
@@ -213,7 +220,6 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
             }
         }
     };
-
     $scope.getListaFornecedorAll = function () {
         if (verificaToken($cookies)) {
             $http({
@@ -231,7 +237,6 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
             });
         }
     };
-
     $scope.mostrarObsItem = function (produto) {
         if (produto.observacao !== null && produto.observacao.trim() != "") {
             return true;
@@ -239,7 +244,35 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
             return false;
         }
     };
+    $scope.validaCorrecao = function () {
+        var retorno = false;
+        if ($scope.produtoAtual != null) {
+            if ($scope.produtoAtual.estoque_movimento != null && $scope.produtoAtual.estoque_movimento > 0) {
+                retorno = true;
+            } else {
+                setMensagemTemporaria('erro', 'Deve informar Quantidade!', '#msgCorrecao');
+                return false;
+            }
 
+            if ($scope.produtoAtual.tipoMovimentacao != null) {
+                if ($scope.produtoAtual.tipoMovimentacao > 1) {
+                    var valorFinal = $scope.produtoAtual.estoque - $scope.produtoAtual.estoque_movimento;
+                    if (valorFinal >= 0) {
+                        retorno = true;
+                    } else {
+                        setMensagemTemporaria('erro', 'Valor final não deve ser negativo!', '#msgCorrecao');
+                        return false;
+                    }
+                } else {
+                    retorno = true;
+                }
+            } else {
+                setMensagemTemporaria('erro', 'Deve informar tipo movimentação!', '#msgCorrecao');
+                return false;
+            }
+        }
+        return retorno;
+    }
 
     $scope.validaProduto = function (idMsg) {
         var retorno = false;
@@ -259,13 +292,6 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
                 return false;
             }
 
-            if ($scope.produtoAtual.estoque != null && $scope.produtoAtual.valor >= 0) {
-                retorno = true;
-            } else {
-                setMensagemTemporaria('erro', 'Deve informar estoque!', idMsg);
-                return false;
-            }
-
             if ($scope.produtoAtual.fornecedor != null) {
                 retorno = true;
             } else {
@@ -275,19 +301,18 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
         }
         return retorno;
     };
-
     $scope.novoProduto = function () {
         $scope.produtoAtual = {observacao: ""};
         $('#cadastroProdutoDialogImagemProdutoView').val(null);
     };
-
     $scope.preparaProduto = function (produto, idModal) {
         $scope.produtoAtual = Object.assign({}, produto);
         if (idModal !== null) {
             $scope.abrirDialog(idModal);
         }
     };
-
+    
+    
     $scope.preparaViewProduto = function (idModalPai, idModalFilho, idImagem) {
         if (idModalPai !== null) {
             $scope.fecharDialog(idModalPai);
@@ -301,24 +326,34 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
             $scope.abrirDialog(idModalFilho);
         }
     };
+    $scope.preparaCorrecaoProduto = function (idModalPai, idModalFilho, idImagem) {
+        $scope.produtoAtual.tipoMovimentacao = $scope.listaTipoMovimentacaoCorrecao[0];
+        
+        if (idModalPai !== null) {
+            $scope.fecharDialog(idModalPai);
+        }
 
+        if (idModalFilho !== null) {
+            if (idImagem !== null) {
+                $(idImagem).val(null);
+                $(idImagem).filestyle('clear');
+            }
+            $scope.abrirDialog(idModalFilho);
+        }
+    };
     $scope.selecionarFornecedor = function (idModal, fornecedor) {
         $scope.produtoAtual.fornecedor = fornecedor;
         $scope.fecharDialog(idModal);
     };
-
     $scope.abrirDialog = function (idModal) {
         $(idModal).modal('show');
     };
-
     $scope.fecharDialog = function (idModal) {
         $(idModal).modal('hide');
     };
-
     $scope.limpaBuscaFornecedor = function () {
         $scope.listaFornecedores = [];
         $scope.valorBuscaFornecedor = {valor: ""};
     };
-
     $scope.getListaProdutoAll();
 });

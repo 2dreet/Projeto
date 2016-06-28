@@ -66,11 +66,6 @@
                         </div>
 
                         <div class="form-group" style="width: 100%;">
-                            <label for="produtoQuantidade">Quantidade</label>
-                            <input type="text" required="required" class="form-control" ui-number-mask="0"  placeholder="Quantidade Produto" id="produtoQuantidade" ng-model="produtoAtual.estoque">
-                        </div>
-
-                        <div class="form-group" style="width: 100%;">
                             <label for="produtoFornecedor">Fornecedor</label>
                             <div class="input-group">
                                 <span class="input-group-btn">
@@ -126,11 +121,6 @@
                         <div class="form-group" style="width: 100%;">
                             <label for="produtoValorAlterar">Valor R$</label>
                             <input type="text" required="required" class="form-control" ui-number-mask="decimals" placeholder="Valor Produto" id="produtoValorAlterar" ng-model="produtoAtual.valor">
-                        </div>
-
-                        <div class="form-group" style="width: 100%;">
-                            <label for="produtoQuantidadeAlterar">Quantidade</label>
-                            <input type="text" required="required" class="form-control" ui-number-mask="0"  placeholder="Quantidade Produto" id="produtoQuantidadeAlterar" ng-model="produtoAtual.estoque">
                         </div>
 
                         <div class="form-group" style="width: 100%;">
@@ -211,7 +201,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="modal fade dialog-produto" id="cadastroProdutoDialogDeletar" role="dialog"  aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -253,6 +243,94 @@
         </div>
     </div>
 
+    <div class="modal fade dialog-produto" id="cadastroProdutoDialogMovimentacao" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Movimentação Produto</h4>
+                    </div>
+
+                    <div class="media-body descricao-produto-lista">
+                        <div style="height: 55px; padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: center; ">
+                            <b><strong class="font-titulo-produto text-uppercase" ng-bind="produtoAtual.descricao"></strong></b>
+                        </div>
+                        <div style="padding-bottom: 5px; overflow: hidden; text-align: left; ">
+                            <strong class="font-titulo-produto"> Estoque Atual: </strong> <strong class="font-produto" ng-bind="produtoAtual.estoque"></strong><br/> 
+                        </div>
+                        <div style="max-height: 300px; min-height: 300px; width: 100%; overflow-y: auto;">
+                            <table  class="table table-striped ">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 130px;">Data</th>
+                                        <th class="visible-md visible-lg">Observação</th>
+                                        <th style="width: 50px;" >Qtd</th>
+                                        <th style="width: 80px;"  >Tipo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="produtoMovimentacao in listaProdutoMovimentacao" ng-style="corLinha(produtoMovimentacao.tipoMovimentacao.id)">
+                                        <td ng-bind="(produtoMovimentacao.data) | date: 'dd/MM/yyyy HH:mm'"></td>
+                                        <td class="visible-md visible-lg" ng-bind="produtoMovimentacao.observacao"></td>
+                                        <td ng-bind="produtoMovimentacao.quantidade"></td>
+                                        <td ng-bind="produtoMovimentacao.tipoMovimentacao.descricao" > </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="btn-group" role="group" style="width: 100%; padding-top: 5px">
+                            <button type="button" class="btn btn-default center-block btn-warning " ng-click="preparaCorrecaoProduto('#cadastroProdutoDialogMovimentacao', '#cadastroProdutoDialogMovimentacaoCorrecao', null)"><span class="glyphicon glyphicon-sort bong-click botaoComIcone" ng-click="abrirDialog('cadastroProdutoDialogMovimentacaoCorrecao')" aria-hidden="true"></span>Correção</button>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <div class="input-group" style="width: 100%;">
+                            <button type="button" class="btn btn-default center-block btn-primary " ng-click="fecharDialog('#cadastroProdutoDialogMovimentacao')" ><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="cadastroProdutoDialogMovimentacaoCorrecao" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content dialog-produto">
+                <form>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Correção de Estoque</h4>
+                    </div>
+
+                    <div class="media-body" style="padding-top: 10px; apadding-bottom: 10px; padding-left: 10px; padding-right: 10px">
+                        <div class="form-group">
+                            <label for="tipoCorrecao">Tipo correção</label>
+                            <select class="form-control" id="tipoCorrecao" ng-model="produtoAtual.tipoMovimentacao">
+                                <option ng-repeat="tipoMovimentacao in listaTipoMovimentacaoCorrecao" ng-bind="tipoMovimentacao.descricao" ng-value="tipoMovimentacao.id"></option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="width: 100%;">
+                            <label for="quantidadeCorrecao">Quantidade</label>
+                            <input type="text" required="required" class="form-control" ui-number-mask="0" placeholder="Quantidade" id="quantidadeCorrecao" ng-model="produtoAtual.estoque_movimento">
+                        </div>
+                        <div style="padding-bottom: 5px; overflow: hidden; text-align: left; padding-left: 0px ">
+                            <strong class="font-titulo-produto"> Estoque Atual: </strong> <strong class="font-produto" ng-bind="produtoAtual.estoque"></strong><br/> 
+                        </div>
+                        
+                        <div id="msgCorrecao" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px"></div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <div class="input-group" style="width: 100%">
+                            <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#cadastroProdutoDialogMovimentacaoCorrecao')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
+                            <button type="submit" class="btn btn-default pull-right btn-success" busy="Salvando..." ng-click="validaCorrecao()"><span class="glyphicon glyphicon-ok botaoComIcone" aria-hidden="true"></span>Confirmar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <div class="modal fade" id="localizarFornecedorDialog" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
@@ -296,8 +374,8 @@
                     </div>
                     <div class="modal-body" style="width: 200px">
                         <div class="list-group">
+                            <a class="list-group-item" ng-click="preparaViewProduto('#cadastroProdutoDialogFuncoes', '#cadastroProdutoDialogMovimentacao', null)" ><span class="glyphicon glyphicon-transfer btn btn-default btn-primary" aria-hidden="true"></span>  Movimentação</a>
                             <a class="list-group-item" ng-click="preparaViewProduto('#cadastroProdutoDialogFuncoes', '#cadastroProdutoDialogVizualizar', null)" ><span class="glyphicon glyphicon-list-alt btn btn-default btn-primary" aria-hidden="true"></span>  Vizualizar</a>
-                            <!--<a class="list-group-item"  ><span class="glyphicon glyphicon-list-alt btn btn-default btn-primary" aria-hidden="true"></span>  Movimentação</a>-->
                             <a class="list-group-item" ng-click="preparaViewProduto('#cadastroProdutoDialogFuncoes', '#cadastroProdutoDialogAlterar', '#cadastroProdutoDialogImagemProdutoAlterar')"><span class="glyphicon glyphicon-pencil btn btn-default btn-warning " aria-hidden="true"></span>  Editar</a>
                             <a class="list-group-item" ng-click="preparaViewProduto('#cadastroProdutoDialogFuncoes', '#cadastroProdutoDialogDeletar', null)" ><span class="glyphicon glyphicon-trash btn btn-default btn-danger" aria-hidden="true"></span>  Deletar</a>
                         </div>
