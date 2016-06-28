@@ -1,4 +1,4 @@
-var urlWs = "http://localhost:8088/WsJosePhp/";
+var urlWs = "http://localhost:8084/WsJosePhp/";
 var debug = "?XDEBUG_SESSION_START=netbeans-xdebug";
 
 $("head").append("<script language='JavaScript' type='text/javascript' src='js/controller/fornecedor.js'></script>");
@@ -98,7 +98,7 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
     $scope.insertProduto = function () {
         $scope.message = "";
         if (verificaToken($cookies)) {
-            if ($scope.validaProduto()) {
+            if ($scope.validaProduto('#msgProduto')) {
                 var fd = new FormData();
                 if ($scope.validaImagem(false, '#cadastroProdutoDialogImagemProduto', '#msgProduto')) {
                     var campoImagem = $('#cadastroProdutoDialogImagemProduto').prop('files');
@@ -132,7 +132,7 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
     $scope.updateProduto = function () {
         $scope.message = "";
         if (verificaToken($cookies)) {
-            if ($scope.validaProduto()) {
+            if ($scope.validaProduto('#msgProdutoAlterar')) {
                 var fd = new FormData();
                 if ($scope.validaImagem(false, '#cadastroProdutoDialogImagemProdutoAlterar', '#msgProdutoAlterar')) {
                     var campoImagem = $('#cadastroProdutoDialogImagemProdutoAlterar').prop('files');
@@ -141,7 +141,7 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
                 }
                 fd.append('token', getToken($cookies));
                 fd.append('dados', angular.toJson($scope.produtoAtual));
-                $http({
+                $scope.loadinProduto = $http({
                     url: urlWs + 'produto/updatetProduto',
                     method: 'POST',
                     data: fd,
@@ -151,9 +151,9 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
                     if (!response.data.token) {
                         refazerLogin($cookies);
                     } else {
+                        $scope.getListaProdutoAll();
                         $scope.fecharDialog("#cadastroProdutoDialogAlterar");
                         setMensagemTemporaria('sucesso', 'Produto alterado!', '#msgProdutoGeral');
-                        $scope.getListaProdutoAll();
                     }
                 }, function errorCallback(response) {
                     $scope.fecharDialog("#cadastroProdutoDialogAlterar");
@@ -162,6 +162,31 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
             }
         }
     };
+
+    $scope.deleteProduto = function () {
+        if (verificaToken($cookies)) {
+            var envio = {'dados': $scope.produtoAtual, 'token': getToken($cookies)};
+            $http({
+                method: 'POST',
+                crossDomain: true,
+                url: urlWs + "produto/deleteProduto",
+                data: envio,
+                headers: {'Content-Type': 'application/json'}
+            }).then(function successCallback(response) {
+                if (!response.data.token) {
+                    refazerLogin($cookies);
+                } else {
+                    $scope.getListaProdutoAll();
+                    $scope.fecharDialog("#cadastroProdutoDialogDeletar");
+                    setMensagemTemporaria('sucesso', 'Produto Deletado!', '#msgProdutoGeral');
+                }
+            }, function errorCallback(response) {
+                $scope.fecharDialog("#cadastroProdutoDialogDeletar");
+                setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
+            });
+        }
+    };
+
 
     $scope.getListaFornecedorBusca = function () {
         if (verificaToken($cookies)) {
@@ -216,33 +241,36 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
     };
 
 
-    $scope.validaProduto = function () {
+    $scope.validaProduto = function (idMsg) {
         var retorno = false;
         if ($scope.produtoAtual != null) {
 
             if ($scope.produtoAtual.descricao != null && $scope.produtoAtual.descricao.trim() != "") {
                 retorno = true;
             } else {
-                retorno = false;
+                setMensagemTemporaria('erro', 'Deve informar descrição!', idMsg);
+                return false;
             }
 
             if ($scope.produtoAtual.valor != null && $scope.produtoAtual.valor > 0) {
                 retorno = true;
             } else {
-                retorno = false;
+                setMensagemTemporaria('erro', 'Deve informar valor!', idMsg);
+                return false;
             }
 
             if ($scope.produtoAtual.estoque != null && $scope.produtoAtual.valor >= 0) {
                 retorno = true;
             } else {
-                retorno = false;
+                setMensagemTemporaria('erro', 'Deve informar estoque!', idMsg);
+                return false;
             }
 
             if ($scope.produtoAtual.fornecedor != null) {
                 retorno = true;
             } else {
-                retorno = false;
-                setMensagemTemporaria('erro', 'Deve informar o fornecedor!', '#msgProduto');
+                setMensagemTemporaria('erro', 'Deve informar o fornecedor!', idMsg);
+                return false;
             }
         }
         return retorno;
@@ -266,8 +294,10 @@ app.controller("produtoControler", function ($scope, $http, $cookies) {
         }
 
         if (idModalFilho !== null) {
-            $(idImagem).val(null);
-            $scope.produtoAtual = {imagem: ""};
+            if (idImagem !== null) {
+                $(idImagem).val(null);
+                $(idImagem).filestyle('clear');
+            }
             $scope.abrirDialog(idModalFilho);
         }
     };
