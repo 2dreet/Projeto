@@ -1,4 +1,4 @@
-app.controller("clienteControler", function ($scope, $http) {
+angular.module('www.geve.com.br').controller("clienteControler", function ($scope, $http) {
 
     $('#menu-lateral ul li').removeClass('active');
     $('#btnCliente').addClass('active');

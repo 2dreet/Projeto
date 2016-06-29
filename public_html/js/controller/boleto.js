@@ -1,4 +1,4 @@
-app.controller("boletoControler", function ($scope, $http) {
+angular.module('www.geve.com.br').controller("boletoControler", function ($scope, $http) {
 
     $('#menu-lateral ul li').removeClass('active');
     $('#btnBoleto').addClass('active');

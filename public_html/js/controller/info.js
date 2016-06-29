@@ -1,4 +1,4 @@
-app.controller("infoControler", function ($scope, $http) {
+angular.module('www.geve.com.br').controller("infoControler", function ($scope, $http) {
 
 //    $('#menu-lateral ul li').removeClass('active');
     $('#btnInfor').addClass('active');

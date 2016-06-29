@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 <div id="cadastrarProduto" class="col-sm-4">
-                    <button  type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#cadastroProdutoDialog" ng-click="novoProduto()">
+                    <button  type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#produtoCadastroDialog" ng-click="novoProduto()">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Novo Produto
                     </button>
                 </div>
@@ -22,7 +22,7 @@
             <div id="tabela-produto" class="row">
                 <ul>
                     <li ng-repeat="p in listaProduto" class="product-item">
-                        <a href="" style="text-decoration: none;" ng-click="preparaProduto(p, '#cadastroProdutoDialogFuncoes')">
+                        <a href="" style="text-decoration: none;" ng-click="preparaProduto(p)">
                             <div class="produto-lista-conteudo">
                                 <div class="imagem-produto-lista-div" >
                                     <img class="media-object imagem-produto-lista" ng-src="{{getImagem(p.id)}}"/>
@@ -45,7 +45,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="cadastroProdutoDialog" role="dialog">
+    <div class="modal fade" id="produtoCadastroDialog" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form>
@@ -76,17 +76,17 @@
                         </div>
 
                         <div class="form-group" style="width: 100%;">
-                            <label for="cadastroProdutoDialogImagemProduto">Imagem Produto</label>
-                            <input type="file" class="filestyle" data-buttonText="Localizar" onchange="angular.element(this).scope().mostrarImagem('#cadastroProdutoDialogImagemProduto', '#msgProduto', '#cadastroProdutoDialogImagemProdutoView')" data-buttonBefore="true" id="cadastroProdutoDialogImagemProduto" name="cadastroProdutoDialogImagemProduto" ng-model="produtoAtual.imagem">
+                            <label for="produtoImagemCadastro">Imagem Produto</label>
+                            <input type="file" class="filestyle" data-buttonText="Localizar" onchange="angular.element(this).scope().mostrarImagem('#produtoImagemCadastro', '#msgProduto', '#produtoImagemCadastroView')" data-buttonBefore="true" id="produtoImagemCadastro" name="produtoImagemCadastro" ng-model="produtoAtual.imagem">
                         </div>
 
                         <div class="imagem-produto-lista-div" >
-                            <img class="media-object imagem-produto-lista" ng-src="{{getImagem(produtoAtual.id)}}" id="cadastroProdutoDialogImagemProdutoView"/>
+                            <img class="media-object imagem-produto-lista" ng-src="{{getImagem(produtoAtual.id)}}" id="produtoImagemCadastroView"/>
                         </div>
 
                         <div class="form-group" style="width: 100%;">
-                            <label for="cadastroProdutoDialogImagemProduto">Observação</label>
-                            <textarea class="form-control" id="cadastroProdutoDialogObservacao"  placeholder="Observação Produto" style="resize: none;" name="cadastroProdutoDialogObservacao" ng-model="produtoAtual.observacao" rows="2"> </textarea>
+                            <label for="produtoImagemCadastro">Observação</label>
+                            <textarea class="form-control" id="produtoCadastroObservacao"  placeholder="Observação Produto" style="resize: none;" name="produtoCadastroObservacao" ng-model="produtoAtual.observacao" rows="2"> </textarea>
                         </div>
 
                         <div id="msgProduto" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px"></div>
@@ -94,7 +94,7 @@
 
                     <div class="modal-footer">
                         <div class="input-group" style="width: 100%;">
-                            <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#cadastroProdutoDialog')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
+                            <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#produtoCadastro')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
                             <button type="submit" class="btn btn-default pull-right btn-success " ng-click="insertProduto()" busy="Salvando..."><span class="glyphicon glyphicon-floppy-disk botaoComIcone" aria-hidden="true"></span>Salvar</button>
                         </div>
                     </div>
@@ -103,7 +103,7 @@
         </div>
     </div>
 
-    <div class="modal fade dialog-produto" id="cadastroProdutoDialogAlterar" role="dialog"  aria-hidden="true">
+    <div class="modal fade dialog-produto" id="produtoDialogAlterar" role="dialog"  aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form>
@@ -134,18 +134,18 @@
                         </div>
 
                         <div class="form-group" style="width: 100%;">
-                            <label for="cadastroProdutoDialogImagemProdutoAlterar">Imagem Produto</label>
-                            <input type="file" data-badge="false" class="filestyle" data-buttonText="Localizar" onchange="angular.element(this).scope().mostrarImagem('#cadastroProdutoDialogImagemProdutoAlterar', '#msgProdutoAlterar', '#cadastroProdutoDialogImagemProdutoAlterarView')" data-buttonBefore="true" id="cadastroProdutoDialogImagemProdutoAlterar">
+                            <label for="produtoImagemAlterar">Imagem Produto</label>
+                            <input type="file" data-badge="false" class="filestyle" data-buttonText="Localizar" onchange="angular.element(this).scope().mostrarImagem('#produtoImagemAlterar', '#msgProdutoAlterar', '#produtoImagemAlterarView')" data-buttonBefore="true" id="produtoImagemAlterar">
                         </div>
 
                         <div class="imagem-produto-lista-div" >
-                            <img class="media-object imagem-produto-lista" ng-src="{{getImagem(produtoAtual.id)}}" id="cadastroProdutoDialogImagemProdutoAlterarView"/>
+                            <img class="media-object imagem-produto-lista" ng-src="{{getImagem(produtoAtual.id)}}" id="produtoImagemAlterarView"/>
                         </div>
 
 
                         <div class="form-group" style="width: 100%;">
-                            <label for="cadastroProdutoDialogImagemProdutoAlterar">Observação</label>
-                            <textarea class="form-control" id="cadastroProdutoDialogObservacaoAlterar"  placeholder="Observação Produto" style="resize: none;" name="cadastroProdutoDialogObservacao" ng-model="produtoAtual.observacao" rows="2"> </textarea>
+                            <label for="produtoObservacaoAlterar">Observação</label>
+                            <textarea class="form-control" id="produtoObservacaoAlterar"  placeholder="Observação Produto" style="resize: none;" name="produtoObservacaoAlterar" ng-model="produtoAtual.observacao" rows="2"> </textarea>
                         </div>
 
                         <div id="msgProdutoAlterar" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px"></div>
@@ -153,7 +153,7 @@
 
                     <div class="modal-footer">
                         <div class="input-group" style="width: 100%;">
-                            <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#cadastroProdutoDialogAlterar')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
+                            <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#produtoDialogAlterar')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
                             <button type="submit" class="btn btn-default pull-right btn-success " ng-click="updateProduto()" busy="Salvando..."><span class="glyphicon glyphicon-floppy-disk botaoComIcone" aria-hidden="true"></span>Salvar</button>
                         </div>
                     </div>
@@ -163,7 +163,7 @@
     </div>
 
 
-    <div class="modal fade dialog-produto" id="cadastroProdutoDialogVizualizar" role="dialog"  aria-hidden="true">
+    <div class="modal fade dialog-produto" id="produtoDialogVizualizar" role="dialog"  aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form>
@@ -184,8 +184,8 @@
                             <strong class="font-titulo-produto"> Estoque: </strong> <strong class="font-produto" ng-bind="produtoAtual.estoque"></strong><br/> 
                         </div>
                         <div class="form-group" style="padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: left; ">
-                            <label class="font-titulo-produto" for="cadastroProdutoDialogObservacaoAlterar">Observação</label>
-                            <textarea class="form-control" ng-readonly="true" id="cadastroProdutoDialogObservacaoAlterar"  placeholder="Observação Produto" style="resize: none;" ng-model="produtoAtual.observacao" rows="2"> </textarea>
+                            <label class="font-titulo-produto" for="produtoObservacaoVizualizar">Observação</label>
+                            <textarea class="form-control" ng-readonly="true" id="produtoObservacaoVizualizar"  placeholder="Observação Produto" style="resize: none;" ng-model="produtoAtual.observacao" rows="2"> </textarea>
                         </div>
                         <div style="height: 30px; padding-right: 10px; padding-left: 5px; padding-top: 0px; overflow: hidden; text-align: center; ">
                             <span class="valor-produto-lista" ui-number-mask="decimals" ng-bind="produtoAtual.valor | currency"></span><br/>  
@@ -194,7 +194,7 @@
 
                     <div class="modal-footer">
                         <div class="input-group" style="width: 100%;">
-                            <button type="button" class="btn btn-default center-block btn-primary " ng-click="fecharDialog('#cadastroProdutoDialogVizualizar')" ><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
+                            <button type="button" class="btn btn-default center-block btn-primary " ng-click="fecharDialog('#produtoDialogVizualizar')" ><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
                         </div>
                     </div>
                 </form>
@@ -202,7 +202,7 @@
         </div>
     </div>
 
-    <div class="modal fade dialog-produto" id="cadastroProdutoDialogDeletar" role="dialog"  aria-hidden="true">
+    <div class="modal fade dialog-produto" id="produtoDialogDeletar" role="dialog"  aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form>
@@ -224,8 +224,8 @@
                             <strong class="font-titulo-produto"> Estoque: </strong> <strong class="font-produto" ng-bind="produtoAtual.estoque"></strong><br/> 
                         </div>
                         <div class="form-group" style="padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: left; ">
-                            <label class="font-titulo-produto" for="cadastroProdutoDialogObservacaoDeletar">Observação</label>
-                            <textarea class="form-control" ng-readonly="true" id="cadastroProdutoDialogObservacaoDeletar"  placeholder="Observação Produto" style="resize: none;" ng-model="produtoAtual.observacao" rows="2"> </textarea>
+                            <label class="font-titulo-produto" for="produtoObservacaoDeletar">Observação</label>
+                            <textarea class="form-control" ng-readonly="true" id="produtoObservacaoDeletar"  placeholder="Observação Produto" style="resize: none;" ng-model="produtoAtual.observacao" rows="2"> </textarea>
                         </div>
                         <div style="height: 30px; padding-right: 10px; padding-left: 5px; padding-top: 0px; overflow: hidden; text-align: center; ">
                             <span class="valor-produto-lista" ui-number-mask="decimals" ng-bind="produtoAtual.valor | currency"></span><br/>  
@@ -234,7 +234,7 @@
 
                     <div class="modal-footer">
                         <div class="input-group" style="width: 100%">
-                            <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#cadastroProdutoDialogDeletar')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
+                            <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#produtoDialogDeletar')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
                             <button type="submit" class="btn btn-default pull-right btn-success " ng-click="deleteProduto()" busy="Deletando..."><span class="glyphicon glyphicon-ok botaoComIcone" aria-hidden="true"></span>Confirmar</button>
                         </div>
                     </div>
@@ -243,7 +243,7 @@
         </div>
     </div>
 
-    <div class="modal fade dialog-produto" id="cadastroProdutoDialogMovimentacao" role="dialog"  aria-hidden="true">
+    <div class="modal fade dialog-produto" id="produtoDialogMovimentacao" role="dialog"  aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form>
@@ -271,7 +271,7 @@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="produtoMovimentacao in listaProdutoMovimentacao" ng-style="corLinha(produtoMovimentacao.tipoMovimentacao.id)">
-                                        <td ng-bind="(produtoMovimentacao.data) | date: 'dd/MM/yyyy HH:mm'"></td>
+                                        <td ng-bind="(produtoMovimentacao.data) | date: 'dd / MM / yyyy HH:mm'"></td>
                                         <td class="visible-md visible-lg" ng-bind="produtoMovimentacao.observacao"></td>
                                         <td ng-bind="produtoMovimentacao.quantidade"></td>
                                         <td ng-bind="produtoMovimentacao.tipoMovimentacao.descricao" > </td>
@@ -280,13 +280,13 @@
                             </table>
                         </div>
                         <div class="btn-group" role="group" style="width: 100%; padding-top: 5px">
-                            <button type="button" class="btn btn-default center-block btn-warning " ng-click="preparaCorrecaoProduto('#cadastroProdutoDialogMovimentacao', '#cadastroProdutoDialogMovimentacaoCorrecao', null)"><span class="glyphicon glyphicon-sort bong-click botaoComIcone" ng-click="abrirDialog('cadastroProdutoDialogMovimentacaoCorrecao')" aria-hidden="true"></span>Correção</button>
+                            <button type="button" class="btn btn-default center-block btn-warning " ng-click="preparaProdutoView('#produtoDialogMovimentacao', '#produtoDialogMovimentacaoCorrecao')"><span class="glyphicon glyphicon-sort bong-click botaoComIcone" ng-click="abrirDialog('produtoDialogMovimentacaoCorrecao')" aria-hidden="true"></span>Correção</button>
                         </div>
                     </div>
 
                     <div class="modal-footer">
                         <div class="input-group" style="width: 100%;">
-                            <button type="button" class="btn btn-default center-block btn-primary " ng-click="fecharDialog('#cadastroProdutoDialogMovimentacao')" ><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
+                            <button type="button" class="btn btn-default center-block btn-primary " ng-click="fecharDialog('#produtoDialogMovimentacao')" ><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
                         </div>
                     </div>
                 </form>
@@ -294,7 +294,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="cadastroProdutoDialogMovimentacaoCorrecao" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="produtoDialogMovimentacaoCorrecao" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content dialog-produto">
                 <form>
@@ -307,6 +307,7 @@
                         <div class="form-group">
                             <label for="tipoCorrecao">Tipo correção</label>
                             <select class="form-control" id="tipoCorrecao" ng-model="produtoAtual.tipoMovimentacao">
+                                <option value="" selected></option>
                                 <option ng-repeat="tipoMovimentacao in listaTipoMovimentacaoCorrecao" ng-bind="tipoMovimentacao.descricao" ng-value="tipoMovimentacao.id"></option>
                             </select>
                         </div>
@@ -315,16 +316,16 @@
                             <input type="text" required="required" class="form-control" ui-number-mask="0" placeholder="Quantidade" id="quantidadeCorrecao" ng-model="produtoAtual.estoque_movimento">
                         </div>
                         <div style="padding-bottom: 5px; overflow: hidden; text-align: left; padding-left: 0px ">
-                            <strong class="font-titulo-produto"> Estoque Atual: </strong> <strong class="font-produto" ng-bind="produtoAtual.estoque"></strong><br/> 
+                            <strong class="font-titulo-produto"> Estoque Atual: </strong> <strong class="font-produto" ng-bind="produtoAtual.estoque"></strong><br/>
                         </div>
-                        
+
                         <div id="msgCorrecao" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px"></div>
                     </div>
-                    
+
                     <div class="modal-footer">
                         <div class="input-group" style="width: 100%">
-                            <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#cadastroProdutoDialogMovimentacaoCorrecao')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
-                            <button type="submit" class="btn btn-default pull-right btn-success" busy="Salvando..." ng-click="validaCorrecao()"><span class="glyphicon glyphicon-ok botaoComIcone" aria-hidden="true"></span>Confirmar</button>
+                            <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#produtoDialogMovimentacaoCorrecao')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
+                            <button type="submit" class="btn btn-default pull-right btn-success" busy="Salvando..." ng-click="movimentarProduto()"><span class="glyphicon glyphicon-ok botaoComIcone" aria-hidden="true"></span>Confirmar</button>
                         </div>
                     </div>
                 </form>
@@ -364,7 +365,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="cadastroProdutoDialogFuncoes" role="dialog" style="width: 210px; margin: auto">
+    <div class="modal fade" id="produtoDialogFuncoes" role="dialog" style="width: 210px; margin: auto">
         <div class="modal-dialog" style="width: 200px">
             <div class="modal-content" style="width: 200px">
                 <form>
@@ -374,15 +375,15 @@
                     </div>
                     <div class="modal-body" style="width: 200px">
                         <div class="list-group">
-                            <a class="list-group-item" ng-click="preparaViewProduto('#cadastroProdutoDialogFuncoes', '#cadastroProdutoDialogMovimentacao', null)" ><span class="glyphicon glyphicon-transfer btn btn-default btn-primary" aria-hidden="true"></span>  Movimentação</a>
-                            <a class="list-group-item" ng-click="preparaViewProduto('#cadastroProdutoDialogFuncoes', '#cadastroProdutoDialogVizualizar', null)" ><span class="glyphicon glyphicon-list-alt btn btn-default btn-primary" aria-hidden="true"></span>  Vizualizar</a>
-                            <a class="list-group-item" ng-click="preparaViewProduto('#cadastroProdutoDialogFuncoes', '#cadastroProdutoDialogAlterar', '#cadastroProdutoDialogImagemProdutoAlterar')"><span class="glyphicon glyphicon-pencil btn btn-default btn-warning " aria-hidden="true"></span>  Editar</a>
-                            <a class="list-group-item" ng-click="preparaViewProduto('#cadastroProdutoDialogFuncoes', '#cadastroProdutoDialogDeletar', null)" ><span class="glyphicon glyphicon-trash btn btn-default btn-danger" aria-hidden="true"></span>  Deletar</a>
+                            <a class="list-group-item" ng-click="preparaProdutoView('#produtoDialogFuncoes', '#produtoDialogMovimentacao')" ><span class="glyphicon glyphicon-transfer btn btn-default btn-primary" aria-hidden="true"></span>  Movimentação</a>
+                            <a class="list-group-item" ng-click="preparaProdutoMovimentacao(); preparaProdutoView('#produtoDialogFuncoes', '#produtoDialogVizualizar');" ><span class="glyphicon glyphicon-list-alt btn btn-default btn-primary" aria-hidden="true"></span>  Vizualizar</a>
+                            <a class="list-group-item" ng-click="preparaProdutoView('#produtoDialogFuncoes', '#produtoDialogAlterar')"><span class="glyphicon glyphicon-pencil btn btn-default btn-warning " aria-hidden="true"></span>  Editar</a>
+                            <a class="list-group-item" ng-click="preparaProdutoView('#produtoDialogFuncoes', '#produtoDialogDeletar')" ><span class="glyphicon glyphicon-trash btn btn-default btn-danger" aria-hidden="true"></span>  Deletar</a>
                         </div>
                     </div>
                     <div class="modal-footer" style="width: 200px">
                         <div class="input-group" style="width: 100%;">
-                            <button type="button" class="btn btn-default center-block btn-primary " ng-click="fecharDialog('#cadastroProdutoDialogFuncoes')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
+                            <button type="button" class="btn btn-default center-block btn-primary " ng-click="fecharDialog('#produtoDialogFuncoes')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
                         </div>
                     </div>
                 </form>

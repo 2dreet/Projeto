@@ -1,18 +1,6 @@
-app.controller("loginControler", function ($scope, $http, $cookies) {
-
-//    $('#menu-lateral ul li').removeClass('active');
-    $('#btnUsuario').addClass('active');
+angular.module('www.geve.com.br').controller("loginControler", function ($scope, $http) {
 
     $scope.usuario = {usuario: '', senha: ''};
-    $scope.msgErro = null;
-
-    $scope.isMsgErro = function () {
-        if ($scope.msgErro !== null) {
-            return true;
-        } else {
-            return false;
-        }
-    };
 
     $scope.logar = function () {
         var usuario = $scope.usuario.usuario;
@@ -29,19 +17,17 @@ app.controller("loginControler", function ($scope, $http, $cookies) {
                 if (response.data.msgErro) {
                     setMensagemTemporaria('erro', response.data.msgErro, '#msgUsuario');
                 } else {
-                    setToken(response.data.token, $cookies);
-                    if (verificaToken($cookies)) {
-                        $(window.document.location).attr('href', "index.html");
-                    }
+                    setToken(response.data.token);
+                    $scope.verifica();
                 }
             }, function errorCallback(response) {
-                alert('Erro Sistema');
+                setMensagemTemporaria('erro', "Erro de comunicação", '#msgUsuario');
             });
         }
     };
 
     $scope.verifica = function () {
-        if (verificaLogin($cookies)) {
+        if (verificaToken(false)) {
             $(window.document.location).attr('href', "index.html");
         }
     };

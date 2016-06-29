@@ -1,45 +1,52 @@
-function getToken($cookies) {
-    var token = $cookies.get('www.gerven.com.br.token');
-    if (token != null) {
-        return token;
-    } else {
-        return null;
+var urlWs = "http://localhost:8088/WsJosePhp/";
+var urlImagem = urlWs + "produto/getProdutoImagem/";
+var cookieNomeToken = "www.geve.com.br.token";
+
+var debug = "?XDEBUG_SESSION_START=netbeans-xdebug";
+
+function ajustaMenuLateral($idComponente) {
+    $('#menu-lateral ul li').removeClass('active');
+    $($idComponente).addClass('active');
+}
+
+function getToken() {
+    var token = null;
+    var name = cookieNomeToken + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            token = c.substring(name.length, c.length);
+        }
+    }
+    return token;
+}
+
+function setToken($token) {
+    if (getToken() == null) {
+        var d = new Date();
+        d.setTime(d.getTime() + (1 * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cookieNomeToken + "=" + $token + "; " + expires;
     }
 }
 
-function setToken($token, $cookies) {
-    var token = $cookies.get('www.gerven.com.br.token');
-    if (token == null) {
-        $cookies.put('www.gerven.com.br.token', $token);
-    } else {
-        $cookies.remove('www.gerven.com.br.token');
-        $cookies.put('www.gerven.com.br.token', $token);
-    }
-    return true;
-}
-
-function verificaToken($cookies) {
-    var token = $cookies.get('www.gerven.com.br.token');
-    if (token != null) {
+function verificaToken($fazerLogin) {
+    if (getToken() != null) {
         return true;
     } else {
-        $(window.document.location).attr('href', "login.html");
+        if ($fazerLogin) {
+            refazerLogin();
+        }
         return false;
     }
 }
 
-
-function verificaLogin($cookies) {
-    var token = $cookies.get('www.gerven.com.br.token');
-    if (token != null) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-function refazerLogin($cookies) {
-    $cookies.remove('www.gerven.com.br.token');
+function refazerLogin() {
+    document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
     $(window.document.location).attr('href', "login.html");
 }
 

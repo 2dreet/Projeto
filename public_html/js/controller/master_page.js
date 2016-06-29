@@ -1,14 +1,14 @@
-app.controller("masterPageControler", function ($scope, $http, $cookies) {
+angular.module('www.geve.com.br').controller("masterPageControler", function ($scope, $http) {
 
     $scope.pessoa = {nome: ''};
 
     $scope.sair = function () {
-        refazerLogin($cookies);
+        refazerLogin();
     };
 
     $scope.verifica = function () {
-        if (verificaToken($cookies)) {
-            var envio = {'token': getToken($cookies)};
+        if (verificaToken(true)) {
+            var envio = {'token': getToken(true)};
             $http({
                 method: 'POST',
                 crossDomain: true,
@@ -17,7 +17,7 @@ app.controller("masterPageControler", function ($scope, $http, $cookies) {
                 headers: {'Content-Type': 'application/json'}
             }).then(function successCallback(response) {
                 if (!response.data[1].token) {
-                    refazerLogin($cookies);
+                    refazerLogin();
                 } else {
                     $scope.pessoa = response.data[0].dados;
                 }

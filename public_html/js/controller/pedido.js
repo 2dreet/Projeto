@@ -1,4 +1,4 @@
-app.controller("pedidoControler", function ($scope, $http) {
+angular.module('www.geve.com.br').controller("pedidoControler", function ($scope, $http) {
 
     $('#menu-lateral ul li').removeClass('active');
     $('#btnPedido').addClass('active');
