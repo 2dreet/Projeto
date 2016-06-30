@@ -1,3 +1,4 @@
+
 (function () {
     'use strict'
 
@@ -22,7 +23,7 @@
             {id: 3, descricao: 'Perda'}
         ];
 
-        $scope.listaProdutoMovimentacao = [{data: '2002-04-26T09:00:00', observacao: 'entrada de produto', quantidade: '3', tipoMovimentacao: {id: '1', descricao: 'entrada'}}, {data: '2005-04-26T09:00:00', observacao: 'saida de produto', quantidade: '1', tipoMovimentacao: {id: '2', descricao: 'Saída'}}, {data: '2002-04-26T09:00:00', observacao: 'entrada de produto', quantidade: '3', tipoMovimentacao: {id: '3', descricao: 'entrada'}}, {data: '2005-04-26T09:00:00', observacao: 'saida de produto', quantidade: '1', tipoMovimentacao: {id: '4', descricao: 'Saída'}}, {data: '2002-04-26T09:00:00', observacao: 'entrada de produto', quantidade: '3', tipoMovimentacao: {id: '5', descricao: 'entrada'}}, {data: '2005-04-26T09:00:00', observacao: 'saida de produto', quantidade: '5', tipoMovimentacao: {id: '2', descricao: 'Saída'}}, {data: '2002-04-26T09:00:00', observacao: 'entrada de produto', quantidade: '3', tipoMovimentacao: {id: '1', descricao: 'entrada'}}, {data: '2005-04-26T09:00:00', observacao: 'saida de produto', quantidade: '1', tipoMovimentacao: {id: '2', descricao: 'Saída'}}];
+        $scope.listaProdutoMovimentacao = [];
 
         $scope.getImagem = function (idItem) {
             if (verificaToken(true) && idItem > 0) {
@@ -42,6 +43,28 @@
                         refazerLogin();
                     } else {
                         $scope.listaProduto = response.data.dados;
+                    }
+                }, function errorCallback(response) {
+                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
+                });
+            }
+        };
+        
+        $scope.getListaMovimentacao = function () {
+            $scope.listaProdutoMovimentacao = [];
+            if (verificaToken(true)) {
+                var envio = {'id': $scope.produtoAtual.id, 'token': getToken()};
+                $scope.loadinProduto = $http({
+                    method: 'POST',
+                    data: envio,
+                    crossDomain: true,
+                    url: urlWs + "produto/getMovimentacaoProduto"+debug,
+                    headers: {'Content-Type': 'application/json'}
+                }).then(function successCallback(response) {
+                    if (!response.data.token) {
+                        refazerLogin();
+                    } else {
+                        $scope.listaProdutoMovimentacao = response.data.dados;
                     }
                 }, function errorCallback(response) {
                     setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
@@ -103,7 +126,7 @@
                     }
                     fd.append('token', getToken());
                     fd.append('dados', angular.toJson($scope.produtoAtual));
-                    $http({
+                    $scope.enviarProduto = $http({
                         url: urlWs + 'produto/insertProduto',
                         method: 'POST',
                         data: fd,
@@ -137,7 +160,7 @@
                     }
                     fd.append('token', getToken());
                     fd.append('dados', angular.toJson($scope.produtoAtual));
-                    $scope.loadinProduto = $http({
+                    $scope.enviarProduto = $http({
                         url: urlWs + 'produto/updatetProduto',
                         method: 'POST',
                         data: fd,
@@ -162,7 +185,7 @@
         $scope.deleteProduto = function () {
             if (verificaToken(true)) {
                 var envio = {'dados': $scope.produtoAtual, 'token': getToken()};
-                $http({
+                $scope.enviarProduto = $http({
                     method: 'POST',
                     crossDomain: true,
                     url: urlWs + "produto/deleteProduto",
@@ -183,27 +206,31 @@
             }
         };
 
-        $scope.movimentarProduto = function () {
+        $scope.movimentarProdutoCorrecao = function () {
             $scope.message = "";
-            if (verificaToken(true) && $scope.validaCorrecao()) {
-                var envio = {'dados': $scope.produtoAtual, 'token': getToken()};
-                $scope.loadinProduto = $http({
-                    url: urlWs + 'produto/movimentarProduto',
-                    method: 'POST',
-                    data: envio,
-                    headers: {'Content-Type': 'application/json'}
-                }).then(function successCallback(response) {
-                    if (!response.data.token) {
-                        refazerLogin();
-                    } else {
-                        $scope.getListaProdutoAll();
-                        $scope.fecharDialog("#produtoDialogAlterar");
-                        setMensagemTemporaria('sucesso', 'Produto alterado!', '#msgProdutoGeral');
-                    }
-                }, function errorCallback(response) {
-                    $scope.fecharDialog("#produtoDialogAlterar");
-                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
-                });
+            if (verificaToken(true)) {
+                if ($scope.validaCorrecao()) {
+                    var produto = {id: $scope.produtoAtual.id, estoque: $scope.produtoAtual.estoque, tipoMovimentacao: $scope.produtoAtual.tipoMovimentacao, estoque_movimento_observacao: $scope.produtoAtual.estoque_movimento_observacao, estoque_movimento: $scope.produtoAtual.estoque_movimento};
+                    var envio = {'dados': produto, 'token': getToken()};
+                    $scope.enviarProduto = $http({
+                        method: 'POST',
+                        crossDomain: true,
+                        url: urlWs + "produto/movimentarProduto" + debug,
+                        data: envio,
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        if (!response.data.token) {
+                            refazerLogin();
+                        } else {
+                            $scope.getListaProdutoAll();
+                            $scope.fecharDialog("#produtoDialogMovimentacaoCorrecao");
+                            setMensagemTemporaria('sucesso', 'Estoque Movimentado!', '#msgProdutoGeral');
+                        }
+                    }, function errorCallback(response) {
+                        $scope.fecharDialog("#produtoDialogMovimentacaoCorrecao");
+                        setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
+                    });
+                }
             }
         };
 
@@ -261,6 +288,13 @@
                     return false;
                 }
 
+                if ($scope.produtoAtual.estoque_movimento_observacao != null && $scope.produtoAtual.estoque_movimento_observacao.trim() != "") {
+                    retorno = true;
+                } else {
+                    setMensagemTemporaria('erro', 'Deve informar observação!', '#msgCorrecao');
+                    return false;
+                }
+
                 if ($scope.produtoAtual.tipoMovimentacao != null) {
                     if ($scope.produtoAtual.tipoMovimentacao > 1 && $scope.produtoAtual.tipoMovimentacao < 5) {
                         var valorFinal = $scope.produtoAtual.estoque - $scope.produtoAtual.estoque_movimento;
@@ -310,6 +344,7 @@
             $scope.produtoAtual = {observacao: ""};
             $(":file").val(null);
             $(":file").filestyle('clear');
+            $("#produtoImagemCadastroView").removeAttr('src');
         };
 
         $scope.preparaProduto = function (produto) {
@@ -320,7 +355,10 @@
         };
 
         $scope.preparaProdutoMovimentacao = function () {
-            $scope.produtoAtual.tipoMovimentacao = 1;
+            $scope.getListaMovimentacao();
+            $scope.produtoAtual.tipoMovimentacao = 0;
+            $scope.produtoAtual.estoque_movimento_observacao = "";
+            $scope.preparaProdutoView('#produtoDialogFuncoes', '#produtoDialogMovimentacao');
         };
 
 

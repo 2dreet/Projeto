@@ -46,7 +46,7 @@ function verificaToken($fazerLogin) {
 }
 
 function refazerLogin() {
-    document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+    document.cookie = cookieNomeToken + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
     $(window.document.location).attr('href', "login.html");
 }
 
