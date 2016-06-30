@@ -13,7 +13,6 @@ html, body {
     width: calc(100%);
     max-height: calc(100%);
     max-width: calc(100%);
-    overflow: hidden;
 }
 
 .glyphicon-refresh-animate {
