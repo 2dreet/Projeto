@@ -49,7 +49,7 @@
                 });
             }
         };
-        
+
         $scope.getListaMovimentacao = function () {
             $scope.listaProdutoMovimentacao = [];
             if (verificaToken(true)) {
@@ -58,7 +58,7 @@
                     method: 'POST',
                     data: envio,
                     crossDomain: true,
-                    url: urlWs + "produto/getMovimentacaoProduto"+debug,
+                    url: urlWs + "produto/getMovimentacaoProduto" + debug,
                     headers: {'Content-Type': 'application/json'}
                 }).then(function successCallback(response) {
                     if (!response.data.token) {
@@ -295,7 +295,7 @@
                     return false;
                 }
 
-                if ($scope.produtoAtual.tipoMovimentacao != null) {
+                if ($scope.produtoAtual.tipoMovimentacao != null && $scope.produtoAtual.tipoMovimentacao > 0) {
                     if ($scope.produtoAtual.tipoMovimentacao > 1 && $scope.produtoAtual.tipoMovimentacao < 5) {
                         var valorFinal = $scope.produtoAtual.estoque - $scope.produtoAtual.estoque_movimento;
                         if (valorFinal >= 0) {
