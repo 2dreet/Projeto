@@ -1,4 +1,5 @@
 $("head").append("<script language='JavaScript' type='text/javascript' src='js/angular/angular.js'></script>");
+$("head").append("<script language='JavaScript' type='text/javascript' src='js/bootstrap/ui-bootstrap-tpls-1.3.3.min.js'></script>");
 $("head").append("<script language='JavaScript' type='text/javascript' src='js/angular/angular-busy.js'></script>");
 $("head").append("<script language='JavaScript' type='text/javascript' src='js/angular/angular-animate.js'></script>");
 $("head").append("<script language='JavaScript' type='text/javascript' src='js/bootstrap/angular-busy.js'></script>");
