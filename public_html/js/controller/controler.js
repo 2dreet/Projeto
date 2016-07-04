@@ -1,5 +1,4 @@
 $("head").append("<script language='JavaScript' type='text/javascript' src='js/controller/fornecedor.js'></script>");
-$("head").append("<script language='JavaScript' type='text/javascript' src='js/controller/boleto.js'></script>");
 $("head").append("<script language='JavaScript' type='text/javascript' src='js/controller/cliente.js'></script>");
 $("head").append("<script language='JavaScript' type='text/javascript' src='js/controller/info.js'></script>");
 $("head").append("<script language='JavaScript' type='text/javascript' src='js/controller/inicio.js'></script>");

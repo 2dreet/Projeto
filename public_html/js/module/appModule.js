@@ -13,9 +13,6 @@ app.config(function ($routeProvider, $locationProvider) {
             .when('/produto', {
                 templateUrl: 'com.br.html/produto/produto.html'
             })
-            .when('/boleto', {
-                templateUrl: 'com.br.html/boleto/boleto.html'
-            })
             .when('/pedido', {
                 templateUrl: 'com.br.html/pedido/pedido.html'
             })

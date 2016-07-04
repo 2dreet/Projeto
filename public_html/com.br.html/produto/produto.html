@@ -1,13 +1,13 @@
-<div class="container-fluid" ng-controller="produtoControler" style="height: 100; max-height: 100; min-height: 100;">
-    <div id="produto" class="panel panel-default" style="height: 100; max-height: 100; min-height: 100%; padding: 0; margin: 0;" cg-busy="loadinProduto">
+<div class="container-fluid" ng-controller="produtoControler" style="height: 100%; max-height: 100%; min-height: 100%; padding-bottom: 0px;">
+    <div id="produto" class="panel panel-default" style="height: 100%; max-height: 100%; min-height: 100%; padding: 0; margin: 0;" cg-busy="loadinProduto">
         <div class="panel-heading header-panel">Produtos</div>
-        <div class="panel-body" style="height: calc(100% - 50px); max-height: calc(100% - 50px); min-height: calc(100% - 50px); padding-bottom: 0px;" >
+        <div class="panel-body" style="height: calc(100% - 50px); max-height: calc(100% - 50px); min-height: calc(100% - 50px);" >
             <div class="row">
                 <div id="filtrarProduto" class="col-sm-8">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Localizar por nome" >
+                        <input type="text" class="form-control" placeholder="Descrição" ng-model="valorBuscaProduto" >
                         <span class="input-group-btn">
-                            <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span>Filtro Avançado</button>
+                            <button class="btn btn-default" type="button"  data-toggle="modal" data-target="#localizarProdutoDialog" ng-click="limpaFiltroAvancado()"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span>Filtro Avançado</button>
                             <button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                         </span>
                     </div>
@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div id="msgProdutoGeral" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"></div>
-            <div id="tabela-produto" class="row">
+            <div id="tabela-produto" class="row" style="padding: 0px; margin: 0px;padding-top: 15px">
                 <ul>
                     <li ng-repeat="p in listaProduto" class="product-item">
                         <a href="" style="text-decoration: none;" ng-click="preparaProduto(p)">
@@ -41,8 +41,8 @@
                         </a>
                     </li>
                 </ul>
-                <div style="width: 100%; margin: 0; padding: 0; padding-left: 10px ">
-                    <div style="width: 350px; margin: auto; padding: 0;">
+                <div style="width: 100%; margin: 0; padding: 0; padding-left: 10px " ng-show="totalItems > 10">
+                    <div style="width: auto; margin: auto; padding: 0; padding-right: 5px" class="pull-right">
                         <uib-pagination style="margin: 0; padding: 0; " next-text="Próximo" previous-text="Anterior" total-items="totalItems" ng-model="currentPage" ng-change="getListaProdutoAll(currentPage)" max-size="maxSize" class="pagination-sm" items-per-page="itensPorPagina" num-pages="numPages"></uib-pagination>
                     </div>
                 </div>
@@ -74,7 +74,7 @@
                             <label for="produtoFornecedor">Fornecedor</label>
                             <div class="input-group">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-primary" style="width: 100px" type="button" data-toggle="modal" data-target="#localizarFornecedorDialog" ng-click="limpaBuscaFornecedor()"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
+                                    <button class="btn btn-primary" style="width: 100px" type="button" data-toggle="modal" data-target="#localizarFornecedorDialog" ng-click="limpaBuscaFornecedor(produtoAtual)"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
                                 </span>
                                 <input type="text" class="form-control" ng-readonly="true" required="required" id="produtoFornecedor" ng-model="produtoAtual.fornecedor.descricao">
                             </div>
@@ -132,7 +132,7 @@
                             <label for="produtoFornecedorAlterar">Fornecedor</label>
                             <div class="input-group">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-primary" style="width: 100px" type="button" data-toggle="modal" data-target="#localizarFornecedorDialog" ng-click="limpaBuscaFornecedor()"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
+                                    <button class="btn btn-primary" style="width: 100px" type="button" data-toggle="modal" data-target="#localizarFornecedorDialog" ng-click="limpaBuscaFornecedor(produtoAtual)"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
                                 </span>
                                 <input type="text" class="form-control" ng-readonly="true" required="required" id="produtoFornecedorAlterar" ng-model="produtoAtual.fornecedor.descricao">
                             </div>
@@ -284,6 +284,11 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div style="width: 100%; margin: 0; padding: 0; padding-top: 10px " ng-show="totalItemsMovimentacao > 10">
+                            <div style="width: auto; margin: auto; padding: 0;" class="pull-right">
+                                <uib-pagination style="margin: 0; padding: 0; " next-text="Próximo" previous-text="Anterior" total-items="totalItemsMovimentacao" ng-model="currentPageMovimentacao" ng-change="getListaMovimentacao(currentPageMovimentacao)" max-size="maxSize" class="pagination-sm" items-per-page="itensPorPagina" num-pages="numPages"></uib-pagination>
+                            </div>
+                        </div>
                         <div class="btn-group" role="group" style="width: 100%; padding-top: 5px">
                             <button type="button" class="btn btn-default center-block btn-warning " ng-click="preparaProdutoView('#produtoDialogMovimentacao', '#produtoDialogMovimentacaoCorrecao')"><span class="glyphicon glyphicon-sort bong-click botaoComIcone" aria-hidden="true"></span>Correção</button>
                         </div>
@@ -341,6 +346,45 @@
         </div>
     </div>
 
+    <div class="modal fade" id="localizarProdutoDialog" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content dialog-produto">
+                <form>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Localizar Produto</h4>
+                    </div>
+
+                    <div class="media-body" style="padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px">
+                        <div class="form-group" style="width: 100%;">
+                            <label for="produtoDescricaoLocalizar">Descrição</label>
+                            <input type="text" class="form-control" placeholder="Descrição Produto" id="produtoDescricaoLocalizar" ng-model="buscaAvancada.descricao" maxlength="32">
+                        </div>
+                        <div class="form-group" style="width: 100%;">
+                            <label for="produtoFornecedorLocalizar">Fornecedor</label>
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" style="width: 100px" type="button" data-toggle="modal" data-target="#localizarFornecedorDialog" ng-click="limpaBuscaFornecedor(buscaAvancada)"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
+                                </span>
+                                <input type="text" class="form-control" ng-readonly="true" id="produtoFornecedorLocalizar" ng-model="buscaAvancada.fornecedor.descricao">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="checkbox-inline"><input type="checkbox" ng-model="buscaAvancada.estoquePositivo">Estoque Positivo</label>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <div class="input-group" style="width: 100%">
+                            <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#localizarProdutoDialog')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
+                            <button type="submit" class="btn btn-default pull-right btn-primary" ng-click="filtrarAvancado()" ><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="localizarFornecedorDialog" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content dialog-produto">
@@ -350,7 +394,7 @@
                         <h4 class="modal-title">Localizar Fornecedor</h4>
                     </div>
 
-                    <div class="media-body" style="padding-top: 10px; apadding-bottom: 10px; padding-left: 10px; padding-right: 10px">
+                    <div class="media-body" style="padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px">
                         <div class="input-group" style="padding-bottom: 10px">
                             <input type="text" class="form-control" placeholder="Localizar..." ng-model="valorBuscaFornecedor.valor">
                             <span class="input-group-btn">

@@ -9,11 +9,12 @@
 html, body {
     margin: 0px;
     padding: 0px;
-    height: calc(100% - 10px);
+    height: calc(100% - 0px);
     width: 100%;
-    max-height: calc(100% - 10px);
-    min-height: calc(100% - 10px);
+    max-height: calc(100% - 0px);
+    min-height: calc(500px);
     max-width: 100%;
+    overflow-x: hidden;
 }
 
 .glyphicon-refresh-animate {
@@ -35,8 +36,10 @@ html, body {
 
 #pagina{
     height: 100%;
+    min-height: calc(500px);
     margin: 0px;
     padding: 0px;
+    position: absolute;
 }
 
 #nav-meio{
@@ -64,7 +67,8 @@ html, body {
 
 #menu-lateral{
     width: 250px;
-    height: 100%;
+    height:auto;
+    min-height:100%;
     background-color: #2e353d;
     float: left;
     margin: 0px;
@@ -177,6 +181,7 @@ html, body {
     }
 }*/
 
+
 @media screen and (max-width: 1300px) {
     #btn-menu-lateral{
         display:block;
@@ -221,7 +226,7 @@ html, body {
         width: 100%;
         padding: 0;
     }
-    
+
     #nav-meio{
         padding-left: 5px;
     }

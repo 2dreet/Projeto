@@ -1,6 +1,6 @@
 #tabela-produto{
     margin-top: 25px;
-    height: calc(100% - 50px);
+    height: calc(100% - 30px);
     overflow-x: hidden;   
     padding-bottom: 0px;
 }
@@ -125,9 +125,9 @@
 
 #tabela-produto ul{
     padding: 0; 
-    height: calc(100% - 70px); 
-    max-height: calc(100% - 70px); 
-    min-height: calc(100% - 70px); 
+    height: calc(100% - 50px); 
+    max-height: calc(100% - 50px); 
+    min-height: calc(100% - 50px); 
     overflow-x: auto;
 }
 

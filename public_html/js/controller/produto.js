@@ -16,6 +16,12 @@
         $scope.produtoAtual = {observacao: ""};
         $scope.listaProduto = [];
 
+        $scope.buscaAvancada = {};
+
+        $scope.entidadeSelecionada = {};
+
+        $scope.valorBuscaProduto = "";
+
         $scope.listaTipoMovimentacaoCorrecao = [
             {id: 4, descricao: 'Cortesia'},
             {id: 5, descricao: 'Correção'},
@@ -29,7 +35,14 @@
         $scope.maxSize = 3;
         $scope.totalItems = 0;
         $scope.currentPage = 1;
-        $scope.itensPorPagina = 1;
+        $scope.itensPorPagina = 10;
+
+        $scope.totalItemsMovimentacao = 0;
+        $scope.currentPageMovimentacao = 1;
+
+        $scope.limpaFiltroAvancado = function () {
+            $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
+        };
 
         $scope.getImagem = function (idItem) {
             if (verificaToken(true) && idItem > 0) {
@@ -38,12 +51,29 @@
             }
         };
 
-        $scope.getListaProdutoAll = function (pagina) {
+
+        $scope.filtrarAvancado = function () {
+            $scope.getListaProdutoAll(1, 1);
+            $scope.fecharDialog('#localizarProdutoDialog');
+        };
+
+        $scope.getListaProdutoAll = function (pagina, tipoBusca) {
             if (verificaToken(true)) {
+                var envio = null;
+                if (tipoBusca == 1) {
+                    envio = {'id': $scope.produtoAtual.id, 'pagina': (pagina - 1), 'token': getToken(), 'buscaAvancada': $scope.buscaAvancada};
+                } else if (tipoBusca == 2) {
+                    envio = {'id': $scope.produtoAtual.id, 'pagina': (pagina - 1), 'token': getToken(), 'buscaDescricao': $scope.valorBuscaProduto};
+                } else {
+                    envio = {'id': $scope.produtoAtual.id, 'pagina': (pagina - 1), 'token': getToken()};
+                }
+
                 $scope.loadinProduto = $http({
-                    method: 'GET',
+                    method: 'POST',
+                    data: envio,
                     crossDomain: true,
-                    url: urlWs + "produto/getAllproduto/" + getToken() + "/" + (pagina - 1)
+                    url: urlWs + "produto/getAllproduto" + debug,
+                    headers: {'Content-Type': 'application/json'}
                 }).then(function successCallback(response) {
                     if (!response.data.token) {
                         refazerLogin();
@@ -57,21 +87,22 @@
             }
         };
 
-        $scope.getListaMovimentacao = function () {
+        $scope.getListaMovimentacao = function (pagina) {
             $scope.listaProdutoMovimentacao = [];
             if (verificaToken(true)) {
-                var envio = {'id': $scope.produtoAtual.id, 'token': getToken()};
+                var envio = {'id': $scope.produtoAtual.id, 'pagina': (pagina - 1), 'token': getToken()};
                 $scope.loadinProduto = $http({
                     method: 'POST',
                     data: envio,
                     crossDomain: true,
-                    url: urlWs + "produto/getMovimentacaoProduto" + debug,
+                    url: urlWs + "produto/getMovimentacaoProduto",
                     headers: {'Content-Type': 'application/json'}
                 }).then(function successCallback(response) {
                     if (!response.data.token) {
                         refazerLogin();
                     } else {
                         $scope.listaProdutoMovimentacao = response.data.dados;
+                        $scope.totalItemsMovimentacao = response.data.totalRegistro;
                     }
                 }, function errorCallback(response) {
                     setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
@@ -145,7 +176,7 @@
                         } else {
                             $scope.fecharDialog("#produtoCadastroDialog");
                             setMensagemTemporaria('sucesso', 'Produto cadastrado!', '#msgProdutoGeral');
-                            $scope.getListaProdutoAll(1);
+                            $scope.getListaProdutoAll(1, 0);
                         }
                     }, function errorCallback(response) {
                         $scope.fecharDialog("#produtoCadastroDialog");
@@ -177,7 +208,7 @@
                         if (!response.data.token) {
                             refazerLogin();
                         } else {
-                            $scope.getListaProdutoAll(1);
+                            $scope.getListaProdutoAll(1, 0);
                             $scope.fecharDialog("#produtoDialogAlterar");
                             setMensagemTemporaria('sucesso', 'Produto alterado!', '#msgProdutoGeral');
                         }
@@ -202,7 +233,7 @@
                     if (!response.data.token) {
                         refazerLogin();
                     } else {
-                        $scope.getListaProdutoAll(1);
+                        $scope.getListaProdutoAll(1, 0);
                         $scope.fecharDialog("#produtoDialogDeletar");
                         setMensagemTemporaria('sucesso', 'Produto Deletado!', '#msgProdutoGeral');
                     }
@@ -222,14 +253,14 @@
                     $scope.enviarProduto = $http({
                         method: 'POST',
                         crossDomain: true,
-                        url: urlWs + "produto/movimentarProduto" + debug,
+                        url: urlWs + "produto/movimentarProduto",
                         data: envio,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
                         if (!response.data.token) {
                             refazerLogin();
                         } else {
-                            $scope.getListaProdutoAll(1);
+                            $scope.getListaProdutoAll(1, 0);
                             $scope.fecharDialog("#produtoDialogMovimentacaoCorrecao");
                             setMensagemTemporaria('sucesso', 'Estoque Movimentado!', '#msgProdutoGeral');
                         }
@@ -362,7 +393,7 @@
         };
 
         $scope.preparaProdutoMovimentacao = function () {
-            $scope.getListaMovimentacao();
+            $scope.getListaMovimentacao(1);
             $scope.produtoAtual.tipoMovimentacao = 0;
             $scope.produtoAtual.estoque_movimento_observacao = "";
             $scope.preparaProdutoView('#produtoDialogFuncoes', '#produtoDialogMovimentacao');
@@ -380,7 +411,7 @@
         };
 
         $scope.selecionarFornecedor = function (idModal, fornecedor) {
-            $scope.produtoAtual.fornecedor = fornecedor;
+            $scope.entidadeSelecionada.fornecedor = fornecedor;
             $scope.fecharDialog(idModal);
         };
 
@@ -392,12 +423,14 @@
             $(idModal).modal('hide');
         };
 
-        $scope.limpaBuscaFornecedor = function () {
+        $scope.limpaBuscaFornecedor = function ($entidade) {
             $scope.listaFornecedores = [];
             $scope.valorBuscaFornecedor = {valor: ""};
+            $scope.entidadeSelecionada = $entidade;
+
         };
 
-        $scope.getListaProdutoAll(1);
+        $scope.getListaProdutoAll(1, 0);
 
         $scope.corLinha = function (tipoMovimentacao) {
             var cor = {color: 'black'};
