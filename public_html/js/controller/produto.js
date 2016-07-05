@@ -16,7 +16,7 @@
         $scope.produtoAtual = {observacao: ""};
         $scope.listaProduto = [];
 
-        $scope.buscaAvancada = {};
+        $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
 
         $scope.entidadeSelecionada = {};
 
@@ -42,31 +42,24 @@
 
         $scope.limpaFiltroAvancado = function () {
             $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
+            $scope.valorBuscaProduto = "";
+            $scope.getListaProdutoAll(1);
         };
 
-        $scope.getImagem = function (idItem) {
-            if (verificaToken(true) && idItem > 0) {
-                var random = (new Date()).toString();
-                return urlImagem + idItem + "/" + getToken() + "?cb=" + random;
-            }
+        $scope.filtroPorDescricao = function () {
+            $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
+            $scope.getListaProdutoAll(1);
         };
-
 
         $scope.filtrarAvancado = function () {
-            $scope.getListaProdutoAll(1, 1);
+            $scope.valorBuscaProduto = "";
+            $scope.getListaProdutoAll(1);
             $scope.fecharDialog('#localizarProdutoDialog');
         };
 
-        $scope.getListaProdutoAll = function (pagina, tipoBusca) {
+        $scope.getListaProdutoAll = function (pagina) {
             if (verificaToken(true)) {
-                var envio = null;
-                if (tipoBusca == 1) {
-                    envio = {'id': $scope.produtoAtual.id, 'pagina': (pagina - 1), 'token': getToken(), 'buscaAvancada': $scope.buscaAvancada};
-                } else if (tipoBusca == 2) {
-                    envio = {'id': $scope.produtoAtual.id, 'pagina': (pagina - 1), 'token': getToken(), 'buscaDescricao': $scope.valorBuscaProduto};
-                } else {
-                    envio = {'id': $scope.produtoAtual.id, 'pagina': (pagina - 1), 'token': getToken()};
-                }
+                var envio = {'id': $scope.produtoAtual.id, 'pagina': (pagina - 1), 'token': getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBuscaProduto};
 
                 $scope.loadinProduto = $http({
                     method: 'POST',
@@ -107,6 +100,13 @@
                 }, function errorCallback(response) {
                     setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
                 });
+            }
+        };
+
+        $scope.getImagem = function (idItem) {
+            if (verificaToken(true) && idItem > 0) {
+                var random = (new Date()).toString();
+                return urlImagem + idItem + "/" + getToken() + "?cb=" + random;
             }
         };
 
@@ -176,7 +176,7 @@
                         } else {
                             $scope.fecharDialog("#produtoCadastroDialog");
                             setMensagemTemporaria('sucesso', 'Produto cadastrado!', '#msgProdutoGeral');
-                            $scope.getListaProdutoAll(1, 0);
+                            $scope.getListaProdutoAll(1);
                         }
                     }, function errorCallback(response) {
                         $scope.fecharDialog("#produtoCadastroDialog");
@@ -208,7 +208,7 @@
                         if (!response.data.token) {
                             refazerLogin();
                         } else {
-                            $scope.getListaProdutoAll(1, 0);
+                            $scope.getListaProdutoAll(1);
                             $scope.fecharDialog("#produtoDialogAlterar");
                             setMensagemTemporaria('sucesso', 'Produto alterado!', '#msgProdutoGeral');
                         }
@@ -233,7 +233,7 @@
                     if (!response.data.token) {
                         refazerLogin();
                     } else {
-                        $scope.getListaProdutoAll(1, 0);
+                        $scope.getListaProdutoAll(1);
                         $scope.fecharDialog("#produtoDialogDeletar");
                         setMensagemTemporaria('sucesso', 'Produto Deletado!', '#msgProdutoGeral');
                     }
@@ -260,7 +260,7 @@
                         if (!response.data.token) {
                             refazerLogin();
                         } else {
-                            $scope.getListaProdutoAll(1, 0);
+                            $scope.getListaProdutoAll(1);
                             $scope.fecharDialog("#produtoDialogMovimentacaoCorrecao");
                             setMensagemTemporaria('sucesso', 'Estoque Movimentado!', '#msgProdutoGeral');
                         }
@@ -427,10 +427,13 @@
             $scope.listaFornecedores = [];
             $scope.valorBuscaFornecedor = {valor: ""};
             $scope.entidadeSelecionada = $entidade;
-
         };
 
-        $scope.getListaProdutoAll(1, 0);
+        $scope.limpaBuscaProdutoFornecedor = function () {
+            $scope.buscaAvancada.fornecedor = "";
+        };
+
+        $scope.getListaProdutoAll(1);
 
         $scope.corLinha = function (tipoMovimentacao) {
             var cor = {color: 'black'};

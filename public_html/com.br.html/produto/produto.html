@@ -7,8 +7,16 @@
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Descrição" ng-model="valorBuscaProduto" >
                         <span class="input-group-btn">
-                            <button class="btn btn-default" type="button"  data-toggle="modal" data-target="#localizarProdutoDialog" ng-click="limpaFiltroAvancado()"><span class="glyphicon glyphicon-filter" aria-hidden="true"></span>Filtro Avançado</button>
-                            <button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="" data-toggle="modal" data-target="#localizarProdutoDialog"><span class="glyphicon glyphicon-filter" aria-hidden="true" style="padding-right: 5px"></span>Filtro Avançado</a></li>
+                                    <li><a href="" ng-click="limpaFiltroAvancado()"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true" style="padding-right: 5px"></span>Limpar Filtro</a></li>
+                                </ul>
+                            </div>
+                            <button class="btn btn-primary" type="button" ng-click="filtroPorDescricao()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                         </span>
                     </div>
                 </div>
@@ -367,10 +375,16 @@
                                     <button class="btn btn-primary" style="width: 100px" type="button" data-toggle="modal" data-target="#localizarFornecedorDialog" ng-click="limpaBuscaFornecedor(buscaAvancada)"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
                                 </span>
                                 <input type="text" class="form-control" ng-readonly="true" id="produtoFornecedorLocalizar" ng-model="buscaAvancada.fornecedor.descricao">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" ng-click="limpaBuscaProdutoFornecedor()"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></button>
+                                </span>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="checkbox-inline"><input type="checkbox" ng-model="buscaAvancada.estoquePositivo">Estoque Positivo</label>
+                        </div>
+                        <div class="input-group" style="width: 100%">
+                            <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#localizarProdutoDialog')"><span class="glyphicon glyphicon-remove-circle botaoComIcone" aria-hidden="true"></span>Limpar Filtro</button>
                         </div>
                     </div>
 
