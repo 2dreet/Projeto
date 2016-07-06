@@ -7,48 +7,49 @@
 
         $scope.fornecedorAtual = {};
         $scope.listaFornecedores = [];
-        $scope.valorBusca = {valor: ""};
+        $scope.valorBusca = "";
+        $scope.buscaAvancada = {descricao: "", email: "", telefone: ""};
 
-        $scope.getListaFornecedorBusca = function () {
-            if (verificaToken(true)) {
-                var valorBusca = $scope.valorBusca.valor;
-                if (valorBusca === null || valorBusca.trim() === "") {
-                    $scope.getListaFornecedorAll();
-                } else {
-                    var envio = {'valor_busca': valorBusca, 'token': getToken()};
-                    $scope.loadinFornecedor = $http({
-                        method: 'POST',
-                        crossDomain: true,
-                        url: urlWs + "fornecedor/getFornecedor",
-                        data: envio,
-                        headers: {'Content-Type': 'application/json'}
-                    }).then(function successCallback(response) {
-                        if (!response.data[1].token) {
-                            refazerLogin();
-                        } else {
-                            $scope.listaFornecedores = response.data[0].dados;
-                        }
-                    }, function errorCallback(response) {
-                        alert('Erro no sistema!');
-                    });
-                }
-            }
+        $scope.maxSize = 3;
+        $scope.totalItems = 0;
+        $scope.currentPage = 1;
+        $scope.itensPorPagina = 15;
+
+        $scope.limpaFiltroAvancado = function () {
+            $scope.buscaAvancada = {descricao: "", email: "", telefone: ""};
+            $scope.valorBusca = "";
+            $scope.getListaFornecedorAll(1);
         };
 
-        $scope.getListaFornecedorAll = function () {
+        $scope.filtroPorDescricao = function () {
+            $scope.buscaAvancada = {descricao: "", email: "", telefone: ""};
+            $scope.getListaFornecedorAll(1);
+        };
+
+        $scope.filtrarAvancado = function () {
+            $scope.valorBusca = "";
+            $scope.getListaFornecedorAll(1);
+            $scope.fecharDialog('#localizarFornecedorDialog');
+        };
+
+        $scope.getListaFornecedorAll = function (pagina) {
             if (verificaToken(true)) {
+                var envio = {'pagina': (pagina - 1), 'token': getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBusca, 'limit': $scope.itensPorPagina};
                 $scope.loadinFornecedor = $http({
-                    method: 'GET',
+                    method: 'POST',
                     crossDomain: true,
-                    url: urlWs + "fornecedor/getAllfornecedor/" + getToken()
+                    url: urlWs + "fornecedor/getAllfornecedor/" + getToken(),
+                    data: envio,
+                    headers: {'Content-Type': 'application/json'}
                 }).then(function successCallback(response) {
-                    if (!response.data[1].token) {
+                    if (!response.data.token) {
                         refazerLogin();
                     } else {
-                        $scope.listaFornecedores = response.data[0].dados;
+                        $scope.listaFornecedores = response.data.dados;
+                        $scope.totalItems = response.data.totalRegistro;
                     }
                 }, function errorCallback(response) {
-                    alert('Erro no sistema!');
+                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFornecedorGeral');
                 });
             }
         };
@@ -67,11 +68,11 @@
                     if (!response.data.token) {
                         refazerLogin();
                     } else {
-                        $scope.getListaFornecedorAll();
-                        alert('Salvado com sucesso!');
+                        setMensagemTemporaria('sucesso', 'Fornecedor alterado!', '#msgFornecedorGeral');
+                        $scope.getListaFornecedorAll(1);
                     }
                 }, function errorCallback(response) {
-                    alert('Erro no sistema!');
+                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFornecedorGeral');
                 });
             }
         };
@@ -90,11 +91,11 @@
                     if (!response.data.token) {
                         refazerLogin();
                     } else {
-                        $scope.getListaFornecedorAll();
-                        alert('Cadastrado com sucesso!');
+                        setMensagemTemporaria('sucesso', 'Fornecedor cadastrado!', '#msgFornecedorGeral');
+                        $scope.getListaFornecedorAll(1);
                     }
                 }, function errorCallback(response) {
-                    alert('Erro no sistema!');
+                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFornecedorGeral');
                 });
             }
         };
@@ -113,11 +114,11 @@
                     if (!response.data.token) {
                         refazerLogin();
                     } else {
-                        $scope.getListaFornecedorAll();
-                        alert('Deletador com sucesso!');
+                        setMensagemTemporaria('sucesso', 'Fornecedor deletado!', '#msgFornecedorGeral');
+                        $scope.getListaFornecedorAll(1);
                     }
                 }, function errorCallback(response) {
-                    alert('Erro no sistema!');
+                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFornecedorGeral');
                 });
             }
         };
@@ -159,7 +160,7 @@
             $(idModal).modal('hide');
         };
 
-        $scope.getListaFornecedorAll();
+        $scope.getListaFornecedorAll(1);
     });
 
 })();

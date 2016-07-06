@@ -8,10 +8,24 @@
 
         $(":file").filestyle({buttonBefore: true, buttonText: "Localizar"});
 
+
+        $scope.dataInicialMovimento = "";
+        $scope.dataFinalMovimento = "";
+        $scope.dataInicial = {opened: true};
+        $scope.dataFinal = {opened: true};
+
+        $scope.openDataInicial = function () {
+            $scope.dataInicial.opened = true;
+        };
+
+        $scope.openDataFinal = function () {
+            $scope.dataFinal.opened = true;
+        };
+
         $scope.estoqueFuturo = 0;
 
         $scope.listaFornecedores = [];
-        $scope.valorBuscaFornecedor = {valor: ""};
+        $scope.valorBuscaFornecedor = "";
 
         $scope.produtoAtual = {observacao: ""};
         $scope.listaProduto = [];
@@ -40,6 +54,10 @@
         $scope.totalItemsMovimentacao = 0;
         $scope.currentPageMovimentacao = 1;
 
+        $scope.totalItemsFornecedor = 0;
+        $scope.currentPageFornecedor = 1;
+        $scope.itensPorPaginaFornecedor = 5;
+
         $scope.limpaFiltroAvancado = function () {
             $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
             $scope.valorBuscaProduto = "";
@@ -59,13 +77,13 @@
 
         $scope.getListaProdutoAll = function (pagina) {
             if (verificaToken(true)) {
-                var envio = {'id': $scope.produtoAtual.id, 'pagina': (pagina - 1), 'token': getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBuscaProduto};
+                var envio = {'pagina': (pagina - 1), 'token': getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBuscaProduto};
 
                 $scope.loadinProduto = $http({
                     method: 'POST',
                     data: envio,
                     crossDomain: true,
-                    url: urlWs + "produto/getAllproduto" + debug,
+                    url: urlWs + "produto/getAllproduto",
                     headers: {'Content-Type': 'application/json'}
                 }).then(function successCallback(response) {
                     if (!response.data.token) {
@@ -272,49 +290,28 @@
             }
         };
 
-        $scope.getListaFornecedorBusca = function () {
+        $scope.getListaFornecedorAll = function (pagina) {
             if (verificaToken(true)) {
-                var valorBusca = $scope.valorBuscaFornecedor.valor;
-                if (valorBusca === null || valorBusca.trim() === "") {
-                    $scope.getListaFornecedorAll();
-                } else {
-                    var envio = {'valor_busca': valorBusca, 'token': getToken()};
-                    $http({
-                        method: 'POST',
-                        crossDomain: true,
-                        url: urlWs + "fornecedor/getFornecedor",
-                        data: envio,
-                        headers: {'Content-Type': 'application/json'}
-                    }).then(function successCallback(response) {
-                        if (!response.data[1].token) {
-                            refazerLogin();
-                        } else {
-                            $scope.listaFornecedores = response.data[0].dados;
-                        }
-                    }, function errorCallback(response) {
-                        setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
-                    });
-                }
-            }
-        };
-
-        $scope.getListaFornecedorAll = function () {
-            if (verificaToken(true)) {
-                $http({
-                    method: 'GET',
+                var envio = {'pagina': (pagina - 1), 'token': getToken(), 'buscaDescricao': $scope.valorBuscaFornecedor, 'limit': $scope.itensPorPaginaFornecedor};
+                $scope.loadinFornecedor = $http({
+                    method: 'POST',
                     crossDomain: true,
-                    url: urlWs + "fornecedor/getAllfornecedor/" + getToken()
+                    url: urlWs + "fornecedor/getAllfornecedor",
+                    data: envio,
+                    headers: {'Content-Type': 'application/json'}
                 }).then(function successCallback(response) {
-                    if (!response.data[1].token) {
+                    if (!response.data.token) {
                         refazerLogin();
                     } else {
-                        $scope.listaFornecedores = response.data[0].dados;
+                        $scope.listaFornecedores = response.data.dados;
+                        $scope.totalItemsFornecedor = response.data.totalRegistro;
                     }
                 }, function errorCallback(response) {
                     setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
                 });
             }
         };
+
 
         $scope.validaCorrecao = function () {
             var retorno = false;
@@ -413,6 +410,7 @@
         $scope.selecionarFornecedor = function (idModal, fornecedor) {
             $scope.entidadeSelecionada.fornecedor = fornecedor;
             $scope.fecharDialog(idModal);
+            $scope.limpaBuscaFornecedor(null);
         };
 
         $scope.abrirDialog = function (idModal) {
@@ -423,14 +421,29 @@
             $(idModal).modal('hide');
         };
 
-        $scope.limpaBuscaFornecedor = function ($entidade) {
-            $scope.listaFornecedores = [];
-            $scope.valorBuscaFornecedor = {valor: ""};
-            $scope.entidadeSelecionada = $entidade;
+        $scope.abrirDialogLocalizarFornecedor = function ($entidade) {
+            $scope.limpaBuscaFornecedor($entidade);
+            $scope.getListaFornecedorAll(1);
+            $('#localizarFornecedorDialog').modal('show');
         };
 
-        $scope.limpaBuscaProdutoFornecedor = function () {
-            $scope.buscaAvancada.fornecedor = "";
+        $scope.limpaBuscaFornecedorComBusca = function () {
+            $scope.listaFornecedores = [];
+            $scope.valorBuscaFornecedor = "";
+            $scope.currentPageFornecedor = 1;
+            $scope.totalItemsFornecedor = 0;
+            $scope.getListaFornecedorAll(1);
+        };
+
+        $scope.limpaBuscaFornecedor = function ($entidade) {
+            $scope.listaFornecedores = [];
+            $scope.valorBuscaFornecedor = "";
+            $scope.currentPageFornecedor = 1;
+            $scope.totalItemsFornecedor = 0;
+            if ($entidade != null) {
+                $entidade.fornecedor = null;
+                $scope.entidadeSelecionada = $entidade;
+            }
         };
 
         $scope.getListaProdutoAll(1);
