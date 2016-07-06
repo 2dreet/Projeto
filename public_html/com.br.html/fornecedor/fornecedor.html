@@ -5,7 +5,6 @@
             <div class="row">
                 <div id="filtrarFornecedor" class="col-sm-6">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Descrição" ng-model="valorBusca">
                         <span class="input-group-btn">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -16,6 +15,9 @@
                                     <li><a href="" ng-click="limpaFiltroAvancado()"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true" style="padding-right: 5px"></span>Limpar Filtro</a></li>
                                 </ul>
                             </div>
+                        </span>
+                        <input type="text" class="form-control" placeholder="Descrição" ng-model="valorBusca">
+                        <span class="input-group-btn">
                             <button class="btn btn-primary" type="button" ng-click="filtroPorDescricao()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                         </span>
                     </div>
@@ -28,7 +30,7 @@
             </div>
             <div id="msgFornecedorGeral" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"></div>
             <div id="tabela-fornecedor" class="row">
-                 <div class="alert alert-warning" role="alert"  ng-show="listaFornecedores == null"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Sem dados</div>
+                <div class="alert alert-warning" role="alert"  ng-show="listaFornecedores == null"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Sem dados</div>
                 <table ng-show="listaFornecedores != null" class="table table-striped table-hover table-bordered">
                     <thead>
                         <tr class="tabela-header">
