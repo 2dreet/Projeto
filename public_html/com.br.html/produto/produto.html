@@ -5,7 +5,6 @@
             <div class="row">
                 <div id="filtrarProduto" class="col-sm-8">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Descrição" ng-model="valorBuscaProduto" >
                         <span class="input-group-btn">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -16,6 +15,9 @@
                                     <li><a href="" ng-click="limpaFiltroAvancado()"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true" style="padding-right: 5px"></span>Limpar Filtro</a></li>
                                 </ul>
                             </div>
+                        </span>
+                        <input type="text" class="form-control" placeholder="Descrição" ng-model="valorBuscaProduto" >
+                        <span class="input-group-btn">
                             <button class="btn btn-primary" type="button" ng-click="filtroPorDescricao()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                         </span>
                     </div>
@@ -111,7 +113,7 @@
 
                     <div class="modal-footer">
                         <div class="input-group" style="width: 100%;">
-                            <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#produtoCadastro')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
+                            <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#produtoCadastroDialog')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
                             <button type="submit" class="btn btn-default pull-right btn-success " ng-click="insertProduto()" ><span class="glyphicon glyphicon-floppy-disk botaoComIcone" aria-hidden="true"></span>Salvar</button>
                         </div>
                     </div>
@@ -264,7 +266,7 @@
     </div>
 
     <div class="modal fade dialog-produto" id="produtoDialogMovimentacao" role="dialog"  aria-hidden="true" cg-busy="loadinProduto">
-        <div class="modal-dialog">
+        <div class="modal-dialog" style="min-width: 400px;" >
             <div class="modal-content">
                 <form>
                     <div class="modal-header">
@@ -272,31 +274,34 @@
                         <h4 class="modal-title">Movimentação Produto</h4>
                     </div>
 
-                    <div class="media-body descricao-produto-lista">
+                    <div class="media-body descricao-produto-lista"  >
                         <div style="height: 55px; padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: center; ">
                             <b><strong class="font-titulo-produto text-uppercase" ng-bind="produtoAtual.descricao"></strong></b>
                         </div>
 
-                        <ul style="margin: auto" class="list-inline">
+                        <ul style="margin: auto;" class="list-inline">
                             <li>
                                 <label for="dataIncialMovimentacao">Data Inicial</label>
-                                <p class="input-group" style="width: 140px;" id="dataIncialMovimentacao">
-                                    <input type="text" class="form-control" ng-readonly="true"  uib-datepicker-popup="dd/MM/yyyy" ng-model="dataInicialMovimento" is-open="dataInicial.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                <p class="input-group" style="width: 140px; " id="dataIncialMovimentacao">
+                                    <input type="text" class="form-control" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-readonly="true" ng-change="getListaMovimentacao(1)"  uib-datepicker-popup="dd/MM/yyyy" ng-model="dataInicialMovimento" is-open="dataInicial.opened" datepicker-options="dateOptionsInicial" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-default" ng-click="openDataInicial()"><i class="glyphicon glyphicon-calendar"></i></button>
                                     </span>
                                 </p>
                             </li>
-                            <li> 
+                            <li style="padding-left: 30px"> 
                                 <label for="dataFinalMovimentacao">Data Final</label>
                                 <p class="input-group" style="width: 140px; " id="dataFinalMovimentacao">
-                                    <input type="text" class="form-control" ng-readonly="true"  uib-datepicker-popup="dd/MM/yyyy" ng-model="dataInicialMovimento" is-open="dataInicial.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                    <input type="text" class="form-control" clear-text="Limpar" close-text="Fechar" popup-placement="bottom-right" show-button-clear="false" current-text="Hoje" ng-readonly="true" ng-change="getListaMovimentacao(1)"  uib-datepicker-popup="dd/MM/yyyy" ng-model="dataFinalMovimento" is-open="dataFinal.opened" datepicker-options="dateOptionsFinal" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
                                     <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-click="openDataInicial()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        <button type="button" class="btn btn-default" ng-click="openDataFinal()" ><i class="glyphicon glyphicon-calendar"></i></button>
                                     </span>
                                 </p>
                             </li>
                         </ul>
+
+                        <md-datepicker ng-model="dataFinalMovimento" md-placeholder="Enter date"
+                                       md-date-filter="onlyWeekendsPredicate"></md-datepicker>
 
                         <div style="padding-bottom: 5px; overflow: hidden; text-align: left; ">
                             <strong class="font-titulo-produto"> Estoque Atual: </strong> <strong class="font-produto" ng-bind="produtoAtual.estoque"></strong><br/> 
@@ -330,6 +335,7 @@
                         <div class="btn-group media-left" role="group" style="width: 100%; padding-top: 5px">
                             <button type="button" class="btn btn-default center-block btn-warning " ng-click="preparaProdutoView('#produtoDialogMovimentacao', '#produtoDialogMovimentacaoCorrecao')"><span class="glyphicon glyphicon-sort bong-click botaoComIcone" aria-hidden="true"></span>Correção</button>
                         </div>
+                        <div id="msgCorrecaoView" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px"></div>
                     </div>
 
                     <div class="modal-footer">
@@ -375,7 +381,7 @@
 
                     <div class="modal-footer">
                         <div class="input-group" style="width: 100%">
-                            <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#produtoDialogMovimentacaoCorrecao')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
+                            <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharCorrecaoMovimentacao()"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
                             <button type="submit" class="btn btn-default pull-right btn-success" ng-click="movimentarProdutoCorrecao()"><span class="glyphicon glyphicon-ok botaoComIcone" aria-hidden="true"></span>Confirmar</button>
                         </div>
                     </div>
@@ -479,7 +485,7 @@
                     </div>
                     <div class="modal-body" style="width: 200px">
                         <div class="list-group">
-                            <a class="list-group-item" ng-click="preparaProdutoMovimentacao()" ><span class="glyphicon glyphicon-transfer btn btn-default btn-primary" aria-hidden="true"></span>  Movimentação</a>
+                            <a class="list-group-item" ng-click="preparaProdutoMovimentacao(true)" ><span class="glyphicon glyphicon-transfer btn btn-default btn-primary" aria-hidden="true"></span>  Movimentação</a>
                             <a class="list-group-item" ng-click="preparaProdutoView('#produtoDialogFuncoes', '#produtoDialogVizualizar');" ><span class="glyphicon glyphicon-list-alt btn btn-default btn-primary" aria-hidden="true"></span>  Vizualizar</a>
                             <a class="list-group-item" ng-click="preparaProdutoView('#produtoDialogFuncoes', '#produtoDialogAlterar')"><span class="glyphicon glyphicon-pencil btn btn-default btn-warning " aria-hidden="true"></span>  Editar</a>
                             <a class="list-group-item" ng-click="preparaProdutoView('#produtoDialogFuncoes', '#produtoDialogDeletar')" ><span class="glyphicon glyphicon-trash btn btn-default btn-danger" aria-hidden="true"></span>  Deletar</a>

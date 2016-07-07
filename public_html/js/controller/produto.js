@@ -8,18 +8,30 @@
 
         $(":file").filestyle({buttonBefore: true, buttonText: "Localizar"});
 
-
-        $scope.dataInicialMovimento = "";
-        $scope.dataFinalMovimento = "";
+        var dataAtual = new Date();
+        $scope.dataInicialMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth(), 1));
+        $scope.dataFinalMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth() + 1, 0));
         $scope.dataInicial = {opened: true};
         $scope.dataFinal = {opened: true};
 
         $scope.openDataInicial = function () {
             $scope.dataInicial.opened = true;
+            $scope.dateOptionsInicial.maxDate = $scope.dataFinalMovimento;
         };
 
         $scope.openDataFinal = function () {
             $scope.dataFinal.opened = true;
+            $scope.dateOptionsFinal.minDate = $scope.dataInicialMovimento;
+        };
+
+        $scope.dateOptionsInicial = {
+            maxDate: $scope.dataFinalMovimento,
+            startingDay: 1
+        };
+
+        $scope.dateOptionsFinal = {
+            minDate: $scope.dataInicialMovimento,
+            startingDay: 1
         };
 
         $scope.estoqueFuturo = 0;
@@ -99,14 +111,13 @@
         };
 
         $scope.getListaMovimentacao = function (pagina) {
-            $scope.listaProdutoMovimentacao = [];
-            if (verificaToken(true)) {
-                var envio = {'id': $scope.produtoAtual.id, 'pagina': (pagina - 1), 'token': getToken()};
+            if (verificaToken(true) && ($scope.dataInicialMovimento != null && $scope.dataFinalMovimento != null)) {
+                var envio = {'id': $scope.produtoAtual.id, 'pagina': (pagina - 1), 'token': getToken(), 'data_inicial': $scope.dataInicialMovimento, 'data_final': $scope.dataFinalMovimento};
                 $scope.loadinProduto = $http({
                     method: 'POST',
                     data: envio,
                     crossDomain: true,
-                    url: urlWs + "produto/getMovimentacaoProduto",
+                    url: urlWs + "produto/getMovimentacaoProduto" + debug,
                     headers: {'Content-Type': 'application/json'}
                 }).then(function successCallback(response) {
                     if (!response.data.token) {
@@ -114,10 +125,15 @@
                     } else {
                         $scope.listaProdutoMovimentacao = response.data.dados;
                         $scope.totalItemsMovimentacao = response.data.totalRegistro;
+                        if (response.data.estoque >= 0) {
+                            $scope.produtoAtual.estoque = response.data.estoque;
+                        }
                     }
                 }, function errorCallback(response) {
                     setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
                 });
+            } else if (($scope.dataInicialMovimento == null || $scope.dataFinalMovimento == null)) {
+                $scope.totalItemsMovimentacao = 0;
             }
         };
 
@@ -277,10 +293,19 @@
                     }).then(function successCallback(response) {
                         if (!response.data.token) {
                             refazerLogin();
+                        } else if (response.data.sucesso) {
+                            $scope.preparaProdutoMovimentacao(false);
+                            $scope.fecharDialog("#produtoDialogMovimentacaoCorrecao");
+                            $scope.abrirDialog("#produtoDialogMovimentacao");
+                            setMensagemTemporaria('sucesso', 'Estoque Movimentado!', '#msgCorrecaoView');
+                            $scope.produtoAtual.estoque = response.data.estoque;
+                            $scope.getListaProdutoAll(1);
                         } else {
                             $scope.getListaProdutoAll(1);
-                            $scope.fecharDialog("#produtoDialogMovimentacaoCorrecao");
-                            setMensagemTemporaria('sucesso', 'Estoque Movimentado!', '#msgProdutoGeral');
+                            setMensagemTemporaria('erro', response.data.menssagem, '#msgCorrecao');
+                            if (response.data.estoque >= 0) {
+                                $scope.produtoAtual.estoque = response.data.estoque;
+                            }
                         }
                     }, function errorCallback(response) {
                         $scope.fecharDialog("#produtoDialogMovimentacaoCorrecao");
@@ -289,6 +314,13 @@
                 }
             }
         };
+
+        $scope.fecharCorrecaoMovimentacao = function () {
+            $scope.preparaProdutoMovimentacao(false);
+            $scope.fecharDialog("#produtoDialogMovimentacaoCorrecao");
+            $scope.abrirDialog("#produtoDialogMovimentacao");
+        }
+
 
         $scope.getListaFornecedorAll = function (pagina) {
             if (verificaToken(true)) {
@@ -389,11 +421,16 @@
             $scope.abrirDialog('#produtoDialogFuncoes');
         };
 
-        $scope.preparaProdutoMovimentacao = function () {
+        $scope.preparaProdutoMovimentacao = function (prepraView) {
+            $scope.dataInicialMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth(), 1));
+            $scope.dataFinalMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth() + 1, 0));
             $scope.getListaMovimentacao(1);
             $scope.produtoAtual.tipoMovimentacao = 0;
             $scope.produtoAtual.estoque_movimento_observacao = "";
-            $scope.preparaProdutoView('#produtoDialogFuncoes', '#produtoDialogMovimentacao');
+            $scope.produtoAtual.estoque_movimento = "";
+            if (prepraView) {
+                $scope.preparaProdutoView('#produtoDialogFuncoes', '#produtoDialogMovimentacao');
+            }
         };
 
 

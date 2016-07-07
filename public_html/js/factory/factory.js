@@ -1,4 +1,4 @@
-var urlWs = "http://localhost:8088/WsJosePhp/";
+var urlWs = "http://192.168.1.90:8088/WsJosePhp/";
 var urlImagem = urlWs + "produto/getProdutoImagem/";
 var cookieNomeToken = "www.geve.com.br.token";
 
