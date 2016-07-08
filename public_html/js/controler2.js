@@ -1,3 +1,333 @@
+angular.module('www.geve.com.br').controller("clienteControler", function ($rootScope, $scope, $http) {
+    verificaToken(true);
+    ajustaMenuLateral('#btnCliente');
+
+    $scope.listaCliente = [];
+    $scope.valorBusca = "";
+    $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
+
+    $scope.maxSize = 3;
+    $scope.totalItems = 0;
+    $scope.currentPage = 1;
+    $scope.itensPorPagina = 10;
+
+    $scope.getListaClienteAll = function (pagina) {
+        if (verificaToken(true)) {
+            var envio = {'pagina': (pagina - 1), 'token': getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBusca};
+
+            $rootScope.loading = $http({
+                method: 'POST',
+                data: envio,
+                crossDomain: true,
+                url: urlWs + "produto/getAllproduto",
+                headers: {'Content-Type': 'application/json'}
+            }).then(function successCallback(response) {
+                if (!response.data.token) {
+                    refazerLogin();
+                } else {
+                    $scope.listaCliente = response.data.dados;
+                    $scope.totalItems = response.data.totalRegistro;
+                }
+            }, function errorCallback(response) {
+                setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
+            });
+        }
+    };
+
+});
+
+(function () {
+    'use strict'
+
+    angular.module('www.geve.com.br').controller("fornecedorControler", function ($rootScope, $scope, $http) {
+        verificaToken(true);
+        ajustaMenuLateral('#btnFornecedor');
+
+        $scope.fornecedorAtual = {};
+        $scope.listaFornecedores = [];
+        $scope.valorBusca = "";
+        $scope.buscaAvancada = {descricao: "", email: "", telefone: ""};
+
+        $scope.maxSize = 3;
+        $scope.totalItems = 0;
+        $scope.currentPage = 1;
+        $scope.itensPorPagina = 15;
+
+        $scope.limpaFiltroAvancado = function () {
+            $scope.buscaAvancada = {descricao: "", email: "", telefone: ""};
+            $scope.valorBusca = "";
+            $scope.getListaFornecedorAll(1);
+        };
+
+        $scope.filtroPorDescricao = function () {
+            $scope.buscaAvancada = {descricao: "", email: "", telefone: ""};
+            $scope.getListaFornecedorAll(1);
+        };
+
+        $scope.filtrarAvancado = function () {
+            $scope.valorBusca = "";
+            $scope.getListaFornecedorAll(1);
+            $scope.fecharDialog('#localizarFornecedorDialog');
+        };
+
+        $scope.getListaFornecedorAll = function (pagina) {
+            if (verificaToken(true)) {
+                var envio = {'pagina': (pagina - 1), 'token': getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBusca, 'limit': $scope.itensPorPagina};
+                $rootScope.loading = $http({
+                    method: 'POST',
+                    crossDomain: true,
+                    url: urlWs + "fornecedor/getAllfornecedor/" + getToken(),
+                    data: envio,
+                    headers: {'Content-Type': 'application/json'}
+                }).then(function successCallback(response) {
+                    if (!response.data.token) {
+                        refazerLogin();
+                    } else {
+                        $scope.listaFornecedores = response.data.dados;
+                        $scope.totalItems = response.data.totalRegistro;
+                    }
+                }, function errorCallback(response) {
+                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFornecedorGeral');
+                });
+            }
+        };
+
+        $scope.updateFornecedor = function () {
+            if (verificaToken(true) && $scope.validaFornecedor()) {
+                var envio = {'dados': $scope.fornecedorAtual, 'token': getToken()};
+                $rootScope.send = $http({
+                    method: 'POST',
+                    crossDomain: true,
+                    url: urlWs + "fornecedor/updateFornecedor",
+                    data: envio,
+                    headers: {'Content-Type': 'application/json'}
+                }).then(function successCallback(response) {
+                    $scope.fecharDialog('#cadastroFornecedorDialogAlterar');
+                    if (!response.data.token) {
+                        refazerLogin();
+                    } else {
+                        setMensagemTemporaria('sucesso', 'Fornecedor alterado!', '#msgFornecedorGeral');
+                        $scope.getListaFornecedorAll(1);
+                    }
+                }, function errorCallback(response) {
+                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFornecedorGeral');
+                });
+            }
+        };
+
+        $scope.insertFornecedor = function () {
+            if (verificaToken(true) && $scope.validaFornecedor()) {
+                var envio = {'dados': $scope.fornecedorAtual, 'token': getToken()};
+                $rootScope.send = $http({
+                    method: 'POST',
+                    crossDomain: true,
+                    url: urlWs + "fornecedor/insertFornecedor",
+                    data: envio,
+                    headers: {'Content-Type': 'application/json'}
+                }).then(function successCallback(response) {
+                    $scope.fecharDialog('#cadastroFornecedorDialog');
+                    if (!response.data.token) {
+                        refazerLogin();
+                    } else {
+                        setMensagemTemporaria('sucesso', 'Fornecedor cadastrado!', '#msgFornecedorGeral');
+                        $scope.getListaFornecedorAll(1);
+                    }
+                }, function errorCallback(response) {
+                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFornecedorGeral');
+                });
+            }
+        };
+
+        $scope.deleteFornecedor = function () {
+            if (verificaToken(true) && $scope.validaFornecedor()) {
+                var envio = {'dados': $scope.fornecedorAtual, 'token': getToken()};
+                $rootScope.send = $http({
+                    method: 'POST',
+                    crossDomain: true,
+                    url: urlWs + "fornecedor/deleteFornecedor",
+                    data: envio,
+                    headers: {'Content-Type': 'application/json'}
+                }).then(function successCallback(response) {
+                    $scope.fecharDialog('#cadastroFornecedorDialogDeletar');
+                    if (!response.data.token) {
+                        refazerLogin();
+                    } else {
+                        setMensagemTemporaria('sucesso', 'Fornecedor deletado!', '#msgFornecedorGeral');
+                        $scope.getListaFornecedorAll(1);
+                    }
+                }, function errorCallback(response) {
+                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFornecedorGeral');
+                });
+            }
+        };
+
+        $scope.validaFornecedor = function () {
+            var retorno = false;
+            if ($scope.fornecedorAtual != null) {
+
+                if ($scope.fornecedorAtual.descricao != null && $scope.fornecedorAtual.descricao.trim() != "") {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+
+                if ($scope.fornecedorAtual.email != null && $scope.fornecedorAtual.email.trim() != "") {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+
+                if ($scope.fornecedorAtual.telefone != null && $scope.fornecedorAtual.telefone.trim() != "") {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+            return retorno;
+        };
+
+        $scope.novoFornecedor = function () {
+            $scope.fornecedorAtual = {};
+        };
+
+        $scope.preparaFornecedor = function (fornecedor) {
+            $scope.fornecedorAtual = Object.assign({}, fornecedor);
+        };
+
+        $scope.fecharDialog = function (idModal) {
+            $(idModal).modal('hide');
+        };
+
+        $scope.getListaFornecedorAll(1);
+    });
+
+})();
+
+angular.module('www.geve.com.br').controller("infoControler", function ($scope, $http) {
+
+//    $('#menu-lateral ul li').removeClass('active');
+    $('#btnInfor').addClass('active');
+
+    $scope.listaProduto = [];
+    $scope.post = function () {
+        $http({
+            method: 'POST',
+            crossDomain: true,
+            url: 'http://192.168.1.90:8081/WsJose/teste',
+            headers: {'Content-Type': 'application/json'},
+            data: $scope.produto
+        }).then(function successCallback(response) {
+            $scope.listaProduto.push(response.data);
+        }, function errorCallback(response) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+        });
+    };
+});
+
+(function () {
+    'use strict'
+    angular.module('www.geve.com.br').controller("inicioControler", function ($scope, $http) {
+        verificaToken(true);
+        ajustaMenuLateral('#btnHome');
+
+    });
+
+
+})();
+
+angular.module('www.geve.com.br').controller("loginControler", function ($scope, $http) {
+
+    $scope.usuario = {usuario: '', senha: ''};
+
+    $scope.logar = function () {
+        var usuario = $scope.usuario.usuario;
+        var senha = $scope.usuario.senha;
+        if (usuario !== null && usuario.trim() !== "" && usuario !== null && usuario.trim() !== "") {
+            var envio = {'dados': $scope.usuario};
+            $http({
+                method: 'POST',
+                crossDomain: true,
+                url: urlWs + "usuario/logar",
+                data: envio,
+                headers: {'Content-Type': 'application/json'}
+            }).then(function successCallback(response) {
+                if (response.data.msgErro) {
+                    setMensagemTemporaria('erro', response.data.msgErro, '#msgUsuario');
+                } else {
+                    setToken(response.data.token);
+                    $scope.verifica();
+                }
+            }, function errorCallback(response) {
+                setMensagemTemporaria('erro', "Erro de comunicação", '#msgUsuario');
+            });
+        }
+    };
+
+    $scope.verifica = function () {
+        if (verificaToken(false)) {
+            $(window.document.location).attr('href', "index.html");
+        }
+    };
+
+    $scope.verifica();
+});
+
+angular.module('www.geve.com.br').controller("masterPageControler", function ($scope, $http) {
+
+    $scope.pessoa = {nome: ''};
+
+    $scope.sair = function () {
+        refazerLogin();
+    };
+
+    $scope.verifica = function () {
+        if (verificaToken(true)) {
+            var envio = {'token': getToken(true)};
+            $http({
+                method: 'POST',
+                crossDomain: true,
+                url: urlWs + "usuario/getUsuario",
+                data: envio,
+                headers: {'Content-Type': 'application/json'}
+            }).then(function successCallback(response) {
+                if (!response.data[1].token) {
+                    refazerLogin();
+                } else {
+                    $scope.pessoa = response.data[0].dados;
+                }
+            }, function errorCallback(response) {
+                alert('Erro Sistema');
+            });
+        }
+    };
+
+    $scope.verifica();
+
+});
+
+angular.module('www.geve.com.br').controller("pedidoControler", function ($scope, $http) {
+
+    $('#menu-lateral ul li').removeClass('active');
+    $('#btnPedido').addClass('active');
+
+    $scope.listaProduto = [];
+    $scope.post = function () {
+        $http({
+            method: 'POST',
+            crossDomain: true,
+            url: 'http://192.168.1.90:8081/WsJose/teste',
+            headers: {'Content-Type': 'application/json'},
+            data: $scope.produto
+        }).then(function successCallback(response) {
+            $scope.listaProduto.push(response.data);
+        }, function errorCallback(response) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+        });
+    };
+});
+
 
 (function () {
     'use strict'
@@ -505,3 +835,12 @@
 
     });
 })();
+
+angular.module('www.geve.com.br').controller("usuarioControler", function ($scope, $http, $cookies) {
+
+//    $('#menu-lateral ul li').removeClass('active');
+    $('#btnUsuario').addClass('active');
+
+    $scope.usuario = {usuario: '', senha: ''};
+
+});
