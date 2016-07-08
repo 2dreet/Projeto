@@ -1,5 +1,5 @@
 <div class="container-fluid painel-pai-geral" ng-controller="fornecedorControler">
-    <div id="fornecedor" class="panel panel-default painel-pai-geral-corpo" cg-busy="loadinFornecedor">
+    <div id="fornecedor" class="panel panel-default painel-pai-geral-corpo">
         <div class="panel-heading header-panel">Fornecedores</div>
         <div class="panel-body painel-pai-geral-body">
             <div class="row">
@@ -59,7 +59,7 @@
     </div>
 
 
-    <div class="modal fade" id="cadastroFornecedorDialog" role="dialog">
+    <div class="modal fade" id="cadastroFornecedorDialog" role="dialog" cg-busy="{promise:send, templateUrl:'send.html'}">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form>
@@ -94,7 +94,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="cadastroFornecedorDialogAlterar" role="dialog">
+    <div class="modal fade" id="cadastroFornecedorDialogAlterar" role="dialog" cg-busy="{promise:send, templateUrl:'send.html'}">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form>
@@ -129,7 +129,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="cadastroFornecedorDialogDeletar" role="dialog">
+    <div class="modal fade" id="cadastroFornecedorDialogDeletar" role="dialog" cg-busy="{promise:send, templateUrl:'send.html'}">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form>

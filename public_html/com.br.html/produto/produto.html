@@ -1,5 +1,5 @@
 <div class="container-fluid painel-pai-geral" ng-controller="produtoControler">
-    <div id="produto" class="panel panel-default painel-pai-geral-corpo" cg-busy="loadinProduto">
+    <div id="produto" class="panel panel-default painel-pai-geral-corpo">
         <div class="panel-heading header-panel">Produtos</div>
         <div class="panel-body painel-pai-geral-body" >
             <div class="row">
@@ -61,7 +61,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="produtoCadastroDialog" role="dialog" cg-busy="{promise:enviarProduto, templateUrl:'send.html'}">
+    <div class="modal fade" id="produtoCadastroDialog" role="dialog" >
         <div class="modal-dialog">
             <div class="modal-content">
                 <form>
@@ -122,7 +122,7 @@
         </div>
     </div>
 
-    <div class="modal fade dialog-produto" id="produtoDialogAlterar" role="dialog"  aria-hidden="true" cg-busy="{promise:enviarProduto, templateUrl:'send.html'}">
+    <div class="modal fade dialog-produto" id="produtoDialogAlterar" role="dialog"  aria-hidden="true" cg-busy="{promise:send, templateUrl:'send.html'}">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form>
@@ -224,7 +224,7 @@
         </div>
     </div>
 
-    <div class="modal fade dialog-produto" id="produtoDialogDeletar" role="dialog"  aria-hidden="true" cg-busy="{promise:enviarProduto, templateUrl:'send.html'}">
+    <div class="modal fade dialog-produto" id="produtoDialogDeletar" role="dialog"  aria-hidden="true" cg-busy="{promise:send, templateUrl:'send.html'}">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form>
@@ -265,7 +265,7 @@
         </div>
     </div>
 
-    <div class="modal fade dialog-produto" id="produtoDialogMovimentacao" role="dialog"  aria-hidden="true" cg-busy="loadinProduto">
+    <div class="modal fade dialog-produto" id="produtoDialogMovimentacao" role="dialog"  aria-hidden="true" cg-busy="loading">
         <div class="modal-dialog" style="min-width: 400px;" >
             <div class="modal-content">
                 <form>
@@ -348,7 +348,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="produtoDialogMovimentacaoCorrecao" role="dialog" aria-hidden="true" cg-busy="{promise:enviarProduto, templateUrl:'send.html'}">
+    <div class="modal fade" id="produtoDialogMovimentacaoCorrecao" role="dialog" aria-hidden="true" cg-busy="{promise:send, templateUrl:'send.html'}">
         <div class="modal-dialog">
             <div class="modal-content dialog-produto">
                 <form>
@@ -390,7 +390,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="localizarProdutoDialog" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="localizarProdutoDialog" role="dialog" aria-hidden="true" >
         <div class="modal-dialog">
             <div class="modal-content dialog-produto">
                 <form>
@@ -436,7 +436,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="localizarFornecedorDialog" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="localizarFornecedorDialog" role="dialog" aria-hidden="true" cg-busy="loading">
         <div class="modal-dialog">
             <div class="modal-content dialog-produto">
                 <form>

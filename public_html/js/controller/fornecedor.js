@@ -1,7 +1,7 @@
 (function () {
     'use strict'
 
-    angular.module('www.geve.com.br').controller("fornecedorControler", function ($scope, $http) {
+    angular.module('www.geve.com.br').controller("fornecedorControler", function ($rootScope, $scope, $http) {
         verificaToken(true);
         ajustaMenuLateral('#btnFornecedor');
 
@@ -35,7 +35,7 @@
         $scope.getListaFornecedorAll = function (pagina) {
             if (verificaToken(true)) {
                 var envio = {'pagina': (pagina - 1), 'token': getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBusca, 'limit': $scope.itensPorPagina};
-                $scope.loadinFornecedor = $http({
+                $rootScope.loading = $http({
                     method: 'POST',
                     crossDomain: true,
                     url: urlWs + "fornecedor/getAllfornecedor/" + getToken(),
@@ -57,7 +57,7 @@
         $scope.updateFornecedor = function () {
             if (verificaToken(true) && $scope.validaFornecedor()) {
                 var envio = {'dados': $scope.fornecedorAtual, 'token': getToken()};
-                $http({
+                $rootScope.send = $http({
                     method: 'POST',
                     crossDomain: true,
                     url: urlWs + "fornecedor/updateFornecedor",
@@ -80,7 +80,7 @@
         $scope.insertFornecedor = function () {
             if (verificaToken(true) && $scope.validaFornecedor()) {
                 var envio = {'dados': $scope.fornecedorAtual, 'token': getToken()};
-                $http({
+                $rootScope.send = $http({
                     method: 'POST',
                     crossDomain: true,
                     url: urlWs + "fornecedor/insertFornecedor",
@@ -103,7 +103,7 @@
         $scope.deleteFornecedor = function () {
             if (verificaToken(true) && $scope.validaFornecedor()) {
                 var envio = {'dados': $scope.fornecedorAtual, 'token': getToken()};
-                $http({
+                $rootScope.send = $http({
                     method: 'POST',
                     crossDomain: true,
                     url: urlWs + "fornecedor/deleteFornecedor",

@@ -14,8 +14,8 @@
         <link rel="stylesheet" href="css/main.css">
 
     </head>
-    <body>
-        <div id="pagina" class="row row-offcanvas row-offcanvas-left">
+    <body  cg-busy="loading">
+        <div id="pagina" class="row row-offcanvas row-offcanvas-left" cg-busy="{promise:send, templateUrl:'send.html'}">
 
             <nav id="menu-lateral" class="navbar-default navbar-static-side" role="navigation">
                 <div class="row" id="headerLateral">

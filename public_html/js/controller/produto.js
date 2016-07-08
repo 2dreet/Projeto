@@ -2,7 +2,7 @@
 (function () {
     'use strict'
 
-    angular.module('www.geve.com.br').controller("produtoControler", function ($scope, $http) {
+    angular.module('www.geve.com.br').controller("produtoControler", function ($rootScope, $scope, $http) {
         verificaToken(true);
         ajustaMenuLateral('#btnProduto');
 
@@ -91,7 +91,7 @@
             if (verificaToken(true)) {
                 var envio = {'pagina': (pagina - 1), 'token': getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBuscaProduto};
 
-                $scope.loadinProduto = $http({
+                $rootScope.loading = $http({
                     method: 'POST',
                     data: envio,
                     crossDomain: true,
@@ -113,7 +113,7 @@
         $scope.getListaMovimentacao = function (pagina) {
             if (verificaToken(true) && ($scope.dataInicialMovimento != null && $scope.dataFinalMovimento != null)) {
                 var envio = {'id': $scope.produtoAtual.id, 'pagina': (pagina - 1), 'token': getToken(), 'data_inicial': $scope.dataInicialMovimento, 'data_final': $scope.dataFinalMovimento};
-                $scope.loadinProduto = $http({
+                $rootScope.loading = $http({
                     method: 'POST',
                     data: envio,
                     crossDomain: true,
@@ -198,7 +198,7 @@
                     }
                     fd.append('token', getToken());
                     fd.append('dados', angular.toJson($scope.produtoAtual));
-                    $scope.enviarProduto = $http({
+                    $rootScope.send = $http({
                         url: urlWs + 'produto/insertProduto',
                         method: 'POST',
                         data: fd,
@@ -232,7 +232,7 @@
                     }
                     fd.append('token', getToken());
                     fd.append('dados', angular.toJson($scope.produtoAtual));
-                    $scope.enviarProduto = $http({
+                    $rootScope.send = $http({
                         url: urlWs + 'produto/updatetProduto',
                         method: 'POST',
                         data: fd,
@@ -257,7 +257,7 @@
         $scope.deleteProduto = function () {
             if (verificaToken(true)) {
                 var envio = {'dados': $scope.produtoAtual, 'token': getToken()};
-                $scope.enviarProduto = $http({
+                $rootScope.send = $http({
                     method: 'POST',
                     crossDomain: true,
                     url: urlWs + "produto/deleteProduto",
@@ -284,7 +284,7 @@
                 if ($scope.validaCorrecao()) {
                     var produto = {id: $scope.produtoAtual.id, estoque: $scope.produtoAtual.estoque, tipoMovimentacao: $scope.produtoAtual.tipoMovimentacao, estoque_movimento_observacao: $scope.produtoAtual.estoque_movimento_observacao, estoque_movimento: $scope.produtoAtual.estoque_movimento};
                     var envio = {'dados': produto, 'token': getToken()};
-                    $scope.enviarProduto = $http({
+                    $rootScope.send = $http({
                         method: 'POST',
                         crossDomain: true,
                         url: urlWs + "produto/movimentarProduto",
@@ -325,7 +325,7 @@
         $scope.getListaFornecedorAll = function (pagina) {
             if (verificaToken(true)) {
                 var envio = {'pagina': (pagina - 1), 'token': getToken(), 'buscaDescricao': $scope.valorBuscaFornecedor, 'limit': $scope.itensPorPaginaFornecedor};
-                $scope.loadinFornecedor = $http({
+                $rootScope.loading = $http({
                     method: 'POST',
                     crossDomain: true,
                     url: urlWs + "fornecedor/getAllfornecedor",
@@ -424,6 +424,8 @@
         $scope.preparaProdutoMovimentacao = function (prepraView) {
             $scope.dataInicialMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth(), 1));
             $scope.dataFinalMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth() + 1, 0));
+            $scope.listaProdutoMovimentacao = [];
+            $scope.totalItemsMovimentacao = 0;
             $scope.getListaMovimentacao(1);
             $scope.produtoAtual.tipoMovimentacao = 0;
             $scope.produtoAtual.estoque_movimento_observacao = "";
