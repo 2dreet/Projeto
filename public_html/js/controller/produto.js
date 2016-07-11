@@ -1,6 +1,6 @@
 
 (function () {
-    'use strict'
+    'use strict';
 
     angular.module('www.geve.com.br').controller("produtoControler", function ($rootScope, $scope, $http) {
         verificaToken(true);
@@ -111,7 +111,7 @@
         };
 
         $scope.getListaMovimentacao = function (pagina) {
-            if (verificaToken(true) && ($scope.dataInicialMovimento != null && $scope.dataFinalMovimento != null)) {
+            if (verificaToken(true) && ($scope.dataInicialMovimento !== null && $scope.dataFinalMovimento !== null)) {
                 var envio = {'id': $scope.produtoAtual.id, 'pagina': (pagina - 1), 'token': getToken(), 'data_inicial': $scope.dataInicialMovimento, 'data_final': $scope.dataFinalMovimento};
                 $rootScope.loading = $http({
                     method: 'POST',
@@ -132,7 +132,7 @@
                 }, function errorCallback(response) {
                     setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
                 });
-            } else if (($scope.dataInicialMovimento == null || $scope.dataFinalMovimento == null)) {
+            } else if (($scope.dataInicialMovimento === null || $scope.dataFinalMovimento === null)) {
                 $scope.totalItemsMovimentacao = 0;
             }
         };
@@ -146,7 +146,7 @@
 
         $scope.validaImagem = function (mostraMenssagemErro, idCampoImagem, idCampoMsg) {
             var campoImagem = $(idCampoImagem).prop('files');
-            if (campoImagem !== null && $(idCampoImagem).eq(0).val() != "") {
+            if (campoImagem !== null && $(idCampoImagem).eq(0).val() !== "") {
                 var imagem = campoImagem[0];
                 if (imagem !== null) {
                     var nomeImagem = imagem.name;
@@ -319,7 +319,7 @@
             $scope.preparaProdutoMovimentacao(false);
             $scope.fecharDialog("#produtoDialogMovimentacaoCorrecao");
             $scope.abrirDialog("#produtoDialogMovimentacao");
-        }
+        };
 
 
         $scope.getListaFornecedorAll = function (pagina) {
@@ -347,22 +347,22 @@
 
         $scope.validaCorrecao = function () {
             var retorno = false;
-            if ($scope.produtoAtual != null) {
-                if ($scope.produtoAtual.estoque_movimento != null && $scope.produtoAtual.estoque_movimento > 0) {
+            if ($scope.produtoAtual !== null) {
+                if ($scope.produtoAtual.estoque_movimento !== null && $scope.produtoAtual.estoque_movimento > 0) {
                     retorno = true;
                 } else {
                     setMensagemTemporaria('erro', 'Deve informar Quantidade!', '#msgCorrecao');
                     return false;
                 }
 
-                if ($scope.produtoAtual.estoque_movimento_observacao != null && $scope.produtoAtual.estoque_movimento_observacao.trim() != "") {
+                if ($scope.produtoAtual.estoque_movimento_observacao !== null && $scope.produtoAtual.estoque_movimento_observacao.trim() !== "") {
                     retorno = true;
                 } else {
                     setMensagemTemporaria('erro', 'Deve informar observação!', '#msgCorrecao');
                     return false;
                 }
 
-                if ($scope.produtoAtual.tipoMovimentacao != null && $scope.produtoAtual.tipoMovimentacao > 0) {
+                if ($scope.produtoAtual.tipoMovimentacao !== null && $scope.produtoAtual.tipoMovimentacao > 0) {
                     if ($scope.produtoAtual.tipoMovimentacao > 1 && $scope.produtoAtual.tipoMovimentacao < 5) {
                         var valorFinal = $scope.produtoAtual.estoque - $scope.produtoAtual.estoque_movimento;
                         if (valorFinal >= 0) {
@@ -384,20 +384,20 @@
 
         $scope.validaProduto = function (idMsg) {
             var retorno = false;
-            if ($scope.produtoAtual != null) {
-                if ($scope.produtoAtual.descricao != null && $scope.produtoAtual.descricao.trim() != "") {
+            if ($scope.produtoAtual !== null) {
+                if ($scope.produtoAtual.descricao !== null && $scope.produtoAtual.descricao.trim() !== "") {
                     retorno = true;
                 } else {
                     setMensagemTemporaria('erro', 'Deve informar descrição!', idMsg);
                     return false;
                 }
-                if ($scope.produtoAtual.valor != null && $scope.produtoAtual.valor > 0) {
+                if ($scope.produtoAtual.valor !== null && $scope.produtoAtual.valor > 0) {
                     retorno = true;
                 } else {
                     setMensagemTemporaria('erro', 'Deve informar valor!', idMsg);
                     return false;
                 }
-                if ($scope.produtoAtual.fornecedor != null) {
+                if ($scope.produtoAtual.fornecedor !== null) {
                     retorno = true;
                 } else {
                     setMensagemTemporaria('erro', 'Deve informar o fornecedor!', idMsg);
@@ -479,7 +479,7 @@
             $scope.valorBuscaFornecedor = "";
             $scope.currentPageFornecedor = 1;
             $scope.totalItemsFornecedor = 0;
-            if ($entidade != null) {
+            if ($entidade !== null) {
                 $entidade.fornecedor = null;
                 $scope.entidadeSelecionada = $entidade;
             }

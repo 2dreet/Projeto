@@ -1,5 +1,5 @@
 (function () {
-    'use strict'
+    'use strict';
 
     angular.module('www.geve.com.br').controller("fornecedorControler", function ($rootScope, $scope, $http) {
         verificaToken(true);
@@ -125,21 +125,21 @@
 
         $scope.validaFornecedor = function () {
             var retorno = false;
-            if ($scope.fornecedorAtual != null) {
+            if ($scope.fornecedorAtual !== null) {
 
-                if ($scope.fornecedorAtual.descricao != null && $scope.fornecedorAtual.descricao.trim() != "") {
+                if ($scope.fornecedorAtual.descricao !== null && $scope.fornecedorAtual.descricao.trim() !== "") {
                     retorno = true;
                 } else {
                     retorno = false;
                 }
 
-                if ($scope.fornecedorAtual.email != null && $scope.fornecedorAtual.email.trim() != "") {
+                if ($scope.fornecedorAtual.email !== null && $scope.fornecedorAtual.email.trim() !== "") {
                     retorno = true;
                 } else {
                     retorno = false;
                 }
 
-                if ($scope.fornecedorAtual.telefone != null && $scope.fornecedorAtual.telefone.trim() != "") {
+                if ($scope.fornecedorAtual.telefone !== null && $scope.fornecedorAtual.telefone.trim() !== "") {
                     retorno = true;
                 } else {
                     retorno = false;

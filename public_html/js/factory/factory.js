@@ -7,7 +7,7 @@ var debug = "?XDEBUG_SESSION_START=netbeans-xdebug";
 function ajustaMenuLateral(idComponente) {
     $('#menu-lateral ul li').removeClass('active');
     $(idComponente).addClass('active');
-}
+} 
 
 function getToken() {
     var token = null;
@@ -18,7 +18,7 @@ function getToken() {
         while (c.charAt(0) == ' ') {
             c = c.substring(1);
         }
-        if (c.indexOf(name) == 0) {
+        if (c.indexOf(name) === 0) {
             token = c.substring(name.length, c.length);
         }
     }
@@ -26,7 +26,7 @@ function getToken() {
 }
 
 function setToken(token) {
-    if (getToken() == null) {
+    if (getToken() === null) {
         var d = new Date();
         d.setTime(d.getTime() + (1 * 24 * 60 * 60 * 1000));
         var expires = "expires=" + d.toUTCString();
@@ -35,7 +35,7 @@ function setToken(token) {
 }
 
 function verificaToken($fazerLogin) {
-    if (getToken() != null) {
+    if (getToken() !== null) {
         return true;
     } else {
         if ($fazerLogin) {

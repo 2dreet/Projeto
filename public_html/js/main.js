@@ -46745,10 +46745,10 @@ var cookieNomeToken = "www.geve.com.br.token";
 
 var debug = "?XDEBUG_SESSION_START=netbeans-xdebug";
 
-function ajustaMenuLateral($idComponente) {
+function ajustaMenuLateral(idComponente) {
     $('#menu-lateral ul li').removeClass('active');
-    $($idComponente).addClass('active');
-}
+    $(idComponente).addClass('active');
+} 
 
 function getToken() {
     var token = null;
@@ -46759,24 +46759,24 @@ function getToken() {
         while (c.charAt(0) == ' ') {
             c = c.substring(1);
         }
-        if (c.indexOf(name) == 0) {
+        if (c.indexOf(name) === 0) {
             token = c.substring(name.length, c.length);
         }
     }
     return token;
 }
 
-function setToken($token) {
-    if (getToken() == null) {
+function setToken(token) {
+    if (getToken() === null) {
         var d = new Date();
         d.setTime(d.getTime() + (1 * 24 * 60 * 60 * 1000));
         var expires = "expires=" + d.toUTCString();
-        document.cookie = cookieNomeToken + "=" + $token + "; " + expires;
+        document.cookie = cookieNomeToken + "=" + token + "; " + expires;
     }
 }
 
 function verificaToken($fazerLogin) {
-    if (getToken() != null) {
+    if (getToken() !== null) {
         return true;
     } else {
         if ($fazerLogin) {
@@ -46791,89 +46791,141 @@ function refazerLogin() {
     $(window.document.location).attr('href', "login.html");
 }
 
-function setMensagem($tipoMenssagem, $texto, $idComponente) {
-    if ($tipoMenssagem === 'erro') {
-        var msg = "<div class = 'alert alert-danger' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ban-circle' aria-hidden='true'> </span>" + $texto + "</div>";
-        $($idComponente).html(msg);
-    } else if ($tipoMenssagem === 'info') {
-        var msg = "<div class = 'alert alert-info' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-info-sign' aria-hidden='true'> </span>" + $texto + "</div>";
-        $($idComponente).html(msg);
-    } else if ($tipoMenssagem === 'sucesso') {
-        var msg = "<div class = 'alert alert-success' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ok-sign' aria-hidden='true'> </span>" + $texto + "</div>";
-        $($idComponente).html(msg);
-    } else if ($tipoMenssagem === 'alerta') {
-        var msg = "<div class = 'alert alert-warning' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-warning-sign' aria-hidden='true'> </span>" + $texto + "</div>";
-        $($idComponente).html(msg);
+function setMensagem(tipoMenssagem, texto, idComponente) {
+    if (tipoMenssagem === 'erro') {
+        $(idComponente).html("<div class = 'alert alert-danger' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ban-circle' aria-hidden='true'> </span>" + texto + "</div>");
+    } else if (tipoMenssagem === 'info') {
+        $(idComponente).html("<div class = 'alert alert-info' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-info-sign' aria-hidden='true'> </span>" + texto + "</div>");
+    } else if (tipoMenssagem === 'sucesso') {
+        $(idComponente).html("<div class = 'alert alert-success' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ok-sign' aria-hidden='true'> </span>" + texto + "</div>");
+    } else if (tipoMenssagem === 'alerta') {
+        $(idComponente).html("<div class = 'alert alert-warning' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-warning-sign' aria-hidden='true'> </span>" + texto + "</div>");
     }
 }
 
-function setMensagemTemporaria($tipoMenssagem, $texto, $idComponente) {
-    if ($tipoMenssagem === 'erro') {
-        var msg = "<div class = 'alert alert-danger' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ban-circle' aria-hidden='true'> </span>" + $texto + "</div>";
-        $($idComponente).html(msg);
-        $($idComponente).fadeTo(2000, 500).slideUp(500, function () {
-            $($idComponente).alert('close');
-        });
-    } else if ($tipoMenssagem === 'info') {
-        var msg = "<div class = 'alert alert-info' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-info-sign' aria-hidden='true'> </span>" + $texto + "</div>";
-        $($idComponente).html(msg);
-        $($idComponente).fadeTo(2000, 500).slideUp(500, function () {
-            $($idComponente).alert('close');
-        });
-    } else if ($tipoMenssagem === 'sucesso') {
-        var msg = "<div class = 'alert alert-success' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ok-sign' aria-hidden='true'> </span>" + $texto + "</div>";
-        $($idComponente).html(msg);
-        $($idComponente).fadeTo(2000, 500).slideUp(500, function () {
-            $($idComponente).alert('close');
-        });
-    } else if ($tipoMenssagem === 'alerta') {
-        var msg = "<div class = 'alert alert-warning' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-warning-sign' aria-hidden='true'> </span>" + $texto + "</div>";
-        $($idComponente).html(msg);
-        $($idComponente).fadeTo(2000, 500).slideUp(500, function () {
-            $($idComponente).alert('close');
-        });
+function setMensagemTemporaria(tipoMenssagem, texto, idComponente) {
+    if (tipoMenssagem === 'erro') {
+        $(idComponente).html("<div class = 'alert alert-danger' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ban-circle' aria-hidden='true'> </span>" + texto + "</div>");
+    } else if (tipoMenssagem === 'info') {
+        $(idComponente).html("<div class = 'alert alert-info' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-info-sign' aria-hidden='true'> </span>" + texto + "</div>");
+    } else if (tipoMenssagem === 'sucesso') {
+        $(idComponente).html("<div class = 'alert alert-success' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ok-sign' aria-hidden='true'> </span>" + texto + "</div>");
+    } else if (tipoMenssagem === 'alerta') {
+        $(idComponente).html("<div class = 'alert alert-warning' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-warning-sign' aria-hidden='true'> </span>" + texto + "</div>");
     }
+    $(idComponente).fadeTo(2000, 500).slideUp(500, function () {
+        $(idComponente).alert('close');
+    });
 }
-angular.module('www.geve.com.br').controller("clienteControler", function ($rootScope, $scope, $http) {
-    verificaToken(true);
-    ajustaMenuLateral('#btnCliente');
-
-    $scope.listaCliente = [];
-    $scope.valorBusca = "";
-    $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
-
-    $scope.maxSize = 3;
-    $scope.totalItems = 0;
-    $scope.currentPage = 1;
-    $scope.itensPorPagina = 10;
-
-    $scope.getListaClienteAll = function (pagina) {
-        if (verificaToken(true)) {
-            var envio = {'pagina': (pagina - 1), 'token': getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBusca};
-
-            $rootScope.loading = $http({
-                method: 'POST',
-                data: envio,
-                crossDomain: true,
-                url: urlWs + "produto/getAllproduto",
-                headers: {'Content-Type': 'application/json'}
-            }).then(function successCallback(response) {
-                if (!response.data.token) {
-                    refazerLogin();
-                } else {
-                    $scope.listaCliente = response.data.dados;
-                    $scope.totalItems = response.data.totalRegistro;
-                }
-            }, function errorCallback(response) {
-                setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
-            });
-        }
-    };
-
-});
-
 (function () {
-    'use strict'
+    'use strict';
+
+    angular.module('www.geve.com.br').controller("clienteControler", function ($rootScope, $scope, $http) {
+        verificaToken(true);
+        ajustaMenuLateral('#btnCliente');
+
+        $scope.clienteAtual = {};
+        $scope.listaCliente = [];
+        $scope.valorBusca = "";
+        $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
+
+        $scope.maxSize = 3;
+        $scope.totalItems = 0;
+        $scope.currentPage = 1;
+        $scope.itensPorPagina = 10;
+
+        $scope.getListaClienteAll = function (pagina) {
+            if (verificaToken(true)) {
+                var envio = {'pagina': (pagina - 1), 'token': getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBusca};
+
+                $rootScope.loading = $http({
+                    method: 'POST',
+                    data: envio,
+                    crossDomain: true,
+                    url: urlWs + "produto/getAllproduto",
+                    headers: {'Content-Type': 'application/json'}
+                }).then(function successCallback(response) {
+                    if (!response.data.token) {
+                        refazerLogin();
+                    } else {
+                        $scope.listaCliente = response.data.dados;
+                        $scope.totalItems = response.data.totalRegistro;
+                    }
+                }, function errorCallback(response) {
+                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
+                });
+            }
+        };
+
+        $scope.insertCliente = function () {
+            if (verificaToken(true) && $scope.validaCliente()) {
+                var envio = {'dados': $scope.clienteAtual, 'token': getToken()};
+                $rootScope.send = $http({
+                    method: 'POST',
+                    crossDomain: true,
+                    url: urlWs + "cliente/insertCliente",
+                    data: envio,
+                    headers: {'Content-Type': 'application/json'}
+                }).then(function successCallback(response) {
+                    $scope.fecharDialog('#cadastroFornecedorDialog');
+                    if (!response.data.token) {
+                        refazerLogin();
+                    } else {
+                        setMensagemTemporaria('sucesso', 'Cliente cadastrado!', '#msgClienteGeral');
+                        $scope.getListaClienteAll(1);
+                    }
+                }, function errorCallback(response) {
+                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgClienteGeral');
+                });
+            }
+        };
+
+        $scope.validaCliente = function () {
+            var retorno = false;
+            if ($scope.clienteAtual !== null) {
+
+                if ($scope.clienteAtual.descricao !== null && $scope.clienteAtual.descricao.trim() !== "") {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+
+                if ($scope.clienteAtual.email !== null && $scope.clienteAtual.email.trim() !== "") {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+
+                if ($scope.clienteAtual.telefone !== null && $scope.clienteAtual.telefone.trim() !== "") {
+                    retorno = true;
+                } else {
+                    retorno = false;
+                }
+            }
+            return retorno;
+        };
+
+        $scope.novoCliente = function () {
+            $scope.clienteAtual = {};
+        };
+
+        $scope.preparaCliente = function (cliente) {
+            $scope.clienteAtual = Object.assign({}, cliente);
+        };
+
+        $scope.fecharDialog = function (idModal) {
+            $(idModal).modal('hide');
+        };
+
+        $scope.abrirDialog = function (idModal) {
+            $(idModal).modal('show');
+        };
+
+    });
+
+})();
+(function () {
+    'use strict';
 
     angular.module('www.geve.com.br').controller("fornecedorControler", function ($rootScope, $scope, $http) {
         verificaToken(true);
@@ -46999,21 +47051,21 @@ angular.module('www.geve.com.br').controller("clienteControler", function ($root
 
         $scope.validaFornecedor = function () {
             var retorno = false;
-            if ($scope.fornecedorAtual != null) {
+            if ($scope.fornecedorAtual !== null) {
 
-                if ($scope.fornecedorAtual.descricao != null && $scope.fornecedorAtual.descricao.trim() != "") {
+                if ($scope.fornecedorAtual.descricao !== null && $scope.fornecedorAtual.descricao.trim() !== "") {
                     retorno = true;
                 } else {
                     retorno = false;
                 }
 
-                if ($scope.fornecedorAtual.email != null && $scope.fornecedorAtual.email.trim() != "") {
+                if ($scope.fornecedorAtual.email !== null && $scope.fornecedorAtual.email.trim() !== "") {
                     retorno = true;
                 } else {
                     retorno = false;
                 }
 
-                if ($scope.fornecedorAtual.telefone != null && $scope.fornecedorAtual.telefone.trim() != "") {
+                if ($scope.fornecedorAtual.telefone !== null && $scope.fornecedorAtual.telefone.trim() !== "") {
                     retorno = true;
                 } else {
                     retorno = false;
@@ -47060,7 +47112,7 @@ angular.module('www.geve.com.br').controller("infoControler", function ($scope, 
     };
 });
 (function () {
-    'use strict'
+    'use strict';
     angular.module('www.geve.com.br').controller("inicioControler", function ($scope, $http) {
         verificaToken(true);
         ajustaMenuLateral('#btnHome');
@@ -47160,7 +47212,7 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
 });
 
 (function () {
-    'use strict'
+    'use strict';
 
     angular.module('www.geve.com.br').controller("produtoControler", function ($rootScope, $scope, $http) {
         verificaToken(true);
@@ -47271,7 +47323,7 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
         };
 
         $scope.getListaMovimentacao = function (pagina) {
-            if (verificaToken(true) && ($scope.dataInicialMovimento != null && $scope.dataFinalMovimento != null)) {
+            if (verificaToken(true) && ($scope.dataInicialMovimento !== null && $scope.dataFinalMovimento !== null)) {
                 var envio = {'id': $scope.produtoAtual.id, 'pagina': (pagina - 1), 'token': getToken(), 'data_inicial': $scope.dataInicialMovimento, 'data_final': $scope.dataFinalMovimento};
                 $rootScope.loading = $http({
                     method: 'POST',
@@ -47292,7 +47344,7 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
                 }, function errorCallback(response) {
                     setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
                 });
-            } else if (($scope.dataInicialMovimento == null || $scope.dataFinalMovimento == null)) {
+            } else if (($scope.dataInicialMovimento === null || $scope.dataFinalMovimento === null)) {
                 $scope.totalItemsMovimentacao = 0;
             }
         };
@@ -47306,7 +47358,7 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
 
         $scope.validaImagem = function (mostraMenssagemErro, idCampoImagem, idCampoMsg) {
             var campoImagem = $(idCampoImagem).prop('files');
-            if (campoImagem !== null && $(idCampoImagem).eq(0).val() != "") {
+            if (campoImagem !== null && $(idCampoImagem).eq(0).val() !== "") {
                 var imagem = campoImagem[0];
                 if (imagem !== null) {
                     var nomeImagem = imagem.name;
@@ -47479,7 +47531,7 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
             $scope.preparaProdutoMovimentacao(false);
             $scope.fecharDialog("#produtoDialogMovimentacaoCorrecao");
             $scope.abrirDialog("#produtoDialogMovimentacao");
-        }
+        };
 
 
         $scope.getListaFornecedorAll = function (pagina) {
@@ -47507,22 +47559,22 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
 
         $scope.validaCorrecao = function () {
             var retorno = false;
-            if ($scope.produtoAtual != null) {
-                if ($scope.produtoAtual.estoque_movimento != null && $scope.produtoAtual.estoque_movimento > 0) {
+            if ($scope.produtoAtual !== null) {
+                if ($scope.produtoAtual.estoque_movimento !== null && $scope.produtoAtual.estoque_movimento > 0) {
                     retorno = true;
                 } else {
                     setMensagemTemporaria('erro', 'Deve informar Quantidade!', '#msgCorrecao');
                     return false;
                 }
 
-                if ($scope.produtoAtual.estoque_movimento_observacao != null && $scope.produtoAtual.estoque_movimento_observacao.trim() != "") {
+                if ($scope.produtoAtual.estoque_movimento_observacao !== null && $scope.produtoAtual.estoque_movimento_observacao.trim() !== "") {
                     retorno = true;
                 } else {
                     setMensagemTemporaria('erro', 'Deve informar observação!', '#msgCorrecao');
                     return false;
                 }
 
-                if ($scope.produtoAtual.tipoMovimentacao != null && $scope.produtoAtual.tipoMovimentacao > 0) {
+                if ($scope.produtoAtual.tipoMovimentacao !== null && $scope.produtoAtual.tipoMovimentacao > 0) {
                     if ($scope.produtoAtual.tipoMovimentacao > 1 && $scope.produtoAtual.tipoMovimentacao < 5) {
                         var valorFinal = $scope.produtoAtual.estoque - $scope.produtoAtual.estoque_movimento;
                         if (valorFinal >= 0) {
@@ -47544,20 +47596,20 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
 
         $scope.validaProduto = function (idMsg) {
             var retorno = false;
-            if ($scope.produtoAtual != null) {
-                if ($scope.produtoAtual.descricao != null && $scope.produtoAtual.descricao.trim() != "") {
+            if ($scope.produtoAtual !== null) {
+                if ($scope.produtoAtual.descricao !== null && $scope.produtoAtual.descricao.trim() !== "") {
                     retorno = true;
                 } else {
                     setMensagemTemporaria('erro', 'Deve informar descrição!', idMsg);
                     return false;
                 }
-                if ($scope.produtoAtual.valor != null && $scope.produtoAtual.valor > 0) {
+                if ($scope.produtoAtual.valor !== null && $scope.produtoAtual.valor > 0) {
                     retorno = true;
                 } else {
                     setMensagemTemporaria('erro', 'Deve informar valor!', idMsg);
                     return false;
                 }
-                if ($scope.produtoAtual.fornecedor != null) {
+                if ($scope.produtoAtual.fornecedor !== null) {
                     retorno = true;
                 } else {
                     setMensagemTemporaria('erro', 'Deve informar o fornecedor!', idMsg);
@@ -47639,7 +47691,7 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
             $scope.valorBuscaFornecedor = "";
             $scope.currentPageFornecedor = 1;
             $scope.totalItemsFornecedor = 0;
-            if ($entidade != null) {
+            if ($entidade !== null) {
                 $entidade.fornecedor = null;
                 $scope.entidadeSelecionada = $entidade;
             }

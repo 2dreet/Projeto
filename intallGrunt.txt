@@ -1,0 +1,5 @@
+npm install -S grunt
+npm install grunt-contrib-concat --save-dev
+npm install grunt-contrib-watch --save-dev
+grunt concat
+grunt watch 
