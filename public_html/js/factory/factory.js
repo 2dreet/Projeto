@@ -4,9 +4,9 @@ var cookieNomeToken = "www.geve.com.br.token";
 
 var debug = "?XDEBUG_SESSION_START=netbeans-xdebug";
 
-function ajustaMenuLateral($idComponente) {
+function ajustaMenuLateral(idComponente) {
     $('#menu-lateral ul li').removeClass('active');
-    $($idComponente).addClass('active');
+    $(idComponente).addClass('active');
 }
 
 function getToken() {
@@ -25,12 +25,12 @@ function getToken() {
     return token;
 }
 
-function setToken($token) {
+function setToken(token) {
     if (getToken() == null) {
         var d = new Date();
         d.setTime(d.getTime() + (1 * 24 * 60 * 60 * 1000));
         var expires = "expires=" + d.toUTCString();
-        document.cookie = cookieNomeToken + "=" + $token + "; " + expires;
+        document.cookie = cookieNomeToken + "=" + token + "; " + expires;
     }
 }
 
@@ -50,46 +50,29 @@ function refazerLogin() {
     $(window.document.location).attr('href', "login.html");
 }
 
-function setMensagem($tipoMenssagem, $texto, $idComponente) {
-    if ($tipoMenssagem === 'erro') {
-        var msg = "<div class = 'alert alert-danger' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ban-circle' aria-hidden='true'> </span>" + $texto + "</div>";
-        $($idComponente).html(msg);
-    } else if ($tipoMenssagem === 'info') {
-        var msg = "<div class = 'alert alert-info' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-info-sign' aria-hidden='true'> </span>" + $texto + "</div>";
-        $($idComponente).html(msg);
-    } else if ($tipoMenssagem === 'sucesso') {
-        var msg = "<div class = 'alert alert-success' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ok-sign' aria-hidden='true'> </span>" + $texto + "</div>";
-        $($idComponente).html(msg);
-    } else if ($tipoMenssagem === 'alerta') {
-        var msg = "<div class = 'alert alert-warning' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-warning-sign' aria-hidden='true'> </span>" + $texto + "</div>";
-        $($idComponente).html(msg);
+function setMensagem(tipoMenssagem, texto, idComponente) {
+    if (tipoMenssagem === 'erro') {
+        $(idComponente).html("<div class = 'alert alert-danger' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ban-circle' aria-hidden='true'> </span>" + texto + "</div>");
+    } else if (tipoMenssagem === 'info') {
+        $(idComponente).html("<div class = 'alert alert-info' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-info-sign' aria-hidden='true'> </span>" + texto + "</div>");
+    } else if (tipoMenssagem === 'sucesso') {
+        $(idComponente).html("<div class = 'alert alert-success' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ok-sign' aria-hidden='true'> </span>" + texto + "</div>");
+    } else if (tipoMenssagem === 'alerta') {
+        $(idComponente).html("<div class = 'alert alert-warning' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-warning-sign' aria-hidden='true'> </span>" + texto + "</div>");
     }
 }
 
-function setMensagemTemporaria($tipoMenssagem, $texto, $idComponente) {
-    if ($tipoMenssagem === 'erro') {
-        var msg = "<div class = 'alert alert-danger' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ban-circle' aria-hidden='true'> </span>" + $texto + "</div>";
-        $($idComponente).html(msg);
-        $($idComponente).fadeTo(2000, 500).slideUp(500, function () {
-            $($idComponente).alert('close');
-        });
-    } else if ($tipoMenssagem === 'info') {
-        var msg = "<div class = 'alert alert-info' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-info-sign' aria-hidden='true'> </span>" + $texto + "</div>";
-        $($idComponente).html(msg);
-        $($idComponente).fadeTo(2000, 500).slideUp(500, function () {
-            $($idComponente).alert('close');
-        });
-    } else if ($tipoMenssagem === 'sucesso') {
-        var msg = "<div class = 'alert alert-success' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ok-sign' aria-hidden='true'> </span>" + $texto + "</div>";
-        $($idComponente).html(msg);
-        $($idComponente).fadeTo(2000, 500).slideUp(500, function () {
-            $($idComponente).alert('close');
-        });
-    } else if ($tipoMenssagem === 'alerta') {
-        var msg = "<div class = 'alert alert-warning' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-warning-sign' aria-hidden='true'> </span>" + $texto + "</div>";
-        $($idComponente).html(msg);
-        $($idComponente).fadeTo(2000, 500).slideUp(500, function () {
-            $($idComponente).alert('close');
-        });
+function setMensagemTemporaria(tipoMenssagem, texto, idComponente) {
+    if (tipoMenssagem === 'erro') {
+        $(idComponente).html("<div class = 'alert alert-danger' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ban-circle' aria-hidden='true'> </span>" + texto + "</div>");
+    } else if (tipoMenssagem === 'info') {
+        $(idComponente).html("<div class = 'alert alert-info' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-info-sign' aria-hidden='true'> </span>" + texto + "</div>");
+    } else if (tipoMenssagem === 'sucesso') {
+        $(idComponente).html("<div class = 'alert alert-success' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ok-sign' aria-hidden='true'> </span>" + texto + "</div>");
+    } else if (tipoMenssagem === 'alerta') {
+        $(idComponente).html("<div class = 'alert alert-warning' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-warning-sign' aria-hidden='true'> </span>" + texto + "</div>");
     }
+    $(idComponente).fadeTo(2000, 500).slideUp(500, function () {
+        $(idComponente).alert('close');
+    });
 }
