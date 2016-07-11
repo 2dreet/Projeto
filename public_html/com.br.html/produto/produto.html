@@ -30,7 +30,7 @@
             </div>
             <div id="msgProdutoGeral" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"></div>
             <div id="tabela-produto" class="row" style="padding: 0px; margin: 0px;padding-top: 15px">
-                <div class="alert alert-warning" role="alert"  ng-show="listaProduto == null"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Sem dados</div>
+                <div class="alert alert-warning" role="alert"  ng-show="listaProduto == null || listaProduto.length < 1"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Sem dados</div>
                 <ul>
                     <li ng-repeat="p in listaProduto" class="product-item">
                         <a href="" style="text-decoration: none;" ng-click="preparaProduto(p)">

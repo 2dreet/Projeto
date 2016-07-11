@@ -46826,7 +46826,7 @@ function setMensagemTemporaria(tipoMenssagem, texto, idComponente) {
 
         $scope.clienteAtual = {};
         $scope.listaCliente = [];
-        $scope.valorBusca = "";
+        $scope.valorBuscaCliente = "";
         $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
 
         $scope.maxSize = 3;
@@ -46842,7 +46842,7 @@ function setMensagemTemporaria(tipoMenssagem, texto, idComponente) {
                     method: 'POST',
                     data: envio,
                     crossDomain: true,
-                    url: urlWs + "produto/getAllproduto",
+                    url: urlWs + "cliente/getAllCliente",
                     headers: {'Content-Type': 'application/json'}
                 }).then(function successCallback(response) {
                     if (!response.data.token) {
