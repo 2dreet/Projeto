@@ -57,7 +57,7 @@
         $scope.updateFornecedor = function () {
             if (verificaToken(true) && $scope.validaFornecedor()) {
                 var envio = {'dados': $scope.fornecedorAtual, 'token': getToken()};
-                $rootScope.send = $http({
+                $scope.send = $http({
                     method: 'POST',
                     crossDomain: true,
                     url: urlWs + "fornecedor/updateFornecedor",
@@ -80,7 +80,7 @@
         $scope.insertFornecedor = function () {
             if (verificaToken(true) && $scope.validaFornecedor()) {
                 var envio = {'dados': $scope.fornecedorAtual, 'token': getToken()};
-                $rootScope.send = $http({
+                $scope.send = $http({
                     method: 'POST',
                     crossDomain: true,
                     url: urlWs + "fornecedor/insertFornecedor",
@@ -103,7 +103,7 @@
         $scope.deleteFornecedor = function () {
             if (verificaToken(true) && $scope.validaFornecedor()) {
                 var envio = {'dados': $scope.fornecedorAtual, 'token': getToken()};
-                $rootScope.send = $http({
+                $scope.send = $http({
                     method: 'POST',
                     crossDomain: true,
                     url: urlWs + "fornecedor/deleteFornecedor",

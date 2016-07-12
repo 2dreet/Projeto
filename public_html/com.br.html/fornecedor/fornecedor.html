@@ -70,17 +70,17 @@
                     <div class="modal-body">
                         <div class="input-group" style="width: 100%;">
                             <span style="width: 120px" class="input-group-addon" id="fornecedorDescricao">Fornecedor</span>
-                            <input type="text" required="required" class="form-control" maxlength="32" placeholder="Descrição Fornecedor" aria-describedby="fornecedorDescricao" ng-model="fornecedorAtual.descricao">
+                            <input type="text" required="required" class="form-control" maxlength="50"  aria-describedby="fornecedorDescricao" ng-model="fornecedorAtual.descricao">
                         </div>
 
                         <div class="input-group" style="padding-top: 20px; width: 100%;">
                             <span style="width: 120px"  class="input-group-addon" id="fornecedorEmail">Email</span>
-                            <input type="email" required="required" class="form-control" placeholder="Email Fornecedor" aria-describedby="fornecedorEmail" ng-model="fornecedorAtual.email">
+                            <input type="email" required="required" class="form-control"  maxlength="50" aria-describedby="fornecedorEmail" ng-model="fornecedorAtual.email">
                         </div>
 
                         <div class="input-group" style="padding-top: 20px; width: 100%;">
                             <span style="width: 120px" class="input-group-addon" id="fornecedorTelefone">Telefone</span>
-                            <input ui-br-phone-number type="tel" required="required" placeholder="Telefone Fornecedor" class="form-control"  aria-describedby="fornecedorTelefone" ng-model="fornecedorAtual.telefone">
+                            <input ui-br-phone-number type="tel" required="required"  class="form-control"  aria-describedby="fornecedorTelefone" ng-model="fornecedorAtual.telefone">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -105,17 +105,17 @@
                     <div class="modal-body">
                         <div class="input-group" style="width: 100%;">
                             <span style="width: 120px" class="input-group-addon" id="fornecedorDescricaoAlterar">Fornecedor</span>
-                            <input type="text" required="required" class="form-control" maxlength="32" placeholder="Descrição Fornecedor" aria-describedby="fornecedorDescricaoAlterar" ng-model="fornecedorAtual.descricao">
+                            <input type="text" required="required" class="form-control" maxlength="50" aria-describedby="fornecedorDescricaoAlterar" ng-model="fornecedorAtual.descricao">
                         </div>
 
                         <div class="input-group" style="padding-top: 20px; width: 100%;">
                             <span style="width: 120px"  class="input-group-addon" id="fornecedorEmailAlterar">Email</span>
-                            <input type="email" required="required" class="form-control" placeholder="Email Fornecedor" aria-describedby="fornecedorEmailAlterar" ng-model="fornecedorAtual.email">
+                            <input type="email" required="required" class="form-control"  maxlength="50" aria-describedby="fornecedorEmailAlterar" ng-model="fornecedorAtual.email">
                         </div>
 
                         <div class="input-group" style="padding-top: 20px; width: 100%;">
                             <span style="width: 120px" class="input-group-addon" id="fornecedorTelefoneAlterar">Telefone</span>
-                            <input ui-br-phone-number type="text" required="required" class="form-control"  placeholder="Telefone Fornecedor" aria-describedby="fornecedorTelefoneAlterar" ng-model="fornecedorAtual.telefone">
+                            <input ui-br-phone-number type="text" required="required" class="form-control"   aria-describedby="fornecedorTelefoneAlterar" ng-model="fornecedorAtual.telefone">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -142,17 +142,17 @@
 
                         <div class="input-group" style="width: 100%;">
                             <span style="width: 120px" class="input-group-addon" id="fornecedorDescricaoDeletar">Fornecedor</span>
-                            <input type="text" readonly="readonly" class="form-control" placeholder="Descrição Fornecedor" aria-describedby="fornecedorDescricaoVisualizar" ng-model="fornecedorAtual.descricao">
+                            <input type="text" readonly="readonly" class="form-control"  aria-describedby="fornecedorDescricaoVisualizar" ng-model="fornecedorAtual.descricao">
                         </div>
 
                         <div class="input-group" style="padding-top: 20px; width: 100%;">
                             <span style="width: 120px"  class="input-group-addon" id="fornecedorEmailDeletar">Email</span>
-                            <input type="text" readonly="readonly" class="form-control" placeholder="Email Fornecedor" aria-describedby="fornecedorEmailDeletar" ng-model="fornecedorAtual.email">
+                            <input type="text" readonly="readonly" class="form-control"  aria-describedby="fornecedorEmailDeletar" ng-model="fornecedorAtual.email">
                         </div>
 
                         <div class="input-group" style="padding-top: 20px; width: 100%;">
                             <span style="width: 120px" class="input-group-addon" id="fornecedorTelefoneDeletar">Telefone</span>
-                            <input type="text" readonly="readonly" class="form-control"  placeholder="Telefone Fornecedor" ui-br-phone-number aria-describedby="fornecedorTelefoneDeletar" ng-model="fornecedorAtual.telefone">
+                            <input type="text" readonly="readonly" class="form-control"   ui-br-phone-number aria-describedby="fornecedorTelefoneDeletar" ng-model="fornecedorAtual.telefone">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -178,17 +178,17 @@
                     <div class="modal-body">
                         <div class="input-group" style="width: 100%;">
                             <span style="width: 120px" class="input-group-addon" id="fornecedorDescricaoVisualizar">Fornecedor</span>
-                            <input type="text" readonly="readonly" class="form-control" placeholder="Descrição Fornecedor" aria-describedby="fornecedorDescricaoVisualizar" ng-model="fornecedorAtual.descricao">
+                            <input type="text" readonly="readonly" class="form-control"  aria-describedby="fornecedorDescricaoVisualizar" ng-model="fornecedorAtual.descricao">
                         </div>
 
                         <div class="input-group" style="padding-top: 20px; width: 100%;">
                             <span style="width: 120px"  class="input-group-addon" id="fornecedorEmailVisualizar">Email</span>
-                            <input type="text" readonly="readonly" class="form-control" placeholder="Descrição Fornecedor" aria-describedby="fornecedorEmailVisualizar" ng-model="fornecedorAtual.email">
+                            <input type="text" readonly="readonly" class="form-control"  aria-describedby="fornecedorEmailVisualizar" ng-model="fornecedorAtual.email">
                         </div>
 
                         <div class="input-group" style="padding-top: 20px; width: 100%;">
                             <span style="width: 120px" class="input-group-addon" id="fornecedorTelefoneVisualizar">Telefone</span>
-                            <input type="text" readonly="readonly" class="form-control" ui-br-phone-number  placeholder="Telefone Fornecedor" aria-describedby="fornecedorTelefoneVisualizar" ng-model="fornecedorAtual.telefone">
+                            <input type="text" readonly="readonly" class="form-control" ui-br-phone-number  aria-describedby="fornecedorTelefoneVisualizar" ng-model="fornecedorAtual.telefone">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -213,17 +213,17 @@
                     <div class="media-body" style="padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px">
                         <div class="input-group" style="width: 100%;">
                             <span style="width: 120px" class="input-group-addon" id="fornecedorDescricaoLocalizar">Fornecedor</span>
-                            <input type="text" class="form-control" maxlength="32" placeholder="Descrição Fornecedor" aria-describedby="fornecedorDescricaoLocalizar" ng-model="buscaAvancada.descricao">
+                            <input type="text" class="form-control" maxlength="32" aria-describedby="fornecedorDescricaoLocalizar" ng-model="buscaAvancada.descricao">
                         </div>
 
                         <div class="input-group" style="padding-top: 20px; width: 100%;">
                             <span style="width: 120px"  class="input-group-addon" id="fornecedorEmailLocalizar">Email</span>
-                            <input type="email" class="form-control" placeholder="Email Fornecedor" aria-describedby="fornecedorEmailLocalizar" ng-model="buscaAvancada.email">
+                            <input type="email" class="form-control"  aria-describedby="fornecedorEmailLocalizar" ng-model="buscaAvancada.email">
                         </div>
 
                         <div class="input-group" style="padding-top: 20px; width: 100%;">
                             <span style="width: 120px" class="input-group-addon" id="fornecedorTelefoneLocalizar">Telefone</span>
-                            <input ui-br-phone-number type="text" class="form-control"  placeholder="Telefone Fornecedor" aria-describedby="fornecedorTelefoneLocalizar" ng-model="buscaAvancada.telefone">
+                            <input ui-br-phone-number type="text" class="form-control"   aria-describedby="fornecedorTelefoneLocalizar" ng-model="buscaAvancada.telefone">
                         </div>
                     </div>
 

@@ -198,7 +198,7 @@
                     }
                     fd.append('token', getToken());
                     fd.append('dados', angular.toJson($scope.produtoAtual));
-                    $rootScope.send = $http({
+                    $scope.send = $http({
                         url: urlWs + 'produto/insertProduto',
                         method: 'POST',
                         data: fd,
@@ -232,7 +232,7 @@
                     }
                     fd.append('token', getToken());
                     fd.append('dados', angular.toJson($scope.produtoAtual));
-                    $rootScope.send = $http({
+                    $scope.send = $http({
                         url: urlWs + 'produto/updatetProduto',
                         method: 'POST',
                         data: fd,
@@ -257,7 +257,7 @@
         $scope.deleteProduto = function () {
             if (verificaToken(true)) {
                 var envio = {'dados': $scope.produtoAtual, 'token': getToken()};
-                $rootScope.send = $http({
+                $scope.send = $http({
                     method: 'POST',
                     crossDomain: true,
                     url: urlWs + "produto/deleteProduto",
@@ -284,7 +284,7 @@
                 if ($scope.validaCorrecao()) {
                     var produto = {id: $scope.produtoAtual.id, estoque: $scope.produtoAtual.estoque, tipoMovimentacao: $scope.produtoAtual.tipoMovimentacao, estoque_movimento_observacao: $scope.produtoAtual.estoque_movimento_observacao, estoque_movimento: $scope.produtoAtual.estoque_movimento};
                     var envio = {'dados': produto, 'token': getToken()};
-                    $rootScope.send = $http({
+                    $scope.send = $http({
                         method: 'POST',
                         crossDomain: true,
                         url: urlWs + "produto/movimentarProduto",
@@ -325,7 +325,7 @@
         $scope.getListaFornecedorAll = function (pagina) {
             if (verificaToken(true)) {
                 var envio = {'pagina': (pagina - 1), 'token': getToken(), 'buscaDescricao': $scope.valorBuscaFornecedor, 'limit': $scope.itensPorPaginaFornecedor};
-                $rootScope.loading = $http({
+                $scope.loadingDialog = $http({
                     method: 'POST',
                     crossDomain: true,
                     url: urlWs + "fornecedor/getAllfornecedor",
@@ -427,7 +427,7 @@
             $scope.listaProdutoMovimentacao = [];
             $scope.totalItemsMovimentacao = 0;
             $scope.getListaMovimentacao(1);
-            $scope.produtoAtual.tipoMovimentacao = 0;
+            $scope.produtoAtual.tipoMovimentacao = $scope.listaTipoMovimentacaoCorrecao[0].id.value;
             $scope.produtoAtual.estoque_movimento_observacao = "";
             $scope.produtoAtual.estoque_movimento = "";
             if (prepraView) {
