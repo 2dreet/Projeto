@@ -130,19 +130,19 @@
                 if ($scope.fornecedorAtual.descricao !== null && $scope.fornecedorAtual.descricao.trim() !== "") {
                     retorno = true;
                 } else {
-                    retorno = false;
+                    return false;
                 }
 
                 if ($scope.fornecedorAtual.email !== null && $scope.fornecedorAtual.email.trim() !== "") {
                     retorno = true;
                 } else {
-                    retorno = false;
+                    return false;
                 }
 
                 if ($scope.fornecedorAtual.telefone !== null && $scope.fornecedorAtual.telefone.trim() !== "") {
                     retorno = true;
                 } else {
-                    retorno = false;
+                    return false;
                 }
             }
             return retorno;

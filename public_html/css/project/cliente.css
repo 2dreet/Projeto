@@ -1,0 +1,8 @@
+.dialog-cliente{
+    overflow: auto;
+}
+
+.listaTelefoneClienteCad{
+    max-height: 280px;
+    overflow-x: auto;
+}

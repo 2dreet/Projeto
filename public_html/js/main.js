@@ -46822,6 +46822,25 @@ app.value('cgBusyDefaults',{
   minDuration: 0
 });
 
+(function () {
+    'use strict';
+
+    angular.module('www.geve.com.br').service('BuscaCep', ['$http', function ($http) {
+            function getViaCep(cep) {
+                $http({
+                    method: 'GET',
+                    crossDomain: true,
+                    url: "https://viacep.com.br/ws/" + cep + "/json/",
+                    data: envio,
+                    headers: {'Content-Type': 'application/json'}
+                }).then(function successCallback(response) {
+                    return response.data;
+                }, function errorCallback(response) {
+                    return false;
+                });
+            }
+        }]);
+})();
 var urlWs = "http://localhost:8088/WsJosePhp/";
 var urlImagem = urlWs + "produto/getProdutoImagem/";
 var cookieNomeToken = "www.geve.com.br.token";
@@ -46902,34 +46921,22 @@ function setMensagemTemporaria(tipoMenssagem, texto, idComponente) {
 }
 (function () {
     'use strict';
-
-    angular.module('www.geve.com.br').controller("clienteControler", function ($rootScope, $scope, $http) {
+    angular.module('www.geve.com.br').controller("clienteControler", ['$rootScope', '$scope', '$http', 'BuscaCep', function ($rootScope, $scope, $http, BuscaCep) {
         verificaToken(true);
         ajustaMenuLateral('#btnCliente');
-
         $scope.clienteAtual = {};
         $scope.listaCliente = [];
         $scope.valorBuscaCliente = "";
         $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
-
         $scope.listaSexo = ["Masculino", "Feminino"];
-
         $scope.dataNascimento = {opened: true};
         $scope.opendataNascimento = function () {
             $scope.dataNascimento.opened = true;
         };
-
-
         $scope.telefone = {};
-        $scope.tipoTelefone = {};
         $scope.listaTelefone = [];
-
-        $scope.listaTipoTelefone = [
-            {id: 1, descricao: 'Residencial'},
-            {id: 2, descricao: 'Celular'},
-            {id: 3, descricao: 'WhatsApp'}
-        ];
-
+        $scope.editandoTelefone = false;
+        $scope.listaTipoTelefone = [{id: 1, descricao: "Residencial"}, {id: 2, descricao: "Celular"}, {id: 3, descricao: "WhatsApp"}];
         $scope.maxSize = 3;
         $scope.totalItems = 0;
         $scope.currentPage = 1;
@@ -46938,7 +46945,6 @@ function setMensagemTemporaria(tipoMenssagem, texto, idComponente) {
         $scope.getListaClienteAll = function (pagina) {
             if (verificaToken(true)) {
                 var envio = {'pagina': (pagina - 1), 'token': getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBusca};
-
                 $rootScope.loading = $http({
                     method: 'POST',
                     data: envio,
@@ -46957,9 +46963,16 @@ function setMensagemTemporaria(tipoMenssagem, texto, idComponente) {
                 });
             }
         };
+        
+        $scope.getCep = function () {
+            var cep = BuscaCep.getViaCep("81310000");
+            alert(cep);
+        };
+        
+        $scope.getCep();
 
         $scope.insertCliente = function () {
-            if (verificaToken(true) && $scope.validaCliente()) {
+            if (verificaToken(true) && validaCliente()) {
                 var envio = {'dados': $scope.clienteAtual, 'token': getToken()};
                 $rootScope.send = $http({
                     method: 'POST',
@@ -46983,47 +46996,74 @@ function setMensagemTemporaria(tipoMenssagem, texto, idComponente) {
 
         $scope.novoTelefone = function () {
             $scope.telefone = {};
-            $scope.tipoTelefone = {};
+            $scope.editandoTelefone = false;
+            $scope.telefone.tipoTelefone = $scope.listaTipoTelefone[0];
         };
 
+        $scope.editaTelefone = function (telefone) {
+            $scope.editandoTelefone = true;
+            $scope.telefone = Object.assign({}, telefone);
+        };
+
+        $scope.salvaTelefone = function () {
+            if (validaFone()) {
+                for (var i = $scope.listaTelefone.length; i--; ) {
+                    if (i ===  $scope.telefone.index) {
+                        $scope.listaTelefone[i] =  $scope.telefone;
+                        $scope.novoTelefone();
+                    }
+                }
+            }
+        };
+
+
         $scope.addTelefone = function () {
-            if ($scope.validaFone()) {
-                var telefoneAdd = Object.assign({}, $scope.telefone);
-                telefoneAdd.tipoTelefone = Object.assign({}, $scope.tipoTelefone);
-                $scope.listaTelefone.push(telefoneAdd);
+            if (validaFone()) {
+                var telefoneAux = Object.assign({}, $scope.telefone);
+                telefoneAux.index = $scope.listaTelefone.length;
+                $scope.listaTelefone.push(telefoneAux);
                 $scope.novoTelefone();
             }
         };
 
-        $scope.validaFone = function () {
+        $scope.removeTelefone = function (item) {
+            for (var i = $scope.listaTelefone.length; i--; ) {
+                if ($scope.listaTelefone[i] === item) {
+                    $scope.listaTelefone.splice(i, 1);
+                }
+            }
+        }
+
+        var validaFone = function () {
+            var retorno = false;
             if ($scope.telefone.numero !== null && $scope.telefone.numero !== undefined && $scope.telefone.numero.trim() !== "") {
-                return true;
+                retorno = true;
             } else {
                 setMensagemTemporaria('erro', 'Informar Telefone!', '#msgClienteCadatro');
                 return false;
             }
 
-            if ($scope.telefone.tipoTelefone !== null && $scope.telefone.tipoTelefone !== undefined && $scope.telefone.tipoTelefone.id !== undefined) {
-                return true;
+            if ($scope.telefone.tipoTelefone !== null && $scope.telefone.tipoTelefone !== undefined) {
+                retorno = true;
             } else {
                 setMensagemTemporaria('erro', 'Informar Tipo!', '#msgClienteCadatro');
                 return false;
             }
+            return retorno;
         };
 
         $scope.avancaCliente = function (i) {
-//            if (i === 0 && $scope.validaCliente()) {
+//            if (i === 0 && validaCliente()) {
 //                $scope.indice = i + 1;
-//            } else if (i === 1 && $scope.validaCliente()) {
+//            } else if (i === 1 && validaCliente()) {
 //                $scope.indice = i + 1;
-//            } else if (i === 2 && $scope.validaCliente()) {
+//            } else if (i === 2 && validaCliente()) {
 //                $scope.indice = i + 1;
 //            }
-            $scope.novoTelefone();
             $scope.indice = i + 1;
         };
 
-        $scope.validaCliente = function () {
+        var validaCliente = function () {
             var retorno = false;
             if ($scope.clienteAtual !== null) {
 
@@ -47053,35 +47093,29 @@ function setMensagemTemporaria(tipoMenssagem, texto, idComponente) {
             return retorno;
         };
 
-        $scope.limparDadosCliente = function () {
-            $scope.telefone = {};
+        var limparDadosCliente = function () {
+            $scope.novoTelefone();
             $scope.listaTelefone = [];
             $scope.indice = 0;
         };
 
         $scope.novoCliente = function () {
             $scope.clienteAtual = {};
-            $scope.clienteAtual.sexo = $scope.listaSexo[0].value;
             $scope.abrirDialog('#clienteDialogCadastro');
-            $scope.limparDadosCliente();
-            $scope.novoTelefone();
+            limparDadosCliente();
         };
 
         $scope.preparaCliente = function (cliente) {
             $scope.clienteAtual = Object.assign({}, cliente);
             $scope.limparDadosCliente();
         };
-
         $scope.fecharDialog = function (idModal) {
             $(idModal).modal('hide');
         };
-
         $scope.abrirDialog = function (idModal) {
             $(idModal).modal('show');
         };
-
-    });
-
+    }]);
 })();
 (function () {
     'use strict';
@@ -47215,19 +47249,19 @@ function setMensagemTemporaria(tipoMenssagem, texto, idComponente) {
                 if ($scope.fornecedorAtual.descricao !== null && $scope.fornecedorAtual.descricao.trim() !== "") {
                     retorno = true;
                 } else {
-                    retorno = false;
+                    return false;
                 }
 
                 if ($scope.fornecedorAtual.email !== null && $scope.fornecedorAtual.email.trim() !== "") {
                     retorno = true;
                 } else {
-                    retorno = false;
+                    return false;
                 }
 
                 if ($scope.fornecedorAtual.telefone !== null && $scope.fornecedorAtual.telefone.trim() !== "") {
                     retorno = true;
                 } else {
-                    retorno = false;
+                    return false;
                 }
             }
             return retorno;
