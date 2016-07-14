@@ -1,96 +1,72 @@
 
 (function () {
     'use strict';
-
     angular.module('www.geve.com.br').controller("produtoControler", function ($rootScope, $scope, $http) {
         verificaToken(true);
         ajustaMenuLateral('#btnProduto');
-
         $(":file").filestyle({buttonBefore: true, buttonText: "Localizar"});
-
         var dataAtual = new Date();
         $scope.dataInicialMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth(), 1));
         $scope.dataFinalMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth() + 1, 0));
         $scope.dataInicial = {opened: true};
         $scope.dataFinal = {opened: true};
-
         $scope.openDataInicial = function () {
             $scope.dataInicial.opened = true;
             $scope.dateOptionsInicial.maxDate = $scope.dataFinalMovimento;
         };
-
         $scope.openDataFinal = function () {
             $scope.dataFinal.opened = true;
             $scope.dateOptionsFinal.minDate = $scope.dataInicialMovimento;
         };
-
         $scope.dateOptionsInicial = {
             maxDate: $scope.dataFinalMovimento,
             startingDay: 1
         };
-
         $scope.dateOptionsFinal = {
             minDate: $scope.dataInicialMovimento,
             startingDay: 1
         };
-
         $scope.estoqueFuturo = 0;
-
         $scope.listaFornecedores = [];
         $scope.valorBuscaFornecedor = "";
-
         $scope.produtoAtual = {observacao: ""};
         $scope.listaProduto = [];
-
         $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
-
         $scope.entidadeSelecionada = {};
-
         $scope.valorBuscaProduto = "";
-
         $scope.listaTipoMovimentacaoCorrecao = [
             {id: 4, descricao: 'Cortesia'},
             {id: 5, descricao: 'Correção'},
             {id: 1, descricao: 'Entrada'},
             {id: 3, descricao: 'Perda'}
         ];
-
         $scope.listaProdutoMovimentacao = [];
-
-
         $scope.maxSize = 3;
         $scope.totalItems = 0;
         $scope.currentPage = 1;
         $scope.itensPorPagina = 10;
-
         $scope.totalItemsMovimentacao = 0;
         $scope.currentPageMovimentacao = 1;
-
         $scope.totalItemsFornecedor = 0;
         $scope.currentPageFornecedor = 1;
         $scope.itensPorPaginaFornecedor = 5;
-
         $scope.limpaFiltroAvancado = function () {
             $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
             $scope.valorBuscaProduto = "";
             $scope.getListaProdutoAll(1);
         };
-
         $scope.filtroPorDescricao = function () {
             $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
             $scope.getListaProdutoAll(1);
         };
-
         $scope.filtrarAvancado = function () {
             $scope.valorBuscaProduto = "";
             $scope.getListaProdutoAll(1);
             $scope.fecharDialog('#localizarProdutoDialog');
         };
-
         $scope.getListaProdutoAll = function (pagina) {
             if (verificaToken(true)) {
                 var envio = {'pagina': (pagina - 1), 'token': getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBuscaProduto};
-
                 $rootScope.loading = $http({
                     method: 'POST',
                     data: envio,
@@ -109,7 +85,6 @@
                 });
             }
         };
-
         $scope.getListaMovimentacao = function (pagina) {
             if (verificaToken(true) && ($scope.dataInicialMovimento !== null && $scope.dataFinalMovimento !== null)) {
                 var envio = {'id': $scope.produtoAtual.id, 'pagina': (pagina - 1), 'token': getToken(), 'data_inicial': $scope.dataInicialMovimento, 'data_final': $scope.dataFinalMovimento};
@@ -136,14 +111,12 @@
                 $scope.totalItemsMovimentacao = 0;
             }
         };
-
         $scope.getImagem = function (idItem) {
             if (verificaToken(true) && idItem > 0) {
                 var random = (new Date()).toString();
                 return urlImagem + idItem + "/" + getToken() + "?cb=" + random;
             }
         };
-
         $scope.validaImagem = function (mostraMenssagemErro, idCampoImagem, idCampoMsg) {
             var campoImagem = $(idCampoImagem).prop('files');
             if (campoImagem !== null && $(idCampoImagem).eq(0).val() !== "") {
@@ -173,7 +146,6 @@
                 }
             }
         };
-
         $scope.mostrarImagem = function (idCampoImagem, idCampoMsg, idCampoDestino) {
             if ($scope.validaImagem(true, idCampoImagem, idCampoMsg)) {
                 var campoImagem = $(idCampoImagem).prop('files');
@@ -185,7 +157,6 @@
                 reader.readAsDataURL(imagem);
             }
         };
-
         $scope.insertProduto = function () {
             $scope.message = "";
             if (verificaToken(true)) {
@@ -219,7 +190,6 @@
                 }
             }
         };
-
         $scope.updateProduto = function () {
             $scope.message = "";
             if (verificaToken(true)) {
@@ -253,7 +223,6 @@
                 }
             }
         };
-
         $scope.deleteProduto = function () {
             if (verificaToken(true)) {
                 var envio = {'dados': $scope.produtoAtual, 'token': getToken()};
@@ -277,7 +246,6 @@
                 });
             }
         };
-
         $scope.movimentarProdutoCorrecao = function () {
             $scope.message = "";
             if (verificaToken(true)) {
@@ -314,14 +282,11 @@
                 }
             }
         };
-
         $scope.fecharCorrecaoMovimentacao = function () {
             $scope.preparaProdutoMovimentacao(false);
             $scope.fecharDialog("#produtoDialogMovimentacaoCorrecao");
             $scope.abrirDialog("#produtoDialogMovimentacao");
         };
-
-
         $scope.getListaFornecedorAll = function (pagina) {
             if (verificaToken(true)) {
                 var envio = {'pagina': (pagina - 1), 'token': getToken(), 'buscaDescricao': $scope.valorBuscaFornecedor, 'limit': $scope.itensPorPaginaFornecedor};
@@ -343,8 +308,6 @@
                 });
             }
         };
-
-
         $scope.validaCorrecao = function () {
             var retorno = false;
             if ($scope.produtoAtual !== null) {
@@ -381,23 +344,22 @@
             }
             return retorno;
         };
-
         $scope.validaProduto = function (idMsg) {
             var retorno = false;
             if ($scope.produtoAtual !== null) {
-                if ($scope.produtoAtual.descricao !== null && $scope.produtoAtual.descricao.trim() !== "") {
+                if ($scope.produtoAtual.descricao !== undefined && $scope.produtoAtual.descricao !== null && $scope.produtoAtual.descricao.trim() !== "") {
                     retorno = true;
                 } else {
                     setMensagemTemporaria('erro', 'Deve informar descrição!', idMsg);
                     return false;
                 }
-                if ($scope.produtoAtual.valor !== null && $scope.produtoAtual.valor > 0) {
+                if ($scope.produtoAtual.valor !== undefined && $scope.produtoAtual.valor !== null && $scope.produtoAtual.valor > 0) {
                     retorno = true;
                 } else {
                     setMensagemTemporaria('erro', 'Deve informar valor!', idMsg);
                     return false;
                 }
-                if ($scope.produtoAtual.fornecedor !== null) {
+                if ($scope.produtoAtual.fornecedor !== undefined && $scope.produtoAtual.fornecedor !== null) {
                     retorno = true;
                 } else {
                     setMensagemTemporaria('erro', 'Deve informar o fornecedor!', idMsg);
@@ -406,21 +368,18 @@
             }
             return retorno;
         };
-
         $scope.novoProduto = function () {
             $scope.produtoAtual = {observacao: ""};
             $(":file").val(null);
             $(":file").filestyle('clear');
             $("#produtoImagemCadastroView").removeAttr('src');
         };
-
         $scope.preparaProduto = function (produto) {
             $scope.produtoAtual = Object.assign({}, produto);
             $(":file").val(null);
             $(":file").filestyle('clear');
             $scope.abrirDialog('#produtoDialogFuncoes');
         };
-
         $scope.preparaProdutoMovimentacao = function (prepraView) {
             $scope.dataInicialMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth(), 1));
             $scope.dataFinalMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth() + 1, 0));
@@ -434,8 +393,6 @@
                 $scope.preparaProdutoView('#produtoDialogFuncoes', '#produtoDialogMovimentacao');
             }
         };
-
-
         $scope.preparaProdutoView = function (idModalPai, idModalFilho) {
             if (idModalPai !== null) {
                 $scope.fecharDialog(idModalPai);
@@ -445,27 +402,22 @@
                 $scope.abrirDialog(idModalFilho);
             }
         };
-
         $scope.selecionarFornecedor = function (idModal, fornecedor) {
             $scope.entidadeSelecionada.fornecedor = fornecedor;
             $scope.fecharDialog(idModal);
             $scope.limpaBuscaFornecedor(null);
         };
-
         $scope.abrirDialog = function (idModal) {
             $(idModal).modal('show');
         };
-
         $scope.fecharDialog = function (idModal) {
             $(idModal).modal('hide');
         };
-
         $scope.abrirDialogLocalizarFornecedor = function ($entidade) {
             $scope.limpaBuscaFornecedor($entidade);
             $scope.getListaFornecedorAll(1);
             $('#localizarFornecedorDialog').modal('show');
         };
-
         $scope.limpaBuscaFornecedorComBusca = function () {
             $scope.listaFornecedores = [];
             $scope.valorBuscaFornecedor = "";
@@ -473,7 +425,6 @@
             $scope.totalItemsFornecedor = 0;
             $scope.getListaFornecedorAll(1);
         };
-
         $scope.limpaBuscaFornecedor = function ($entidade) {
             $scope.listaFornecedores = [];
             $scope.valorBuscaFornecedor = "";
@@ -484,9 +435,7 @@
                 $scope.entidadeSelecionada = $entidade;
             }
         };
-
         $scope.getListaProdutoAll(1);
-
         $scope.corLinha = function (tipoMovimentacao) {
             var cor = {color: 'black'};
             if (tipoMovimentacao == 1) {
@@ -502,6 +451,5 @@
             }
             return cor;
         };
-
     });
 })();

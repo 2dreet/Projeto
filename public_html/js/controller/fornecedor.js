@@ -127,19 +127,19 @@
             var retorno = false;
             if ($scope.fornecedorAtual !== null) {
 
-                if ($scope.fornecedorAtual.descricao !== null && $scope.fornecedorAtual.descricao.trim() !== "") {
+                if ($scope.fornecedorAtual.descricao !== undefined && $scope.fornecedorAtual.descricao !== null && $scope.fornecedorAtual.descricao.trim() !== "") {
                     retorno = true;
                 } else {
                     return false;
                 }
 
-                if ($scope.fornecedorAtual.email !== null && $scope.fornecedorAtual.email.trim() !== "") {
+                if ($scope.fornecedorAtual.email !== undefined && $scope.fornecedorAtual.email !== null && $scope.fornecedorAtual.email.trim() !== "") {
                     retorno = true;
                 } else {
                     return false;
                 }
 
-                if ($scope.fornecedorAtual.telefone !== null && $scope.fornecedorAtual.telefone.trim() !== "") {
+                if ($scope.fornecedorAtual.telefone !== undefined && $scope.fornecedorAtual.telefone !== null && $scope.fornecedorAtual.telefone.trim() !== "") {
                     retorno = true;
                 } else {
                     return false;

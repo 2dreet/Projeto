@@ -338,9 +338,14 @@ html, body {
     overflow-x: hidden;
 }
 
-
 input[type='number'] {
     -moz-appearance:textfield;
+}
+
+input:-webkit-autofill 
+{    
+    -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+    -webkit-text-fill-color: black !important;
 }
 
 input::-webkit-outer-spin-button,

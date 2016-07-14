@@ -46824,21 +46824,24 @@ app.value('cgBusyDefaults',{
 
 (function () {
     'use strict';
-
     angular.module('www.geve.com.br').service('BuscaCep', ['$http', function ($http) {
-            function getViaCep(cep) {
-                $http({
+            this.getViaCep = function (cep) {
+                return  $http({
                     method: 'GET',
                     crossDomain: true,
-                    url: "https://viacep.com.br/ws/" + cep + "/json/",
-                    data: envio,
-                    headers: {'Content-Type': 'application/json'}
+                    url: "https://viacep.com.br/ws/" + cep + "/json/"
                 }).then(function successCallback(response) {
-                    return response.data;
+                    var retorno = {erro: false, data: {}};
+                    if (response.erro) {
+                        retorno.erro = true;
+                    } else {
+                        retorno.data = response.data;
+                    }
+                    return retorno;
                 }, function errorCallback(response) {
-                    return false;
+                    return {erro: true, conection: true};
                 });
-            }
+            };
         }]);
 })();
 var urlWs = "http://localhost:8088/WsJosePhp/";
@@ -46921,201 +46924,294 @@ function setMensagemTemporaria(tipoMenssagem, texto, idComponente) {
 }
 (function () {
     'use strict';
-    angular.module('www.geve.com.br').controller("clienteControler", ['$rootScope', '$scope', '$http', 'BuscaCep', function ($rootScope, $scope, $http, BuscaCep) {
-        verificaToken(true);
-        ajustaMenuLateral('#btnCliente');
-        $scope.clienteAtual = {};
-        $scope.listaCliente = [];
-        $scope.valorBuscaCliente = "";
-        $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
-        $scope.listaSexo = ["Masculino", "Feminino"];
-        $scope.dataNascimento = {opened: true};
-        $scope.opendataNascimento = function () {
-            $scope.dataNascimento.opened = true;
-        };
-        $scope.telefone = {};
-        $scope.listaTelefone = [];
-        $scope.editandoTelefone = false;
-        $scope.listaTipoTelefone = [{id: 1, descricao: "Residencial"}, {id: 2, descricao: "Celular"}, {id: 3, descricao: "WhatsApp"}];
-        $scope.maxSize = 3;
-        $scope.totalItems = 0;
-        $scope.currentPage = 1;
-        $scope.itensPorPagina = 10;
-
-        $scope.getListaClienteAll = function (pagina) {
-            if (verificaToken(true)) {
-                var envio = {'pagina': (pagina - 1), 'token': getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBusca};
-                $rootScope.loading = $http({
-                    method: 'POST',
-                    data: envio,
-                    crossDomain: true,
-                    url: urlWs + "cliente/getAllCliente",
-                    headers: {'Content-Type': 'application/json'}
-                }).then(function successCallback(response) {
-                    if (!response.data.token) {
-                        refazerLogin();
-                    } else {
-                        $scope.listaCliente = response.data.dados;
-                        $scope.totalItems = response.data.totalRegistro;
-                    }
-                }, function errorCallback(response) {
-                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
-                });
-            }
-        };
+    angular.module('www.geve.com.br').service('Formulario', function () {
         
-        $scope.getCep = function () {
-            var cep = BuscaCep.getViaCep("81310000");
-            alert(cep);
+        this.getUF = function () {
+            return ["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PR","PB","PA","PE","PI","RJ","RN","RS","RO","RR","SC","SE","SP","TO"];
         };
-        
-        $scope.getCep();
-
-        $scope.insertCliente = function () {
-            if (verificaToken(true) && validaCliente()) {
-                var envio = {'dados': $scope.clienteAtual, 'token': getToken()};
-                $rootScope.send = $http({
-                    method: 'POST',
-                    crossDomain: true,
-                    url: urlWs + "cliente/insertCliente",
-                    data: envio,
-                    headers: {'Content-Type': 'application/json'}
-                }).then(function successCallback(response) {
-                    $scope.fecharDialog('#cadastroFornecedorDialog');
-                    if (!response.data.token) {
-                        refazerLogin();
-                    } else {
-                        setMensagemTemporaria('sucesso', 'Cliente cadastrado!', '#msgClienteGeral');
-                        $scope.getListaClienteAll(1);
-                    }
-                }, function errorCallback(response) {
-                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgClienteGeral');
-                });
-            }
-        };
-
-        $scope.novoTelefone = function () {
-            $scope.telefone = {};
-            $scope.editandoTelefone = false;
-            $scope.telefone.tipoTelefone = $scope.listaTipoTelefone[0];
-        };
-
-        $scope.editaTelefone = function (telefone) {
-            $scope.editandoTelefone = true;
-            $scope.telefone = Object.assign({}, telefone);
-        };
-
-        $scope.salvaTelefone = function () {
-            if (validaFone()) {
-                for (var i = $scope.listaTelefone.length; i--; ) {
-                    if (i ===  $scope.telefone.index) {
-                        $scope.listaTelefone[i] =  $scope.telefone;
-                        $scope.novoTelefone();
-                    }
-                }
-            }
-        };
-
-
-        $scope.addTelefone = function () {
-            if (validaFone()) {
-                var telefoneAux = Object.assign({}, $scope.telefone);
-                telefoneAux.index = $scope.listaTelefone.length;
-                $scope.listaTelefone.push(telefoneAux);
-                $scope.novoTelefone();
-            }
-        };
-
-        $scope.removeTelefone = function (item) {
-            for (var i = $scope.listaTelefone.length; i--; ) {
-                if ($scope.listaTelefone[i] === item) {
-                    $scope.listaTelefone.splice(i, 1);
-                }
-            }
-        }
-
-        var validaFone = function () {
-            var retorno = false;
-            if ($scope.telefone.numero !== null && $scope.telefone.numero !== undefined && $scope.telefone.numero.trim() !== "") {
-                retorno = true;
-            } else {
-                setMensagemTemporaria('erro', 'Informar Telefone!', '#msgClienteCadatro');
-                return false;
-            }
-
-            if ($scope.telefone.tipoTelefone !== null && $scope.telefone.tipoTelefone !== undefined) {
-                retorno = true;
-            } else {
-                setMensagemTemporaria('erro', 'Informar Tipo!', '#msgClienteCadatro');
-                return false;
-            }
-            return retorno;
-        };
-
-        $scope.avancaCliente = function (i) {
-//            if (i === 0 && validaCliente()) {
-//                $scope.indice = i + 1;
-//            } else if (i === 1 && validaCliente()) {
-//                $scope.indice = i + 1;
-//            } else if (i === 2 && validaCliente()) {
-//                $scope.indice = i + 1;
-//            }
-            $scope.indice = i + 1;
-        };
-
-        var validaCliente = function () {
-            var retorno = false;
-            if ($scope.clienteAtual !== null) {
-
-                if ($scope.clienteAtual.nome !== null && $scope.clienteAtual.nome !== undefined && $scope.clienteAtual.nome.trim() !== "") {
-                    retorno = true;
-                } else {
-                    return false;
-                }
-                if ($scope.clienteAtual.sobreNome !== null && $scope.clienteAtual.sobreNome !== undefined && $scope.clienteAtual.sobreNome.trim() !== "") {
-                    retorno = true;
-                } else {
-                    return false;
-                }
-
-                if ($scope.clienteAtual.email !== null && $scope.clienteAtual.email !== undefined && $scope.clienteAtual.email.trim() !== "") {
-                    retorno = true;
-                } else {
-                    return false;
-                }
-                if ($scope.clienteAtual.dataNascimento !== null && $scope.clienteAtual.dataNascimento !== undefined) {
-                    retorno = true;
-                } else {
-                    setMensagemTemporaria('erro', 'Informar Data Nascimento!', '#msgClienteCadatro');
-                    return false;
-                }
-            }
-            return retorno;
-        };
-
-        var limparDadosCliente = function () {
-            $scope.novoTelefone();
-            $scope.listaTelefone = [];
-            $scope.indice = 0;
-        };
-
-        $scope.novoCliente = function () {
+    });
+})();
+(function () {
+    'use strict';
+    angular.module('www.geve.com.br').controller("clienteControler", ['$rootScope', '$scope', '$http', 'BuscaCep', 'Formulario', function ($rootScope, $scope, $http, BuscaCep, Formulario) {
+            verificaToken(true);
+            ajustaMenuLateral('#btnCliente');
             $scope.clienteAtual = {};
-            $scope.abrirDialog('#clienteDialogCadastro');
-            limparDadosCliente();
-        };
+            $scope.clienteEndereco = {};
+            $scope.listaCliente = [];
+            $scope.valorBuscaCliente = "";
+            $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
+            $scope.listaSexo = ["Masculino", "Feminino"];
+            $scope.dataNascimento = {opened: true};
+            $scope.opendataNascimento = function () {
+                $scope.dataNascimento.opened = true;
+            };
 
-        $scope.preparaCliente = function (cliente) {
-            $scope.clienteAtual = Object.assign({}, cliente);
-            $scope.limparDadosCliente();
-        };
-        $scope.fecharDialog = function (idModal) {
-            $(idModal).modal('hide');
-        };
-        $scope.abrirDialog = function (idModal) {
-            $(idModal).modal('show');
-        };
-    }]);
+            $scope.listaUF = Formulario.getUF();
+
+            $scope.telefone = {};
+            $scope.listaTelefone = [];
+            $scope.editandoTelefone = false;
+            $scope.listaTipoTelefone = [{id: 1, descricao: "Residencial"}, {id: 2, descricao: "Celular"}, {id: 3, descricao: "WhatsApp"}];
+            $scope.maxSize = 3;
+            $scope.totalItems = 0;
+            $scope.currentPage = 1;
+            $scope.itensPorPagina = 10;
+
+
+
+            $scope.getListaClienteAll = function (pagina) {
+                if (verificaToken(true)) {
+                    var envio = {'pagina': (pagina - 1), 'token': getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBusca};
+                    $rootScope.loading = $http({
+                        method: 'POST',
+                        data: envio,
+                        crossDomain: true,
+                        url: urlWs + "cliente/getAllCliente",
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        if (!response.data.token) {
+                            refazerLogin();
+                        } else {
+                            $scope.listaCliente = response.data.dados;
+                            $scope.totalItems = response.data.totalRegistro;
+                        }
+                    }, function errorCallback(response) {
+                        setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
+                    });
+                }
+            };
+
+            $scope.getCep = function () {
+                BuscaCep.getViaCep($scope.clienteEndereco.cep).then(function (d) {
+                    $scope.clienteEndereco.logradouro = d.data.logradouro;
+                    $scope.clienteEndereco.bairro = d.data.bairro;
+                    $scope.clienteEndereco.cidade = d.data.localidade;
+                    $scope.clienteEndereco.uf = d.data.uf;
+                });
+            };
+
+            $scope.insertCliente = function () {
+                if (verificaToken(true) && validaEnvioCliente()) {
+                    $scope.clienteAtual.endereco = $scope.clienteEndereco;
+                    $scope.clienteAtual.telefone = $scope.listaTelefone;
+                    var envio = {'dados': $scope.clienteAtual, 'token': getToken()};
+                    $rootScope.send = $http({
+                        method: 'POST',
+                        crossDomain: true,
+                        url: urlWs + "cliente/insertCliente",
+                        data: envio,
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        $scope.fecharDialog('#clienteDialogCadastro');
+                        if (!response.data.token) {
+                            refazerLogin();
+                        } else {
+                            setMensagemTemporaria('sucesso', 'Cliente cadastrado!', '#msgClienteGeral');
+                            //$scope.getListaClienteAll(1);
+                        }
+                    }, function errorCallback(response) {
+                        setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgClienteGeral');
+                    });
+                }
+            };
+
+            $scope.novoTelefone = function () {
+                $scope.telefone = {};
+                $scope.editandoTelefone = false;
+                $scope.telefone.tipoTelefone = $scope.listaTipoTelefone[0];
+            };
+
+            $scope.editaTelefone = function (telefone) {
+                $scope.editandoTelefone = true;
+                $scope.telefone = Object.assign({}, telefone);
+            };
+
+            $scope.salvaTelefone = function () {
+                if (validaFone()) {
+                    for (var i = $scope.listaTelefone.length; i--; ) {
+                        if (i === $scope.telefone.index) {
+                            $scope.listaTelefone[i] = $scope.telefone;
+                            $scope.novoTelefone();
+                        }
+                    }
+                }
+            };
+
+
+            $scope.addTelefone = function () {
+                if (validaFone()) {
+                    var telefoneAux = Object.assign({}, $scope.telefone);
+                    telefoneAux.index = $scope.listaTelefone.length;
+                    $scope.listaTelefone.push(telefoneAux);
+                    $scope.novoTelefone();
+                }
+            };
+
+            $scope.removeTelefone = function (item) {
+                for (var i = $scope.listaTelefone.length; i--; ) {
+                    if ($scope.listaTelefone[i] === item) {
+                        $scope.listaTelefone.splice(i, 1);
+                    }
+                }
+            };
+
+            var validaFone = function () {
+                var retorno = false;
+                if ($scope.telefone.numero !== null && $scope.telefone.numero !== undefined && $scope.telefone.numero.trim() !== "") {
+                    retorno = true;
+                } else {
+                    setMensagemTemporaria('erro', 'Informar Telefone!', '#msgClienteCadatro');
+                    return false;
+                }
+
+                if ($scope.telefone.tipoTelefone !== null && $scope.telefone.tipoTelefone !== undefined) {
+                    retorno = true;
+                } else {
+                    setMensagemTemporaria('erro', 'Informar Tipo!', '#msgClienteCadatro');
+                    return false;
+                }
+                return retorno;
+            };
+
+            var validaListaFone = function () {
+                var retorno = false;
+                if ($scope.listaTelefone !== null && $scope.listaTelefone.length > 0) {
+                    retorno = true;
+                } else {
+                    setMensagemTemporaria('erro', 'Informar Telefone!', '#msgClienteCadatro');
+                    return false;
+                }
+                return retorno;
+            };
+
+            var validaEndereco = function () {
+                var retorno = false;
+                if ($scope.clienteEndereco.cep !== undefined && $scope.clienteEndereco.cep !== null && ($scope.clienteEndereco.cep.trim()).length === 8) {
+                    retorno = true;
+                } else {
+                    setMensagemTemporaria('erro', 'Cep Inválido!', '#msgClienteCadatro');
+                    return false;
+                }
+                if ($scope.clienteEndereco.logradouro !== undefined && $scope.clienteEndereco.logradouro !== null && ($scope.clienteEndereco.logradouro.trim()).length > 0) {
+                    retorno = true;
+                } else {
+                    setMensagemTemporaria('erro', 'Logradouro Inválido!', '#msgClienteCadatro');
+                    return false;
+                }
+                if ($scope.clienteEndereco.bairro !== undefined && $scope.clienteEndereco.bairro !== null && ($scope.clienteEndereco.bairro.trim()).length > 0) {
+                    retorno = true;
+                } else {
+                    setMensagemTemporaria('erro', 'Bairro Inválido!', '#msgClienteCadatro');
+                    return false;
+                }
+                if ($scope.clienteEndereco.cidade !== undefined && $scope.clienteEndereco.cidade !== null && ($scope.clienteEndereco.cidade.trim()).length > 0) {
+                    retorno = true;
+                } else {
+                    setMensagemTemporaria('erro', 'Cidade Inválida!', '#msgClienteCadatro');
+                    return false;
+                }
+                if ($scope.clienteEndereco.uf !== undefined && $scope.clienteEndereco.uf !== null && ($scope.clienteEndereco.uf.trim()).length === 2) {
+                    retorno = true;
+                } else {
+                    setMensagemTemporaria('erro', 'UF Inválida!', '#msgClienteCadatro');
+                    return false;
+                }
+                if ($scope.clienteEndereco.numero !== undefined && $scope.clienteEndereco.numero !== null && $scope.clienteEndereco.numero > 0) {
+                    retorno = true;
+                } else {
+                    setMensagemTemporaria('erro', 'Número Inválido!', '#msgClienteCadatro');
+                    return false;
+                }
+                return retorno;
+            };
+
+            var validaEnvioCliente = function () {
+                var retorno = false;
+                if (validaCliente()) {
+                    retorno = true;
+                } else {
+                    $scope.indice = 0;
+                }
+                if (validaEndereco()) {
+                    retorno = true;
+                } else {
+                    $scope.indice = 1;
+                }
+                if (validaListaFone()) {
+                    retorno = true;
+                } else {
+                    $scope.indice = 2;
+                }
+                return  retorno;
+            };
+
+            $scope.avancaCliente = function (i) {
+                if (i === 0 && validaCliente()) {
+                    $scope.indice = i + 1;
+                } else if (i === 1 && validaEndereco()) {
+                    $scope.indice = i + 1;
+                }
+            };
+
+            var validaCliente = function () {
+                var retorno = false;
+                if ($scope.clienteAtual !== null) {
+
+                    if ($scope.clienteAtual.nome !== null && $scope.clienteAtual.nome !== undefined && $scope.clienteAtual.nome.trim() !== "") {
+                        retorno = true;
+                    } else {
+                        setMensagemTemporaria('erro', 'Nome Inválido!', '#msgClienteCadatro');
+                        return false;
+                    }
+                    if ($scope.clienteAtual.sobreNome !== null && $scope.clienteAtual.sobreNome !== undefined && $scope.clienteAtual.sobreNome.trim() !== "") {
+                        retorno = true;
+                    } else {
+                        setMensagemTemporaria('erro', 'Sobrenome Inválido!', '#msgClienteCadatro');
+                        return false;
+                    }
+
+                    if ($scope.clienteAtual.email !== null && $scope.clienteAtual.email !== undefined && $scope.clienteAtual.email.trim() !== "") {
+                        retorno = true;
+                    } else {
+                        setMensagemTemporaria('erro', 'Email Inválido!', '#msgClienteCadatro');
+                        return false;
+                    }
+                    if ($scope.clienteAtual.dataNascimento !== null && $scope.clienteAtual.dataNascimento !== undefined) {
+                        retorno = true;
+                    } else {
+                        setMensagemTemporaria('erro', 'Informar Data Nascimento!', '#msgClienteCadatro');
+                        return false;
+                    }
+                }
+                return retorno;
+            };
+
+            var limparDadosCliente = function () {
+                $scope.novoTelefone();
+                $scope.listaTelefone = [];
+                $scope.indice = 0;
+                $scope.clienteEndereco = {};
+                $scope.clienteEndereco.uf = "AC";
+            };
+
+            $scope.novoCliente = function () {
+                $scope.clienteAtual = {};
+                $scope.abrirDialog('#clienteDialogCadastro');
+                limparDadosCliente();
+            };
+
+            $scope.preparaCliente = function (cliente) {
+                $scope.clienteAtual = Object.assign({}, cliente);
+                $scope.limparDadosCliente();
+            };
+            $scope.fecharDialog = function (idModal) {
+                $(idModal).modal('hide');
+            };
+            $scope.abrirDialog = function (idModal) {
+                $(idModal).modal('show');
+            };
+        }]);
 })();
 (function () {
     'use strict';
@@ -47246,19 +47342,19 @@ function setMensagemTemporaria(tipoMenssagem, texto, idComponente) {
             var retorno = false;
             if ($scope.fornecedorAtual !== null) {
 
-                if ($scope.fornecedorAtual.descricao !== null && $scope.fornecedorAtual.descricao.trim() !== "") {
+                if ($scope.fornecedorAtual.descricao !== undefined && $scope.fornecedorAtual.descricao !== null && $scope.fornecedorAtual.descricao.trim() !== "") {
                     retorno = true;
                 } else {
                     return false;
                 }
 
-                if ($scope.fornecedorAtual.email !== null && $scope.fornecedorAtual.email.trim() !== "") {
+                if ($scope.fornecedorAtual.email !== undefined && $scope.fornecedorAtual.email !== null && $scope.fornecedorAtual.email.trim() !== "") {
                     retorno = true;
                 } else {
                     return false;
                 }
 
-                if ($scope.fornecedorAtual.telefone !== null && $scope.fornecedorAtual.telefone.trim() !== "") {
+                if ($scope.fornecedorAtual.telefone !== undefined && $scope.fornecedorAtual.telefone !== null && $scope.fornecedorAtual.telefone.trim() !== "") {
                     retorno = true;
                 } else {
                     return false;
@@ -47406,96 +47502,72 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
 
 (function () {
     'use strict';
-
     angular.module('www.geve.com.br').controller("produtoControler", function ($rootScope, $scope, $http) {
         verificaToken(true);
         ajustaMenuLateral('#btnProduto');
-
         $(":file").filestyle({buttonBefore: true, buttonText: "Localizar"});
-
         var dataAtual = new Date();
         $scope.dataInicialMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth(), 1));
         $scope.dataFinalMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth() + 1, 0));
         $scope.dataInicial = {opened: true};
         $scope.dataFinal = {opened: true};
-
         $scope.openDataInicial = function () {
             $scope.dataInicial.opened = true;
             $scope.dateOptionsInicial.maxDate = $scope.dataFinalMovimento;
         };
-
         $scope.openDataFinal = function () {
             $scope.dataFinal.opened = true;
             $scope.dateOptionsFinal.minDate = $scope.dataInicialMovimento;
         };
-
         $scope.dateOptionsInicial = {
             maxDate: $scope.dataFinalMovimento,
             startingDay: 1
         };
-
         $scope.dateOptionsFinal = {
             minDate: $scope.dataInicialMovimento,
             startingDay: 1
         };
-
         $scope.estoqueFuturo = 0;
-
         $scope.listaFornecedores = [];
         $scope.valorBuscaFornecedor = "";
-
         $scope.produtoAtual = {observacao: ""};
         $scope.listaProduto = [];
-
         $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
-
         $scope.entidadeSelecionada = {};
-
         $scope.valorBuscaProduto = "";
-
         $scope.listaTipoMovimentacaoCorrecao = [
             {id: 4, descricao: 'Cortesia'},
             {id: 5, descricao: 'Correção'},
             {id: 1, descricao: 'Entrada'},
             {id: 3, descricao: 'Perda'}
         ];
-
         $scope.listaProdutoMovimentacao = [];
-
-
         $scope.maxSize = 3;
         $scope.totalItems = 0;
         $scope.currentPage = 1;
         $scope.itensPorPagina = 10;
-
         $scope.totalItemsMovimentacao = 0;
         $scope.currentPageMovimentacao = 1;
-
         $scope.totalItemsFornecedor = 0;
         $scope.currentPageFornecedor = 1;
         $scope.itensPorPaginaFornecedor = 5;
-
         $scope.limpaFiltroAvancado = function () {
             $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
             $scope.valorBuscaProduto = "";
             $scope.getListaProdutoAll(1);
         };
-
         $scope.filtroPorDescricao = function () {
             $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
             $scope.getListaProdutoAll(1);
         };
-
         $scope.filtrarAvancado = function () {
             $scope.valorBuscaProduto = "";
             $scope.getListaProdutoAll(1);
             $scope.fecharDialog('#localizarProdutoDialog');
         };
-
         $scope.getListaProdutoAll = function (pagina) {
             if (verificaToken(true)) {
                 var envio = {'pagina': (pagina - 1), 'token': getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBuscaProduto};
-
                 $rootScope.loading = $http({
                     method: 'POST',
                     data: envio,
@@ -47514,7 +47586,6 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
                 });
             }
         };
-
         $scope.getListaMovimentacao = function (pagina) {
             if (verificaToken(true) && ($scope.dataInicialMovimento !== null && $scope.dataFinalMovimento !== null)) {
                 var envio = {'id': $scope.produtoAtual.id, 'pagina': (pagina - 1), 'token': getToken(), 'data_inicial': $scope.dataInicialMovimento, 'data_final': $scope.dataFinalMovimento};
@@ -47541,14 +47612,12 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
                 $scope.totalItemsMovimentacao = 0;
             }
         };
-
         $scope.getImagem = function (idItem) {
             if (verificaToken(true) && idItem > 0) {
                 var random = (new Date()).toString();
                 return urlImagem + idItem + "/" + getToken() + "?cb=" + random;
             }
         };
-
         $scope.validaImagem = function (mostraMenssagemErro, idCampoImagem, idCampoMsg) {
             var campoImagem = $(idCampoImagem).prop('files');
             if (campoImagem !== null && $(idCampoImagem).eq(0).val() !== "") {
@@ -47578,7 +47647,6 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
                 }
             }
         };
-
         $scope.mostrarImagem = function (idCampoImagem, idCampoMsg, idCampoDestino) {
             if ($scope.validaImagem(true, idCampoImagem, idCampoMsg)) {
                 var campoImagem = $(idCampoImagem).prop('files');
@@ -47590,7 +47658,6 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
                 reader.readAsDataURL(imagem);
             }
         };
-
         $scope.insertProduto = function () {
             $scope.message = "";
             if (verificaToken(true)) {
@@ -47624,7 +47691,6 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
                 }
             }
         };
-
         $scope.updateProduto = function () {
             $scope.message = "";
             if (verificaToken(true)) {
@@ -47658,7 +47724,6 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
                 }
             }
         };
-
         $scope.deleteProduto = function () {
             if (verificaToken(true)) {
                 var envio = {'dados': $scope.produtoAtual, 'token': getToken()};
@@ -47682,7 +47747,6 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
                 });
             }
         };
-
         $scope.movimentarProdutoCorrecao = function () {
             $scope.message = "";
             if (verificaToken(true)) {
@@ -47719,14 +47783,11 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
                 }
             }
         };
-
         $scope.fecharCorrecaoMovimentacao = function () {
             $scope.preparaProdutoMovimentacao(false);
             $scope.fecharDialog("#produtoDialogMovimentacaoCorrecao");
             $scope.abrirDialog("#produtoDialogMovimentacao");
         };
-
-
         $scope.getListaFornecedorAll = function (pagina) {
             if (verificaToken(true)) {
                 var envio = {'pagina': (pagina - 1), 'token': getToken(), 'buscaDescricao': $scope.valorBuscaFornecedor, 'limit': $scope.itensPorPaginaFornecedor};
@@ -47748,8 +47809,6 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
                 });
             }
         };
-
-
         $scope.validaCorrecao = function () {
             var retorno = false;
             if ($scope.produtoAtual !== null) {
@@ -47786,23 +47845,22 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
             }
             return retorno;
         };
-
         $scope.validaProduto = function (idMsg) {
             var retorno = false;
             if ($scope.produtoAtual !== null) {
-                if ($scope.produtoAtual.descricao !== null && $scope.produtoAtual.descricao.trim() !== "") {
+                if ($scope.produtoAtual.descricao !== undefined && $scope.produtoAtual.descricao !== null && $scope.produtoAtual.descricao.trim() !== "") {
                     retorno = true;
                 } else {
                     setMensagemTemporaria('erro', 'Deve informar descrição!', idMsg);
                     return false;
                 }
-                if ($scope.produtoAtual.valor !== null && $scope.produtoAtual.valor > 0) {
+                if ($scope.produtoAtual.valor !== undefined && $scope.produtoAtual.valor !== null && $scope.produtoAtual.valor > 0) {
                     retorno = true;
                 } else {
                     setMensagemTemporaria('erro', 'Deve informar valor!', idMsg);
                     return false;
                 }
-                if ($scope.produtoAtual.fornecedor !== null) {
+                if ($scope.produtoAtual.fornecedor !== undefined && $scope.produtoAtual.fornecedor !== null) {
                     retorno = true;
                 } else {
                     setMensagemTemporaria('erro', 'Deve informar o fornecedor!', idMsg);
@@ -47811,21 +47869,18 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
             }
             return retorno;
         };
-
         $scope.novoProduto = function () {
             $scope.produtoAtual = {observacao: ""};
             $(":file").val(null);
             $(":file").filestyle('clear');
             $("#produtoImagemCadastroView").removeAttr('src');
         };
-
         $scope.preparaProduto = function (produto) {
             $scope.produtoAtual = Object.assign({}, produto);
             $(":file").val(null);
             $(":file").filestyle('clear');
             $scope.abrirDialog('#produtoDialogFuncoes');
         };
-
         $scope.preparaProdutoMovimentacao = function (prepraView) {
             $scope.dataInicialMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth(), 1));
             $scope.dataFinalMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth() + 1, 0));
@@ -47839,8 +47894,6 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
                 $scope.preparaProdutoView('#produtoDialogFuncoes', '#produtoDialogMovimentacao');
             }
         };
-
-
         $scope.preparaProdutoView = function (idModalPai, idModalFilho) {
             if (idModalPai !== null) {
                 $scope.fecharDialog(idModalPai);
@@ -47850,27 +47903,22 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
                 $scope.abrirDialog(idModalFilho);
             }
         };
-
         $scope.selecionarFornecedor = function (idModal, fornecedor) {
             $scope.entidadeSelecionada.fornecedor = fornecedor;
             $scope.fecharDialog(idModal);
             $scope.limpaBuscaFornecedor(null);
         };
-
         $scope.abrirDialog = function (idModal) {
             $(idModal).modal('show');
         };
-
         $scope.fecharDialog = function (idModal) {
             $(idModal).modal('hide');
         };
-
         $scope.abrirDialogLocalizarFornecedor = function ($entidade) {
             $scope.limpaBuscaFornecedor($entidade);
             $scope.getListaFornecedorAll(1);
             $('#localizarFornecedorDialog').modal('show');
         };
-
         $scope.limpaBuscaFornecedorComBusca = function () {
             $scope.listaFornecedores = [];
             $scope.valorBuscaFornecedor = "";
@@ -47878,7 +47926,6 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
             $scope.totalItemsFornecedor = 0;
             $scope.getListaFornecedorAll(1);
         };
-
         $scope.limpaBuscaFornecedor = function ($entidade) {
             $scope.listaFornecedores = [];
             $scope.valorBuscaFornecedor = "";
@@ -47889,9 +47936,7 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
                 $scope.entidadeSelecionada = $entidade;
             }
         };
-
         $scope.getListaProdutoAll(1);
-
         $scope.corLinha = function (tipoMovimentacao) {
             var cor = {color: 'black'};
             if (tipoMovimentacao == 1) {
@@ -47907,7 +47952,6 @@ angular.module('www.geve.com.br').controller("pedidoControler", function ($scope
             }
             return cor;
         };
-
     });
 })();
 angular.module('www.geve.com.br').controller("usuarioControler", function ($scope, $http, $cookies) {
