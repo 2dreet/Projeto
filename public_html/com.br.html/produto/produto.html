@@ -319,7 +319,7 @@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="produtoMovimentacao in listaProdutoMovimentacao" ng-style="corLinha(produtoMovimentacao.tipoMovimentacao)">
-                                        <td ng-bind="(produtoMovimentacao.data_movimento) | date: 'dd / MM / yyyy HH:mm'"></td>
+                                        <td ng-bind="(produtoMovimentacao.data_movimento) | date: 'dd/MM/yyyy HH:mm'"></td>
                                         <td class="visible-md visible-lg" ng-bind="produtoMovimentacao.observacao"></td>
                                         <td ng-bind="produtoMovimentacao.quantidade"></td>
                                         <td ng-bind="produtoMovimentacao.descricao" > </td>

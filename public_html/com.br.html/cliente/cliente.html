@@ -37,7 +37,7 @@
                             <th >Nome</th>
                             <th >Sobrenome</th>
                             <th class="visible-sm visible-md visible-lg">Email</th>
-                            <th style="width: 220px;" class="visible-md visible-lg" >Data Nascimento</th>
+                            <th style="width: 140px;" class="visible-md visible-lg" >Data Nascimento</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,7 +45,7 @@
                             <td ng-bind="cliente.pessoa.nome"></td>
                             <td ng-bind="cliente.pessoa.sobreNome"></td>
                             <td class="visible-sm visible-md visible-lg" ng-bind="cliente.email"></td>
-                            <td class="visible-md visible-lg" ng-bind="cliente.telefone" > </td>
+                            <td class="visible-md visible-lg" ng-bind="cliente.pessoa.dataNascimento | date: 'dd/MM/yyyy'" > </td>
                         </tr>
                     </tbody>
                 </table> 
