@@ -30,7 +30,7 @@
             </div>
             <div id="msgProdutoGeral" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"></div>
             <div id="tabela-produto" class="row" style="padding: 0px; margin: 0px;padding-top: 15px">
-                <div class="alert alert-warning" role="alert"  ng-show="listaProduto == null || listaProduto.length < 1"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Sem dados</div>
+                <div class="alert alert-warning" role="alert"  ng-show="listaProduto == null || listaProduto.length < 1" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Sem dados</div>
                 <ul>
                     <li ng-repeat="p in listaProduto" class="product-item">
                         <a href="" style="text-decoration: none;" ng-click="preparaProduto(p)">
@@ -73,12 +73,12 @@
                     <div class="media-body descricao-produto-lista">
                         <div class="form-group" style="width: 100%;">
                             <label for="produtoDescricao">Descrição</label>
-                            <input type="text" required="required" class="form-control"  id="produtoDescricao" ng-model="produtoAtual.descricao" maxlength="32">
+                            <input type="text"  class="form-control"  id="produtoDescricao" ng-model="produtoAtual.descricao" maxlength="32">
                         </div>
 
                         <div class="form-group" style="width: 100%;">
                             <label for="produtoValor">Valor R$</label>
-                            <input type="text" required="required" class="form-control" ui-number-mask="decimals"  id="produtoValor" ng-model="produtoAtual.valor">
+                            <input type="text"  class="form-control" ui-number-mask="decimals"  id="produtoValor" ng-model="produtoAtual.valor">
                         </div>
 
                         <div class="form-group" style="width: 100%;">
@@ -87,7 +87,7 @@
                                 <span class="input-group-btn">
                                     <button class="btn btn-primary" style="width: 100px" type="button" ng-click="abrirDialogLocalizarFornecedor(produtoAtual)"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
                                 </span>
-                                <input type="text" class="form-control" ng-readonly="true" required="required" id="produtoFornecedor" ng-model="produtoAtual.fornecedor.descricao">
+                                <input type="text" class="form-control" ng-readonly="true"  id="produtoFornecedor" ng-model="produtoAtual.fornecedor.descricao">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" type="button" ng-click="limpaBuscaFornecedor(produtoAtual)"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></button>
                                 </span>
@@ -134,12 +134,12 @@
                     <div class="media-body descricao-produto-lista">
                         <div class="form-group" style="width: 100%;">
                             <label for="produtoDescricaoAlterar">Descrição</label>
-                            <input type="text" required="required" class="form-control"  id="produtoDescricaoAlterar" ng-model="produtoAtual.descricao" maxlength="32">
+                            <input type="text"  class="form-control"  id="produtoDescricaoAlterar" ng-model="produtoAtual.descricao" maxlength="32">
                         </div>
 
                         <div class="form-group" style="width: 100%;">
                             <label for="produtoValorAlterar">Valor R$</label>
-                            <input type="text" required="required" class="form-control" ui-number-mask="decimals"  id="produtoValorAlterar" ng-model="produtoAtual.valor">
+                            <input type="text"  class="form-control" ui-number-mask="decimals"  id="produtoValorAlterar" ng-model="produtoAtual.valor">
                         </div>
 
                         <div class="form-group" style="width: 100%;">
@@ -148,7 +148,7 @@
                                 <span class="input-group-btn">
                                     <button class="btn btn-primary" style="width: 100px" type="button"  ng-click="abrirDialogLocalizarFornecedor(produtoAtual)"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
                                 </span>
-                                <input type="text" class="form-control" ng-readonly="true" required="required" id="produtoFornecedorAlterar" ng-model="produtoAtual.fornecedor.descricao">
+                                <input type="text" class="form-control" ng-readonly="true"  id="produtoFornecedorAlterar" ng-model="produtoAtual.fornecedor.descricao">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" type="button" ng-click="limpaBuscaFornecedor(produtoAtual)"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></button>
                                 </span>
@@ -283,7 +283,7 @@
                             <li>
                                 <label for="dataIncialMovimentacao">Data Inicial</label>
                                 <p class="input-group" style="width: 140px; " id="dataIncialMovimentacao">
-                                    <input type="text" class="form-control" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-readonly="true" ng-change="getListaMovimentacao(1)"  uib-datepicker-popup="dd/MM/yyyy" ng-model="dataInicialMovimento" is-open="dataInicial.opened" datepicker-options="dateOptionsInicial" ng-required="true"  alt-input-formats="altInputFormats" />
+                                    <input type="text" class="form-control" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-readonly="true" ng-change="getListaMovimentacao(1)"  uib-datepicker-popup="dd/MM/yyyy" ng-model="dataInicialMovimento" is-open="dataInicial.opened" datepicker-options="dateOptionsInicial"  alt-input-formats="altInputFormats" />
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-default" ng-click="openDataInicial()"><i class="glyphicon glyphicon-calendar"></i></button>
                                     </span>
@@ -292,7 +292,7 @@
                             <li style="padding-left: 30px"> 
                                 <label for="dataFinalMovimentacao">Data Final</label>
                                 <p class="input-group" style="width: 140px; " id="dataFinalMovimentacao">
-                                    <input type="text" class="form-control" clear-text="Limpar" close-text="Fechar" popup-placement="bottom-right" show-button-clear="false" current-text="Hoje" ng-readonly="true" ng-change="getListaMovimentacao(1)"  uib-datepicker-popup="dd/MM/yyyy" ng-model="dataFinalMovimento" is-open="dataFinal.opened" datepicker-options="dateOptionsFinal" ng-required="true" alt-input-formats="altInputFormats" />
+                                    <input type="text" class="form-control" clear-text="Limpar" close-text="Fechar" popup-placement="bottom-right" show-button-clear="false" current-text="Hoje" ng-readonly="true" ng-change="getListaMovimentacao(1)"  uib-datepicker-popup="dd/MM/yyyy" ng-model="dataFinalMovimento" is-open="dataFinal.opened" datepicker-options="dateOptionsFinal"  alt-input-formats="altInputFormats" />
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-default" ng-click="openDataFinal()" ><i class="glyphicon glyphicon-calendar"></i></button>
                                     </span>
@@ -360,17 +360,16 @@
                     <div class="media-body" style="padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px">
                         <div class="form-group">
                             <label for="tipoCorrecao">Tipo correção</label>
-                            <select class="form-control" id="tipoCorrecao" ng-model="produtoAtual.tipoMovimentacao">
-                                <option ng-repeat="tipoMovimentacao in listaTipoMovimentacaoCorrecao" ng-bind="tipoMovimentacao.descricao" ng-value="tipoMovimentacao.id"></option>
-                            </select>
+                            <select class="form-control" ng-model="produtoAtual.tipoMovimentacao" 
+                                            ng-options="option.descricao for option in listaTipoMovimentacaoCorrecao track by option.id"> </select>
                         </div>
                         <div class="form-group" style="width: 100%;">
                             <label for="quantidadeCorrecao">Quantidade</label>
-                            <input type="text" required="required" class="form-control" ui-number-mask="0"  id="quantidadeCorrecao" ng-model="produtoAtual.estoque_movimento">
+                            <input type="text"  class="form-control" ui-number-mask="0"  id="quantidadeCorrecao" ng-model="produtoAtual.estoque_movimento">
                         </div>
                         <div class="form-group" style="width: 100%;">
                             <label for="observacaoCorrecao">Observação</label>
-                            <input type="text" required="required" class="form-control"  id="observacaoCorrecao" ng-model="produtoAtual.estoque_movimento_observacao" maxlength="200" >
+                            <input type="text"  class="form-control"  id="observacaoCorrecao" ng-model="produtoAtual.estoque_movimento_observacao" maxlength="200" >
                         </div>
                         <div style="padding-bottom: 5px; overflow: hidden; text-align: left; padding-left: 0px ">
                             <strong class="font-titulo-produto"> Estoque Atual: </strong> <strong class="font-produto" ng-bind="produtoAtual.estoque"></strong><br/>

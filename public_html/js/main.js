@@ -46776,6 +46776,115 @@ angular.module('ui.mask', [])
 
 })(angular);
 
+/* ========================================================================
+ * Bootstrap: popover.js v3.3.6
+ * http://getbootstrap.com/javascript/#popovers
+ * ========================================================================
+ * Copyright 2011-2015 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // POPOVER PUBLIC CLASS DEFINITION
+  // ===============================
+
+  var Popover = function (element, options) {
+    this.init('popover', element, options)
+  }
+
+  if (!$.fn.tooltip) throw new Error('Popover requires tooltip.js')
+
+  Popover.VERSION  = '3.3.6'
+
+  Popover.DEFAULTS = $.extend({}, $.fn.tooltip.Constructor.DEFAULTS, {
+    placement: 'right',
+    trigger: 'click',
+    content: '',
+    template: '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
+  })
+
+
+  // NOTE: POPOVER EXTENDS tooltip.js
+  // ================================
+
+  Popover.prototype = $.extend({}, $.fn.tooltip.Constructor.prototype)
+
+  Popover.prototype.constructor = Popover
+
+  Popover.prototype.getDefaults = function () {
+    return Popover.DEFAULTS
+  }
+
+  Popover.prototype.setContent = function () {
+    var $tip    = this.tip()
+    var title   = this.getTitle()
+    var content = this.getContent()
+
+    $tip.find('.popover-title')[this.options.html ? 'html' : 'text'](title)
+    $tip.find('.popover-content').children().detach().end()[ // we use append for html objects to maintain js events
+      this.options.html ? (typeof content == 'string' ? 'html' : 'append') : 'text'
+    ](content)
+
+    $tip.removeClass('fade top bottom left right in')
+
+    // IE8 doesn't accept hiding via the `:empty` pseudo selector, we have to do
+    // this manually by checking the contents.
+    if (!$tip.find('.popover-title').html()) $tip.find('.popover-title').hide()
+  }
+
+  Popover.prototype.hasContent = function () {
+    return this.getTitle() || this.getContent()
+  }
+
+  Popover.prototype.getContent = function () {
+    var $e = this.$element
+    var o  = this.options
+
+    return $e.attr('data-content')
+      || (typeof o.content == 'function' ?
+            o.content.call($e[0]) :
+            o.content)
+  }
+
+  Popover.prototype.arrow = function () {
+    return (this.$arrow = this.$arrow || this.tip().find('.arrow'))
+  }
+
+
+  // POPOVER PLUGIN DEFINITION
+  // =========================
+
+  function Plugin(option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.popover')
+      var options = typeof option == 'object' && option
+
+      if (!data && /destroy|hide/.test(option)) return
+      if (!data) $this.data('bs.popover', (data = new Popover(this, options)))
+      if (typeof option == 'string') data[option]()
+    })
+  }
+
+  var old = $.fn.popover
+
+  $.fn.popover             = Plugin
+  $.fn.popover.Constructor = Popover
+
+
+  // POPOVER NO CONFLICT
+  // ===================
+
+  $.fn.popover.noConflict = function () {
+    $.fn.popover = old
+    return this
+  }
+
+}(jQuery);
+
 /*
  * angular-ui-bootstrap
  * http://angular-ui.github.io/bootstrap/
@@ -46844,174 +46953,236 @@ app.value('cgBusyDefaults',{
             };
         }]);
 })();
-var urlWs = "http://localhost:8088/WsJosePhp/";
-var urlImagem = urlWs + "produto/getProdutoImagem/";
-var cookieNomeToken = "www.geve.com.br.token";
-
-var debug = "?XDEBUG_SESSION_START=netbeans-xdebug";
-
-function ajustaMenuLateral(idComponente) {
-    $('#menu-lateral ul li').removeClass('active');
-    $(idComponente).addClass('active');
-} 
-
-function getToken() {
-    var token = null;
-    var name = cookieNomeToken + "=";
-    var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) === 0) {
-            token = c.substring(name.length, c.length);
-        }
-    }
-    return token;
-}
-
-function setToken(token) {
-    if (getToken() === null) {
-        var d = new Date();
-        d.setTime(d.getTime() + (1 * 24 * 60 * 60 * 1000));
-        var expires = "expires=" + d.toUTCString();
-        document.cookie = cookieNomeToken + "=" + token + "; " + expires;
-    }
-}
-
-function verificaToken($fazerLogin) {
-    if (getToken() !== null) {
-        return true;
-    } else {
-        if ($fazerLogin) {
-            refazerLogin();
-        }
-        return false;
-    }
-}
-
-function refazerLogin() {
-    document.cookie = cookieNomeToken + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
-    $(window.document.location).attr('href', "login.html");
-}
-
-function setMensagem(tipoMenssagem, texto, idComponente) {
-    if (tipoMenssagem === 'erro') {
-        $(idComponente).html("<div class = 'alert alert-danger' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ban-circle' aria-hidden='true'> </span>" + texto + "</div>");
-    } else if (tipoMenssagem === 'info') {
-        $(idComponente).html("<div class = 'alert alert-info' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-info-sign' aria-hidden='true'> </span>" + texto + "</div>");
-    } else if (tipoMenssagem === 'sucesso') {
-        $(idComponente).html("<div class = 'alert alert-success' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ok-sign' aria-hidden='true'> </span>" + texto + "</div>");
-    } else if (tipoMenssagem === 'alerta') {
-        $(idComponente).html("<div class = 'alert alert-warning' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-warning-sign' aria-hidden='true'> </span>" + texto + "</div>");
-    }
-}
-
-function setMensagemTemporaria(tipoMenssagem, texto, idComponente) {
-    if (tipoMenssagem === 'erro') {
-        $(idComponente).html("<div class = 'alert alert-danger' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ban-circle' aria-hidden='true'> </span>" + texto + "</div>");
-    } else if (tipoMenssagem === 'info') {
-        $(idComponente).html("<div class = 'alert alert-info' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-info-sign' aria-hidden='true'> </span>" + texto + "</div>");
-    } else if (tipoMenssagem === 'sucesso') {
-        $(idComponente).html("<div class = 'alert alert-success' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ok-sign' aria-hidden='true'> </span>" + texto + "</div>");
-    } else if (tipoMenssagem === 'alerta') {
-        $(idComponente).html("<div class = 'alert alert-warning' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-warning-sign' aria-hidden='true'> </span>" + texto + "</div>");
-    }
-    $(idComponente).fadeTo(2000, 500).slideUp(500, function () {
-        $(idComponente).alert('close');
-    });
-}
 (function () {
     'use strict';
-    angular.module('www.geve.com.br').service('Formulario', function () {
-        
-        this.getUF = function () {
-            return ["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PR","PB","PA","PE","PI","RJ","RN","RS","RO","RR","SC","SE","SP","TO"];
+
+
+
+    angular.module('www.geve.com.br').service('Factory', function () {
+        this.urlWs = "http://localhost:8088/WsJosePhp/";
+        this.urlImagem = this.urlWs + "produto/getProdutoImagem/";
+        this.cookieNomeToken = "www.geve.com.br.token";
+        this.debug = "?XDEBUG_SESSION_START=netbeans-xdebug";
+
+        this.ajustaMenuLateral = function (idComponente) {
+            $('#menu-lateral ul li').removeClass('active');
+            $(idComponente).addClass('active');
+        };
+
+        this.getToken = function () {
+            var token = null;
+            var name = this.cookieNomeToken + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) === 0) {
+                    token = c.substring(name.length, c.length);
+                }
+            }
+            return token;
+        };
+
+        this.setToken = function (token) {
+            if (this.getToken() === null) {
+                var d = new Date();
+                d.setTime(d.getTime() + (1 * 24 * 60 * 60 * 1000));
+                var expires = "expires=" + d.toUTCString();
+                document.cookie = this.cookieNomeToken + "=" + token + "; " + expires;
+            }
+        };
+
+        this.verificaToken = function (fazerLogin) {
+            if (this.getToken() !== null) {
+                return true;
+            } else {
+                if (fazerLogin) {
+                    this.refazerLogin();
+                }
+                return false;
+            }
+        };
+
+        this.refazerLogin = function () {
+            document.cookie = this.cookieNomeToken + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+            $(window.document.location).attr('href', "login.html");
+        };
+
+        this.setMensagem = function (tipoMenssagem, texto, idComponente) {
+            if (tipoMenssagem === 'erro') {
+                $(idComponente).html("<div class = 'alert alert-danger' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ban-circle' aria-hidden='true'> </span>" + texto + "</div>");
+            } else if (tipoMenssagem === 'info') {
+                $(idComponente).html("<div class = 'alert alert-info' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-info-sign' aria-hidden='true'> </span>" + texto + "</div>");
+            } else if (tipoMenssagem === 'sucesso') {
+                $(idComponente).html("<div class = 'alert alert-success' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ok-sign' aria-hidden='true'> </span>" + texto + "</div>");
+            } else if (tipoMenssagem === 'alerta') {
+                $(idComponente).html("<div class = 'alert alert-warning' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-warning-sign' aria-hidden='true'> </span>" + texto + "</div>");
+            }
+        };
+
+        this.setMensagemTemporaria = function (tipoMenssagem, texto, idComponente) {
+            if (tipoMenssagem === 'erro') {
+                $(idComponente).html("<div class = 'alert alert-danger' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ban-circle' aria-hidden='true'> </span>" + texto + "</div>");
+            } else if (tipoMenssagem === 'info') {
+                $(idComponente).html("<div class = 'alert alert-info' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-info-sign' aria-hidden='true'> </span>" + texto + "</div>");
+            } else if (tipoMenssagem === 'sucesso') {
+                $(idComponente).html("<div class = 'alert alert-success' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-ok-sign' aria-hidden='true'> </span>" + texto + "</div>");
+            } else if (tipoMenssagem === 'alerta') {
+                $(idComponente).html("<div class = 'alert alert-warning' role = 'alert' ><button class='close' data-dismiss='alert' aria-label='close'>&times;</button><span class='glyphicon glyphicon-warning-sign' aria-hidden='true'> </span>" + texto + "</div>");
+            }
+            $(idComponente).fadeTo(2000, 500).slideUp(500, function () {
+                $(idComponente).alert('close');
+            });
         };
     });
 })();
 (function () {
     'use strict';
-    angular.module('www.geve.com.br').controller("clienteControler", ['$rootScope', '$scope', '$http', 'BuscaCep', 'Formulario', function ($rootScope, $scope, $http, BuscaCep, Formulario) {
-            verificaToken(true);
-            ajustaMenuLateral('#btnCliente');
+    angular.module('www.geve.com.br').service('Formulario', function () {
+
+        this.getUF = function () {
+            return ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PR", "PB", "PA", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SE", "SP", "TO"];
+        };
+        
+        this.getSexo = function () {
+            return ["Masculino", "Feminino"];
+        };
+        
+        this.getTipoTelefone = function () {
+            return [{id: 1, descricao: "Residencial"}, {id: 2, descricao: "Celular"}, {id: 3, descricao: "WhatsApp"}];
+        };
+        
+        this.getTipoMovimentacao = function () {
+            return [{id: 4, descricao: 'Cortesia'},{id: 5, descricao: 'Correção'},{id: 1, descricao: 'Entrada'},{id: 3, descricao: 'Perda'}];
+        };
+        
+    });
+})();
+$('#btn-menu-lateral').click(function () {
+    $('.row-offcanvas').toggleClass('active');
+});
+
+$('#menu-lateral ul li').click(function () {
+    $('.row-offcanvas').toggleClass('active');
+    $('#menu-lateral ul li').removeClass('active');
+    $(this).addClass('active');
+});
+(function () {
+    'use strict';
+    angular.module('www.geve.com.br').service('Utilitario', function () {
+
+        this.validaCPF = function (strCPF) {
+            var Soma;
+            var Resto;
+            Soma = 0;
+            if (strCPF === "00000000000")
+                return false;
+
+            for (var i = 1; i <= 9; i++)
+                Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (11 - i);
+            Resto = (Soma * 10) % 11;
+
+            if ((Resto === 10) || (Resto === 11))
+                Resto = 0;
+            if (Resto !== parseInt(strCPF.substring(9, 10)))
+                return false;
+
+            Soma = 0;
+            for (i = 1; i <= 10; i++)
+                Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (12 - i);
+            Resto = (Soma * 10) % 11;
+
+            if ((Resto === 10) || (Resto === 11))
+                Resto = 0;
+            if (Resto !== parseInt(strCPF.substring(10, 11)))
+                return false;
+            return true;
+        };
+    });
+})();
+(function () {
+    'use strict';
+    angular.module('www.geve.com.br').controller("clienteControler", ['$rootScope', '$scope', '$http', 'BuscaCep', 'Formulario', 'Utilitario', 'Factory',
+        function ($rootScope, $scope, $http, BuscaCep, Formulario, Utilitario, Factory) {
+            Factory.verificaToken(true);
+            Factory.ajustaMenuLateral('#btnCliente');
+
             $scope.clienteAtual = {};
             $scope.clienteEndereco = {};
             $scope.listaCliente = [];
             $scope.valorBuscaCliente = "";
             $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
-            $scope.listaSexo = ["Masculino", "Feminino"];
+            $scope.listaSexo = Formulario.getSexo();
             $scope.dataNascimento = {opened: true};
             $scope.opendataNascimento = function () {
                 $scope.dataNascimento.opened = true;
             };
-
             $scope.listaUF = Formulario.getUF();
-
             $scope.telefone = {};
             $scope.listaTelefone = [];
             $scope.editandoTelefone = false;
-            $scope.listaTipoTelefone = [{id: 1, descricao: "Residencial"}, {id: 2, descricao: "Celular"}, {id: 3, descricao: "WhatsApp"}];
+            $scope.listaTipoTelefone = Formulario.getTipoTelefone();
             $scope.maxSize = 3;
             $scope.totalItems = 0;
             $scope.currentPage = 1;
             $scope.itensPorPagina = 10;
 
-
-
             $scope.getListaClienteAll = function (pagina) {
-                if (verificaToken(true)) {
-                    var envio = {'pagina': (pagina - 1), 'token': getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBusca};
+                if (Factory.verificaToken(true)) {
+                    var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBusca, 'limit': $scope.itensPorPagina};
                     $rootScope.loading = $http({
                         method: 'POST',
                         data: envio,
                         crossDomain: true,
-                        url: urlWs + "cliente/getAllCliente",
+                        url: Factory.urlWs + "cliente/getAllCliente" + Factory.debug,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
                         if (!response.data.token) {
-                            refazerLogin();
+                            Factory.refazerLogin();
                         } else {
                             $scope.listaCliente = response.data.dados;
                             $scope.totalItems = response.data.totalRegistro;
                         }
                     }, function errorCallback(response) {
-                        setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
                     });
                 }
             };
 
             $scope.getCep = function () {
-                BuscaCep.getViaCep($scope.clienteEndereco.cep).then(function (d) {
-                    $scope.clienteEndereco.logradouro = d.data.logradouro;
-                    $scope.clienteEndereco.bairro = d.data.bairro;
-                    $scope.clienteEndereco.cidade = d.data.localidade;
-                    $scope.clienteEndereco.uf = d.data.uf;
-                });
+                if ($scope.clienteEndereco.cep !== undefined && $scope.clienteEndereco.cep !== null && $scope.clienteEndereco.cep.trim().length === 8) {
+                    BuscaCep.getViaCep($scope.clienteEndereco.cep).then(function (d) {
+                        $scope.clienteEndereco.logradouro = d.data.logradouro;
+                        $scope.clienteEndereco.bairro = d.data.bairro;
+                        $scope.clienteEndereco.cidade = d.data.localidade;
+                        $scope.clienteEndereco.uf = d.data.uf;
+                    });
+                }
             };
 
             $scope.insertCliente = function () {
-                if (verificaToken(true) && validaEnvioCliente()) {
+                if (Factory.verificaToken(true) && validaEnvioCliente('#msgClienteCadatro', '')) {
                     $scope.clienteAtual.endereco = $scope.clienteEndereco;
                     $scope.clienteAtual.telefone = $scope.listaTelefone;
-                    var envio = {'dados': $scope.clienteAtual, 'token': getToken()};
+                    var envio = {'dados': $scope.clienteAtual, 'token': Factory.getToken()};
                     $rootScope.send = $http({
                         method: 'POST',
                         crossDomain: true,
-                        url: urlWs + "cliente/insertCliente",
+                        url: Factory.urlWs + "cliente/insertCliente",
                         data: envio,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
                         $scope.fecharDialog('#clienteDialogCadastro');
                         if (!response.data.token) {
-                            refazerLogin();
+                            Factory.refazerLogin();
                         } else {
-                            setMensagemTemporaria('sucesso', 'Cliente cadastrado!', '#msgClienteGeral');
+                            Factory.setMensagemTemporaria('sucesso', 'Cliente cadastrado!', '#msgClienteGeral');
                             //$scope.getListaClienteAll(1);
                         }
                     }, function errorCallback(response) {
-                        setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgClienteGeral');
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgClienteGeral');
                     });
                 }
             };
@@ -47027,8 +47198,8 @@ function setMensagemTemporaria(tipoMenssagem, texto, idComponente) {
                 $scope.telefone = Object.assign({}, telefone);
             };
 
-            $scope.salvaTelefone = function () {
-                if (validaFone()) {
+            $scope.salvaTelefone = function (idMsg, idComplementar) {
+                if (validaFone(idMsg, idComplementar)) {
                     for (var i = $scope.listaTelefone.length; i--; ) {
                         if (i === $scope.telefone.index) {
                             $scope.listaTelefone[i] = $scope.telefone;
@@ -47039,8 +47210,8 @@ function setMensagemTemporaria(tipoMenssagem, texto, idComponente) {
             };
 
 
-            $scope.addTelefone = function () {
-                if (validaFone()) {
+            $scope.addTelefone = function (idMsg, idComplementar) {
+                if (validaFone(idMsg, idComplementar)) {
                     var telefoneAux = Object.assign({}, $scope.telefone);
                     telefoneAux.index = $scope.listaTelefone.length;
                     $scope.listaTelefone.push(telefoneAux);
@@ -47056,131 +47227,158 @@ function setMensagemTemporaria(tipoMenssagem, texto, idComponente) {
                 }
             };
 
-            var validaFone = function () {
+            var validaFone = function (idMsg, idComplementar) {
                 var retorno = false;
                 if ($scope.telefone.numero !== null && $scope.telefone.numero !== undefined && $scope.telefone.numero.trim() !== "") {
                     retorno = true;
                 } else {
-                    setMensagemTemporaria('erro', 'Informar Telefone!', '#msgClienteCadatro');
+                    $('#clienteTelefone' + idComplementar).focus();
+                    Factory.setMensagemTemporaria('erro', 'Informar Telefone!', idMsg);
                     return false;
                 }
 
                 if ($scope.telefone.tipoTelefone !== null && $scope.telefone.tipoTelefone !== undefined) {
                     retorno = true;
                 } else {
-                    setMensagemTemporaria('erro', 'Informar Tipo!', '#msgClienteCadatro');
+                    Factory.setMensagemTemporaria('erro', 'Informar Tipo!', idMsg);
                     return false;
                 }
                 return retorno;
             };
 
-            var validaListaFone = function () {
+            var validaListaFone = function (idMsg) {
+                $scope.indice = 2;
                 var retorno = false;
                 if ($scope.listaTelefone !== null && $scope.listaTelefone.length > 0) {
                     retorno = true;
                 } else {
-                    setMensagemTemporaria('erro', 'Informar Telefone!', '#msgClienteCadatro');
+                    if ($scope.clienteAtual.id === undefined) {
+                        Factory.setMensagemTemporaria('erro', 'Informar Telefone!', idMsg);
+                    }
                     return false;
                 }
                 return retorno;
             };
 
-            var validaEndereco = function () {
+            var validaEndereco = function (idMsg, idComplementar) {
+                $scope.indice = 1;
                 var retorno = false;
                 if ($scope.clienteEndereco.cep !== undefined && $scope.clienteEndereco.cep !== null && ($scope.clienteEndereco.cep.trim()).length === 8) {
                     retorno = true;
                 } else {
-                    setMensagemTemporaria('erro', 'Cep Inválido!', '#msgClienteCadatro');
+                    $('#clienteCep' + idComplementar).focus();
+                    Factory.setMensagemTemporaria('erro', 'Cep Inválido!', idMsg);
                     return false;
                 }
                 if ($scope.clienteEndereco.logradouro !== undefined && $scope.clienteEndereco.logradouro !== null && ($scope.clienteEndereco.logradouro.trim()).length > 0) {
                     retorno = true;
                 } else {
-                    setMensagemTemporaria('erro', 'Logradouro Inválido!', '#msgClienteCadatro');
+                    $('#clienteLogradouro' + idComplementar).focus();
+                    Factory.setMensagemTemporaria('erro', 'Logradouro Inválido!', idMsg);
                     return false;
                 }
                 if ($scope.clienteEndereco.bairro !== undefined && $scope.clienteEndereco.bairro !== null && ($scope.clienteEndereco.bairro.trim()).length > 0) {
                     retorno = true;
                 } else {
-                    setMensagemTemporaria('erro', 'Bairro Inválido!', '#msgClienteCadatro');
+                    $('#clienteBairro' + idComplementar).focus();
+                    Factory.setMensagemTemporaria('erro', 'Bairro Inválido!', idMsg);
                     return false;
                 }
                 if ($scope.clienteEndereco.cidade !== undefined && $scope.clienteEndereco.cidade !== null && ($scope.clienteEndereco.cidade.trim()).length > 0) {
                     retorno = true;
                 } else {
-                    setMensagemTemporaria('erro', 'Cidade Inválida!', '#msgClienteCadatro');
+                    $('#clienteCidade' + idComplementar).focus();
+                    Factory.setMensagemTemporaria('erro', 'Cidade Inválida!', idMsg);
                     return false;
                 }
                 if ($scope.clienteEndereco.uf !== undefined && $scope.clienteEndereco.uf !== null && ($scope.clienteEndereco.uf.trim()).length === 2) {
                     retorno = true;
                 } else {
-                    setMensagemTemporaria('erro', 'UF Inválida!', '#msgClienteCadatro');
+                    Factory.setMensagemTemporaria('erro', 'UF Inválida!', idMsg);
                     return false;
                 }
                 if ($scope.clienteEndereco.numero !== undefined && $scope.clienteEndereco.numero !== null && $scope.clienteEndereco.numero > 0) {
                     retorno = true;
                 } else {
-                    setMensagemTemporaria('erro', 'Número Inválido!', '#msgClienteCadatro');
+                    $('#clienteNumero' + idComplementar).focus();
+                    Factory.setMensagemTemporaria('erro', 'Número Inválido!', idMsg);
                     return false;
                 }
                 return retorno;
             };
 
-            var validaEnvioCliente = function () {
+            var validaEnvioCliente = function (idMsg, idComplementar) {
                 var retorno = false;
-                if (validaCliente()) {
+                if (validaCliente(idMsg, idComplementar)) {
                     retorno = true;
                 } else {
                     $scope.indice = 0;
+                    return false;
                 }
-                if (validaEndereco()) {
+                if (validaEndereco(idMsg, idComplementar)) {
                     retorno = true;
                 } else {
                     $scope.indice = 1;
+                    return false;
                 }
-                if (validaListaFone()) {
+                if (validaListaFone(idMsg)) {
                     retorno = true;
                 } else {
                     $scope.indice = 2;
+                    return false;
                 }
                 return  retorno;
             };
 
-            $scope.avancaCliente = function (i) {
-                if (i === 0 && validaCliente()) {
+            $scope.avancaCliente = function (i, idMsg, idComplementar) {
+                if (i === 0 && validaCliente(idMsg, idComplementar)) {
                     $scope.indice = i + 1;
-                } else if (i === 1 && validaEndereco()) {
+                } else if (i === 1 && validaEndereco(idMsg, idComplementar)) {
                     $scope.indice = i + 1;
                 }
             };
 
-            var validaCliente = function () {
+            var validaCliente = function (idMsg, idComplementar) {
+                $scope.indice = 0;
                 var retorno = false;
                 if ($scope.clienteAtual !== null) {
 
                     if ($scope.clienteAtual.nome !== null && $scope.clienteAtual.nome !== undefined && $scope.clienteAtual.nome.trim() !== "") {
                         retorno = true;
                     } else {
-                        setMensagemTemporaria('erro', 'Nome Inválido!', '#msgClienteCadatro');
+                        $('#clienteNome' + idComplementar).focus();
+                        Factory.setMensagemTemporaria('erro', 'Nome Inválido!', idMsg);
                         return false;
                     }
                     if ($scope.clienteAtual.sobreNome !== null && $scope.clienteAtual.sobreNome !== undefined && $scope.clienteAtual.sobreNome.trim() !== "") {
                         retorno = true;
                     } else {
-                        setMensagemTemporaria('erro', 'Sobrenome Inválido!', '#msgClienteCadatro');
+                        $('#clienteSobreNome' + idComplementar).focus();
+                        Factory.setMensagemTemporaria('erro', 'Sobrenome Inválido!', idMsg);
+                        return false;
+                    }
+
+                    if ($scope.clienteAtual.dataNascimento !== null && $scope.clienteAtual.dataNascimento !== undefined) {
+                        retorno = true;
+                    } else {
+                        $('#clienteDataNascimento' + idComplementar).focus();
+                        Factory.setMensagemTemporaria('erro', 'Informar Data Nascimento!', idMsg);
+                        return false;
+                    }
+
+                    if ($scope.clienteAtual.cpf === null || $scope.clienteAtual.cpf === undefined || $scope.clienteAtual.cpf.trim() === "" || ($scope.clienteAtual.cpf !== null && $scope.clienteAtual.cpf !== undefined && $scope.clienteAtual.cpf.trim() !== "" && Utilitario.validaCPF($scope.clienteAtual.cpf))) {
+                        retorno = true;
+                    } else {
+                        $('#clienteCpf' + idComplementar).focus();
+                        Factory.setMensagemTemporaria('erro', 'CPF é Inválido!', idMsg);
                         return false;
                     }
 
                     if ($scope.clienteAtual.email !== null && $scope.clienteAtual.email !== undefined && $scope.clienteAtual.email.trim() !== "") {
                         retorno = true;
                     } else {
-                        setMensagemTemporaria('erro', 'Email Inválido!', '#msgClienteCadatro');
-                        return false;
-                    }
-                    if ($scope.clienteAtual.dataNascimento !== null && $scope.clienteAtual.dataNascimento !== undefined) {
-                        retorno = true;
-                    } else {
-                        setMensagemTemporaria('erro', 'Informar Data Nascimento!', '#msgClienteCadatro');
+                        $('#clienteEmail' + idComplementar).focus();
+                        Factory.setMensagemTemporaria('erro', 'Email Inválido!', idMsg);
                         return false;
                     }
                 }
@@ -47197,8 +47395,9 @@ function setMensagemTemporaria(tipoMenssagem, texto, idComponente) {
 
             $scope.novoCliente = function () {
                 $scope.clienteAtual = {};
-                $scope.abrirDialog('#clienteDialogCadastro');
+                $scope.clienteAtual.sexo = $scope.listaSexo[0];
                 limparDadosCliente();
+                $scope.abrirDialog('#clienteDialogCadastro');
             };
 
             $scope.preparaCliente = function (cliente) {
@@ -47211,754 +47410,732 @@ function setMensagemTemporaria(tipoMenssagem, texto, idComponente) {
             $scope.abrirDialog = function (idModal) {
                 $(idModal).modal('show');
             };
+
+            $scope.getListaClienteAll(1);
+
         }]);
 })();
 (function () {
     'use strict';
 
-    angular.module('www.geve.com.br').controller("fornecedorControler", function ($rootScope, $scope, $http) {
-        verificaToken(true);
-        ajustaMenuLateral('#btnFornecedor');
+    angular.module('www.geve.com.br').controller("fornecedorControler", ['$rootScope', '$scope', '$http', 'Factory', function ($rootScope, $scope, $http, Factory) {
+            Factory.verificaToken(true);
+            Factory.ajustaMenuLateral('#btnFornecedor');
 
-        $scope.fornecedorAtual = {};
-        $scope.listaFornecedores = [];
-        $scope.valorBusca = "";
-        $scope.buscaAvancada = {descricao: "", email: "", telefone: ""};
-
-        $scope.maxSize = 3;
-        $scope.totalItems = 0;
-        $scope.currentPage = 1;
-        $scope.itensPorPagina = 15;
-
-        $scope.limpaFiltroAvancado = function () {
-            $scope.buscaAvancada = {descricao: "", email: "", telefone: ""};
-            $scope.valorBusca = "";
-            $scope.getListaFornecedorAll(1);
-        };
-
-        $scope.filtroPorDescricao = function () {
-            $scope.buscaAvancada = {descricao: "", email: "", telefone: ""};
-            $scope.getListaFornecedorAll(1);
-        };
-
-        $scope.filtrarAvancado = function () {
-            $scope.valorBusca = "";
-            $scope.getListaFornecedorAll(1);
-            $scope.fecharDialog('#localizarFornecedorDialog');
-        };
-
-        $scope.getListaFornecedorAll = function (pagina) {
-            if (verificaToken(true)) {
-                var envio = {'pagina': (pagina - 1), 'token': getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBusca, 'limit': $scope.itensPorPagina};
-                $rootScope.loading = $http({
-                    method: 'POST',
-                    crossDomain: true,
-                    url: urlWs + "fornecedor/getAllfornecedor/" + getToken(),
-                    data: envio,
-                    headers: {'Content-Type': 'application/json'}
-                }).then(function successCallback(response) {
-                    if (!response.data.token) {
-                        refazerLogin();
-                    } else {
-                        $scope.listaFornecedores = response.data.dados;
-                        $scope.totalItems = response.data.totalRegistro;
-                    }
-                }, function errorCallback(response) {
-                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFornecedorGeral');
-                });
-            }
-        };
-
-        $scope.updateFornecedor = function () {
-            if (verificaToken(true) && $scope.validaFornecedor()) {
-                var envio = {'dados': $scope.fornecedorAtual, 'token': getToken()};
-                $scope.send = $http({
-                    method: 'POST',
-                    crossDomain: true,
-                    url: urlWs + "fornecedor/updateFornecedor",
-                    data: envio,
-                    headers: {'Content-Type': 'application/json'}
-                }).then(function successCallback(response) {
-                    $scope.fecharDialog('#cadastroFornecedorDialogAlterar');
-                    if (!response.data.token) {
-                        refazerLogin();
-                    } else {
-                        setMensagemTemporaria('sucesso', 'Fornecedor alterado!', '#msgFornecedorGeral');
-                        $scope.getListaFornecedorAll(1);
-                    }
-                }, function errorCallback(response) {
-                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFornecedorGeral');
-                });
-            }
-        };
-
-        $scope.insertFornecedor = function () {
-            if (verificaToken(true) && $scope.validaFornecedor()) {
-                var envio = {'dados': $scope.fornecedorAtual, 'token': getToken()};
-                $scope.send = $http({
-                    method: 'POST',
-                    crossDomain: true,
-                    url: urlWs + "fornecedor/insertFornecedor",
-                    data: envio,
-                    headers: {'Content-Type': 'application/json'}
-                }).then(function successCallback(response) {
-                    $scope.fecharDialog('#cadastroFornecedorDialog');
-                    if (!response.data.token) {
-                        refazerLogin();
-                    } else {
-                        setMensagemTemporaria('sucesso', 'Fornecedor cadastrado!', '#msgFornecedorGeral');
-                        $scope.getListaFornecedorAll(1);
-                    }
-                }, function errorCallback(response) {
-                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFornecedorGeral');
-                });
-            }
-        };
-
-        $scope.deleteFornecedor = function () {
-            if (verificaToken(true) && $scope.validaFornecedor()) {
-                var envio = {'dados': $scope.fornecedorAtual, 'token': getToken()};
-                $scope.send = $http({
-                    method: 'POST',
-                    crossDomain: true,
-                    url: urlWs + "fornecedor/deleteFornecedor",
-                    data: envio,
-                    headers: {'Content-Type': 'application/json'}
-                }).then(function successCallback(response) {
-                    $scope.fecharDialog('#cadastroFornecedorDialogDeletar');
-                    if (!response.data.token) {
-                        refazerLogin();
-                    } else {
-                        setMensagemTemporaria('sucesso', 'Fornecedor deletado!', '#msgFornecedorGeral');
-                        $scope.getListaFornecedorAll(1);
-                    }
-                }, function errorCallback(response) {
-                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFornecedorGeral');
-                });
-            }
-        };
-
-        $scope.validaFornecedor = function () {
-            var retorno = false;
-            if ($scope.fornecedorAtual !== null) {
-
-                if ($scope.fornecedorAtual.descricao !== undefined && $scope.fornecedorAtual.descricao !== null && $scope.fornecedorAtual.descricao.trim() !== "") {
-                    retorno = true;
-                } else {
-                    return false;
-                }
-
-                if ($scope.fornecedorAtual.email !== undefined && $scope.fornecedorAtual.email !== null && $scope.fornecedorAtual.email.trim() !== "") {
-                    retorno = true;
-                } else {
-                    return false;
-                }
-
-                if ($scope.fornecedorAtual.telefone !== undefined && $scope.fornecedorAtual.telefone !== null && $scope.fornecedorAtual.telefone.trim() !== "") {
-                    retorno = true;
-                } else {
-                    return false;
-                }
-            }
-            return retorno;
-        };
-
-        $scope.novoFornecedor = function () {
             $scope.fornecedorAtual = {};
-        };
+            $scope.listaFornecedores = [];
+            $scope.valorBusca = "";
+            $scope.buscaAvancada = {descricao: "", email: "", telefone: ""};
 
-        $scope.preparaFornecedor = function (fornecedor) {
-            $scope.fornecedorAtual = Object.assign({}, fornecedor);
-        };
+            $scope.maxSize = 3;
+            $scope.totalItems = 0;
+            $scope.currentPage = 1;
+            $scope.itensPorPagina = 15;
 
-        $scope.fecharDialog = function (idModal) {
-            $(idModal).modal('hide');
-        };
+            $scope.limpaFiltroAvancado = function () {
+                $scope.buscaAvancada = {descricao: "", email: "", telefone: ""};
+                $scope.valorBusca = "";
+                $scope.getListaFornecedorAll(1);
+            };
 
-        $scope.getListaFornecedorAll(1);
-    });
+            $scope.filtroPorDescricao = function () {
+                $scope.buscaAvancada = {descricao: "", email: "", telefone: ""};
+                $scope.getListaFornecedorAll(1);
+            };
 
-})();
-angular.module('www.geve.com.br').controller("infoControler", function ($scope, $http) {
+            $scope.filtrarAvancado = function () {
+                $scope.valorBusca = "";
+                $scope.getListaFornecedorAll(1);
+                $scope.fecharDialog('#localizarFornecedorDialog');
+            };
 
-//    $('#menu-lateral ul li').removeClass('active');
-    $('#btnInfor').addClass('active');
-
-    $scope.listaProduto = [];
-    $scope.post = function () {
-        $http({
-            method: 'POST',
-            crossDomain: true,
-            url: 'http://192.168.1.90:8081/WsJose/teste',
-            headers: {'Content-Type': 'application/json'},
-            data: $scope.produto
-        }).then(function successCallback(response) {
-            $scope.listaProduto.push(response.data);
-        }, function errorCallback(response) {
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
-        });
-    };
-});
-(function () {
-    'use strict';
-    angular.module('www.geve.com.br').controller("inicioControler", function ($scope, $http) {
-        verificaToken(true);
-        ajustaMenuLateral('#btnHome');
-
-    });
-
-
-})();
-angular.module('www.geve.com.br').controller("loginControler", function ($scope, $http) {
-
-    $scope.usuario = {usuario: '', senha: ''};
-
-    $scope.logar = function () {
-        var usuario = $scope.usuario.usuario;
-        var senha = $scope.usuario.senha;
-        if (usuario !== null && usuario.trim() !== "" && usuario !== null && usuario.trim() !== "") {
-            var envio = {'dados': $scope.usuario};
-            $http({
-                method: 'POST',
-                crossDomain: true,
-                url: urlWs + "usuario/logar",
-                data: envio,
-                headers: {'Content-Type': 'application/json'}
-            }).then(function successCallback(response) {
-                if (response.data.msgErro) {
-                    setMensagemTemporaria('erro', response.data.msgErro, '#msgUsuario');
-                } else {
-                    setToken(response.data.token);
-                    $scope.verifica();
-                }
-            }, function errorCallback(response) {
-                setMensagemTemporaria('erro', "Erro de comunicação", '#msgUsuario');
-            });
-        }
-    };
-
-    $scope.verifica = function () {
-        if (verificaToken(false)) {
-            $(window.document.location).attr('href', "index.html");
-        }
-    };
-
-    $scope.verifica();
-});
-angular.module('www.geve.com.br').controller("masterPageControler", function ($scope, $http) {
-
-    $scope.pessoa = {nome: ''};
-
-    $scope.sair = function () {
-        refazerLogin();
-    };
-
-    $scope.verifica = function () {
-        if (verificaToken(true)) {
-            var envio = {'token': getToken(true)};
-            $http({
-                method: 'POST',
-                crossDomain: true,
-                url: urlWs + "usuario/getUsuario",
-                data: envio,
-                headers: {'Content-Type': 'application/json'}
-            }).then(function successCallback(response) {
-                if (!response.data[1].token) {
-                    refazerLogin();
-                } else {
-                    $scope.pessoa = response.data[0].dados;
-                }
-            }, function errorCallback(response) {
-                alert('Erro Sistema');
-            });
-        }
-    };
-
-    $scope.verifica();
-
-});
-angular.module('www.geve.com.br').controller("pedidoControler", function ($scope, $http) {
-
-    $('#menu-lateral ul li').removeClass('active');
-    $('#btnPedido').addClass('active');
-
-    $scope.listaProduto = [];
-    $scope.post = function () {
-        $http({
-            method: 'POST',
-            crossDomain: true,
-            url: 'http://192.168.1.90:8081/WsJose/teste',
-            headers: {'Content-Type': 'application/json'},
-            data: $scope.produto
-        }).then(function successCallback(response) {
-            $scope.listaProduto.push(response.data);
-        }, function errorCallback(response) {
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
-        });
-    };
-});
-
-(function () {
-    'use strict';
-    angular.module('www.geve.com.br').controller("produtoControler", function ($rootScope, $scope, $http) {
-        verificaToken(true);
-        ajustaMenuLateral('#btnProduto');
-        $(":file").filestyle({buttonBefore: true, buttonText: "Localizar"});
-        var dataAtual = new Date();
-        $scope.dataInicialMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth(), 1));
-        $scope.dataFinalMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth() + 1, 0));
-        $scope.dataInicial = {opened: true};
-        $scope.dataFinal = {opened: true};
-        $scope.openDataInicial = function () {
-            $scope.dataInicial.opened = true;
-            $scope.dateOptionsInicial.maxDate = $scope.dataFinalMovimento;
-        };
-        $scope.openDataFinal = function () {
-            $scope.dataFinal.opened = true;
-            $scope.dateOptionsFinal.minDate = $scope.dataInicialMovimento;
-        };
-        $scope.dateOptionsInicial = {
-            maxDate: $scope.dataFinalMovimento,
-            startingDay: 1
-        };
-        $scope.dateOptionsFinal = {
-            minDate: $scope.dataInicialMovimento,
-            startingDay: 1
-        };
-        $scope.estoqueFuturo = 0;
-        $scope.listaFornecedores = [];
-        $scope.valorBuscaFornecedor = "";
-        $scope.produtoAtual = {observacao: ""};
-        $scope.listaProduto = [];
-        $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
-        $scope.entidadeSelecionada = {};
-        $scope.valorBuscaProduto = "";
-        $scope.listaTipoMovimentacaoCorrecao = [
-            {id: 4, descricao: 'Cortesia'},
-            {id: 5, descricao: 'Correção'},
-            {id: 1, descricao: 'Entrada'},
-            {id: 3, descricao: 'Perda'}
-        ];
-        $scope.listaProdutoMovimentacao = [];
-        $scope.maxSize = 3;
-        $scope.totalItems = 0;
-        $scope.currentPage = 1;
-        $scope.itensPorPagina = 10;
-        $scope.totalItemsMovimentacao = 0;
-        $scope.currentPageMovimentacao = 1;
-        $scope.totalItemsFornecedor = 0;
-        $scope.currentPageFornecedor = 1;
-        $scope.itensPorPaginaFornecedor = 5;
-        $scope.limpaFiltroAvancado = function () {
-            $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
-            $scope.valorBuscaProduto = "";
-            $scope.getListaProdutoAll(1);
-        };
-        $scope.filtroPorDescricao = function () {
-            $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
-            $scope.getListaProdutoAll(1);
-        };
-        $scope.filtrarAvancado = function () {
-            $scope.valorBuscaProduto = "";
-            $scope.getListaProdutoAll(1);
-            $scope.fecharDialog('#localizarProdutoDialog');
-        };
-        $scope.getListaProdutoAll = function (pagina) {
-            if (verificaToken(true)) {
-                var envio = {'pagina': (pagina - 1), 'token': getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBuscaProduto};
-                $rootScope.loading = $http({
-                    method: 'POST',
-                    data: envio,
-                    crossDomain: true,
-                    url: urlWs + "produto/getAllproduto",
-                    headers: {'Content-Type': 'application/json'}
-                }).then(function successCallback(response) {
-                    if (!response.data.token) {
-                        refazerLogin();
-                    } else {
-                        $scope.listaProduto = response.data.dados;
-                        $scope.totalItems = response.data.totalRegistro;
-                    }
-                }, function errorCallback(response) {
-                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
-                });
-            }
-        };
-        $scope.getListaMovimentacao = function (pagina) {
-            if (verificaToken(true) && ($scope.dataInicialMovimento !== null && $scope.dataFinalMovimento !== null)) {
-                var envio = {'id': $scope.produtoAtual.id, 'pagina': (pagina - 1), 'token': getToken(), 'data_inicial': $scope.dataInicialMovimento, 'data_final': $scope.dataFinalMovimento};
-                $rootScope.loading = $http({
-                    method: 'POST',
-                    data: envio,
-                    crossDomain: true,
-                    url: urlWs + "produto/getMovimentacaoProduto",
-                    headers: {'Content-Type': 'application/json'}
-                }).then(function successCallback(response) {
-                    if (!response.data.token) {
-                        refazerLogin();
-                    } else {
-                        $scope.listaProdutoMovimentacao = response.data.dados;
-                        $scope.totalItemsMovimentacao = response.data.totalRegistro;
-                        if (response.data.estoque >= 0) {
-                            $scope.produtoAtual.estoque = response.data.estoque;
-                        }
-                    }
-                }, function errorCallback(response) {
-                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
-                });
-            } else if (($scope.dataInicialMovimento === null || $scope.dataFinalMovimento === null)) {
-                $scope.totalItemsMovimentacao = 0;
-            }
-        };
-        $scope.getImagem = function (idItem) {
-            if (verificaToken(true) && idItem > 0) {
-                var random = (new Date()).toString();
-                return urlImagem + idItem + "/" + getToken() + "?cb=" + random;
-            }
-        };
-        $scope.validaImagem = function (mostraMenssagemErro, idCampoImagem, idCampoMsg) {
-            var campoImagem = $(idCampoImagem).prop('files');
-            if (campoImagem !== null && $(idCampoImagem).eq(0).val() !== "") {
-                var imagem = campoImagem[0];
-                if (imagem !== null) {
-                    var nomeImagem = imagem.name;
-                    var extencao = new RegExp("(.*?)\.(jpg|jpeg|png)$");
-                    if ((extencao.test(nomeImagem))) {
-                        if (imagem.size <= 500000) {
-                            return true;
-                        } else {
-                            $(idCampoImagem).val(null);
-                            if (mostraMenssagemErro) {
-                                setMensagemTemporaria('erro', 'Tamanho da imagem permitido é 500bytes', idCampoMsg);
-                            } else {
-                                return false;
-                            }
-                        }
-                    } else {
-                        $(idCampoImagem).val(null);
-                        if (mostraMenssagemErro) {
-                            setMensagemTemporaria('erro', 'Apenas imagem no formato jpg, jpeg e png!', idCampoMsg);
-                        } else {
-                            return false;
-                        }
-                    }
-                }
-            }
-        };
-        $scope.mostrarImagem = function (idCampoImagem, idCampoMsg, idCampoDestino) {
-            if ($scope.validaImagem(true, idCampoImagem, idCampoMsg)) {
-                var campoImagem = $(idCampoImagem).prop('files');
-                var imagem = campoImagem[0];
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $(idCampoDestino).attr('src', e.target.result);
-                };
-                reader.readAsDataURL(imagem);
-            }
-        };
-        $scope.insertProduto = function () {
-            $scope.message = "";
-            if (verificaToken(true)) {
-                if ($scope.validaProduto('#msgProduto')) {
-                    var fd = new FormData();
-                    if ($scope.validaImagem(false, '#produtoImagemCadastro', '#msgProduto')) {
-                        var campoImagem = $('#produtoImagemCadastro').prop('files');
-                        var imagem = campoImagem[0];
-                        fd.append('imagem', imagem);
-                    }
-                    fd.append('token', getToken());
-                    fd.append('dados', angular.toJson($scope.produtoAtual));
-                    $scope.send = $http({
-                        url: urlWs + 'produto/insertProduto',
-                        method: 'POST',
-                        data: fd,
-                        transformRequest: angular.identity,
-                        headers: {'Content-Type': undefined}
-                    }).then(function successCallback(response) {
-                        if (!response.data.token) {
-                            refazerLogin();
-                        } else {
-                            $scope.fecharDialog("#produtoCadastroDialog");
-                            setMensagemTemporaria('sucesso', 'Produto cadastrado!', '#msgProdutoGeral');
-                            $scope.getListaProdutoAll(1);
-                        }
-                    }, function errorCallback(response) {
-                        $scope.fecharDialog("#produtoCadastroDialog");
-                        setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
-                    });
-                }
-            }
-        };
-        $scope.updateProduto = function () {
-            $scope.message = "";
-            if (verificaToken(true)) {
-                if ($scope.validaProduto('#msgProdutoAlterar')) {
-                    var fd = new FormData();
-                    if ($scope.validaImagem(false, '#produtoImagemAlterar', '#msgProdutoAlterar')) {
-                        var campoImagem = $('#produtoImagemAlterar').prop('files');
-                        var imagem = campoImagem[0];
-                        fd.append('imagem', imagem);
-                    }
-                    fd.append('token', getToken());
-                    fd.append('dados', angular.toJson($scope.produtoAtual));
-                    $scope.send = $http({
-                        url: urlWs + 'produto/updatetProduto',
-                        method: 'POST',
-                        data: fd,
-                        transformRequest: angular.identity,
-                        headers: {'Content-Type': undefined}
-                    }).then(function successCallback(response) {
-                        if (!response.data.token) {
-                            refazerLogin();
-                        } else {
-                            $scope.getListaProdutoAll(1);
-                            $scope.fecharDialog("#produtoDialogAlterar");
-                            setMensagemTemporaria('sucesso', 'Produto alterado!', '#msgProdutoGeral');
-                        }
-                    }, function errorCallback(response) {
-                        $scope.fecharDialog("#produtoDialogAlterar");
-                        setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
-                    });
-                }
-            }
-        };
-        $scope.deleteProduto = function () {
-            if (verificaToken(true)) {
-                var envio = {'dados': $scope.produtoAtual, 'token': getToken()};
-                $scope.send = $http({
-                    method: 'POST',
-                    crossDomain: true,
-                    url: urlWs + "produto/deleteProduto",
-                    data: envio,
-                    headers: {'Content-Type': 'application/json'}
-                }).then(function successCallback(response) {
-                    if (!response.data.token) {
-                        refazerLogin();
-                    } else {
-                        $scope.getListaProdutoAll(1);
-                        $scope.fecharDialog("#produtoDialogDeletar");
-                        setMensagemTemporaria('sucesso', 'Produto Deletado!', '#msgProdutoGeral');
-                    }
-                }, function errorCallback(response) {
-                    $scope.fecharDialog("#produtoDialogDeletar");
-                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
-                });
-            }
-        };
-        $scope.movimentarProdutoCorrecao = function () {
-            $scope.message = "";
-            if (verificaToken(true)) {
-                if ($scope.validaCorrecao()) {
-                    var produto = {id: $scope.produtoAtual.id, estoque: $scope.produtoAtual.estoque, tipoMovimentacao: $scope.produtoAtual.tipoMovimentacao, estoque_movimento_observacao: $scope.produtoAtual.estoque_movimento_observacao, estoque_movimento: $scope.produtoAtual.estoque_movimento};
-                    var envio = {'dados': produto, 'token': getToken()};
-                    $scope.send = $http({
+            $scope.getListaFornecedorAll = function (pagina) {
+                if (Factory.verificaToken(true)) {
+                    var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBusca, 'limit': $scope.itensPorPagina};
+                    $rootScope.loading = $http({
                         method: 'POST',
                         crossDomain: true,
-                        url: urlWs + "produto/movimentarProduto",
+                        url: Factory.urlWs + "fornecedor/getAllfornecedor/",
                         data: envio,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
                         if (!response.data.token) {
-                            refazerLogin();
-                        } else if (response.data.sucesso) {
-                            $scope.preparaProdutoMovimentacao(false);
-                            $scope.fecharDialog("#produtoDialogMovimentacaoCorrecao");
-                            $scope.abrirDialog("#produtoDialogMovimentacao");
-                            setMensagemTemporaria('sucesso', 'Estoque Movimentado!', '#msgCorrecaoView');
-                            $scope.produtoAtual.estoque = response.data.estoque;
-                            $scope.getListaProdutoAll(1);
+                            Factory.refazerLogin();
                         } else {
-                            $scope.getListaProdutoAll(1);
-                            setMensagemTemporaria('erro', response.data.menssagem, '#msgCorrecao');
+                            $scope.listaFornecedores = response.data.dados;
+                            $scope.totalItems = response.data.totalRegistro;
+                        }
+                    }, function errorCallback(response) {
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFornecedorGeral');
+                    });
+                }
+            };
+
+            $scope.updateFornecedor = function () {
+                if (Factory.verificaToken(true) && $scope.validaFornecedor('#msgFornecedorAlt', 'Alterar')) {
+                    var envio = {'dados': $scope.fornecedorAtual, 'token': Factory.getToken()};
+                    $scope.send = $http({
+                        method: 'POST',
+                        crossDomain: true,
+                        url: Factory.urlWs + "fornecedor/updateFornecedor",
+                        data: envio,
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        $scope.fecharDialog('#cadastroFornecedorDialogAlterar');
+                        if (!response.data.token) {
+                            Factory.refazerLogin();
+                        } else {
+                            Factory.setMensagemTemporaria('sucesso', 'Fornecedor alterado!', '#msgFornecedorGeral');
+                            $scope.getListaFornecedorAll(1);
+                        }
+                    }, function errorCallback(response) {
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFornecedorGeral');
+                    });
+                }
+            };
+
+            $scope.insertFornecedor = function () {
+                if (Factory.verificaToken(true) && $scope.validaFornecedor('#msgFornecedorCad', '')) {
+                    var envio = {'dados': $scope.fornecedorAtual, 'token': Factory.getToken()};
+                    $scope.send = $http({
+                        method: 'POST',
+                        crossDomain: true,
+                        url: Factory.urlWs + "fornecedor/insertFornecedor",
+                        data: envio,
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        $scope.fecharDialog('#cadastroFornecedorDialog');
+                        if (!response.data.token) {
+                            Factory.refazerLogin();
+                        } else {
+                            Factory.setMensagemTemporaria('sucesso', 'Fornecedor cadastrado!', '#msgFornecedorGeral');
+                            $scope.getListaFornecedorAll(1);
+                        }
+                    }, function errorCallback(response) {
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFornecedorGeral');
+                    });
+                }
+            };
+
+            $scope.deleteFornecedor = function () {
+                if (Factory.verificaToken(true)) {
+                    var envio = {'dados': $scope.fornecedorAtual, 'token': Factory.getToken()};
+                    $scope.send = $http({
+                        method: 'POST',
+                        crossDomain: true,
+                        url: Factory.urlWs + "fornecedor/deleteFornecedor",
+                        data: envio,
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        $scope.fecharDialog('#cadastroFornecedorDialogDeletar');
+                        if (!response.data.token) {
+                            Factory.refazerLogin();
+                        } else {
+                            Factory.setMensagemTemporaria('sucesso', 'Fornecedor deletado!', '#msgFornecedorGeral');
+                            $scope.getListaFornecedorAll(1);
+                        }
+                    }, function errorCallback(response) {
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFornecedorGeral');
+                    });
+                }
+            };
+
+            $scope.validaFornecedor = function (idMsg, idComplementar) {
+                var retorno = false;
+                if ($scope.fornecedorAtual !== null) {
+
+                    if ($scope.fornecedorAtual.descricao !== undefined && $scope.fornecedorAtual.descricao !== null && $scope.fornecedorAtual.descricao.trim() !== "") {
+                        retorno = true;
+                    } else {
+                        Factory.setMensagemTemporaria('erro', 'Informar Fornecedor!', idMsg);
+                        $('#fornecedor' + idComplementar).focus();
+                        return false;
+                    }
+
+                    if ($scope.fornecedorAtual.email !== undefined && $scope.fornecedorAtual.email !== null && $scope.fornecedorAtual.email.trim() !== "") {
+                        retorno = true;
+                    } else {
+                        Factory.setMensagemTemporaria('erro', 'Informar Email!', idMsg);
+                        $('#fornecedorEmail' + idComplementar).focus();
+                        return false;
+                    }
+
+                    if ($scope.fornecedorAtual.telefone !== undefined && $scope.fornecedorAtual.telefone !== null && $scope.fornecedorAtual.telefone.trim() !== "" && ($scope.fornecedorAtual.telefone.length === 10 || $scope.fornecedorAtual.telefone.length === 11)) {
+                        retorno = true;
+                    } else {
+                        Factory.setMensagemTemporaria('erro', 'Informar Telefone!', idMsg);
+                        $('#fornecedorFone' + idComplementar).focus();
+                        return false;
+                    }
+                }
+                return retorno;
+            };
+
+            $scope.novoFornecedor = function () {
+                $scope.fornecedorAtual = {};
+            };
+
+            $scope.preparaFornecedor = function (fornecedor) {
+                $scope.fornecedorAtual = Object.assign({}, fornecedor);
+            };
+
+            $scope.fecharDialog = function (idModal) {
+                $(idModal).modal('hide');
+            };
+
+            $scope.getListaFornecedorAll(1);
+        }]);
+
+})();
+(function () {
+    'use strict';
+    angular.module('www.geve.com.br').controller("infoControler", ['$scope', '$http', 'Factory', function ($scope, $http, Factory) {
+            Factory.verificaToken(true);
+            Factory.ajustaMenuLateral('#btnInfor');
+        }]);
+})();
+(function () {
+    'use strict';
+    angular.module('www.geve.com.br').controller("inicioControler", ['$scope', '$http', 'Factory', function ($scope, $http, Factory) {
+            Factory.verificaToken(true);
+            Factory.ajustaMenuLateral('#btnHome');
+
+        }]);
+})();
+(function () {
+    'use strict';
+    angular.module('www.geve.com.br').controller("loginControler", ['$scope', '$http', 'Factory', function ($scope, $http, Factory) {
+            $scope.usuario = {usuario: '', senha: ''};
+            $scope.logar = function () {
+                var usuario = $scope.usuario.usuario;
+                var senha = $scope.usuario.senha;
+                if (usuario !== null && usuario.trim() !== "" && usuario !== null && usuario.trim() !== "") {
+                    var envio = {'dados': $scope.usuario};
+                    $http({
+                        method: 'POST',
+                        crossDomain: true,
+                        url: Factory.urlWs + "usuario/logar",
+                        data: envio,
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        if (response.data.msgErro) {
+                            Factory.setMensagemTemporaria('erro', response.data.msgErro, '#msgUsuario');
+                        } else {
+                            Factory.setToken(response.data.token);
+                            $scope.verifica();
+                        }
+                    }, function errorCallback(response) {
+                        Factory.setMensagemTemporaria('erro', "Erro de comunicação", '#msgUsuario');
+                    });
+                }
+            };
+
+            $scope.verifica = function () {
+                if (Factory.verificaToken(false)) {
+                    $(window.document.location).attr('href', "index.html");
+                }
+            };
+
+            $scope.verifica();
+        }]);
+})();
+(function () {
+    'use strict';
+    angular.module('www.geve.com.br').controller("masterPageControler", ['$scope', '$http', 'Factory', function ($scope, $http, Factory) {
+            $scope.pessoa = {nome: ''};
+            $scope.sair = function () {
+                Factory.refazerLogin();
+            };
+            $scope.verifica = function () {
+                if (Factory.verificaToken(true)) {
+                    var envio = {'token': Factory.getToken(true)};
+                    $http({
+                        method: 'POST',
+                        crossDomain: true,
+                        url: Factory.urlWs + "usuario/getUsuario",
+                        data: envio,
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        if (!response.data[1].token) {
+                            Factory.refazerLogin();
+                        } else {
+                            $scope.pessoa = response.data[0].dados;
+                        }
+                    }, function errorCallback(response) {
+                        alert('Erro Sistema');
+                    });
+                }
+            };
+            $scope.verifica();
+        }]);
+})();
+(function () {
+    'use strict';
+    angular.module('www.geve.com.br').controller("pedidoControler", ['$scope', '$http', 'Factory', function ($scope, $http, Factory) {
+            Factory.verificaToken(true);
+            Factory.ajustaMenuLateral('#btnPedido');
+        }]);
+})();
+
+(function () {
+    'use strict';
+    angular.module('www.geve.com.br').controller("produtoControler", ['$rootScope', '$scope', '$http', 'Formulario', 'Factory', function ($rootScope, $scope, $http, Formulario, Factory) {
+            Factory.verificaToken(true);
+            Factory.ajustaMenuLateral('#btnProduto');
+            $(":file").filestyle({buttonBefore: true, buttonText: "Localizar"});
+            var dataAtual = new Date();
+            $scope.dataInicialMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth(), 1));
+            $scope.dataFinalMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth() + 1, 0));
+            $scope.dataInicial = {opened: true};
+            $scope.dataFinal = {opened: true};
+            $scope.openDataInicial = function () {
+                $scope.dataInicial.opened = true;
+                $scope.dateOptionsInicial.maxDate = $scope.dataFinalMovimento;
+            };
+            $scope.openDataFinal = function () {
+                $scope.dataFinal.opened = true;
+                $scope.dateOptionsFinal.minDate = $scope.dataInicialMovimento;
+            };
+            $scope.dateOptionsInicial = {
+                maxDate: $scope.dataFinalMovimento,
+                startingDay: 1
+            };
+            $scope.dateOptionsFinal = {
+                minDate: $scope.dataInicialMovimento,
+                startingDay: 1
+            };
+            $scope.estoqueFuturo = 0;
+            $scope.listaFornecedores = [];
+            $scope.valorBuscaFornecedor = "";
+            $scope.produtoAtual = {observacao: ""};
+            $scope.listaProduto = [];
+            $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
+            $scope.entidadeSelecionada = {};
+            $scope.valorBuscaProduto = "";
+            $scope.listaTipoMovimentacaoCorrecao = Formulario.getTipoMovimentacao();
+            $scope.listaProdutoMovimentacao = [];
+            $scope.maxSize = 3;
+            $scope.totalItems = 0;
+            $scope.currentPage = 1;
+            $scope.itensPorPagina = 10;
+            $scope.totalItemsMovimentacao = 0;
+            $scope.currentPageMovimentacao = 1;
+            $scope.totalItemsFornecedor = 0;
+            $scope.currentPageFornecedor = 1;
+            $scope.itensPorPaginaFornecedor = 5;
+            $scope.limpaFiltroAvancado = function () {
+                $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
+                $scope.valorBuscaProduto = "";
+                $scope.getListaProdutoAll(1);
+            };
+            $scope.filtroPorDescricao = function () {
+                $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
+                $scope.getListaProdutoAll(1);
+            };
+            $scope.filtrarAvancado = function () {
+                $scope.valorBuscaProduto = "";
+                $scope.getListaProdutoAll(1);
+                $scope.fecharDialog('#localizarProdutoDialog');
+            };
+            $scope.getListaProdutoAll = function (pagina) {
+                if (Factory.verificaToken(true)) {
+                    var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBuscaProduto};
+                    $rootScope.loading = $http({
+                        method: 'POST',
+                        data: envio,
+                        crossDomain: true,
+                        url: Factory.urlWs + "produto/getAllproduto",
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        if (!response.data.token) {
+                            Factory.refazerLogin();
+                        } else {
+                            $scope.listaProduto = response.data.dados;
+                            $scope.totalItems = response.data.totalRegistro;
+                        }
+                    }, function errorCallback(response) {
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
+                    });
+                }
+            };
+            $scope.getListaMovimentacao = function (pagina) {
+                if (Factory.verificaToken(true) && ($scope.dataInicialMovimento !== null && $scope.dataFinalMovimento !== null)) {
+                    var envio = {'id': $scope.produtoAtual.id, 'pagina': (pagina - 1), 'token': Factory.getToken(), 'data_inicial': $scope.dataInicialMovimento, 'data_final': $scope.dataFinalMovimento};
+                    $rootScope.loading = $http({
+                        method: 'POST',
+                        data: envio,
+                        crossDomain: true,
+                        url: Factory.urlWs + "produto/getMovimentacaoProduto",
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        if (!response.data.token) {
+                            Factory.refazerLogin();
+                        } else {
+                            $scope.listaProdutoMovimentacao = response.data.dados;
+                            $scope.totalItemsMovimentacao = response.data.totalRegistro;
                             if (response.data.estoque >= 0) {
                                 $scope.produtoAtual.estoque = response.data.estoque;
                             }
                         }
                     }, function errorCallback(response) {
-                        $scope.fecharDialog("#produtoDialogMovimentacaoCorrecao");
-                        setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
+                    });
+                } else if (($scope.dataInicialMovimento === null || $scope.dataFinalMovimento === null)) {
+                    $scope.totalItemsMovimentacao = 0;
+                }
+            };
+            $scope.getImagem = function (idItem) {
+                if (Factory.verificaToken(true) && idItem > 0) {
+                    var random = (new Date()).toString();
+                    return Factory.urlImagem + idItem + "/" + Factory.getToken() + "?cb=" + random;
+                }
+            };
+            $scope.validaImagem = function (mostraMenssagemErro, idCampoImagem, idCampoMsg) {
+                var campoImagem = $(idCampoImagem).prop('files');
+                if (campoImagem !== null && $(idCampoImagem).eq(0).val() !== "") {
+                    var imagem = campoImagem[0];
+                    if (imagem !== null) {
+                        var nomeImagem = imagem.name;
+                        var extencao = new RegExp("(.*?)\.(jpg|jpeg|png)$");
+                        if ((extencao.test(nomeImagem))) {
+                            if (imagem.size <= 500000) {
+                                return true;
+                            } else {
+                                $(idCampoImagem).val(null);
+                                if (mostraMenssagemErro) {
+                                    setMensagemTemporaria('erro', 'Tamanho da imagem permitido é 500bytes', idCampoMsg);
+                                } else {
+                                    return false;
+                                }
+                            }
+                        } else {
+                            $(idCampoImagem).val(null);
+                            if (mostraMenssagemErro) {
+                                setMensagemTemporaria('erro', 'Apenas imagem no formato jpg, jpeg e png!', idCampoMsg);
+                            } else {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            };
+            $scope.mostrarImagem = function (idCampoImagem, idCampoMsg, idCampoDestino) {
+                if ($scope.validaImagem(true, idCampoImagem, idCampoMsg)) {
+                    var campoImagem = $(idCampoImagem).prop('files');
+                    var imagem = campoImagem[0];
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $(idCampoDestino).attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(imagem);
+                }
+            };
+            $scope.insertProduto = function () {
+                $scope.message = "";
+                if (Factory.verificaToken(true)) {
+                    if ($scope.validaProduto('#msgProduto', '')) {
+                        var fd = new FormData();
+                        if ($scope.validaImagem(false, '#produtoImagemCadastro', '#msgProduto')) {
+                            var campoImagem = $('#produtoImagemCadastro').prop('files');
+                            var imagem = campoImagem[0];
+                            fd.append('imagem', imagem);
+                        }
+                        fd.append('token', Factory.getToken());
+                        fd.append('dados', angular.toJson($scope.produtoAtual));
+                        $scope.send = $http({
+                            url: Factory.urlWs + 'produto/insertProduto',
+                            method: 'POST',
+                            data: fd,
+                            transformRequest: angular.identity,
+                            headers: {'Content-Type': undefined}
+                        }).then(function successCallback(response) {
+                            if (!response.data.token) {
+                                Factory.refazerLogin();
+                            } else {
+                                $scope.fecharDialog("#produtoCadastroDialog");
+                                Factory.setMensagemTemporaria('sucesso', 'Produto cadastrado!', '#msgProdutoGeral');
+                                $scope.getListaProdutoAll(1);
+                            }
+                        }, function errorCallback(response) {
+                            $scope.fecharDialog("#produtoCadastroDialog");
+                            Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
+                        });
+                    }
+                }
+            };
+            $scope.updateProduto = function () {
+                $scope.message = "";
+                if (Factory.verificaToken(true)) {
+                    if ($scope.validaProduto('#msgProdutoAlterar', 'Alterar')) {
+                        var fd = new FormData();
+                        if ($scope.validaImagem(false, '#produtoImagemAlterar', '#msgProdutoAlterar')) {
+                            var campoImagem = $('#produtoImagemAlterar').prop('files');
+                            var imagem = campoImagem[0];
+                            fd.append('imagem', imagem);
+                        }
+                        fd.append('token', Factory.getToken());
+                        fd.append('dados', angular.toJson($scope.produtoAtual));
+                        $scope.send = $http({
+                            url: Factory.urlWs + 'produto/updatetProduto',
+                            method: 'POST',
+                            data: fd,
+                            transformRequest: angular.identity,
+                            headers: {'Content-Type': undefined}
+                        }).then(function successCallback(response) {
+                            if (!response.data.token) {
+                                Factory.refazerLogin();
+                            } else {
+                                $scope.getListaProdutoAll(1);
+                                $scope.fecharDialog("#produtoDialogAlterar");
+                                Factory.setMensagemTemporaria('sucesso', 'Produto alterado!', '#msgProdutoGeral');
+                            }
+                        }, function errorCallback(response) {
+                            $scope.fecharDialog("#produtoDialogAlterar");
+                            Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
+                        });
+                    }
+                }
+            };
+            $scope.deleteProduto = function () {
+                if (Factory.verificaToken(true)) {
+                    var envio = {'dados': $scope.produtoAtual, 'token': Factory.getToken()};
+                    $scope.send = $http({
+                        method: 'POST',
+                        crossDomain: true,
+                        url: Factory.urlWs + "produto/deleteProduto",
+                        data: envio,
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        if (!response.data.token) {
+                            Factory.refazerLogin();
+                        } else {
+                            $scope.getListaProdutoAll(1);
+                            $scope.fecharDialog("#produtoDialogDeletar");
+                            Factory.setMensagemTemporaria('sucesso', 'Produto Deletado!', '#msgProdutoGeral');
+                        }
+                    }, function errorCallback(response) {
+                        $scope.fecharDialog("#produtoDialogDeletar");
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
                     });
                 }
-            }
-        };
-        $scope.fecharCorrecaoMovimentacao = function () {
-            $scope.preparaProdutoMovimentacao(false);
-            $scope.fecharDialog("#produtoDialogMovimentacaoCorrecao");
-            $scope.abrirDialog("#produtoDialogMovimentacao");
-        };
-        $scope.getListaFornecedorAll = function (pagina) {
-            if (verificaToken(true)) {
-                var envio = {'pagina': (pagina - 1), 'token': getToken(), 'buscaDescricao': $scope.valorBuscaFornecedor, 'limit': $scope.itensPorPaginaFornecedor};
-                $scope.loadingDialog = $http({
-                    method: 'POST',
-                    crossDomain: true,
-                    url: urlWs + "fornecedor/getAllfornecedor",
-                    data: envio,
-                    headers: {'Content-Type': 'application/json'}
-                }).then(function successCallback(response) {
-                    if (!response.data.token) {
-                        refazerLogin();
-                    } else {
-                        $scope.listaFornecedores = response.data.dados;
-                        $scope.totalItemsFornecedor = response.data.totalRegistro;
+            };
+            $scope.movimentarProdutoCorrecao = function () {
+                $scope.message = "";
+                if (Factory.verificaToken(true)) {
+                    if ($scope.validaCorrecao()) {
+                        var produto = {id: $scope.produtoAtual.id, estoque: $scope.produtoAtual.estoque, tipoMovimentacao: $scope.produtoAtual.tipoMovimentacao.id, estoque_movimento_observacao: $scope.produtoAtual.estoque_movimento_observacao, estoque_movimento: $scope.produtoAtual.estoque_movimento};
+                        var envio = {'dados': produto, 'token': Factory.getToken()};
+                        $scope.send = $http({
+                            method: 'POST',
+                            crossDomain: true,
+                            url: Factory.urlWs + "produto/movimentarProduto",
+                            data: envio,
+                            headers: {'Content-Type': 'application/json'}
+                        }).then(function successCallback(response) {
+                            if (!response.data.token) {
+                                Factory.refazerLogin();
+                            } else if (response.data.sucesso) {
+                                $scope.preparaProdutoMovimentacao(false);
+                                $scope.fecharDialog("#produtoDialogMovimentacaoCorrecao");
+                                $scope.abrirDialog("#produtoDialogMovimentacao");
+                                Factory.setMensagemTemporaria('sucesso', 'Estoque Movimentado!', '#msgCorrecaoView');
+                                $scope.produtoAtual.estoque = response.data.estoque;
+                                $scope.getListaProdutoAll(1);
+                            } else {
+                                $scope.getListaProdutoAll(1);
+                                Factory.setMensagemTemporaria('erro', response.data.menssagem, '#msgCorrecao');
+                                if (response.data.estoque >= 0) {
+                                    $scope.produtoAtual.estoque = response.data.estoque;
+                                }
+                            }
+                        }, function errorCallback(response) {
+                            $scope.fecharDialog("#produtoDialogMovimentacaoCorrecao");
+                            Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
+                        });
                     }
-                }, function errorCallback(response) {
-                    setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
-                });
-            }
-        };
-        $scope.validaCorrecao = function () {
-            var retorno = false;
-            if ($scope.produtoAtual !== null) {
-                if ($scope.produtoAtual.estoque_movimento !== null && $scope.produtoAtual.estoque_movimento > 0) {
-                    retorno = true;
-                } else {
-                    setMensagemTemporaria('erro', 'Deve informar Quantidade!', '#msgCorrecao');
-                    return false;
                 }
-
-                if ($scope.produtoAtual.estoque_movimento_observacao !== null && $scope.produtoAtual.estoque_movimento_observacao.trim() !== "") {
-                    retorno = true;
-                } else {
-                    setMensagemTemporaria('erro', 'Deve informar observação!', '#msgCorrecao');
-                    return false;
-                }
-
-                if ($scope.produtoAtual.tipoMovimentacao !== null && $scope.produtoAtual.tipoMovimentacao > 0) {
-                    if ($scope.produtoAtual.tipoMovimentacao > 1 && $scope.produtoAtual.tipoMovimentacao < 5) {
-                        var valorFinal = $scope.produtoAtual.estoque - $scope.produtoAtual.estoque_movimento;
-                        if (valorFinal >= 0) {
-                            retorno = true;
+            };
+            $scope.fecharCorrecaoMovimentacao = function () {
+                $scope.preparaProdutoMovimentacao(false);
+                $scope.fecharDialog("#produtoDialogMovimentacaoCorrecao");
+                $scope.abrirDialog("#produtoDialogMovimentacao");
+            };
+            $scope.getListaFornecedorAll = function (pagina) {
+                if (Factory.verificaToken(true)) {
+                    var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaDescricao': $scope.valorBuscaFornecedor, 'limit': $scope.itensPorPaginaFornecedor};
+                    $scope.loadingDialog = $http({
+                        method: 'POST',
+                        crossDomain: true,
+                        url: Factory.urlWs + "fornecedor/getAllfornecedor",
+                        data: envio,
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        if (!response.data.token) {
+                            Factory.refazerLogin();
                         } else {
-                            setMensagemTemporaria('erro', 'Valor final não deve ser negativo!', '#msgCorrecao');
-                            return false;
+                            $scope.listaFornecedores = response.data.dados;
+                            $scope.totalItemsFornecedor = response.data.totalRegistro;
+                        }
+                    }, function errorCallback(response) {
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
+                    });
+                }
+            };
+            $scope.validaCorrecao = function () {
+                var retorno = false;
+                if ($scope.produtoAtual !== null) {
+                    if ($scope.produtoAtual.estoque_movimento !== null && $scope.produtoAtual.estoque_movimento > 0) {
+                        retorno = true;
+                    } else {
+                        $('#quantidadeCorrecao').focus();
+                        Factory.setMensagemTemporaria('erro', 'Deve informar Quantidade!', '#msgCorrecao');
+                        return false;
+                    }
+
+                    if ($scope.produtoAtual.estoque_movimento_observacao !== null && $scope.produtoAtual.estoque_movimento_observacao.trim() !== "") {
+                        retorno = true;
+                    } else {
+                        $('#observacaoCorrecao').focus();
+                        Factory.setMensagemTemporaria('erro', 'Deve informar observação!', '#msgCorrecao');
+                        return false;
+                    }
+
+                    if ($scope.produtoAtual.tipoMovimentacao !== null && $scope.produtoAtual.tipoMovimentacao.id !== undefined) {
+                        if ($scope.produtoAtual.tipoMovimentacao.id > 1 && $scope.produtoAtual.tipoMovimentacao.id < 5) {
+                            var valorFinal = $scope.produtoAtual.estoque - $scope.produtoAtual.estoque_movimento;
+                            if (valorFinal >= 0) {
+                                retorno = true;
+                            } else {
+                                Factory.setMensagemTemporaria('erro', 'Valor final não deve ser negativo!', '#msgCorrecao');
+                                return false;
+                            }
+                        } else {
+                            retorno = true;
                         }
                     } else {
-                        retorno = true;
+                        Factory.setMensagemTemporaria('erro', 'Deve informar tipo movimentação!', '#msgCorrecao');
+                        return false;
                     }
-                } else {
-                    setMensagemTemporaria('erro', 'Deve informar tipo movimentação!', '#msgCorrecao');
-                    return false;
                 }
-            }
-            return retorno;
-        };
-        $scope.validaProduto = function (idMsg) {
-            var retorno = false;
-            if ($scope.produtoAtual !== null) {
-                if ($scope.produtoAtual.descricao !== undefined && $scope.produtoAtual.descricao !== null && $scope.produtoAtual.descricao.trim() !== "") {
-                    retorno = true;
-                } else {
-                    setMensagemTemporaria('erro', 'Deve informar descrição!', idMsg);
-                    return false;
+                return retorno;
+            };
+            $scope.validaProduto = function (idMsg, idComplementar) {
+                var retorno = false;
+                if ($scope.produtoAtual !== null) {
+                    if ($scope.produtoAtual.descricao !== undefined && $scope.produtoAtual.descricao !== null && $scope.produtoAtual.descricao.trim() !== "") {
+                        retorno = true;
+                    } else {
+                        Factory.setMensagemTemporaria('erro', 'Deve informar descrição!', idMsg);
+                        $('#produtoDescricao' + idComplementar).focus();
+                        return false;
+                    }
+                    if ($scope.produtoAtual.valor !== undefined && $scope.produtoAtual.valor !== null && $scope.produtoAtual.valor > 0) {
+                        retorno = true;
+                    } else {
+                        Factory.setMensagemTemporaria('erro', 'Deve informar valor!', idMsg);
+                        $('#produtoValor' + idComplementar).focus();
+                        return false;
+                    }
+                    if ($scope.produtoAtual.fornecedor !== undefined && $scope.produtoAtual.fornecedor !== null) {
+                        retorno = true;
+                    } else {
+                        Factory.setMensagemTemporaria('erro', 'Deve informar o fornecedor!', idMsg);
+                        $('#produtoFornecedor' + idComplementar).focus();
+                        return false;
+                    }
                 }
-                if ($scope.produtoAtual.valor !== undefined && $scope.produtoAtual.valor !== null && $scope.produtoAtual.valor > 0) {
-                    retorno = true;
-                } else {
-                    setMensagemTemporaria('erro', 'Deve informar valor!', idMsg);
-                    return false;
+                return retorno;
+            };
+            $scope.novoProduto = function () {
+                $scope.produtoAtual = {observacao: ""};
+                $(":file").val(null);
+                $(":file").filestyle('clear');
+                $("#produtoImagemCadastroView").removeAttr('src');
+            };
+            $scope.preparaProduto = function (produto) {
+                $scope.produtoAtual = Object.assign({}, produto);
+                $(":file").val(null);
+                $(":file").filestyle('clear');
+                $scope.abrirDialog('#produtoDialogFuncoes');
+            };
+            $scope.preparaProdutoMovimentacao = function (prepraView) {
+                $scope.dataInicialMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth(), 1));
+                $scope.dataFinalMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth() + 1, 0));
+                $scope.listaProdutoMovimentacao = [];
+                $scope.totalItemsMovimentacao = 0;
+                $scope.getListaMovimentacao(1);
+                $scope.produtoAtual.tipoMovimentacao = $scope.listaTipoMovimentacaoCorrecao[0];
+                $scope.produtoAtual.estoque_movimento_observacao = "";
+                $scope.produtoAtual.estoque_movimento = "";
+                if (prepraView) {
+                    $scope.preparaProdutoView('#produtoDialogFuncoes', '#produtoDialogMovimentacao');
                 }
-                if ($scope.produtoAtual.fornecedor !== undefined && $scope.produtoAtual.fornecedor !== null) {
-                    retorno = true;
-                } else {
-                    setMensagemTemporaria('erro', 'Deve informar o fornecedor!', idMsg);
-                    return false;
+            };
+            $scope.preparaProdutoView = function (idModalPai, idModalFilho) {
+                if (idModalPai !== null) {
+                    $scope.fecharDialog(idModalPai);
                 }
-            }
-            return retorno;
-        };
-        $scope.novoProduto = function () {
-            $scope.produtoAtual = {observacao: ""};
-            $(":file").val(null);
-            $(":file").filestyle('clear');
-            $("#produtoImagemCadastroView").removeAttr('src');
-        };
-        $scope.preparaProduto = function (produto) {
-            $scope.produtoAtual = Object.assign({}, produto);
-            $(":file").val(null);
-            $(":file").filestyle('clear');
-            $scope.abrirDialog('#produtoDialogFuncoes');
-        };
-        $scope.preparaProdutoMovimentacao = function (prepraView) {
-            $scope.dataInicialMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth(), 1));
-            $scope.dataFinalMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth() + 1, 0));
-            $scope.listaProdutoMovimentacao = [];
-            $scope.totalItemsMovimentacao = 0;
-            $scope.getListaMovimentacao(1);
-            $scope.produtoAtual.tipoMovimentacao = $scope.listaTipoMovimentacaoCorrecao[0].id.value;
-            $scope.produtoAtual.estoque_movimento_observacao = "";
-            $scope.produtoAtual.estoque_movimento = "";
-            if (prepraView) {
-                $scope.preparaProdutoView('#produtoDialogFuncoes', '#produtoDialogMovimentacao');
-            }
-        };
-        $scope.preparaProdutoView = function (idModalPai, idModalFilho) {
-            if (idModalPai !== null) {
-                $scope.fecharDialog(idModalPai);
-            }
 
-            if (idModalFilho !== null) {
-                $scope.abrirDialog(idModalFilho);
-            }
-        };
-        $scope.selecionarFornecedor = function (idModal, fornecedor) {
-            $scope.entidadeSelecionada.fornecedor = fornecedor;
-            $scope.fecharDialog(idModal);
-            $scope.limpaBuscaFornecedor(null);
-        };
-        $scope.abrirDialog = function (idModal) {
-            $(idModal).modal('show');
-        };
-        $scope.fecharDialog = function (idModal) {
-            $(idModal).modal('hide');
-        };
-        $scope.abrirDialogLocalizarFornecedor = function ($entidade) {
-            $scope.limpaBuscaFornecedor($entidade);
-            $scope.getListaFornecedorAll(1);
-            $('#localizarFornecedorDialog').modal('show');
-        };
-        $scope.limpaBuscaFornecedorComBusca = function () {
-            $scope.listaFornecedores = [];
-            $scope.valorBuscaFornecedor = "";
-            $scope.currentPageFornecedor = 1;
-            $scope.totalItemsFornecedor = 0;
-            $scope.getListaFornecedorAll(1);
-        };
-        $scope.limpaBuscaFornecedor = function ($entidade) {
-            $scope.listaFornecedores = [];
-            $scope.valorBuscaFornecedor = "";
-            $scope.currentPageFornecedor = 1;
-            $scope.totalItemsFornecedor = 0;
-            if ($entidade !== null) {
-                $entidade.fornecedor = null;
-                $scope.entidadeSelecionada = $entidade;
-            }
-        };
-        $scope.getListaProdutoAll(1);
-        $scope.corLinha = function (tipoMovimentacao) {
-            var cor = {color: 'black'};
-            if (tipoMovimentacao == 1) {
-                cor.color = '#0066CC';
-            } else if (tipoMovimentacao == 2) {
-                cor.color = '#6eaf48';
-            } else if (tipoMovimentacao == 3) {
-                cor.color = '#FF3333';
-            } else if (tipoMovimentacao == 4) {
-                cor.color = '#FF9933';
-            } else if (tipoMovimentacao == 5) {
-                cor.color = '#404040';
-            }
-            return cor;
-        };
-    });
+                if (idModalFilho !== null) {
+                    $scope.abrirDialog(idModalFilho);
+                }
+            };
+            $scope.selecionarFornecedor = function (idModal, fornecedor) {
+                $scope.entidadeSelecionada.fornecedor = fornecedor;
+                $scope.fecharDialog(idModal);
+                $scope.limpaBuscaFornecedor(null);
+            };
+            $scope.abrirDialog = function (idModal) {
+                $(idModal).modal('show');
+            };
+            $scope.fecharDialog = function (idModal) {
+                $(idModal).modal('hide');
+            };
+            $scope.abrirDialogLocalizarFornecedor = function ($entidade) {
+                $scope.limpaBuscaFornecedor($entidade);
+                $scope.getListaFornecedorAll(1);
+                $('#localizarFornecedorDialog').modal('show');
+            };
+            $scope.limpaBuscaFornecedorComBusca = function () {
+                $scope.listaFornecedores = [];
+                $scope.valorBuscaFornecedor = "";
+                $scope.currentPageFornecedor = 1;
+                $scope.totalItemsFornecedor = 0;
+                $scope.getListaFornecedorAll(1);
+            };
+            $scope.limpaBuscaFornecedor = function ($entidade) {
+                $scope.listaFornecedores = [];
+                $scope.valorBuscaFornecedor = "";
+                $scope.currentPageFornecedor = 1;
+                $scope.totalItemsFornecedor = 0;
+                if ($entidade !== null) {
+                    $entidade.fornecedor = null;
+                    $scope.entidadeSelecionada = $entidade;
+                }
+            };
+            $scope.getListaProdutoAll(1);
+            $scope.corLinha = function (tipoMovimentacao) {
+                var cor = {color: 'black'};
+                if (tipoMovimentacao == 1) {
+                    cor.color = '#0066CC';
+                } else if (tipoMovimentacao == 2) {
+                    cor.color = '#6eaf48';
+                } else if (tipoMovimentacao == 3) {
+                    cor.color = '#FF3333';
+                } else if (tipoMovimentacao == 4) {
+                    cor.color = '#FF9933';
+                } else if (tipoMovimentacao == 5) {
+                    cor.color = '#404040';
+                }
+                return cor;
+            };
+        }]);
 })();
-angular.module('www.geve.com.br').controller("usuarioControler", function ($scope, $http, $cookies) {
-
-//    $('#menu-lateral ul li').removeClass('active');
-    $('#btnUsuario').addClass('active');
-
-    $scope.usuario = {usuario: '', senha: ''};
-
-});
+(function () {
+    'use strict';
+    angular.module('www.geve.com.br').controller("usuarioControler", ['$scope', '$http', 'Factory', function ($scope, $http, $cookies, Factory) {
+            Factory.verificaToken(true);
+            Factory.ajustaMenuLateral('#btnUsuario');
+            $scope.usuario = {usuario: '', senha: ''};
+        }]);
+})();

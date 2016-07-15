@@ -16,7 +16,7 @@
                                 </ul>
                             </div>
                         </span>
-                        <input type="text" class="form-control" placeholder="Descrição" ng-model="valorBusca">
+                        <input type="text"  class="form-control" placeholder="Descrição" ng-model="valorBusca">
                         <span class="input-group-btn">
                             <button class="btn btn-primary" type="button" ng-click="filtroPorDescricao()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                         </span>
@@ -30,7 +30,7 @@
             </div>
             <div id="msgFornecedorGeral" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"></div>
             <div id="tabela-fornecedor" class="row">
-                <div class="alert alert-warning" role="alert"  ng-show="listaFornecedores == null || listaFornecedores.length < 1"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Sem dados</div>
+                <div class="alert alert-warning" role="alert"  ng-show="listaFornecedores == null || listaFornecedores.length < 1" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Sem dados</div>
                 <table ng-show="listaFornecedores != null && listaFornecedores.length > 0" class="table table-striped table-hover table-bordered">
                     <thead>
                         <tr class="tabela-header">
@@ -62,7 +62,7 @@
     <div class="modal fade" id="cadastroFornecedorDialog" role="dialog" cg-busy="{promise:send, templateUrl:'send.html'}">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form>
+                <form >
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">Cadastro Fornecedor</h4>
@@ -70,19 +70,21 @@
                     <div class="modal-body">
                         <div class="input-group" style="width: 100%;">
                             <span style="width: 120px" class="input-group-addon" id="fornecedorDescricao">Fornecedor</span>
-                            <input type="text" required="required" class="form-control" maxlength="50"  aria-describedby="fornecedorDescricao" ng-model="fornecedorAtual.descricao">
+                            <input type="text" id="fornecedor" class="form-control" maxlength="50" uib-popover="esse"  popover-trigger="none" aria-describedby="fornecedorDescricao" ng-model="fornecedorAtual.descricao">
                         </div>
 
                         <div class="input-group" style="padding-top: 20px; width: 100%;">
                             <span style="width: 120px"  class="input-group-addon" id="fornecedorEmail">Email</span>
-                            <input type="email" required="required" class="form-control"  maxlength="50" aria-describedby="fornecedorEmail" ng-model="fornecedorAtual.email">
+                            <input type="email" id="fornecedorEmail"  class="form-control"  maxlength="50" aria-describedby="fornecedorEmail" ng-model="fornecedorAtual.email">
                         </div>
 
                         <div class="input-group" style="padding-top: 20px; width: 100%;">
                             <span style="width: 120px" class="input-group-addon" id="fornecedorTelefone">Telefone</span>
-                            <input ui-br-phone-number type="tel" required="required"  class="form-control"  aria-describedby="fornecedorTelefone" ng-model="fornecedorAtual.telefone">
+                            <input ui-br-phone-number id="fornecedorFone" type="tel"   class="form-control"  aria-describedby="fornecedorTelefone" ng-model="fornecedorAtual.telefone">
                         </div>
+                        <div id="msgFornecedorCad" class="row" style="padding-left: 15px; padding-right: 15px; margin-top: 10px;"></div>
                     </div>
+
                     <div class="modal-footer">
                         <div class="input-group" style="width: 100%">
                             <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#cadastroFornecedorDialog')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
@@ -97,7 +99,7 @@
     <div class="modal fade" id="cadastroFornecedorDialogAlterar" role="dialog" cg-busy="{promise:send, templateUrl:'send.html'}">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form>
+                <form novalidate>
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">Alterar Fornecedor</h4>
@@ -105,18 +107,19 @@
                     <div class="modal-body">
                         <div class="input-group" style="width: 100%;">
                             <span style="width: 120px" class="input-group-addon" id="fornecedorDescricaoAlterar">Fornecedor</span>
-                            <input type="text" required="required" class="form-control" maxlength="50" aria-describedby="fornecedorDescricaoAlterar" ng-model="fornecedorAtual.descricao">
+                            <input type="text" id="fornecedorAlterar"  class="form-control" maxlength="50" aria-describedby="fornecedorDescricaoAlterar" ng-model="fornecedorAtual.descricao">
                         </div>
 
                         <div class="input-group" style="padding-top: 20px; width: 100%;">
                             <span style="width: 120px"  class="input-group-addon" id="fornecedorEmailAlterar">Email</span>
-                            <input type="email" required="required" class="form-control"  maxlength="50" aria-describedby="fornecedorEmailAlterar" ng-model="fornecedorAtual.email">
+                            <input type="email" id="fornecedorEmailAlterar"  class="form-control"  maxlength="50" aria-describedby="fornecedorEmailAlterar" ng-model="fornecedorAtual.email">
                         </div>
 
                         <div class="input-group" style="padding-top: 20px; width: 100%;">
                             <span style="width: 120px" class="input-group-addon" id="fornecedorTelefoneAlterar">Telefone</span>
-                            <input ui-br-phone-number type="text" required="required" class="form-control"   aria-describedby="fornecedorTelefoneAlterar" ng-model="fornecedorAtual.telefone">
+                            <input ui-br-phone-number id="fornecedorFoneAlterar"  type="text"  class="form-control"   aria-describedby="fornecedorTelefoneAlterar" ng-model="fornecedorAtual.telefone">
                         </div>
+                         <div id="msgFornecedorAlt" class="row" style="padding-left: 15px; padding-right: 15px; margin-top: 10px;"></div>
                     </div>
                     <div class="modal-footer">
                         <div class="input-group" style="width: 100%">
@@ -132,7 +135,7 @@
     <div class="modal fade" id="cadastroFornecedorDialogDeletar" role="dialog" cg-busy="{promise:send, templateUrl:'send.html'}">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form>
+                <form novalidate>
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">Deletar Fornecedor</h4>

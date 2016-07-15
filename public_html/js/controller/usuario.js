@@ -1,8 +1,8 @@
-angular.module('www.geve.com.br').controller("usuarioControler", function ($scope, $http, $cookies) {
-
-//    $('#menu-lateral ul li').removeClass('active');
-    $('#btnUsuario').addClass('active');
-
-    $scope.usuario = {usuario: '', senha: ''};
-
-});
+(function () {
+    'use strict';
+    angular.module('www.geve.com.br').controller("usuarioControler", ['$scope', '$http', 'Factory', function ($scope, $http, $cookies, Factory) {
+            Factory.verificaToken(true);
+            Factory.ajustaMenuLateral('#btnUsuario');
+            $scope.usuario = {usuario: '', senha: ''};
+        }]);
+})();
