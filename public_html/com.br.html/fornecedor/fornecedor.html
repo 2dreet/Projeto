@@ -34,18 +34,16 @@
                 <table ng-show="listaFornecedores != null && listaFornecedores.length > 0" class="table table-striped table-hover table-bordered">
                     <thead>
                         <tr class="tabela-header">
-                            <th style="width: 100px;">Código</th>
                             <th >Descrição</th>
-                            <th style="width: 220px;" class="visible-md visible-lg">Email</th>
-                            <th style="width: 120px;" class="visible-md visible-lg" >Telefone</th>
+                            <th style="width: 220px;" class=" visible-sm visible-md visible-lg">Email</th>
+                            <th style="width: 140px;" class="" >Telefone</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="fornecedor in listaFornecedores" data-toggle="modal" data-target="#cadastroFornecedorDialogFuncoes" ng-click="preparaFornecedor(fornecedor)">
-                            <td ng-bind="fornecedor.id"></td>
                             <td ng-bind="fornecedor.descricao"></td>
-                            <td class="visible-md visible-lg" ng-bind="fornecedor.email"></td>
-                            <td class="visible-md visible-lg" ng-bind="fornecedor.telefone" > </td>
+                            <td class="visible-sm visible-md visible-lg" ng-bind="fornecedor.email"></td>
+                            <td class="" ng-bind="fornecedor.telefone |tel"> </td>
                         </tr>
                     </tbody>
                 </table> 
@@ -119,7 +117,7 @@
                             <span style="width: 120px" class="input-group-addon" id="fornecedorTelefoneAlterar">Telefone</span>
                             <input ui-br-phone-number id="fornecedorFoneAlterar"  type="text"  class="form-control"   aria-describedby="fornecedorTelefoneAlterar" ng-model="fornecedorAtual.telefone">
                         </div>
-                         <div id="msgFornecedorAlt" class="row" style="padding-left: 15px; padding-right: 15px; margin-top: 10px;"></div>
+                        <div id="msgFornecedorAlt" class="row" style="padding-left: 15px; padding-right: 15px; margin-top: 10px;"></div>
                     </div>
                     <div class="modal-footer">
                         <div class="input-group" style="width: 100%">
