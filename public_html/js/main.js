@@ -46937,6 +46937,26 @@ app.filter('tel', function () {
   };
 });
 
+app.filter('cpf', function () {
+  return function (input) {
+    var str = input + '';
+    str = str.replace(/\D/g, '');
+    str = str.replace(/(\d{3})(\d)/, '$1.$2');
+    str = str.replace(/(\d{3})(\d)/, '$1.$2');
+    str = str.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    return str;
+  };
+});
+
+app.filter('cep', function () {
+  return function (input) {
+    var str = input + '';
+    str = str.replace(/\D/g, '');
+    str = str.replace(/^(\d{2})(\d{3})(\d)/, '$1.$2-$3');
+    return str;
+  };
+});
+
 app.value('cgBusyDefaults', {
     backdrop: false,
     templateUrl: 'loadin.html',
@@ -47370,7 +47390,6 @@ $('#menu-lateral ul li').click(function () {
                         Factory.setMensagemTemporaria('erro', 'Sobrenome Inválido!', idMsg);
                         return false;
                     }
-
                     if ($scope.clienteAtual.dataNascimento !== null && $scope.clienteAtual.dataNascimento !== undefined) {
                         retorno = true;
                     } else {
@@ -47398,6 +47417,15 @@ $('#menu-lateral ul li').click(function () {
                 return retorno;
             };
 
+
+            var dataDbToJS = function (data) {
+                if (data !== undefined && data !== null) {
+                    return (new Date(data.substring(0, 4), data.substring(5, 7) - 1, data.substring(8, 10)));
+                } else {
+                    return "";
+                }
+            };
+
             var limparDadosCliente = function () {
                 $scope.novoTelefone();
                 $scope.listaTelefone = [];
@@ -47415,7 +47443,8 @@ $('#menu-lateral ul li').click(function () {
 
             $scope.preparaCliente = function (cliente) {
                 $scope.clienteAtual = Object.assign({}, cliente);
-                $scope.limparDadosCliente();
+                $scope.clienteAtual.pessoa.dataNascimento = dataDbToJS($scope.clienteAtual.pessoa.dataNascimento);
+                limparDadosCliente();
             };
             $scope.fecharDialog = function (idModal) {
                 $(idModal).modal('hide');

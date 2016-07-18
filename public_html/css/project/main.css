@@ -199,6 +199,14 @@ input[type="text"]:read-only{
     background: white;
 } 
 
+input[type="number"]:read-only{
+    background: white;
+} 
+
+input[type="email"]:read-only{
+    background: white;
+} 
+
 /*@media only screen and (max-device-width: 480px) {
     html, body {
         margin: 0px;

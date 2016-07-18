@@ -41,7 +41,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="cliente in listaCliente" ng-click="preparaCliente(cliente)">
+                        <tr ng-repeat="cliente in listaCliente" data-toggle="modal" data-target="#cadastroClienteDialogFuncoes"  ng-click="preparaCliente(cliente)">
                             <td ng-bind="cliente.pessoa.nome"></td>
                             <td ng-bind="cliente.pessoa.sobreNome"></td>
                             <td class="visible-sm visible-md visible-lg" ng-bind="cliente.email"></td>
@@ -194,6 +194,131 @@
                         </div>
                     </div>
                 </form>    
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal" id="clienteDialogVizualizar" role="dialog"  aria-hidden="true" style="overflow-x: auto; margin: auto;">
+        <div class="modal-dialog" style="min-width: 400px; max-width: 400px;min-height: 800px; max-height: 800px;">
+            <div class="modal-content">
+                <form class="tab-form-demo" novalidate>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Vizualizar Cliente</h4>
+                    </div>
+                    <div class="media-body" >
+                        <uib-tabset active="indice" style="min-height: 530px; max-height: 530px;">
+                            <uib-tab index="0" heading="Dados Cliente" >
+                                <div class="form-group" style="padding-left: 10px;padding-right: 10px">
+                                    <label>Nome</label>
+                                    <input type="text" readonly="true" class="form-control" ng-model="clienteAtual.pessoa.nome" />
+                                </div>
+                                <div class="form-group" style="padding-left: 10px;padding-right: 10px">
+                                    <label>Sobrenome</label>
+                                    <input type="text" readonly="true" class="form-control" ng-model="clienteAtual.pessoa.sobreNome"/>
+                                </div>
+                                <div class="form-group" style="padding-left: 10px;padding-right: 10px">
+                                    <label>Data Nascimento</label>
+                                    <input type="text" readonly="true" class="form-control" ng-model="(clienteAtual.pessoa.dataNascimento)" uib-datepicker-popup="dd/MM/yyyy"/>
+                                </div>
+                                <div class="form-group" style="padding-left: 10px;padding-right: 10px">
+                                    <label>Sexo</label>
+                                    <input type="text" readonly="true" class="form-control" ng-model="clienteAtual.pessoa.sexo" />
+                                </div>
+                                <div class="form-group" style="padding-left: 10px;padding-right: 10px">
+                                    <label>RG</label>
+                                    <input type="number" readonly="true" class="form-control" ng-model="clienteAtual.rg" />
+                                </div>
+                                <div class="form-group" style="padding-left: 10px;padding-right: 10px">
+                                    <label>CPF</label>
+                                    <input type="text" readonly="true"  ui-cpf-mask class="form-control" ng-model="clienteAtual.cpf" />
+                                </div>
+                                <div class="form-group" style="padding-left: 10px;padding-right: 10px">
+                                    <label>Email</label>
+                                    <input type="email" readonly="true" class="form-control" ng-model="clienteAtual.email" />
+                                </div>
+                            </uib-tab>
+                            <uib-tab index="1" heading="Endereço">
+                                <div class="form-group" style="padding-left: 10px;padding-right: 10px">
+                                    <label>Cep</label>
+                                    <input type="text" readonly="true" ui-br-cep-mask class="form-control" ng-model="clienteAtual.endereco.cep" />
+                                </div>
+                                <div class="form-group" style="padding-left: 10px;padding-right: 10px">
+                                    <label>Logradouro</label>
+                                    <input type="text" readonly="true" class="form-control" ng-model="clienteAtual.endereco.logradouro" />
+                                </div>
+                                <div class="form-group" style="padding-left: 10px;padding-right: 10px">
+                                    <label>Complemento</label>
+                                    <input type="text" readonly="true" class="form-control" ng-model="clienteAtual.endereco.complemento" />
+                                </div>
+                                <div class="form-group" style="padding-left: 10px;padding-right: 10px">
+                                    <label>Número</label>
+                                    <input type="text" readonly="true" class="form-control" ng-model="clienteAtual.endereco.numero" />
+                                </div>
+                                <div class="form-group" style="padding-left: 10px;padding-right: 10px">
+                                    <label>Bairro</label>
+                                    <input type="text" readonly="true" class="form-control" ng-model="clienteAtual.endereco.bairro" />
+                                </div>
+                                <div class="form-group" style="padding-left: 10px;padding-right: 10px">
+                                    <label>Cidade</label>
+                                    <input type="text" readonly="true" class="form-control" ng-model="clienteAtual.endereco.cidade" />
+                                </div>
+                                <div class="form-group" style="padding-left: 10px;padding-right: 10px">
+                                    <label>UF</label>
+                                    <input type="text" readonly="true" class="form-control" ng-model="clienteAtual.endereco.uf" />
+                                </div>
+                            </uib-tab>
+                            <uib-tab index="2" heading="Telefone" >
+                                <table class="table table-striped table-hover table-bordered " style="border: none; " >
+                                    <thead style="display: block; padding-left: 0px">
+                                        <tr class="tabela-header">
+                                            <th style="width: 200px">Número</th>
+                                            <th style="width: 200px">Tipo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="display: block; height:270px; overflow-y: auto; padding-left: 0px">
+                                        <tr ng-repeat="telefoneAux in clienteAtual.listaTelefone">
+                                            <td style="width: 200px" ng-bind="telefoneAux.numero"></td>
+                                            <td style="width: 200px" ng-bind="telefoneAux.tipoTelefone.descricao"></td>
+                                        </tr>
+                                    </tbody>
+                                </table> 
+                            </uib-tab>
+                        </uib-tabset>
+                    </div>
+
+                    <div class="modal-footer">
+                        <div class="input-group" style="width: 100%;">
+                            <button type="button" class="btn btn-default center-block btn-primary " ng-click="fecharDialog('#clienteDialogVizualizar')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
+                        </div>
+                    </div>
+                </form>    
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="cadastroClienteDialogFuncoes" role="dialog" style="width: 210px; margin: auto">
+        <div class="modal-dialog" style="width: 200px">
+            <div class="modal-content" style="width: 200px">
+                <form>
+                    <div class="modal-header" style="width: 200px">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Funções</h4>
+                    </div>
+                    <div class="modal-body" style="width: 200px">
+                        <div class="list-group">
+                            <a class="list-group-item" data-toggle="modal" data-target="#clienteDialogVizualizar" ng-click="fecharDialog('#cadastroClienteDialogFuncoes')"><span class="glyphicon glyphicon-list-alt btn btn-default btn-primary" aria-hidden="true"></span>  Vizualizar</a>
+                            <!--<a class="list-group-item" data-toggle="modal" data-target="#cadastroFornecedorDialogAlterar" ng-click="fecharDialog('#cadastroFornecedorDialogFuncoes')"><span class="glyphicon glyphicon-pencil btn btn-default btn-warning " aria-hidden="true"></span>  Editar</a>-->
+                            <!--<a class="list-group-item" data-toggle="modal" data-target="#cadastroFornecedorDialogDeletar" ng-click="fecharDialog('#cadastroFornecedorDialogFuncoes')"><span class="glyphicon glyphicon-trash btn btn-default btn-danger" aria-hidden="true"></span>  Deletar</a>-->
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="width: 200px">
+                        <div class="input-group" style="width: 100%;">
+                            <button type="button" class="btn btn-default center-block btn-primary " ng-click="fecharDialog('#cadastroFornecedorDialogFuncoes')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

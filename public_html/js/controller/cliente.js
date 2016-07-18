@@ -253,7 +253,6 @@
                         Factory.setMensagemTemporaria('erro', 'Sobrenome Inválido!', idMsg);
                         return false;
                     }
-
                     if ($scope.clienteAtual.dataNascimento !== null && $scope.clienteAtual.dataNascimento !== undefined) {
                         retorno = true;
                     } else {
@@ -281,6 +280,15 @@
                 return retorno;
             };
 
+
+            var dataDbToJS = function (data) {
+                if (data !== undefined && data !== null) {
+                    return (new Date(data.substring(0, 4), data.substring(5, 7) - 1, data.substring(8, 10)));
+                } else {
+                    return "";
+                }
+            };
+
             var limparDadosCliente = function () {
                 $scope.novoTelefone();
                 $scope.listaTelefone = [];
@@ -298,7 +306,8 @@
 
             $scope.preparaCliente = function (cliente) {
                 $scope.clienteAtual = Object.assign({}, cliente);
-                $scope.limparDadosCliente();
+                $scope.clienteAtual.pessoa.dataNascimento = dataDbToJS($scope.clienteAtual.pessoa.dataNascimento);
+                limparDadosCliente();
             };
             $scope.fecharDialog = function (idModal) {
                 $(idModal).modal('hide');

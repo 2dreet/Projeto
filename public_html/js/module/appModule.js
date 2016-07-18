@@ -40,6 +40,26 @@ app.filter('tel', function () {
   };
 });
 
+app.filter('cpf', function () {
+  return function (input) {
+    var str = input + '';
+    str = str.replace(/\D/g, '');
+    str = str.replace(/(\d{3})(\d)/, '$1.$2');
+    str = str.replace(/(\d{3})(\d)/, '$1.$2');
+    str = str.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    return str;
+  };
+});
+
+app.filter('cep', function () {
+  return function (input) {
+    var str = input + '';
+    str = str.replace(/\D/g, '');
+    str = str.replace(/^(\d{2})(\d{3})(\d)/, '$1.$2-$3');
+    return str;
+  };
+});
+
 app.value('cgBusyDefaults', {
     backdrop: false,
     templateUrl: 'loadin.html',
