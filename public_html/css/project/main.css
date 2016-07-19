@@ -55,7 +55,7 @@ input::-webkit-inner-spin-button {
 }
 
 #nav-meio{
-    border-top: 3px solid #518d8a;
+    border-top: 3px solid #24262d;
     -moz-border-radius:0px;
     -webkit-border-radius:0px;
     border-radius:0px;
@@ -130,7 +130,7 @@ input::-webkit-inner-spin-button {
     line-height: 60px;
     display: block;
     text-align: center;
-    background: #518d8a;
+    background: #24262d;
     width: 100%;    
     margin: 0;
     padding: 0;
@@ -163,7 +163,7 @@ input::-webkit-inner-spin-button {
 }
 
 .tabela-header{
-    background: #cccccc;
+    /*background: #cccccc;*/
 }
 
 .botaoComIcone{
