@@ -47143,7 +47143,6 @@ $('#menu-lateral ul li').click(function () {
             Factory.ajustaMenuLateral('#btnCliente');
 
             $scope.clienteAtual = {};
-            $scope.clienteEndereco = {};
             $scope.listaCliente = [];
             $scope.valorBuscaCliente = "";
             $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
@@ -47154,7 +47153,6 @@ $('#menu-lateral ul li').click(function () {
             };
             $scope.listaUF = Formulario.getUF();
             $scope.telefone = {};
-            $scope.listaTelefone = [];
             $scope.editandoTelefone = false;
             $scope.listaTipoTelefone = Formulario.getTipoTelefone();
             $scope.maxSize = 3;
@@ -47185,20 +47183,18 @@ $('#menu-lateral ul li').click(function () {
             };
 
             $scope.getCep = function () {
-                if ($scope.clienteEndereco.cep !== undefined && $scope.clienteEndereco.cep !== null && $scope.clienteEndereco.cep.trim().length === 8) {
-                    BuscaCep.getViaCep($scope.clienteEndereco.cep).then(function (d) {
-                        $scope.clienteEndereco.logradouro = d.data.logradouro;
-                        $scope.clienteEndereco.bairro = d.data.bairro;
-                        $scope.clienteEndereco.cidade = d.data.localidade;
-                        $scope.clienteEndereco.uf = d.data.uf;
+                if ($scope.clienteAtual.endereco.cep !== undefined && $scope.clienteAtual.endereco.cep !== null && $scope.clienteAtual.endereco.cep.trim().length === 8) {
+                    BuscaCep.getViaCep($scope.clienteAtual.endereco.cep).then(function (d) {
+                        $scope.clienteAtual.endereco.logradouro = d.data.logradouro;
+                        $scope.clienteAtual.endereco.bairro = d.data.bairro;
+                        $scope.clienteAtual.endereco.cidade = d.data.localidade;
+                        $scope.clienteAtual.endereco.uf = d.data.uf;
                     });
                 }
             };
 
             $scope.insertCliente = function () {
                 if (Factory.verificaToken(true) && validaEnvioCliente('#msgClienteCadatro', '')) {
-                    $scope.clienteAtual.endereco = $scope.clienteEndereco;
-                    $scope.clienteAtual.telefone = $scope.listaTelefone;
                     var envio = {'dados': $scope.clienteAtual, 'token': Factory.getToken()};
                     $rootScope.send = $http({
                         method: 'POST',
@@ -47212,7 +47208,30 @@ $('#menu-lateral ul li').click(function () {
                             Factory.refazerLogin();
                         } else {
                             Factory.setMensagemTemporaria('sucesso', 'Cliente cadastrado!', '#msgClienteGeral');
-                            //$scope.getListaClienteAll(1);
+                            $scope.getListaClienteAll(1);
+                        }
+                    }, function errorCallback(response) {
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgClienteGeral');
+                    });
+                }
+            };
+
+            $scope.updateCliente = function () {
+                if (Factory.verificaToken(true) && validaEnvioCliente('#msgClienteAlterar', 'Alterar')) {
+                    var envio = {'dados': $scope.clienteAtual, 'token': Factory.getToken()};
+                    $rootScope.send = $http({
+                        method: 'POST',
+                        crossDomain: true,
+                        url: Factory.urlWs + "cliente/updateCliente",
+                        data: envio,
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        $scope.fecharDialog('#msgClienteAlterar');
+                        if (!response.data.token) {
+                            Factory.refazerLogin();
+                        } else {
+                            Factory.setMensagemTemporaria('sucesso', 'Cliente Alterado!', '#msgClienteGeral');
+                            $scope.getListaClienteAll(1);
                         }
                     }, function errorCallback(response) {
                         Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgClienteGeral');
@@ -47233,9 +47252,9 @@ $('#menu-lateral ul li').click(function () {
 
             $scope.salvaTelefone = function (idMsg, idComplementar) {
                 if (validaFone(idMsg, idComplementar)) {
-                    for (var i = $scope.listaTelefone.length; i--; ) {
+                    for (var i = $scope.clienteAtual.listaTelefone.length; i--; ) {
                         if (i === $scope.telefone.index) {
-                            $scope.listaTelefone[i] = $scope.telefone;
+                            $scope.clienteAtual.listaTelefone[i] = $scope.telefone;
                             $scope.novoTelefone();
                         }
                     }
@@ -47246,16 +47265,16 @@ $('#menu-lateral ul li').click(function () {
             $scope.addTelefone = function (idMsg, idComplementar) {
                 if (validaFone(idMsg, idComplementar)) {
                     var telefoneAux = Object.assign({}, $scope.telefone);
-                    telefoneAux.index = $scope.listaTelefone.length;
-                    $scope.listaTelefone.push(telefoneAux);
+                    telefoneAux.index = $scope.clienteAtual.listaTelefone.length;
+                    $scope.clienteAtual.listaTelefone.push(telefoneAux);
                     $scope.novoTelefone();
                 }
             };
 
             $scope.removeTelefone = function (item) {
-                for (var i = $scope.listaTelefone.length; i--; ) {
-                    if ($scope.listaTelefone[i] === item) {
-                        $scope.listaTelefone.splice(i, 1);
+                for (var i = $scope.clienteAtual.listaTelefone.length; i--; ) {
+                    if ($scope.clienteAtual.listaTelefone[i] === item) {
+                        $scope.clienteAtual.listaTelefone.splice(i, 1);
                     }
                 }
             };
@@ -47282,12 +47301,10 @@ $('#menu-lateral ul li').click(function () {
             var validaListaFone = function (idMsg) {
                 $scope.indice = 2;
                 var retorno = false;
-                if ($scope.listaTelefone !== null && $scope.listaTelefone.length > 0) {
+                if ($scope.clienteAtual.listaTelefone !== null && $scope.clienteAtual.listaTelefone.length > 0) {
                     retorno = true;
                 } else {
-                    if ($scope.clienteAtual.id === undefined) {
-                        Factory.setMensagemTemporaria('erro', 'Informar Telefone!', idMsg);
-                    }
+                    Factory.setMensagemTemporaria('erro', 'Informar Telefone!', idMsg);
                     return false;
                 }
                 return retorno;
@@ -47296,41 +47313,41 @@ $('#menu-lateral ul li').click(function () {
             var validaEndereco = function (idMsg, idComplementar) {
                 $scope.indice = 1;
                 var retorno = false;
-                if ($scope.clienteEndereco.cep !== undefined && $scope.clienteEndereco.cep !== null && ($scope.clienteEndereco.cep.trim()).length === 8) {
+                if ($scope.clienteAtual.endereco.cep !== undefined && $scope.clienteAtual.endereco.cep !== null && ($scope.clienteAtual.endereco.cep.trim()).length === 8) {
                     retorno = true;
                 } else {
                     $('#clienteCep' + idComplementar).focus();
                     Factory.setMensagemTemporaria('erro', 'Cep Inválido!', idMsg);
                     return false;
                 }
-                if ($scope.clienteEndereco.logradouro !== undefined && $scope.clienteEndereco.logradouro !== null && ($scope.clienteEndereco.logradouro.trim()).length > 0) {
+                if ($scope.clienteAtual.endereco.logradouro !== undefined && $scope.clienteAtual.endereco.logradouro !== null && ($scope.clienteAtual.endereco.logradouro.trim()).length > 0) {
                     retorno = true;
                 } else {
                     $('#clienteLogradouro' + idComplementar).focus();
                     Factory.setMensagemTemporaria('erro', 'Logradouro Inválido!', idMsg);
                     return false;
                 }
-                if ($scope.clienteEndereco.bairro !== undefined && $scope.clienteEndereco.bairro !== null && ($scope.clienteEndereco.bairro.trim()).length > 0) {
+                if ($scope.clienteAtual.endereco.bairro !== undefined && $scope.clienteAtual.endereco.bairro !== null && ($scope.clienteAtual.endereco.bairro.trim()).length > 0) {
                     retorno = true;
                 } else {
                     $('#clienteBairro' + idComplementar).focus();
                     Factory.setMensagemTemporaria('erro', 'Bairro Inválido!', idMsg);
                     return false;
                 }
-                if ($scope.clienteEndereco.cidade !== undefined && $scope.clienteEndereco.cidade !== null && ($scope.clienteEndereco.cidade.trim()).length > 0) {
+                if ($scope.clienteAtual.endereco.cidade !== undefined && $scope.clienteAtual.endereco.cidade !== null && ($scope.clienteAtual.endereco.cidade.trim()).length > 0) {
                     retorno = true;
                 } else {
                     $('#clienteCidade' + idComplementar).focus();
                     Factory.setMensagemTemporaria('erro', 'Cidade Inválida!', idMsg);
                     return false;
                 }
-                if ($scope.clienteEndereco.uf !== undefined && $scope.clienteEndereco.uf !== null && ($scope.clienteEndereco.uf.trim()).length === 2) {
+                if ($scope.clienteAtual.endereco.uf !== undefined && $scope.clienteAtual.endereco.uf !== null && ($scope.clienteAtual.endereco.uf.trim()).length === 2) {
                     retorno = true;
                 } else {
                     Factory.setMensagemTemporaria('erro', 'UF Inválida!', idMsg);
                     return false;
                 }
-                if ($scope.clienteEndereco.numero !== undefined && $scope.clienteEndereco.numero !== null && $scope.clienteEndereco.numero > 0) {
+                if ($scope.clienteAtual.endereco.numero !== undefined && $scope.clienteAtual.endereco.numero !== null && $scope.clienteAtual.endereco.numero > 0) {
                     retorno = true;
                 } else {
                     $('#clienteNumero' + idComplementar).focus();
@@ -47425,26 +47442,22 @@ $('#menu-lateral ul li').click(function () {
                     return "";
                 }
             };
-
+ 
             var limparDadosCliente = function () {
                 $scope.novoTelefone();
-                $scope.listaTelefone = [];
+                $scope.clienteAtual = {sexo: $scope.listaSexo[0], endereco: {uf: "AC"}, listaTelefone: []};
                 $scope.indice = 0;
-                $scope.clienteEndereco = {};
-                $scope.clienteEndereco.uf = "AC";
             };
 
             $scope.novoCliente = function () {
-                $scope.clienteAtual = {};
-                $scope.clienteAtual.sexo = $scope.listaSexo[0];
                 limparDadosCliente();
                 $scope.abrirDialog('#clienteDialogCadastro');
             };
 
             $scope.preparaCliente = function (cliente) {
+                limparDadosCliente();
                 $scope.clienteAtual = Object.assign({}, cliente);
                 $scope.clienteAtual.pessoa.dataNascimento = dataDbToJS($scope.clienteAtual.pessoa.dataNascimento);
-                limparDadosCliente();
             };
             $scope.fecharDialog = function (idModal) {
                 $(idModal).modal('hide');

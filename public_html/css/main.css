@@ -465,9 +465,6 @@ input::-webkit-inner-spin-button {
     border-left: 3px solid #2e353d;
 }
 
-
-/*.thead-inverse th{color:#fff;background-color: #24262d }*/
-
 #menu-lateral ul li a:hover{
     color: #ffffff;
     border-left: 3px solid #d19b3d;
