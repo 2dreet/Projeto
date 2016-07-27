@@ -71,16 +71,16 @@
                             <uib-tab index="0" heading="Dados Cliente" disable="true">
                                 <div class="form-group" style="padding-left: 10px;padding-right: 10px">
                                     <label>Nome</label>
-                                    <input type="text" id="clienteNome" class="form-control"  ng-model="clienteAtual.nome" maxlength="32"/>
+                                    <input type="text" id="clienteNome" class="form-control"  ng-model="clienteAtual.pessoa.nome" maxlength="32"/>
                                 </div>
                                 <div class="form-group" style="padding-left: 10px;padding-right: 10px">
                                     <label>Sobrenome</label>
-                                    <input type="text" id="clienteSobreNome" class="form-control" ng-model="clienteAtual.sobreNome" maxlength="32"/>
+                                    <input type="text" id="clienteSobreNome" class="form-control" ng-model="clienteAtual.pessoa.sobreNome" maxlength="32"/>
                                 </div>
                                 <div class="form-group" style="padding-left: 10px;padding-right: 10px">
                                     <label>Data Nascimento</label>
                                     <p class="input-group" style="width: 140px;">
-                                        <input type="text" id="clienteDataNascimento" class="form-control" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-readonly="true" ng-model="clienteAtual.dataNascimento"  uib-datepicker-popup="dd/MM/yyyy" is-open="dataNascimento.opened"  alt-input-formats="altInputFormats" />
+                                        <input type="text" id="clienteDataNascimento" class="form-control" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-readonly="true" ng-model="clienteAtual.pessoa.dataNascimento"  uib-datepicker-popup="dd/MM/yyyy" is-open="dataNascimento.opened"  alt-input-formats="altInputFormats" />
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default" ng-click="opendataNascimento()"><i class="glyphicon glyphicon-calendar"></i></button>
                                         </span>
@@ -88,7 +88,7 @@
                                 </div>
                                 <div class="form-group" style="padding-left: 10px;padding-right: 10px">
                                     <label>Sexo</label>
-                                    <select class="form-control" ng-model="clienteAtual.sexo" 
+                                    <select class="form-control" ng-model="clienteAtual.pessoa.sexo" 
                                             ng-options="option for option in listaSexo track by option"> </select>
                                 </div>
                                 <div class="form-group" style="padding-left: 10px;padding-right: 10px">
@@ -198,7 +198,7 @@
         </div>
     </div>
     
-     <div class="modal" id="clienteDialogAlterar" role="dialog"  aria-hidden="true" style="overflow-x: auto; margin: auto;">
+     <div class="modal" id="clienteDialogAlterar" role="dialog"  aria-hidden="true" style="overflow-x: auto; margin: auto;" cg-busy="{promise:send, templateUrl:'send.html'}">
         <div class="modal-dialog" style="min-width: 400px; max-width: 400px;min-height: 800px; max-height: 800px;">
             <div class="modal-content">
                 <form class="tab-form-demo" novalidate>
@@ -211,16 +211,16 @@
                             <uib-tab index="0" heading="Dados Cliente" disable="true">
                                 <div class="form-group" style="padding-left: 10px;padding-right: 10px">
                                     <label>Nome</label>
-                                    <input type="text" id="clienteNomeAlterar" class="form-control"  ng-model="clienteAtual.nome" maxlength="32"/>
+                                    <input type="text" id="clienteNomeAlterar" class="form-control"  ng-model="clienteAtual.pessoa.nome" maxlength="32"/>
                                 </div>
                                 <div class="form-group" style="padding-left: 10px;padding-right: 10px">
                                     <label>Sobrenome</label>
-                                    <input type="text" id="clienteSobreNomeAlterar" class="form-control" ng-model="clienteAtual.sobreNome" maxlength="32"/>
+                                    <input type="text" id="clienteSobreNomeAlterar" class="form-control" ng-model="clienteAtual.pessoa.sobreNome" maxlength="32"/>
                                 </div>
                                 <div class="form-group" style="padding-left: 10px;padding-right: 10px">
                                     <label>Data Nascimento</label>
                                     <p class="input-group" style="width: 140px;">
-                                        <input type="text" id="clienteDataNascimentoAlterar" class="form-control" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-readonly="true" ng-model="clienteAtual.dataNascimento"  uib-datepicker-popup="dd/MM/yyyy" is-open="dataNascimento.opened"  alt-input-formats="altInputFormats" />
+                                        <input type="text" id="clienteDataNascimentoAlterar" class="form-control" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-readonly="true" ng-model="clienteAtual.pessoa.dataNascimento"  uib-datepicker-popup="dd/MM/yyyy" is-open="dataNascimento.opened"  alt-input-formats="altInputFormats" />
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default" ng-click="opendataNascimento()"><i class="glyphicon glyphicon-calendar"></i></button>
                                         </span>
@@ -228,7 +228,7 @@
                                 </div>
                                 <div class="form-group" style="padding-left: 10px;padding-right: 10px">
                                     <label>Sexo</label>
-                                    <select class="form-control" ng-model="clienteAtual.sexo" 
+                                    <select class="form-control" ng-model="clienteAtual.pessoa.sexo" 
                                             ng-options="option for option in listaSexo track by option"> </select>
                                 </div>
                                 <div class="form-group" style="padding-left: 10px;padding-right: 10px">
@@ -311,7 +311,7 @@
                                             <td style="width: 50px">
                                                 <div class="input-group" style="width: 50px; padding-left: 0px; padding-right: 0px; padding-top: 0px; padding-bottom: 0px" >
                                                     <button type="button" class="btn btn-xs pull-right btn-warning " ng-click="editaTelefone(telefoneAux)"  ><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
-                                                    <button type="button" class="btn btn-xs pull-left btn-danger " ng-click="removeTelefone(telefoneAux)" ><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                                                    <button type="button" class="btn btn-xs pull-left btn-danger " ng-click="removeTelefoneEditando(telefoneAux)" ><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -330,7 +330,7 @@
                     <div class="modal-footer">
                         <div class="input-group" style="width: 100%">
                             <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#clienteDialogAlterar')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
-                            <button type="submit" class="btn btn-default pull-right btn-success " ng-click="insertCliente()" ><span class="glyphicon glyphicon-ok botaoComIcone" aria-hidden="true"></span>Confirmar</button>
+                            <button type="submit" class="btn btn-default pull-right btn-success " ng-click="updateCliente()" ><span class="glyphicon glyphicon-ok botaoComIcone" aria-hidden="true"></span>Confirmar</button>
                         </div>
                     </div>
                 </form>    
@@ -339,7 +339,7 @@
     </div>
 
 
-    <div class="modal" id="clienteDialogVizualizar" role="dialog"  aria-hidden="true" style="overflow-x: auto; margin: auto;">
+    <div class="modal" id="clienteDialogVizualizar" role="dialog"  aria-hidden="true" style="overflow-x: auto; margin: auto;" cg-busy="{promise:send, templateUrl:'send.html'}">
         <div class="modal-dialog" style="min-width: 400px; max-width: 400px;min-height: 800px; max-height: 800px;">
             <div class="modal-content">
                 <form class="tab-form-demo" novalidate>
@@ -449,7 +449,7 @@
                     <div class="modal-body" style="width: 200px">
                         <div class="list-group">
                             <a class="list-group-item" data-toggle="modal" data-target="#clienteDialogVizualizar" ng-click="fecharDialog('#cadastroClienteDialogFuncoes')"><span class="glyphicon glyphicon-list-alt btn btn-default btn-primary" aria-hidden="true"></span>  Vizualizar</a>
-                            <!--<a class="list-group-item" data-toggle="modal" data-target="#cadastroFornecedorDialogAlterar" ng-click="fecharDialog('#cadastroFornecedorDialogFuncoes')"><span class="glyphicon glyphicon-pencil btn btn-default btn-warning " aria-hidden="true"></span>  Editar</a>-->
+                            <a class="list-group-item" data-toggle="modal" data-target="#clienteDialogAlterar" ng-click="fecharDialog('#cadastroClienteDialogFuncoes')"><span class="glyphicon glyphicon-pencil btn btn-default btn-warning " aria-hidden="true"></span>  Editar</a>
                             <!--<a class="list-group-item" data-toggle="modal" data-target="#cadastroFornecedorDialogDeletar" ng-click="fecharDialog('#cadastroFornecedorDialogFuncoes')"><span class="glyphicon glyphicon-trash btn btn-default btn-danger" aria-hidden="true"></span>  Deletar</a>-->
                         </div>
                     </div>

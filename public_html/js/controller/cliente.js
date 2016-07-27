@@ -30,7 +30,7 @@
                         method: 'POST',
                         data: envio,
                         crossDomain: true,
-                        url: Factory.urlWs + "cliente/getAllCliente" + Factory.debug,
+                        url: Factory.urlWs + "cliente/getAllCliente" ,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
                         if (!response.data.token) {
@@ -59,7 +59,7 @@
             $scope.insertCliente = function () {
                 if (Factory.verificaToken(true) && validaEnvioCliente('#msgClienteCadatro', '')) {
                     var envio = {'dados': $scope.clienteAtual, 'token': Factory.getToken()};
-                    $rootScope.send = $http({
+                    $scope.send = $http({
                         method: 'POST',
                         crossDomain: true,
                         url: Factory.urlWs + "cliente/insertCliente",
@@ -82,14 +82,14 @@
             $scope.updateCliente = function () {
                 if (Factory.verificaToken(true) && validaEnvioCliente('#msgClienteAlterar', 'Alterar')) {
                     var envio = {'dados': $scope.clienteAtual, 'token': Factory.getToken()};
-                    $rootScope.send = $http({
+                    $scope.send = $http({
                         method: 'POST',
                         crossDomain: true,
-                        url: Factory.urlWs + "cliente/updateCliente",
+                        url: Factory.urlWs + "cliente/updateCliente"+ Factory.debug,
                         data: envio,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
-                        $scope.fecharDialog('#msgClienteAlterar');
+                        $scope.fecharDialog('#clienteDialogAlterar');
                         if (!response.data.token) {
                             Factory.refazerLogin();
                         } else {
@@ -116,7 +116,9 @@
             $scope.salvaTelefone = function (idMsg, idComplementar) {
                 if (validaFone(idMsg, idComplementar)) {
                     for (var i = $scope.clienteAtual.listaTelefone.length; i--; ) {
-                        if (i === $scope.telefone.index) {
+                        if (($scope.telefone.id !== undefined && $scope.clienteAtual.listaTelefone[i].id !== undefined &&
+                                $scope.telefone.id === $scope.clienteAtual.listaTelefone[i].id) || i === $scope.telefone.index) {
+
                             $scope.clienteAtual.listaTelefone[i] = $scope.telefone;
                             $scope.novoTelefone();
                         }
@@ -142,9 +144,23 @@
                 }
             };
 
+            $scope.removeTelefoneEditando = function (item) {
+                if ($scope.clienteAtual.listaTelefoneRemovido === undefined) {
+                    $scope.clienteAtual.listaTelefoneRemovido = [];
+                }
+                for (var i = $scope.clienteAtual.listaTelefone.length; i--; ) {
+                    if ($scope.clienteAtual.listaTelefone[i] === item) {
+                        if ($scope.clienteAtual.listaTelefone[i].id !== undefined) {
+                            $scope.clienteAtual.listaTelefoneRemovido.push($scope.clienteAtual.listaTelefone[i]);
+                        }
+                        $scope.clienteAtual.listaTelefone.splice(i, 1);
+                    }
+                }
+            };
+
             var validaFone = function (idMsg, idComplementar) {
                 var retorno = false;
-                if ($scope.telefone.numero !== null && $scope.telefone.numero !== undefined && $scope.telefone.numero.trim() !== "") {
+                if ($scope.telefone.numero !== null && $scope.telefone.numero !== undefined && $scope.telefone.numero.trim() !== "" && ($scope.telefone.numero.length === 10 || $scope.telefone.numero.length === 11)) {
                     retorno = true;
                 } else {
                     $('#clienteTelefone' + idComplementar).focus();
@@ -256,21 +272,21 @@
                 var retorno = false;
                 if ($scope.clienteAtual !== null) {
 
-                    if ($scope.clienteAtual.nome !== null && $scope.clienteAtual.nome !== undefined && $scope.clienteAtual.nome.trim() !== "") {
+                    if ($scope.clienteAtual.pessoa.nome !== null && $scope.clienteAtual.pessoa.nome !== undefined && $scope.clienteAtual.pessoa.nome.trim() !== "") {
                         retorno = true;
                     } else {
                         $('#clienteNome' + idComplementar).focus();
                         Factory.setMensagemTemporaria('erro', 'Nome Inválido!', idMsg);
                         return false;
                     }
-                    if ($scope.clienteAtual.sobreNome !== null && $scope.clienteAtual.sobreNome !== undefined && $scope.clienteAtual.sobreNome.trim() !== "") {
+                    if ($scope.clienteAtual.pessoa.sobreNome !== null && $scope.clienteAtual.pessoa.sobreNome !== undefined && $scope.clienteAtual.pessoa.sobreNome.trim() !== "") {
                         retorno = true;
                     } else {
                         $('#clienteSobreNome' + idComplementar).focus();
                         Factory.setMensagemTemporaria('erro', 'Sobrenome Inválido!', idMsg);
                         return false;
                     }
-                    if ($scope.clienteAtual.dataNascimento !== null && $scope.clienteAtual.dataNascimento !== undefined) {
+                    if ($scope.clienteAtual.pessoa.dataNascimento !== null && $scope.clienteAtual.pessoa.dataNascimento !== undefined) {
                         retorno = true;
                     } else {
                         $('#clienteDataNascimento' + idComplementar).focus();
@@ -305,10 +321,10 @@
                     return "";
                 }
             };
- 
+
             var limparDadosCliente = function () {
                 $scope.novoTelefone();
-                $scope.clienteAtual = {sexo: $scope.listaSexo[0], endereco: {uf: "AC"}, listaTelefone: []};
+                $scope.clienteAtual = {pessoa: {sexo: $scope.listaSexo[0]}, endereco: {uf: "AC"}, listaTelefone: [], listaTelefoneRemovido: []};
                 $scope.indice = 0;
             };
 
