@@ -47270,7 +47270,7 @@ $('#menu-lateral ul li').click(function () {
 
             $scope.editaTelefone = function (telefone) {
                 $scope.editandoTelefone = true;
-                $scope.telefone = Object.assign({}, telefone);
+                $scope.telefone = JSON.parse(JSON.stringify(telefone));
             };
 
             $scope.salvaTelefone = function (idMsg, idComplementar) {
@@ -47289,7 +47289,7 @@ $('#menu-lateral ul li').click(function () {
 
             $scope.addTelefone = function (idMsg, idComplementar) {
                 if (validaFone(idMsg, idComplementar)) {
-                    var telefoneAux = Object.assign({}, $scope.telefone);
+                    var telefoneAux = JSON.parse(JSON.stringify($scope.telefone));
                     telefoneAux.index = $scope.clienteAtual.listaTelefone.length;
                     $scope.clienteAtual.listaTelefone.push(telefoneAux);
                     $scope.novoTelefone();
@@ -47495,15 +47495,10 @@ $('#menu-lateral ul li').click(function () {
 
             $scope.preparaCliente = function (varAux) {
                 limparDadosCliente();
-//                $scope.clienteAtual = Object.assign({},varAux);
                 $scope.clienteAtual = JSON.parse(JSON.stringify(varAux));
-//                $scope.clienteAtual.pessoa = Object.assign({},varAux.pessoa);
-//                $scope.clienteAtual.endereco = Object.assign({},varAux.endereco);
-//                $scope.clienteAtual.listaTelefone = Object.assign([],varAux.listaTelefone);
-                
                 $scope.clienteAtual.pessoa.dataNascimento = dataDbToJS($scope.clienteAtual.pessoa.dataNascimento);
             };
-            
+
             $scope.fecharDialog = function (idModal) {
                 $(idModal).modal('hide');
             };
@@ -47676,7 +47671,7 @@ $('#menu-lateral ul li').click(function () {
             };
 
             $scope.preparaFornecedor = function (fornecedor) {
-                $scope.fornecedorAtual = Object.assign({}, fornecedor);
+                $scope.fornecedorAtual = JSON.parse(JSON.stringify(fornecedor));
             };
 
             $scope.fecharDialog = function (idModal) {
@@ -48153,7 +48148,7 @@ $('#menu-lateral ul li').click(function () {
                 $("#produtoImagemCadastroView").removeAttr('src');
             };
             $scope.preparaProduto = function (produto) {
-                $scope.produtoAtual = Object.assign({}, produto);
+                $scope.produtoAtual = JSON.parse(JSON.stringify(produto));
                 $(":file").val(null);
                 $(":file").filestyle('clear');
                 $scope.abrirDialog('#produtoDialogFuncoes');
