@@ -30,7 +30,7 @@
                         method: 'POST',
                         data: envio,
                         crossDomain: true,
-                        url: Factory.urlWs + "cliente/getAllCliente" ,
+                        url: Factory.urlWs + "cliente/getAllCliente",
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
                         if (!response.data.token) {
@@ -85,7 +85,7 @@
                     $scope.send = $http({
                         method: 'POST',
                         crossDomain: true,
-                        url: Factory.urlWs + "cliente/updateCliente"+ Factory.debug,
+                        url: Factory.urlWs + "cliente/updateCliente",
                         data: envio,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
@@ -102,6 +102,29 @@
                 }
             };
 
+            $scope.deleteCliente = function () {
+                if (Factory.verificaToken(true)) {
+                    var envio = {'dados': $scope.clienteAtual.pessoa, 'token': Factory.getToken()};
+                    $scope.send = $http({
+                        method: 'POST',
+                        crossDomain: true,
+                        url: Factory.urlWs + "cliente/deleteCliente",
+                        data: envio,
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        $scope.fecharDialog('#clienteDialogDeletar');
+                        if (!response.data.token) {
+                            Factory.refazerLogin();
+                        } else {
+                            Factory.setMensagemTemporaria('sucesso', 'Cliente Deletado!', '#msgClienteGeral');
+                            $scope.getListaClienteAll(1);
+                        }
+                    }, function errorCallback(response) {
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgClienteGeral');
+                    });
+                }
+            };
+
             $scope.novoTelefone = function () {
                 $scope.telefone = {};
                 $scope.editandoTelefone = false;
@@ -110,7 +133,7 @@
 
             $scope.editaTelefone = function (telefone) {
                 $scope.editandoTelefone = true;
-                $scope.telefone = Object.assign({}, telefone);
+                $scope.telefone = JSON.parse(JSON.stringify(telefone));
             };
 
             $scope.salvaTelefone = function (idMsg, idComplementar) {
@@ -129,7 +152,7 @@
 
             $scope.addTelefone = function (idMsg, idComplementar) {
                 if (validaFone(idMsg, idComplementar)) {
-                    var telefoneAux = Object.assign({}, $scope.telefone);
+                    var telefoneAux = JSON.parse(JSON.stringify($scope.telefone));
                     telefoneAux.index = $scope.clienteAtual.listaTelefone.length;
                     $scope.clienteAtual.listaTelefone.push(telefoneAux);
                     $scope.novoTelefone();
@@ -333,11 +356,12 @@
                 $scope.abrirDialog('#clienteDialogCadastro');
             };
 
-            $scope.preparaCliente = function (cliente) {
+            $scope.preparaCliente = function (varAux) {
                 limparDadosCliente();
-                $scope.clienteAtual = Object.assign({}, cliente);
+                $scope.clienteAtual = JSON.parse(JSON.stringify(varAux));
                 $scope.clienteAtual.pessoa.dataNascimento = dataDbToJS($scope.clienteAtual.pessoa.dataNascimento);
             };
+
             $scope.fecharDialog = function (idModal) {
                 $(idModal).modal('hide');
             };

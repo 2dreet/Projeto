@@ -159,7 +159,7 @@
             };
 
             $scope.preparaFornecedor = function (fornecedor) {
-                $scope.fornecedorAtual = Object.assign({}, fornecedor);
+                $scope.fornecedorAtual = JSON.parse(JSON.stringify(fornecedor));
             };
 
             $scope.fecharDialog = function (idModal) {

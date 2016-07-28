@@ -375,7 +375,7 @@
                 $("#produtoImagemCadastroView").removeAttr('src');
             };
             $scope.preparaProduto = function (produto) {
-                $scope.produtoAtual = Object.assign({}, produto);
+                $scope.produtoAtual = JSON.parse(JSON.stringify(produto));
                 $(":file").val(null);
                 $(":file").filestyle('clear');
                 $scope.abrirDialog('#produtoDialogFuncoes');
