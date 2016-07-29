@@ -125,7 +125,7 @@
                             } else {
                                 $(idCampoImagem).val(null);
                                 if (mostraMenssagemErro) {
-                                    setMensagemTemporaria('erro', 'Tamanho da imagem permitido é 500bytes', idCampoMsg);
+                                    Factory.setMensagemTemporaria('erro', 'Tamanho da imagem permitido é 500bytes', idCampoMsg);
                                 } else {
                                     return false;
                                 }
@@ -133,7 +133,7 @@
                         } else {
                             $(idCampoImagem).val(null);
                             if (mostraMenssagemErro) {
-                                setMensagemTemporaria('erro', 'Apenas imagem no formato jpg, jpeg e png!', idCampoMsg);
+                                Factory.setMensagemTemporaria('erro', 'Apenas imagem no formato jpg, jpeg e png!', idCampoMsg);
                             } else {
                                 return false;
                             }
