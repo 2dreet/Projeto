@@ -32,7 +32,7 @@
             <div id="tabela-fornecedor" class="row">
                 <div class="alert alert-warning" role="alert"  ng-show="listaFornecedores == null || listaFornecedores.length < 1" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Sem dados</div>
                 <table ng-show="listaFornecedores != null && listaFornecedores.length > 0" class="table table-striped table-hover">
-                     <thead>
+                    <thead>
                         <tr>
                             <th>Descrição</th>
                             <th style="width: 220px;" class=" visible-sm visible-md visible-lg">Email</th>
@@ -43,7 +43,7 @@
                         <tr ng-repeat="fornecedor in listaFornecedores" data-toggle="modal" data-target="#cadastroFornecedorDialogFuncoes" ng-click="preparaFornecedor(fornecedor)">
                             <td ng-bind="fornecedor.descricao"></td>
                             <td class="visible-sm visible-md visible-lg" ng-bind="fornecedor.email"></td>
-                            <td class="" ng-bind="fornecedor.telefone |tel"> </td>
+                            <td class="" ng-bind="fornecedor.telefone | tel"> </td>
                         </tr>
                     </tbody>
                 </table> 
@@ -66,18 +66,18 @@
                         <h4 class="modal-title">Cadastro Fornecedor</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="input-group" style="width: 100%;">
-                            <span style="width: 120px" class="input-group-addon" id="fornecedorDescricao">Fornecedor</span>
+                        <div class="form-group" style="width: 100%;">
+                            <label>Fornecedor</label>
                             <input type="text" id="fornecedor" class="form-control" maxlength="50" uib-popover="esse"  popover-trigger="none" aria-describedby="fornecedorDescricao" ng-model="fornecedorAtual.descricao">
                         </div>
 
-                        <div class="input-group" style="padding-top: 20px; width: 100%;">
-                            <span style="width: 120px"  class="input-group-addon" id="fornecedorEmail">Email</span>
+                        <div class="form-group" style="padding-top: 0px; width: 100%;">
+                            <label>Email</label>
                             <input type="email" id="fornecedorEmail"  class="form-control"  maxlength="50" aria-describedby="fornecedorEmail" ng-model="fornecedorAtual.email">
                         </div>
 
-                        <div class="input-group" style="padding-top: 20px; width: 100%;">
-                            <span style="width: 120px" class="input-group-addon" id="fornecedorTelefone">Telefone</span>
+                        <div class="form-group" style="padding-top: 0px; width: 100%;">
+                            <label>Telefone</label>
                             <input ui-br-phone-number id="fornecedorFone" type="tel"   class="form-control"  aria-describedby="fornecedorTelefone" ng-model="fornecedorAtual.telefone">
                         </div>
                         <div id="msgFornecedorCad" class="row" style="padding-left: 15px; padding-right: 15px; margin-top: 10px;"></div>
@@ -103,18 +103,18 @@
                         <h4 class="modal-title">Alterar Fornecedor</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="input-group" style="width: 100%;">
-                            <span style="width: 120px" class="input-group-addon" id="fornecedorDescricaoAlterar">Fornecedor</span>
+                        <div class="form-group" style="width: 100%;">
+                            <label>Fornecedor</label>
                             <input type="text" id="fornecedorAlterar"  class="form-control" maxlength="50" aria-describedby="fornecedorDescricaoAlterar" ng-model="fornecedorAtual.descricao">
                         </div>
 
-                        <div class="input-group" style="padding-top: 20px; width: 100%;">
-                            <span style="width: 120px"  class="input-group-addon" id="fornecedorEmailAlterar">Email</span>
+                        <div class="form-group" style="padding-top: 0px; width: 100%;">
+                            <label>Email</label>
                             <input type="email" id="fornecedorEmailAlterar"  class="form-control"  maxlength="50" aria-describedby="fornecedorEmailAlterar" ng-model="fornecedorAtual.email">
                         </div>
 
-                        <div class="input-group" style="padding-top: 20px; width: 100%;">
-                            <span style="width: 120px" class="input-group-addon" id="fornecedorTelefoneAlterar">Telefone</span>
+                        <div class="form-group" style="padding-top: 0px; width: 100%;">
+                            <label>Telefone</label>
                             <input ui-br-phone-number id="fornecedorFoneAlterar"  type="text"  class="form-control"   aria-describedby="fornecedorTelefoneAlterar" ng-model="fornecedorAtual.telefone">
                         </div>
                         <div id="msgFornecedorAlt" class="row" style="padding-left: 15px; padding-right: 15px; margin-top: 10px;"></div>
@@ -141,18 +141,18 @@
                     <div class="modal-body">
                         <div class="alert alert-warning" role="alert"><span class="glyphicon glyphicon-warning-sign botaoComIcone" aria-hidden="true"></span> Deseja Deletar o Fornecedor ?</div>
 
-                        <div class="input-group" style="width: 100%;">
-                            <span style="width: 120px" class="input-group-addon" id="fornecedorDescricaoDeletar">Fornecedor</span>
+                        <div class="form-group" style="width: 100%;">
+                            <label>Fornecedor</label>
                             <input type="text" readonly="readonly" class="form-control"  aria-describedby="fornecedorDescricaoVisualizar" ng-model="fornecedorAtual.descricao">
                         </div>
 
-                        <div class="input-group" style="padding-top: 20px; width: 100%;">
-                            <span style="width: 120px"  class="input-group-addon" id="fornecedorEmailDeletar">Email</span>
+                        <div class="form-group" style="padding-top: 0px; width: 100%;">
+                            <label>Email</label>
                             <input type="text" readonly="readonly" class="form-control"  aria-describedby="fornecedorEmailDeletar" ng-model="fornecedorAtual.email">
                         </div>
 
-                        <div class="input-group" style="padding-top: 20px; width: 100%;">
-                            <span style="width: 120px" class="input-group-addon" id="fornecedorTelefoneDeletar">Telefone</span>
+                        <div class="form-group" style="padding-top: 0px; width: 100%;">
+                            <label>Telefone</label>
                             <input type="text" readonly="readonly" class="form-control"   ui-br-phone-number aria-describedby="fornecedorTelefoneDeletar" ng-model="fornecedorAtual.telefone">
                         </div>
                     </div>
@@ -177,18 +177,18 @@
                         <h4 class="modal-title">Fornecedor</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="input-group" style="width: 100%;">
-                            <span style="width: 120px" class="input-group-addon" id="fornecedorDescricaoVisualizar">Fornecedor</span>
+                        <div class="form-group" style="width: 100%;">
+                            <label>Fornecedor</label>
                             <input type="text" readonly="readonly" class="form-control"  aria-describedby="fornecedorDescricaoVisualizar" ng-model="fornecedorAtual.descricao">
                         </div>
 
-                        <div class="input-group" style="padding-top: 20px; width: 100%;">
-                            <span style="width: 120px"  class="input-group-addon" id="fornecedorEmailVisualizar">Email</span>
+                        <div class="form-group" style="padding-top: 0px; width: 100%;">
+                            <label>Email</label>
                             <input type="text" readonly="readonly" class="form-control"  aria-describedby="fornecedorEmailVisualizar" ng-model="fornecedorAtual.email">
                         </div>
 
-                        <div class="input-group" style="padding-top: 20px; width: 100%;">
-                            <span style="width: 120px" class="input-group-addon" id="fornecedorTelefoneVisualizar">Telefone</span>
+                        <div class="form-group" style="padding-top: 0px; width: 100%;">
+                            <label>Telefone</label>
                             <input type="text" readonly="readonly" class="form-control" ui-br-phone-number  aria-describedby="fornecedorTelefoneVisualizar" ng-model="fornecedorAtual.telefone">
                         </div>
                     </div>
@@ -212,18 +212,18 @@
                     </div>
 
                     <div class="media-body" style="padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px">
-                        <div class="input-group" style="width: 100%;">
-                            <span style="width: 120px" class="input-group-addon" id="fornecedorDescricaoLocalizar">Fornecedor</span>
+                        <div class="form-group" style="width: 100%;">
+                            <label>Fornecedor</label>
                             <input type="text" class="form-control" maxlength="32" aria-describedby="fornecedorDescricaoLocalizar" ng-model="buscaAvancada.descricao">
                         </div>
 
-                        <div class="input-group" style="padding-top: 20px; width: 100%;">
-                            <span style="width: 120px"  class="input-group-addon" id="fornecedorEmailLocalizar">Email</span>
+                        <div class="form-group" style="padding-top: 0px; width: 100%;">
+                            <label>Email</label>
                             <input type="email" class="form-control"  aria-describedby="fornecedorEmailLocalizar" ng-model="buscaAvancada.email">
                         </div>
 
-                        <div class="input-group" style="padding-top: 20px; width: 100%;">
-                            <span style="width: 120px" class="input-group-addon" id="fornecedorTelefoneLocalizar">Telefone</span>
+                        <div class="form-group" style="padding-top: 0px; width: 100%;">
+                            <label>Telefone</label>
                             <input ui-br-phone-number type="text" class="form-control"   aria-describedby="fornecedorTelefoneLocalizar" ng-model="buscaAvancada.telefone">
                         </div>
                     </div>
