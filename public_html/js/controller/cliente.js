@@ -8,8 +8,9 @@
             $scope.clienteAtual = {};
             $scope.listaCliente = [];
             $scope.valorBuscaCliente = "";
-            $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
             $scope.listaSexo = Formulario.getSexo();
+            $scope.listaSexoBusca = Formulario.getSexoPesquisa();
+            $scope.buscaAvancada = {sexo: $scope.listaSexoBusca[0]};
             $scope.dataNascimento = {opened: true};
             $scope.opendataNascimento = function () {
                 $scope.dataNascimento.opened = true;
@@ -22,6 +23,15 @@
             $scope.totalItems = 0;
             $scope.currentPage = 1;
             $scope.itensPorPagina = 10;
+
+            $scope.limparFiltroAvancado = function () {
+                 $scope.buscaAvancada = {sexo: $scope.listaSexoBusca[0]};
+            };
+
+            $scope.filtrarAvancado = function () {
+                $scope.fecharDialog('#clienteDialogLocalizar');
+                $scope.getListaClienteAll(1);
+            };
 
             $scope.getListaClienteAll = function (pagina) {
                 if (Factory.verificaToken(true)) {
@@ -47,11 +57,22 @@
 
             $scope.getCep = function () {
                 if ($scope.clienteAtual.endereco.cep !== undefined && $scope.clienteAtual.endereco.cep !== null && $scope.clienteAtual.endereco.cep.trim().length === 8) {
-                    BuscaCep.getViaCep($scope.clienteAtual.endereco.cep).then(function (d) {
+                    $scope.loadingLocal = BuscaCep.getViaCep($scope.clienteAtual.endereco.cep).then(function (d) {
                         $scope.clienteAtual.endereco.logradouro = d.data.logradouro;
                         $scope.clienteAtual.endereco.bairro = d.data.bairro;
                         $scope.clienteAtual.endereco.cidade = d.data.localidade;
                         $scope.clienteAtual.endereco.uf = d.data.uf;
+                    });
+                }
+            };
+
+            $scope.getCepFiltro = function () {
+                if ($scope.buscaAvancada.cep !== undefined && $scope.buscaAvancada.cep !== null && $scope.buscaAvancada.cep.trim().length === 8) {
+                    $scope.loadingLocal = BuscaCep.getViaCep($scope.buscaAvancada.cep).then(function (d) {
+                        $scope.buscaAvancada.logradouro = d.data.logradouro;
+                        $scope.buscaAvancada.bairro = d.data.bairro;
+                        $scope.buscaAvancada.cidade = d.data.localidade;
+                        $scope.buscaAvancada.uf = d.data.uf;
                     });
                 }
             };
