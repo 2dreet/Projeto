@@ -163,8 +163,13 @@ input::-webkit-inner-spin-button {
 }
 
 .menu-ul li:hover {
-    background: #E7E7E7;
+    background: #1ABB9C;
 }
+
+.menu-ul li:active a span {
+    color: red;
+}
+
 
 .header-panel{
     text-transform: uppercase;
