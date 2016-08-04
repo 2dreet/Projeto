@@ -166,10 +166,7 @@ input::-webkit-inner-spin-button {
     background: #1ABB9C;
 }
 
-.menu-ul li:active a span {
-    color: red;
-}
-
+.navbar-nav>li>a:focus,.navbar-default .navbar-nav>li>a:focus,.navbar-default .navbar-nav>li>a:focus span {color:#000;background-color:#1ABB9C}
 
 .header-panel{
     text-transform: uppercase;
