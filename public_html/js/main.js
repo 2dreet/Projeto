@@ -46913,6 +46913,9 @@ app.config(function ($routeProvider, $locationProvider) {
             .when('/pedido', {
                 templateUrl: 'com.br.html/pedido/pedido.html'
             })
+            .when('/despesas', {
+                templateUrl: 'com.br.html/despesas/despesas.html'
+            })
             .when('/usuario', {
                 templateUrl: 'com.br.html/usuario/usuario.html'
             })
@@ -47145,6 +47148,8 @@ $('#menu-lateral ul li').click(function () {
         function ($rootScope, $scope, $http, BuscaCep, Formulario, Utilitario, Factory) {
             Factory.verificaToken(true);
             Factory.ajustaMenuLateral('#btnCliente');
+            $rootScope.paginaAtual = "Clientes";
+            $rootScope.paginaAtualClass = "fa fa-users botaoComIconeMenuLateral";
 
             $scope.clienteAtual = {};
             $scope.listaCliente = [];
@@ -47164,6 +47169,10 @@ $('#menu-lateral ul li').click(function () {
             $scope.totalItems = 0;
             $scope.currentPage = 1;
             $scope.itensPorPagina = 10;
+
+            $scope.limparFiltroAvancado = function () {
+                 $scope.buscaAvancada = {sexo: $scope.listaSexoBusca[0]};
+            };
 
             $scope.filtrarAvancado = function () {
                 $scope.fecharDialog('#clienteDialogLocalizar');
@@ -47533,10 +47542,22 @@ $('#menu-lateral ul li').click(function () {
 })();
 (function () {
     'use strict';
+    angular.module('www.geve.com.br').controller("despesasController", ['$rootScope', '$scope', '$http', 'Factory', function ($rootScope, $scope, $http, Factory) {
+            Factory.verificaToken(true);
+            Factory.ajustaMenuLateral('#btnDespesas');
+            $rootScope.paginaAtual = "Despesas";
+            $rootScope.paginaAtualClass = "fa fa-usd botaoComIconeMenuLateral";
+            
+        }]);
+})();
+(function () {
+    'use strict';
 
     angular.module('www.geve.com.br').controller("fornecedorControler", ['$rootScope', '$scope', '$http', 'Factory', function ($rootScope, $scope, $http, Factory) {
             Factory.verificaToken(true);
             Factory.ajustaMenuLateral('#btnFornecedor');
+            $rootScope.paginaAtual = "Fornecedores";
+            $rootScope.paginaAtualClass = "fa fa-briefcase botaoComIconeMenuLateral";
 
             $scope.fornecedorAtual = {};
             $scope.listaFornecedores = [];
@@ -47712,10 +47733,11 @@ $('#menu-lateral ul li').click(function () {
 })();
 (function () {
     'use strict';
-    angular.module('www.geve.com.br').controller("inicioControler", ['$scope', '$http', 'Factory', function ($scope, $http, Factory) {
+    angular.module('www.geve.com.br').controller("inicioControler", ['$rootScope', '$scope', '$http', 'Factory', function ($rootScope, $scope, $http, Factory) {
             Factory.verificaToken(true);
             Factory.ajustaMenuLateral('#btnHome');
-
+            $rootScope.paginaAtual = "Home";
+            $rootScope.paginaAtualClass = "fa fa-home botaoComIconeMenuLateral";
         }]);
 })();
 (function () {
@@ -47787,9 +47809,11 @@ $('#menu-lateral ul li').click(function () {
 })();
 (function () {
     'use strict';
-    angular.module('www.geve.com.br').controller("pedidoControler", ['$scope', '$http', 'Factory', function ($scope, $http, Factory) {
+    angular.module('www.geve.com.br').controller("pedidoControler", ['$rootScope', '$scope', '$http', 'Factory', function ($rootScope, $scope, $http, Factory) {
             Factory.verificaToken(true);
             Factory.ajustaMenuLateral('#btnPedido');
+            $rootScope.paginaAtual = "Pedidos";
+            $rootScope.paginaAtualClass = "fa fa-shopping-cart botaoComIconeMenuLateral";
         }]);
 })();
 
@@ -47798,6 +47822,8 @@ $('#menu-lateral ul li').click(function () {
     angular.module('www.geve.com.br').controller("produtoControler", ['$rootScope', '$scope', '$http', 'Formulario', 'Factory', function ($rootScope, $scope, $http, Formulario, Factory) {
             Factory.verificaToken(true);
             Factory.ajustaMenuLateral('#btnProduto');
+            $rootScope.paginaAtual = "Produtos";
+            $rootScope.paginaAtualClass = "fa fa-gift botaoComIconeMenuLateral";
             $(":file").filestyle({buttonBefore: true, buttonText: "Localizar"});
             var dataAtual = new Date();
             $scope.dataInicialMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth(), 1));
@@ -48249,9 +48275,11 @@ $('#menu-lateral ul li').click(function () {
 })();
 (function () {
     'use strict';
-    angular.module('www.geve.com.br').controller("usuarioControler", ['$scope', '$http', 'Factory', function ($scope, $http, $cookies, Factory) {
+    angular.module('www.geve.com.br').controller("usuarioControler", ['$rootScope', '$scope', '$http', 'Factory', function ($rootScope, $scope, $http, Factory) {
             Factory.verificaToken(true);
             Factory.ajustaMenuLateral('#btnUsuario');
+            $rootScope.paginaAtual = "Usuário";
+            $rootScope.paginaAtualClass = "fa fa-cog botaoComIconeMenuLateral";
             $scope.usuario = {usuario: '', senha: ''};
         }]);
 })();

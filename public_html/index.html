@@ -3,45 +3,58 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Projeto</title>
-
+        <title>Geve</title>
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+        <link rel="stylesheet" href="css/font-awesome.min.css">
         <link rel="stylesheet" href="css/main.css" >
-
     </head>
-    <body  cg-busy="loading">
+    <body  cg-busy="loading" ng-controller="masterPageControler">
         <div id="pagina" class="row row-offcanvas row-offcanvas-left" cg-busy="{promise:send, templateUrl:'send.html'}">
 
             <nav id="menu-lateral" class="navbar-default navbar-static-side" role="navigation">
                 <div class="row" id="headerLateral">
                     <div class="col-md-12" role="navigation">
-                        <h1>BEM VINDO</h1>
+                        <h1>Geve</h1>
                     </div>
                 </div>
                 <ul class="nav nav-stacked">
-                    <li id="btnHome"><a href="#/home" > <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Inicio</a></li>
-                    <li id="btnFornecedor" ><a href="#/fornecedor"><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> Fornecedor</a></li>
-                    <li id="btnCliente" ><a href="#/cliente"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Cliente</a></li>
-                    <li id="btnProduto" ><a href="#/produto"><span class="glyphicon glyphicon-gift" aria-hidden="true"></span> Produto</a></li>
-                    <li id="btnPedido" ><a href="#/pedido"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Pedido</a></li>
-                    <li id="btnDespesas" ><a href="#/despesasa"><span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Despesas</a></li>
-                    <li id="btnUsuario" ><a href="#/usuario"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Usuário</a></li>
+                    <li id="btnHome"><a href="#/home" > <span class="fa fa-home botaoComIconeMenuLateral" aria-hidden="true"></span> início </a></li>
+                    <li id="btnFornecedor" ><a href="#/fornecedor"><span class="fa fa-briefcase botaoComIconeMenuLateral" aria-hidden="true"></span> Fornecedor</a></li>
+                    <li id="btnCliente" ><a href="#/cliente"><span class="fa fa-users botaoComIconeMenuLateral" aria-hidden="true"></span> Cliente</a></li>
+                    <li id="btnProduto" ><a href="#/produto"><span class="fa fa-gift botaoComIconeMenuLateral" aria-hidden="true"></span> Produto</a></li>
+                    <li id="btnPedido" ><a href="#/pedido"><span class="fa fa-shopping-cart botaoComIconeMenuLateral" aria-hidden="true"></span> Pedido</a></li>
+                    <li id="btnDespesas" ><a href="#/despesas"><span class="fa fa-usd botaoComIconeMenuLateral" aria-hidden="true"></span> Despesas</a></li>
+                    <li id="btnUsuario" ><a href="#/usuario"><span class="fa fa-cog botaoComIconeMenuLateral" aria-hidden="true"></span> Usuário</a></li>
                     <li id="btnInfor" ><a href="#/info"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Info</a></li>
                 </ul>
             </nav>
             <div id="app-meio">
                 <div id="app-meio-row" >
-                    <div id="nav-meio" class="navbar navbar-default " ng-controller="masterPageControler">
+                    <div id="nav-meio" class="navbar navbar-default">
                         <button id="btn-menu-lateral" type="button" class="navbar-toggle pull-left btn-sm">
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <div id="dados-usuario" class="header row">
-                            <div >
-                                <ul class="nav nav-pills pull-right">
-                                    <li><p class="info-usuario" ><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span ng-bind="pessoa.nome + ' ' + pessoa.sobre_nome"/></p></li>
-                                    <li><a href="#" ng-click="sair()" ><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a></li>
+                        <div id="dados-usuario" class="header row" >
+                            <div>
+                                <ul class="nav nav-pills">
+                                    <li class="pull-left" style="padding-left: 30px; padding-top: 10px; ">
+                                        <span ng-class="paginaAtualClass" aria-hidden="true"></span><span ng-bind="paginaAtual"></span>
+                                    </li>
+                                    <li class="dropdown pull-right">
+                                        <ul class="nav nav-pills">
+                                            <li>
+                                                <p class="info-usuario" ><span class="fa fa-user botaoComIcone" aria-hidden="true"></span><span ng-bind="pessoa.nome + ' ' + pessoa.sobre_nome"></span></p>      
+                                            </li>
+                                            <li>
+                                                <a href="" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></a>
+                                                <ul class="dropdown-menu dropdown-menu-right">
+                                                    <li><a href="" ng-click="sair()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Sair</a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
                                 </ul>
                             </div>
                         </div>

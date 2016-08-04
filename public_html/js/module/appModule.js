@@ -16,6 +16,9 @@ app.config(function ($routeProvider, $locationProvider) {
             .when('/pedido', {
                 templateUrl: 'com.br.html/pedido/pedido.html'
             })
+            .when('/despesas', {
+                templateUrl: 'com.br.html/despesas/despesas.html'
+            })
             .when('/usuario', {
                 templateUrl: 'com.br.html/usuario/usuario.html'
             })

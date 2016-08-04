@@ -55,7 +55,6 @@ input::-webkit-inner-spin-button {
 }
 
 #nav-meio{
-    border-top: 3px solid #24262d;
     -moz-border-radius:0px;
     -webkit-border-radius:0px;
     border-radius:0px;
@@ -81,7 +80,7 @@ input::-webkit-inner-spin-button {
     width: 250px;
     height:auto;
     min-height:100%;
-    background-color: #2e353d;
+    background-color: #2A3F54;
     float: left;
     margin: 0px;
     padding: 0px;
@@ -91,16 +90,20 @@ input::-webkit-inner-spin-button {
     width: 100%;    
     margin: 0px;
     padding: 0px;
-
+    color: #E7E7E7 !important;
 }
 
 #menu-lateral ul li{
-    border-bottom: 1px solid #181c20;
+    /*border-bottom: 1px solid #181c20;*/
 }
 
 .info-usuario{
     padding-top: 10px;
     padding-right: 10px;
+}
+
+.cor-font-global{
+    color: #fff !important;
 }
 
 #dados-usuario{
@@ -109,24 +112,27 @@ input::-webkit-inner-spin-button {
 }
 
 #menu-lateral ul li a{
-    color: #ffffff;
+    color: #E7E7E7 !important;
+}
+
+#menu-lateral ul li{
+    /*border-bottom: 1px solid #eee;*/
 }
 
 #menu-lateral ul li.active a{
-    color: #ffffff;
-    border-left: 3px solid #d19b3d;
+    border-right: 5px solid #1ABB9C;
     background: #4f5b69;
     color: #ffffff;
 }
 
 #headerLateral h1 {
     font-family:  Arial;
-    text-transform: uppercase;
     font-size: 14pt;
+
 }
 
 #headerLateral {
-    color: #ffffff;
+    color: #E7E7E7 !important;
     line-height: 60px;
     display: block;
     text-align: center;
@@ -143,9 +149,8 @@ input::-webkit-inner-spin-button {
 
 #menu-lateral ul li a:hover{
     color: #ffffff;
-    border-left: 3px solid #d19b3d;
+    border-right: 5px solid #1ABB9C;
     background: #4f5b69;
-    color: #ffffff;
 }
 
 #conteudo{
@@ -157,17 +162,23 @@ input::-webkit-inner-spin-button {
     margin: 0px;
 }
 
+.menu-ul li:hover {
+    background: #E7E7E7;
+}
+
 .header-panel{
     text-transform: uppercase;
     font-size: 10pt;
 }
 
-.tabela-header{
-    /*background: #cccccc;*/
+.botaoComIconeMenuLateral{
+    padding-right: 10px;
+    font-size: 1.4em;
 }
 
 .botaoComIcone{
     padding-right: 5px;
+    font-size: 1.1em;
 }
 
 .campoImput:valid {background:#006600;color:#fff }
@@ -183,16 +194,14 @@ input::-webkit-inner-spin-button {
     margin: auto;
     border-radius: 0px 0px 10px 10px;
 }
-.painel-pai-geral{
-    height: 100%; max-height: 100%; min-height: 100%; padding-bottom: 0px;
-}
 
 .painel-pai-geral-corpo{
-    height: 100%; max-height: 100%; min-height: 100%; padding: 0; margin: 0;
+    padding: 0px; margin: 0px;
 }
 
-.painel-pai-geral-body{
-    height: calc(100% - 50px); max-height: calc(100% - 50px); min-height: calc(100% - 50px);
+.menu-top-pagina{
+    padding-left: 0px;
+    padding-right: 8px;
 }
 
 input[type="text"]:read-only{
@@ -206,19 +215,6 @@ input[type="number"]:read-only{
 input[type="email"]:read-only{
     background: white;
 } 
-
-/*@media only screen and (max-device-width: 480px) {
-    html, body {
-        margin: 0px;
-        padding: 0px;
-        height: 100%;
-        width: 100%;
-        max-height: 100%;
-        min-height: 100%;
-        max-width: 100%;
-    }
-}*/
-
 
 @media screen and (max-width: 1300px) {
     #btn-menu-lateral{
@@ -272,5 +268,19 @@ input[type="email"]:read-only{
     html, body {
         margin: 0px;
         padding: 0px;
+    }
+
+    .menu-top-pagina{
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    .menu-ul{
+        padding-left: 5px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .menu-ul{
+        padding-left: 20px;
     }
 }

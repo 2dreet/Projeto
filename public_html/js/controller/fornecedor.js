@@ -4,6 +4,8 @@
     angular.module('www.geve.com.br').controller("fornecedorControler", ['$rootScope', '$scope', '$http', 'Factory', function ($rootScope, $scope, $http, Factory) {
             Factory.verificaToken(true);
             Factory.ajustaMenuLateral('#btnFornecedor');
+            $rootScope.paginaAtual = "Fornecedores";
+            $rootScope.paginaAtualClass = "fa fa-briefcase botaoComIconeMenuLateral";
 
             $scope.fornecedorAtual = {};
             $scope.listaFornecedores = [];

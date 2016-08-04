@@ -4,6 +4,8 @@
     angular.module('www.geve.com.br').controller("produtoControler", ['$rootScope', '$scope', '$http', 'Formulario', 'Factory', function ($rootScope, $scope, $http, Formulario, Factory) {
             Factory.verificaToken(true);
             Factory.ajustaMenuLateral('#btnProduto');
+            $rootScope.paginaAtual = "Produtos";
+            $rootScope.paginaAtualClass = "fa fa-gift botaoComIconeMenuLateral";
             $(":file").filestyle({buttonBefore: true, buttonText: "Localizar"});
             var dataAtual = new Date();
             $scope.dataInicialMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth(), 1));

@@ -1,502 +1,511 @@
-<div class="container-fluid painel-pai-geral" ng-controller="produtoControler">
-    <div id="produto" class="panel panel-default painel-pai-geral-corpo">
-        <div class="panel-heading header-panel">Produtos</div>
-        <div class="panel-body painel-pai-geral-body" >
-            <div class="row">
-                <div id="filtrarProduto" class="col-sm-8">
-                    <div class="input-group">
-                        <span class="input-group-btn">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a href="" data-toggle="modal" data-target="#localizarProdutoDialog"><span class="glyphicon glyphicon-filter" aria-hidden="true" style="padding-right: 5px"></span>Filtro Avançado</a></li>
-                                    <li><a href="" ng-click="limpaFiltroAvancado()"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true" style="padding-right: 5px"></span>Limpar Filtro</a></li>
-                                </ul>
-                            </div>
-                        </span>
-                        <input type="text" class="form-control" placeholder="Descrição" ng-model="valorBuscaProduto" >
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary" type="button" ng-click="filtroPorDescricao()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-                        </span>
-                    </div>
-                </div>
-                <div id="cadastrarProduto" class="col-sm-4">
-                    <button  type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#produtoCadastroDialog" ng-click="novoProduto()">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Novo Produto
-                    </button>
-                </div>
-            </div>
-            <div id="msgProdutoGeral" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"></div>
-            <div id="tabela-produto" class="row" style="padding: 0px; margin: 0px;padding-top: 15px">
-                <div class="alert alert-warning" role="alert"  ng-show="listaProduto == null || listaProduto.length < 1" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Sem dados</div>
-                <ul>
-                    <li ng-repeat="p in listaProduto" class="product-item">
-                        <a href="" style="text-decoration: none;" ng-click="preparaProduto(p)">
-                            <div class="produto-lista-conteudo">
-                                <div class="imagem-produto-lista-div" >
-                                    <img class="media-object imagem-produto-lista" ng-src="{{getImagem(p.id)}}"/>
-                                </div>
-                                <div style="height: 55px; padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: center; ">
-                                    <b><strong class="font-titulo-produto text-uppercase" ng-bind="p.descricao"></strong></b>
-                                </div>
-                                <div style="height: 55px; padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: left; ">
-                                    <strong class="font-titulo-produto"> Fornecedor: </strong> <strong class="font-produto" ng-bind="p.fornecedor.descricao"></strong> <br/>
-                                    <strong class="font-titulo-produto"> Estoque: </strong> <strong class="font-produto" ng-bind="p.estoque"></strong><br/> 
-                                </div>
-                                <div style="height: 30px; padding-right: 10px; padding-left: 5px; padding-top: 0px; overflow: hidden; text-align: center; ">
-                                    <span class="valor-produto-lista" ui-number-mask="decimals" ng-bind="p.valor | currency"></span><br/>  
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-                <div style="width: 100%; margin: 0; padding: 0; padding-left: 10px " ng-show="totalItems > 10">
-                    <div style="width: auto; margin: auto; padding: 0; padding-right: 5px" class="pull-right">
-                        <uib-pagination style="margin: 0; padding: 0; " next-text="Próximo" previous-text="Anterior" total-items="totalItems" ng-model="currentPage" ng-change="getListaProdutoAll(currentPage)" max-size="maxSize" class="pagination-sm" items-per-page="itensPorPagina" num-pages="numPages"></uib-pagination>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
 
-    <div class="modal fade" id="produtoCadastroDialog" role="dialog" cg-busy="{promise:send, templateUrl:'send.html'}">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form>
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Cadastro Produto</h4>
-                    </div>
-
-                    <div class="media-body descricao-produto-lista">
-                        <div class="form-group" style="width: 100%;">
-                            <label for="produtoDescricao">Descrição</label>
-                            <input type="text"  class="form-control"  id="produtoDescricao" ng-model="produtoAtual.descricao" maxlength="32">
+        <div class="panel panel-default" ng-controller="produtoControler">
+            <div class="panel-heading" style="padding: 0px; margin: 0px;">
+                <nav class="navbar navbar-default" style="padding: 0px; margin: 0px; border: none; ">
+                    <div class="container-fluid ">
+                        <div class="navbar-header col-sm-8 col-md-6 col-lg-8" style="padding-left: 0px">
+                            <ul class="nav navbar-nav menu-ul menu-top-pagina">
+                                <li><a href=""  class="btn-success cor-font-global " data-toggle="modal" data-target="#produtoCadastroDialog" ng-click="novoProduto()"><span class="fa fa-plus botaoComIcone"></span> Novo Produto</a></li>
+                            </ul>
                         </div>
-
-                        <div class="form-group" style="width: 100%;">
-                            <label for="produtoValor">Valor R$</label>
-                            <input type="text"  class="form-control" ui-number-mask="decimals"  id="produtoValor" ng-model="produtoAtual.valor">
-                        </div>
-
-                        <div class="form-group" style="width: 100%;">
-                            <label for="produtoFornecedor">Fornecedor</label>
-                            <div class="input-group">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-primary" style="width: 100px" type="button" ng-click="abrirDialogLocalizarFornecedor(produtoAtual)"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
-                                </span>
-                                <input type="text" class="form-control" ng-readonly="true"  id="produtoFornecedor" ng-model="produtoAtual.fornecedor.descricao">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" ng-click="limpaBuscaFornecedor(produtoAtual)"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></button>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="form-group" style="width: 100%;">
-                            <label for="produtoImagemCadastro">Imagem Produto</label>
-                            <input type="file" class="filestyle" data-buttonText="Localizar" onchange="angular.element(this).scope().mostrarImagem('#produtoImagemCadastro', '#msgProduto', '#produtoImagemCadastroView')" data-buttonBefore="true" id="produtoImagemCadastro" name="produtoImagemCadastro" ng-model="produtoAtual.imagem">
-                        </div>
-
-                        <div class="imagem-produto-lista-div" >
-                            <img class="media-object imagem-produto-lista" id="produtoImagemCadastroView"/>
-                        </div>
-
-                        <div class="form-group" style="width: 100%;">
-                            <label for="produtoImagemCadastro">Observação</label>
-                            <textarea class="form-control" id="produtoCadastroObservacao"  style="resize: none;" name="produtoCadastroObservacao" ng-model="produtoAtual.observacao" rows="2" maxlength="200"> </textarea>
-                        </div>
-
-                        <div id="msgProduto" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px"></div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <div class="input-group" style="width: 100%;">
-                            <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#produtoCadastroDialog')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
-                            <button type="submit" class="btn btn-default pull-right btn-success " ng-click="insertProduto()" ><span class="glyphicon glyphicon-floppy-disk botaoComIcone" aria-hidden="true"></span>Salvar</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade dialog-produto" id="produtoDialogAlterar" role="dialog"  aria-hidden="true" cg-busy="{promise:send, templateUrl:'send.html'}">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form>
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Alterar Produto</h4>
-                    </div>
-
-                    <div class="media-body descricao-produto-lista">
-                        <div class="form-group" style="width: 100%;">
-                            <label for="produtoDescricaoAlterar">Descrição</label>
-                            <input type="text"  class="form-control"  id="produtoDescricaoAlterar" ng-model="produtoAtual.descricao" maxlength="32">
-                        </div>
-
-                        <div class="form-group" style="width: 100%;">
-                            <label for="produtoValorAlterar">Valor R$</label>
-                            <input type="text"  class="form-control" ui-number-mask="decimals"  id="produtoValorAlterar" ng-model="produtoAtual.valor">
-                        </div>
-
-                        <div class="form-group" style="width: 100%;">
-                            <label for="produtoFornecedorAlterar">Fornecedor</label>
-                            <div class="input-group">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-primary" style="width: 100px" type="button"  ng-click="abrirDialogLocalizarFornecedor(produtoAtual)"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
-                                </span>
-                                <input type="text" class="form-control" ng-readonly="true"  id="produtoFornecedorAlterar" ng-model="produtoAtual.fornecedor.descricao">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" ng-click="limpaBuscaFornecedor(produtoAtual)"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></button>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="form-group" style="width: 100%;">
-                            <label for="produtoImagemAlterar">Imagem Produto</label>
-                            <input type="file" data-badge="false" class="filestyle" data-buttonText="Localizar" onchange="angular.element(this).scope().mostrarImagem('#produtoImagemAlterar', '#msgProdutoAlterar', '#produtoImagemAlterarView')" data-buttonBefore="true" id="produtoImagemAlterar">
-                        </div>
-
-                        <div class="imagem-produto-lista-div" >
-                            <img class="media-object imagem-produto-lista" ng-src="{{getImagem(produtoAtual.id)}}" id="produtoImagemAlterarView"/>
-                        </div>
-
-
-                        <div class="form-group" style="width: 100%;">
-                            <label for="produtoObservacaoAlterar">Observação</label>
-                            <textarea class="form-control" id="produtoObservacaoAlterar"   style="resize: none;" name="produtoObservacaoAlterar" ng-model="produtoAtual.observacao" rows="2" maxlength="200"> </textarea>
-                        </div>
-
-                        <div id="msgProdutoAlterar" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px"></div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <div class="input-group" style="width: 100%;">
-                            <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#produtoDialogAlterar')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
-                            <button type="submit" class="btn btn-default pull-right btn-success " ng-click="updateProduto()" ><span class="glyphicon glyphicon-floppy-disk botaoComIcone" aria-hidden="true"></span>Salvar</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="modal fade dialog-produto" id="produtoDialogVizualizar" role="dialog"  aria-hidden="true" >
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form>
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Vizualizar Produto</h4>
-                    </div>
-
-                    <div class="media-body descricao-produto-lista">
-                        <div class="imagem-produto-lista-div" >
-                            <img class="media-object imagem-produto-lista" ng-src="{{getImagem(produtoAtual.id)}}" />
-                        </div>
-                        <div style="height: 55px; padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: center; ">
-                            <b><strong class="font-titulo-produto text-uppercase" ng-bind="produtoAtual.descricao"></strong></b>
-                        </div>
-                        <div style="height: 55px; padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: left; ">
-                            <strong class="font-titulo-produto"> Fornecedor: </strong> <strong class="font-produto" ng-bind="produtoAtual.fornecedor.descricao"></strong> <br/>
-                            <strong class="font-titulo-produto"> Estoque: </strong> <strong class="font-produto" ng-bind="produtoAtual.estoque"></strong><br/> 
-                        </div>
-                        <div class="form-group" style="padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: left; ">
-                            <label class="font-titulo-produto" for="produtoObservacaoVizualizar">Observação</label>
-                            <textarea class="form-control" ng-readonly="true" id="produtoObservacaoVizualizar"   style="resize: none;" ng-model="produtoAtual.observacao" rows="2"> </textarea>
-                        </div>
-                        <div style="height: 30px; padding-right: 10px; padding-left: 5px; padding-top: 0px; overflow: hidden; text-align: center; ">
-                            <span class="valor-produto-lista" ui-number-mask="decimals" ng-bind="produtoAtual.valor | currency"></span><br/>  
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <div class="input-group" style="width: 100%;">
-                            <button type="button" class="btn btn-default center-block btn-primary " ng-click="fecharDialog('#produtoDialogVizualizar')" ><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade dialog-produto" id="produtoDialogDeletar" role="dialog"  aria-hidden="true" cg-busy="{promise:send, templateUrl:'send.html'}">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form>
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Deletar Produto</h4>
-                    </div>
-
-                    <div class="media-body descricao-produto-lista">
-                        <div class="alert alert-warning" role="alert"><span class="glyphicon glyphicon-warning-sign botaoComIcone" aria-hidden="true"></span> Deseja Deletar o Produto ?</div>
-                        <div class="imagem-produto-lista-div" >
-                            <img class="media-object imagem-produto-lista" ng-src="{{getImagem(produtoAtual.id)}}" />
-                        </div>
-                        <div style="height: 55px; padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: center; ">
-                            <b><strong class="font-titulo-produto text-uppercase" ng-bind="produtoAtual.descricao"></strong></b>
-                        </div>
-                        <div style="height: 55px; padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: left; ">
-                            <strong class="font-titulo-produto"> Fornecedor: </strong> <strong class="font-produto" ng-bind="produtoAtual.fornecedor.descricao"></strong> <br/>
-                            <strong class="font-titulo-produto"> Estoque: </strong> <strong class="font-produto" ng-bind="produtoAtual.estoque"></strong><br/> 
-                        </div>
-                        <div class="form-group" style="padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: left; ">
-                            <label class="font-titulo-produto" for="produtoObservacaoDeletar">Observação</label>
-                            <textarea class="form-control" ng-readonly="true" id="produtoObservacaoDeletar"   style="resize: none;" ng-model="produtoAtual.observacao" rows="2"> </textarea>
-                        </div>
-                        <div style="height: 30px; padding-right: 10px; padding-left: 5px; padding-top: 0px; overflow: hidden; text-align: center; ">
-                            <span class="valor-produto-lista" ui-number-mask="decimals" ng-bind="produtoAtual.valor | currency"></span><br/>  
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <div class="input-group" style="width: 100%">
-                            <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#produtoDialogDeletar')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
-                            <button type="submit" class="btn btn-default pull-right btn-success " ng-click="deleteProduto()" ><span class="glyphicon glyphicon-ok botaoComIcone" aria-hidden="true"></span>Confirmar</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade dialog-produto" id="produtoDialogMovimentacao" role="dialog"  aria-hidden="true" cg-busy="loading">
-        <div class="modal-dialog" style="min-width: 400px;" >
-            <div class="modal-content">
-                <form>
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Movimentação Produto</h4>
-                    </div>
-
-                    <div class="media-body descricao-produto-lista"  >
-                        <div style="height: 55px; padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: center; ">
-                            <b><strong class="font-titulo-produto text-uppercase" ng-bind="produtoAtual.descricao"></strong></b>
-                        </div>
-
-                        <ul style="margin: auto;" class="list-inline">
-                            <li>
-                                <label for="dataIncialMovimentacao">Data Inicial</label>
-                                <p class="input-group" style="width: 140px; " id="dataIncialMovimentacao">
-                                    <input type="text" class="form-control" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-readonly="true" ng-change="getListaMovimentacao(1)"  uib-datepicker-popup="dd/MM/yyyy" ng-model="dataInicialMovimento" is-open="dataInicial.opened" datepicker-options="dateOptionsInicial"  alt-input-formats="altInputFormats" />
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-click="openDataInicial()"><i class="glyphicon glyphicon-calendar"></i></button>
-                                    </span>
-                                </p>
-                            </li>
-                            <li style="padding-left: 30px"> 
-                                <label for="dataFinalMovimentacao">Data Final</label>
-                                <p class="input-group" style="width: 140px; " id="dataFinalMovimentacao">
-                                    <input type="text" class="form-control" clear-text="Limpar" close-text="Fechar" popup-placement="bottom-right" show-button-clear="false" current-text="Hoje" ng-readonly="true" ng-change="getListaMovimentacao(1)"  uib-datepicker-popup="dd/MM/yyyy" ng-model="dataFinalMovimento" is-open="dataFinal.opened" datepicker-options="dateOptionsFinal"  alt-input-formats="altInputFormats" />
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-click="openDataFinal()" ><i class="glyphicon glyphicon-calendar"></i></button>
-                                    </span>
-                                </p>
-                            </li>
-                        </ul>
-
-                        <md-datepicker ng-model="dataFinalMovimento" md-placeholder="Enter date"
-                                       md-date-filter="onlyWeekendsPredicate"></md-datepicker>
-
-                        <div style="padding-bottom: 5px; overflow: hidden; text-align: left; ">
-                            <strong class="font-titulo-produto"> Estoque Atual: </strong> <strong class="font-produto" ng-bind="produtoAtual.estoque"></strong><br/> 
-                        </div>
-
-                        <div style="max-height: 200px; min-height: 200px; width: 100%; overflow-y: auto;">
-                            <table  class="table table-striped ">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 130px;">Data</th>
-                                        <th class="visible-md visible-lg">Observação</th>
-                                        <th style="width: 50px;" >Qtd</th>
-                                        <th style="width: 80px;"  >Tipo</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="produtoMovimentacao in listaProdutoMovimentacao" ng-style="corLinha(produtoMovimentacao.tipoMovimentacao)">
-                                        <td ng-bind="(produtoMovimentacao.data_movimento) | date: 'dd/MM/yyyy HH:mm'"></td>
-                                        <td class="visible-md visible-lg" ng-bind="produtoMovimentacao.observacao"></td>
-                                        <td ng-bind="produtoMovimentacao.quantidade"></td>
-                                        <td ng-bind="produtoMovimentacao.descricao" > </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div style="width: 100%; margin: 0; padding: 0; padding-top: 10px " ng-show="totalItemsMovimentacao > 10">
-                            <div style="width: auto; margin: auto; padding: 0;" class="pull-right">
-                                <uib-pagination style="margin: 0; padding: 0; " next-text="Próximo" previous-text="Anterior" total-items="totalItemsMovimentacao" ng-model="currentPageMovimentacao" ng-change="getListaMovimentacao(currentPageMovimentacao)" max-size="maxSize" class="pagination-sm" items-per-page="itensPorPagina" num-pages="numPages"></uib-pagination>
-                            </div>
-                        </div>
-                        <div class="btn-group media-left" role="group" style="width: 100%; padding-top: 5px">
-                            <button type="button" class="btn btn-default center-block btn-warning " ng-click="preparaProdutoView('#produtoDialogMovimentacao', '#produtoDialogMovimentacaoCorrecao')"><span class="glyphicon glyphicon-sort bong-click botaoComIcone" aria-hidden="true"></span>Correção</button>
-                        </div>
-                        <div id="msgCorrecaoView" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px"></div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <div class="input-group" style="width: 100%;">
-                            <button type="button" class="btn btn-default center-block btn-primary " ng-click="fecharDialog('#produtoDialogMovimentacao')" ><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="produtoDialogMovimentacaoCorrecao" role="dialog" aria-hidden="true" cg-busy="{promise:send, templateUrl:'send.html'}">
-        <div class="modal-dialog">
-            <div class="modal-content dialog-produto">
-                <form>
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Correção de Estoque</h4>
-                    </div>
-
-                    <div class="media-body" style="padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px">
-                        <div class="form-group">
-                            <label for="tipoCorrecao">Tipo correção</label>
-                            <select class="form-control" ng-model="produtoAtual.tipoMovimentacao" 
-                                            ng-options="option.descricao for option in listaTipoMovimentacaoCorrecao track by option.id"> </select>
-                        </div>
-                        <div class="form-group" style="width: 100%;">
-                            <label for="quantidadeCorrecao">Quantidade</label>
-                            <input type="text"  class="form-control" ui-number-mask="0"  id="quantidadeCorrecao" ng-model="produtoAtual.estoque_movimento">
-                        </div>
-                        <div class="form-group" style="width: 100%;">
-                            <label for="observacaoCorrecao">Observação</label>
-                            <input type="text"  class="form-control"  id="observacaoCorrecao" ng-model="produtoAtual.estoque_movimento_observacao" maxlength="200" >
-                        </div>
-                        <div style="padding-bottom: 5px; overflow: hidden; text-align: left; padding-left: 0px ">
-                            <strong class="font-titulo-produto"> Estoque Atual: </strong> <strong class="font-produto" ng-bind="produtoAtual.estoque"></strong><br/>
-                        </div>
-
-                        <div id="msgCorrecao" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px"></div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <div class="input-group" style="width: 100%">
-                            <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharCorrecaoMovimentacao()"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
-                            <button type="submit" class="btn btn-default pull-right btn-success" ng-click="movimentarProdutoCorrecao()"><span class="glyphicon glyphicon-ok botaoComIcone" aria-hidden="true"></span>Confirmar</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="localizarProdutoDialog" role="dialog" aria-hidden="true" >
-        <div class="modal-dialog">
-            <div class="modal-content dialog-produto">
-                <form>
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Localizar Produto</h4>
-                    </div>
-
-                    <div class="media-body" style="padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px">
-                        <div class="form-group" style="width: 100%;">
-                            <label for="produtoDescricaoLocalizar">Descrição</label>
-                            <input type="text" class="form-control"  id="produtoDescricaoLocalizar" ng-model="buscaAvancada.descricao" maxlength="32">
-                        </div>
-                        <div class="form-group" style="width: 100%;">
-                            <label for="produtoFornecedorLocalizar">Fornecedor</label>
-                            <div class="input-group">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-primary" style="width: 100px" type="button" ng-click="abrirDialogLocalizarFornecedor(buscaAvancada)"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
-                                </span>
-                                <input type="text" class="form-control" ng-readonly="true" id="produtoFornecedorLocalizar" ng-model="buscaAvancada.fornecedor.descricao">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" ng-click="limpaBuscaFornecedor(buscaAvancada)"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></button>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="input-group">
-                            <label class="checkbox-inline"><input type="checkbox" ng-model="buscaAvancada.estoquePositivo">Estoque Positivo</label>
-                        </div>
-
-                    </div>
-
-                    <div class="modal-footer">
-                        <div class="input-group" style="width: 100%">
-                            <div class="btn-group pull-left" role="group" aria-label="...">
-                                <button type="button" class="btn btn-default btn-danger " ng-click="fecharDialog('#localizarProdutoDialog')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
-                                <button type="button" class="btn btn-default btn-warning " ng-click="limpaFiltroAvancado()"><span class="glyphicon glyphicon-remove-circle botaoComIcone" aria-hidden="true"></span>Limpar Filtro</button>
-                            </div>
-                            <button type="submit" class="btn btn-default pull-right btn-primary" ng-click="filtrarAvancado()" ><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="localizarFornecedorDialog" role="dialog" aria-hidden="true" cg-busy="loadingDialog">
-        <div class="modal-dialog">
-            <div class="modal-content dialog-produto">
-                <form>
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Localizar Fornecedor</h4>
-                    </div>
-
-                    <div class="media-body" style="padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px">
-                        <div class="input-group" style="padding-bottom: 10px">
-                            <input type="text" class="form-control"  ng-model="valorBuscaFornecedor">
+                        <div class="input-group pull-right col-sm-4 col-md-6 col-lg-4" style="padding-top: 8px;">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" ng-click="limpaBuscaFornecedorComBusca()"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></button>
-                                <button class="btn btn-primary" type="button" ng-click="getListaFornecedorAll(1)"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="" data-toggle="modal" data-target="#localizarProdutoDialog"><span class="glyphicon glyphicon-filter" aria-hidden="true" style="padding-right: 5px"></span>Filtro Avançado</a></li>
+                                        <li><a href="" ng-click="limpaFiltroAvancado()"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true" style="padding-right: 5px"></span>Limpar Filtro</a></li>
+                                    </ul>
+                                </div>
+                            </span>
+                            <input type="text" class="form-control"  ng-model="valorBuscaProduto" placeholder="Descrição...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button" ng-click="filtroPorDescricao()"><span class="fa fa-search "></span></button>
                             </span>
                         </div>
-                        <div id="msglocalizarFornecedorDialog" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px"></div>
-                        <div class="alert alert-warning" role="alert"  ng-show="listaFornecedores == null"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Sem dados</div>
-                        <div class="list-group" style="max-height: 300px; overflow-y: auto">
-                            <button type="button" class="list-group-item" ng-bind="fornecedor.descricao" ng-repeat="fornecedor in listaFornecedores" ng-click="selecionarFornecedor('#localizarFornecedorDialog', fornecedor)"></button>
+                    </div>
+                </nav>
+            </div>
+            <div class="panel-body painel-pai-geral-body" >
+                <div id="msgProdutoGeral" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"></div>
+                <div id="tabela-produto" class="row" style="padding: 0px; margin: 0px;padding-top: 15px">
+                    <div class="alert alert-warning" role="alert"  ng-show="listaProduto == null || listaProduto.length < 1" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Sem dados</div>
+                    <ul>
+                        <li ng-repeat="p in listaProduto" class="product-item">
+                            <a href="" style="text-decoration: none;" ng-click="preparaProduto(p)">
+                                <div class="produto-lista-conteudo">
+                                    <div class="imagem-produto-lista-div" >
+                                        <img class="media-object imagem-produto-lista" ng-src="{{getImagem(p.id)}}"/>
+                                    </div>
+                                    <div style="height: 55px; padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: center; ">
+                                        <b><strong class="font-titulo-produto text-uppercase" ng-bind="p.descricao"></strong></b>
+                                    </div>
+                                    <div style="height: 55px; padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: left; ">
+                                        <strong class="font-titulo-produto"> Fornecedor: </strong> <strong class="font-produto" ng-bind="p.fornecedor.descricao"></strong> <br/>
+                                        <strong class="font-titulo-produto"> Estoque: </strong> <strong class="font-produto" ng-bind="p.estoque"></strong><br/> 
+                                    </div>
+                                    <div style="height: 30px; padding-right: 10px; padding-left: 5px; padding-top: 0px; overflow: hidden; text-align: center; ">
+                                        <span class="valor-produto-lista" ui-number-mask="decimals" ng-bind="p.valor | currency"></span><br/>  
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <div style="width: 100%; margin: 0; padding: 0; padding-left: 10px " ng-show="totalItems > 10">
+                        <div style="width: auto; margin: auto; padding: 0; padding-right: 5px" class="pull-right">
+                            <uib-pagination style="margin: 0; padding: 0; " next-text="Próximo" previous-text="Anterior" total-items="totalItems" ng-model="currentPage" ng-change="getListaProdutoAll(currentPage)" max-size="maxSize" class="pagination-sm" items-per-page="itensPorPagina" num-pages="numPages"></uib-pagination>
                         </div>
-                        <div class="row" style="width: 100%; margin: 0; padding: 0; padding-left: 10px; padding-top: 10px" ng-show="totalItemsFornecedor > 5">
-                            <div style="width: auto; margin: auto; padding: 0; padding-right: 5px;" class="pull-right">
-                                <uib-pagination style="margin: 0; padding: 0; " next-text="Próximo" previous-text="Anterior" total-items="totalItemsFornecedor" ng-model="currentPageFornecedor" ng-change="getListaFornecedorAll(currentPageFornecedor)" max-size="maxSize" class="pagination-sm" items-per-page="itensPorPaginaFornecedor" num-pages="numPages"></uib-pagination>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="produtoCadastroDialog" role="dialog" cg-busy="{promise:send, templateUrl:'send.html'}">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form>
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Cadastro Produto</h4>
                             </div>
-                        </div>
-                    </div>
 
-                    <div class="modal-footer">
-                        <div class="input-group" style="width: 100%;">
-                            <button type="button" class="btn btn-default center-block btn-primary " ng-click="fecharDialog('#localizarFornecedorDialog')" ><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
-                        </div>
+                            <div class="media-body descricao-produto-lista">
+                                <div class="form-group" style="width: 100%;">
+                                    <label for="produtoDescricao">Descrição</label>
+                                    <input type="text"  class="form-control"  id="produtoDescricao" ng-model="produtoAtual.descricao" maxlength="32">
+                                </div>
+
+                                <div class="form-group" style="width: 100%;">
+                                    <label for="produtoValor">Valor R$</label>
+                                    <input type="text"  class="form-control" ui-number-mask="decimals"  id="produtoValor" ng-model="produtoAtual.valor">
+                                </div>
+
+                                <div class="form-group" style="width: 100%;">
+                                    <label for="produtoFornecedor">Fornecedor</label>
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" style="width: 100px" type="button" ng-click="abrirDialogLocalizarFornecedor(produtoAtual)"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
+                                        </span>
+                                        <input type="text" class="form-control" ng-readonly="true"  id="produtoFornecedor" ng-model="produtoAtual.fornecedor.descricao">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" ng-click="limpaBuscaFornecedor(produtoAtual)"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></button>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" style="width: 100%;">
+                                    <label for="produtoImagemCadastro">Imagem Produto</label>
+                                    <input type="file" class="filestyle" data-buttonText="Localizar" onchange="angular.element(this).scope().mostrarImagem('#produtoImagemCadastro', '#msgProduto', '#produtoImagemCadastroView')" data-buttonBefore="true" id="produtoImagemCadastro" name="produtoImagemCadastro" ng-model="produtoAtual.imagem">
+                                </div>
+
+                                <div class="imagem-produto-lista-div" >
+                                    <img class="media-object imagem-produto-lista" id="produtoImagemCadastroView"/>
+                                </div>
+
+                                <div class="form-group" style="width: 100%;">
+                                    <label for="produtoImagemCadastro">Observação</label>
+                                    <textarea class="form-control" id="produtoCadastroObservacao"  style="resize: none;" name="produtoCadastroObservacao" ng-model="produtoAtual.observacao" rows="2" maxlength="200"> </textarea>
+                                </div>
+
+                                <div id="msgProduto" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px"></div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <div class="input-group" style="width: 100%;">
+                                    <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#produtoCadastroDialog')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
+                                    <button type="submit" class="btn btn-default pull-right btn-success " ng-click="insertProduto()" ><span class="glyphicon glyphicon-floppy-disk botaoComIcone" aria-hidden="true"></span>Salvar</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                </form>
+                </div>
+            </div>
+
+            <div class="modal fade dialog-produto" id="produtoDialogAlterar" role="dialog"  aria-hidden="true" cg-busy="{promise:send, templateUrl:'send.html'}">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form>
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Alterar Produto</h4>
+                            </div>
+
+                            <div class="media-body descricao-produto-lista">
+                                <div class="form-group" style="width: 100%;">
+                                    <label for="produtoDescricaoAlterar">Descrição</label>
+                                    <input type="text"  class="form-control"  id="produtoDescricaoAlterar" ng-model="produtoAtual.descricao" maxlength="32">
+                                </div>
+
+                                <div class="form-group" style="width: 100%;">
+                                    <label for="produtoValorAlterar">Valor R$</label>
+                                    <input type="text"  class="form-control" ui-number-mask="decimals"  id="produtoValorAlterar" ng-model="produtoAtual.valor">
+                                </div>
+
+                                <div class="form-group" style="width: 100%;">
+                                    <label for="produtoFornecedorAlterar">Fornecedor</label>
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" style="width: 100px" type="button"  ng-click="abrirDialogLocalizarFornecedor(produtoAtual)"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
+                                        </span>
+                                        <input type="text" class="form-control" ng-readonly="true"  id="produtoFornecedorAlterar" ng-model="produtoAtual.fornecedor.descricao">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" ng-click="limpaBuscaFornecedor(produtoAtual)"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></button>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" style="width: 100%;">
+                                    <label for="produtoImagemAlterar">Imagem Produto</label>
+                                    <input type="file" data-badge="false" class="filestyle" data-buttonText="Localizar" onchange="angular.element(this).scope().mostrarImagem('#produtoImagemAlterar', '#msgProdutoAlterar', '#produtoImagemAlterarView')" data-buttonBefore="true" id="produtoImagemAlterar">
+                                </div>
+
+                                <div class="imagem-produto-lista-div" >
+                                    <img class="media-object imagem-produto-lista" ng-src="{{getImagem(produtoAtual.id)}}" id="produtoImagemAlterarView"/>
+                                </div>
+
+
+                                <div class="form-group" style="width: 100%;">
+                                    <label for="produtoObservacaoAlterar">Observação</label>
+                                    <textarea class="form-control" id="produtoObservacaoAlterar"   style="resize: none;" name="produtoObservacaoAlterar" ng-model="produtoAtual.observacao" rows="2" maxlength="200"> </textarea>
+                                </div>
+
+                                <div id="msgProdutoAlterar" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px"></div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <div class="input-group" style="width: 100%;">
+                                    <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#produtoDialogAlterar')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
+                                    <button type="submit" class="btn btn-default pull-right btn-success " ng-click="updateProduto()" ><span class="glyphicon glyphicon-floppy-disk botaoComIcone" aria-hidden="true"></span>Salvar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal fade dialog-produto" id="produtoDialogVizualizar" role="dialog"  aria-hidden="true" >
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form>
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Vizualizar Produto</h4>
+                            </div>
+
+                            <div class="media-body descricao-produto-lista">
+                                <div class="imagem-produto-lista-div" >
+                                    <img class="media-object imagem-produto-lista" ng-src="{{getImagem(produtoAtual.id)}}" />
+                                </div>
+                                <div style="height: 55px; padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: center; ">
+                                    <b><strong class="font-titulo-produto text-uppercase" ng-bind="produtoAtual.descricao"></strong></b>
+                                </div>
+                                <div style="height: 55px; padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: left; ">
+                                    <strong class="font-titulo-produto"> Fornecedor: </strong> <strong class="font-produto" ng-bind="produtoAtual.fornecedor.descricao"></strong> <br/>
+                                    <strong class="font-titulo-produto"> Estoque: </strong> <strong class="font-produto" ng-bind="produtoAtual.estoque"></strong><br/> 
+                                </div>
+                                <div class="form-group" style="padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: left; ">
+                                    <label class="font-titulo-produto" for="produtoObservacaoVizualizar">Observação</label>
+                                    <textarea class="form-control" ng-readonly="true" id="produtoObservacaoVizualizar"   style="resize: none;" ng-model="produtoAtual.observacao" rows="2"> </textarea>
+                                </div>
+                                <div style="height: 30px; padding-right: 10px; padding-left: 5px; padding-top: 0px; overflow: hidden; text-align: center; ">
+                                    <span class="valor-produto-lista" ui-number-mask="decimals" ng-bind="produtoAtual.valor | currency"></span><br/>  
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <div class="input-group" style="width: 100%;">
+                                    <button type="button" class="btn btn-default center-block btn-primary " ng-click="fecharDialog('#produtoDialogVizualizar')" ><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade dialog-produto" id="produtoDialogDeletar" role="dialog"  aria-hidden="true" cg-busy="{promise:send, templateUrl:'send.html'}">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form>
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Deletar Produto</h4>
+                            </div>
+
+                            <div class="media-body descricao-produto-lista">
+                                <div class="alert alert-warning" role="alert"><span class="glyphicon glyphicon-warning-sign botaoComIcone" aria-hidden="true"></span> Deseja Deletar o Produto ?</div>
+                                <div class="imagem-produto-lista-div" >
+                                    <img class="media-object imagem-produto-lista" ng-src="{{getImagem(produtoAtual.id)}}" />
+                                </div>
+                                <div style="height: 55px; padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: center; ">
+                                    <b><strong class="font-titulo-produto text-uppercase" ng-bind="produtoAtual.descricao"></strong></b>
+                                </div>
+                                <div style="height: 55px; padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: left; ">
+                                    <strong class="font-titulo-produto"> Fornecedor: </strong> <strong class="font-produto" ng-bind="produtoAtual.fornecedor.descricao"></strong> <br/>
+                                    <strong class="font-titulo-produto"> Estoque: </strong> <strong class="font-produto" ng-bind="produtoAtual.estoque"></strong><br/> 
+                                </div>
+                                <div class="form-group" style="padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: left; ">
+                                    <label class="font-titulo-produto" for="produtoObservacaoDeletar">Observação</label>
+                                    <textarea class="form-control" ng-readonly="true" id="produtoObservacaoDeletar"   style="resize: none;" ng-model="produtoAtual.observacao" rows="2"> </textarea>
+                                </div>
+                                <div style="height: 30px; padding-right: 10px; padding-left: 5px; padding-top: 0px; overflow: hidden; text-align: center; ">
+                                    <span class="valor-produto-lista" ui-number-mask="decimals" ng-bind="produtoAtual.valor | currency"></span><br/>  
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <div class="input-group" style="width: 100%">
+                                    <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#produtoDialogDeletar')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
+                                    <button type="submit" class="btn btn-default pull-right btn-success " ng-click="deleteProduto()" ><span class="glyphicon glyphicon-ok botaoComIcone" aria-hidden="true"></span>Confirmar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade dialog-produto" id="produtoDialogMovimentacao" role="dialog"  aria-hidden="true" cg-busy="loading">
+                <div class="modal-dialog" style="min-width: 400px;" >
+                    <div class="modal-content">
+                        <form>
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Movimentação Produto</h4>
+                            </div>
+
+                            <div class="media-body descricao-produto-lista"  >
+                                <div style="height: 55px; padding-right: 10px; padding-left: 5px; padding-top: 10px; overflow: hidden; text-align: center; ">
+                                    <b><strong class="font-titulo-produto text-uppercase" ng-bind="produtoAtual.descricao"></strong></b>
+                                </div>
+
+                                <ul style="margin: auto;" class="list-inline">
+                                    <li>
+                                        <label for="dataIncialMovimentacao">Data Inicial</label>
+                                        <p class="input-group" style="width: 140px; " id="dataIncialMovimentacao">
+                                            <input type="text" class="form-control" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-readonly="true" ng-change="getListaMovimentacao(1)"  uib-datepicker-popup="dd/MM/yyyy" ng-model="dataInicialMovimento" is-open="dataInicial.opened" datepicker-options="dateOptionsInicial"  alt-input-formats="altInputFormats" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="openDataInicial()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </p>
+                                    </li>
+                                    <li style="padding-left: 30px"> 
+                                        <label for="dataFinalMovimentacao">Data Final</label>
+                                        <p class="input-group" style="width: 140px; " id="dataFinalMovimentacao">
+                                            <input type="text" class="form-control" clear-text="Limpar" close-text="Fechar" popup-placement="bottom-right" show-button-clear="false" current-text="Hoje" ng-readonly="true" ng-change="getListaMovimentacao(1)"  uib-datepicker-popup="dd/MM/yyyy" ng-model="dataFinalMovimento" is-open="dataFinal.opened" datepicker-options="dateOptionsFinal"  alt-input-formats="altInputFormats" />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="openDataFinal()" ><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </p>
+                                    </li>
+                                </ul>
+
+                                <md-datepicker ng-model="dataFinalMovimento" md-placeholder="Enter date"
+                                               md-date-filter="onlyWeekendsPredicate"></md-datepicker>
+
+                                <div style="padding-bottom: 5px; overflow: hidden; text-align: left; ">
+                                    <strong class="font-titulo-produto"> Estoque Atual: </strong> <strong class="font-produto" ng-bind="produtoAtual.estoque"></strong><br/> 
+                                </div>
+
+                                <div style="max-height: 200px; min-height: 200px; width: 100%; overflow-y: auto;">
+                                    <table  class="table table-striped ">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 130px;">Data</th>
+                                                <th class="visible-md visible-lg">Observação</th>
+                                                <th style="width: 50px;" >Qtd</th>
+                                                <th style="width: 80px;"  >Tipo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="produtoMovimentacao in listaProdutoMovimentacao" ng-style="corLinha(produtoMovimentacao.tipoMovimentacao)">
+                                                <td ng-bind="(produtoMovimentacao.data_movimento) | date: 'dd / MM / yyyy HH:mm'"></td>
+                                                <td class="visible-md visible-lg" ng-bind="produtoMovimentacao.observacao"></td>
+                                                <td ng-bind="produtoMovimentacao.quantidade"></td>
+                                                <td ng-bind="produtoMovimentacao.descricao" > </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div style="width: 100%; margin: 0; padding: 0; padding-top: 10px " ng-show="totalItemsMovimentacao > 10">
+                                    <div style="width: auto; margin: auto; padding: 0;" class="pull-right">
+                                        <uib-pagination style="margin: 0; padding: 0; " next-text="Próximo" previous-text="Anterior" total-items="totalItemsMovimentacao" ng-model="currentPageMovimentacao" ng-change="getListaMovimentacao(currentPageMovimentacao)" max-size="maxSize" class="pagination-sm" items-per-page="itensPorPagina" num-pages="numPages"></uib-pagination>
+                                    </div>
+                                </div>
+                                <div class="btn-group media-left" role="group" style="width: 100%; padding-top: 5px">
+                                    <button type="button" class="btn btn-default center-block btn-warning " ng-click="preparaProdutoView('#produtoDialogMovimentacao', '#produtoDialogMovimentacaoCorrecao')"><span class="glyphicon glyphicon-sort bong-click botaoComIcone" aria-hidden="true"></span>Correção</button>
+                                </div>
+                                <div id="msgCorrecaoView" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px"></div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <div class="input-group" style="width: 100%;">
+                                    <button type="button" class="btn btn-default center-block btn-primary " ng-click="fecharDialog('#produtoDialogMovimentacao')" ><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="produtoDialogMovimentacaoCorrecao" role="dialog" aria-hidden="true" cg-busy="{promise:send, templateUrl:'send.html'}">
+                <div class="modal-dialog">
+                    <div class="modal-content dialog-produto">
+                        <form>
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Correção de Estoque</h4>
+                            </div>
+
+                            <div class="media-body" style="padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px">
+                                <div class="form-group">
+                                    <label for="tipoCorrecao">Tipo correção</label>
+                                    <select class="form-control" ng-model="produtoAtual.tipoMovimentacao" 
+                                            ng-options="option.descricao for option in listaTipoMovimentacaoCorrecao track by option.id"> </select>
+                                </div>
+                                <div class="form-group" style="width: 100%;">
+                                    <label for="quantidadeCorrecao">Quantidade</label>
+                                    <input type="text"  class="form-control" ui-number-mask="0"  id="quantidadeCorrecao" ng-model="produtoAtual.estoque_movimento">
+                                </div>
+                                <div class="form-group" style="width: 100%;">
+                                    <label for="observacaoCorrecao">Observação</label>
+                                    <input type="text"  class="form-control"  id="observacaoCorrecao" ng-model="produtoAtual.estoque_movimento_observacao" maxlength="200" >
+                                </div>
+                                <div style="padding-bottom: 5px; overflow: hidden; text-align: left; padding-left: 0px ">
+                                    <strong class="font-titulo-produto"> Estoque Atual: </strong> <strong class="font-produto" ng-bind="produtoAtual.estoque"></strong><br/>
+                                </div>
+
+                                <div id="msgCorrecao" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px"></div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <div class="input-group" style="width: 100%">
+                                    <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharCorrecaoMovimentacao()"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
+                                    <button type="submit" class="btn btn-default pull-right btn-success" ng-click="movimentarProdutoCorrecao()"><span class="glyphicon glyphicon-ok botaoComIcone" aria-hidden="true"></span>Confirmar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="localizarProdutoDialog" role="dialog" aria-hidden="true" >
+                <div class="modal-dialog">
+                    <div class="modal-content dialog-produto">
+                        <form>
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Localizar Produto</h4>
+                            </div>
+
+                            <div class="media-body" style="padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px">
+                                <div class="form-group" style="width: 100%;">
+                                    <label for="produtoDescricaoLocalizar">Descrição</label>
+                                    <input type="text" class="form-control"  id="produtoDescricaoLocalizar" ng-model="buscaAvancada.descricao" maxlength="32">
+                                </div>
+                                <div class="form-group" style="width: 100%;">
+                                    <label for="produtoFornecedorLocalizar">Fornecedor</label>
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" style="width: 100px" type="button" ng-click="abrirDialogLocalizarFornecedor(buscaAvancada)"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
+                                        </span>
+                                        <input type="text" class="form-control" ng-readonly="true" id="produtoFornecedorLocalizar" ng-model="buscaAvancada.fornecedor.descricao">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" ng-click="limpaBuscaFornecedor(buscaAvancada)"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <label class="checkbox-inline"><input type="checkbox" ng-model="buscaAvancada.estoquePositivo">Estoque Positivo</label>
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <div class="input-group" style="width: 100%">
+                                    <div class="btn-group pull-left" role="group" aria-label="...">
+                                        <button type="button" class="btn btn-default btn-danger " ng-click="fecharDialog('#localizarProdutoDialog')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
+                                        <button type="button" class="btn btn-default btn-warning " ng-click="limpaFiltroAvancado()"><span class="glyphicon glyphicon-remove-circle botaoComIcone" aria-hidden="true"></span>Limpar Filtro</button>
+                                    </div>
+                                    <button type="submit" class="btn btn-default pull-right btn-primary" ng-click="filtrarAvancado()" ><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="localizarFornecedorDialog" role="dialog" aria-hidden="true" cg-busy="loadingDialog">
+                <div class="modal-dialog">
+                    <div class="modal-content dialog-produto">
+                        <form>
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Localizar Fornecedor</h4>
+                            </div>
+
+                            <div class="media-body" style="padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px">
+                                <div class="input-group" style="padding-bottom: 10px">
+                                    <input type="text" class="form-control"  ng-model="valorBuscaFornecedor">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button" ng-click="limpaBuscaFornecedorComBusca()"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></button>
+                                        <button class="btn btn-primary" type="button" ng-click="getListaFornecedorAll(1)"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                                    </span>
+                                </div>
+                                <div id="msglocalizarFornecedorDialog" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px"></div>
+                                <div class="alert alert-warning" role="alert"  ng-show="listaFornecedores == null"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Sem dados</div>
+                                <div class="list-group" style="max-height: 300px; overflow-y: auto">
+                                    <button type="button" class="list-group-item" ng-bind="fornecedor.descricao" ng-repeat="fornecedor in listaFornecedores" ng-click="selecionarFornecedor('#localizarFornecedorDialog', fornecedor)"></button>
+                                </div>
+                                <div class="row" style="width: 100%; margin: 0; padding: 0; padding-left: 10px; padding-top: 10px" ng-show="totalItemsFornecedor > 5">
+                                    <div style="width: auto; margin: auto; padding: 0; padding-right: 5px;" class="pull-right">
+                                        <uib-pagination style="margin: 0; padding: 0; " next-text="Próximo" previous-text="Anterior" total-items="totalItemsFornecedor" ng-model="currentPageFornecedor" ng-change="getListaFornecedorAll(currentPageFornecedor)" max-size="maxSize" class="pagination-sm" items-per-page="itensPorPaginaFornecedor" num-pages="numPages"></uib-pagination>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <div class="input-group" style="width: 100%;">
+                                    <button type="button" class="btn btn-default center-block btn-primary " ng-click="fecharDialog('#localizarFornecedorDialog')" ><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="produtoDialogFuncoes" role="dialog" style="width: 210px; margin: auto">
+                <div class="modal-dialog" style="width: 200px">
+                    <div class="modal-content" style="width: 200px">
+                        <form>
+                            <div class="modal-header" style="width: 200px">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Funções</h4>
+                            </div>
+                            <div class="modal-body" style="width: 200px">
+                                <div class="list-group">
+                                    <a class="list-group-item" ng-click="preparaProdutoMovimentacao(true)" ><span class="glyphicon glyphicon-transfer btn btn-default btn-primary" aria-hidden="true"></span>  Movimentação</a>
+                                    <a class="list-group-item" ng-click="preparaProdutoView('#produtoDialogFuncoes', '#produtoDialogVizualizar');" ><span class="glyphicon glyphicon-list-alt btn btn-default btn-primary" aria-hidden="true"></span>  Vizualizar</a>
+                                    <a class="list-group-item" ng-click="preparaProdutoView('#produtoDialogFuncoes', '#produtoDialogAlterar')"><span class="glyphicon glyphicon-pencil btn btn-default btn-warning " aria-hidden="true"></span>  Editar</a>
+                                    <a class="list-group-item" ng-click="preparaProdutoView('#produtoDialogFuncoes', '#produtoDialogDeletar')" ><span class="glyphicon glyphicon-trash btn btn-default btn-danger" aria-hidden="true"></span>  Deletar</a>
+                                </div>
+                            </div>
+                            <div class="modal-footer" style="width: 200px">
+                                <div class="input-group" style="width: 100%;">
+                                    <button type="button" class="btn btn-default center-block btn-primary " ng-click="fecharDialog('#produtoDialogFuncoes')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-
-    <div class="modal fade" id="produtoDialogFuncoes" role="dialog" style="width: 210px; margin: auto">
-        <div class="modal-dialog" style="width: 200px">
-            <div class="modal-content" style="width: 200px">
-                <form>
-                    <div class="modal-header" style="width: 200px">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Funções</h4>
-                    </div>
-                    <div class="modal-body" style="width: 200px">
-                        <div class="list-group">
-                            <a class="list-group-item" ng-click="preparaProdutoMovimentacao(true)" ><span class="glyphicon glyphicon-transfer btn btn-default btn-primary" aria-hidden="true"></span>  Movimentação</a>
-                            <a class="list-group-item" ng-click="preparaProdutoView('#produtoDialogFuncoes', '#produtoDialogVizualizar');" ><span class="glyphicon glyphicon-list-alt btn btn-default btn-primary" aria-hidden="true"></span>  Vizualizar</a>
-                            <a class="list-group-item" ng-click="preparaProdutoView('#produtoDialogFuncoes', '#produtoDialogAlterar')"><span class="glyphicon glyphicon-pencil btn btn-default btn-warning " aria-hidden="true"></span>  Editar</a>
-                            <a class="list-group-item" ng-click="preparaProdutoView('#produtoDialogFuncoes', '#produtoDialogDeletar')" ><span class="glyphicon glyphicon-trash btn btn-default btn-danger" aria-hidden="true"></span>  Deletar</a>
-                        </div>
-                    </div>
-                    <div class="modal-footer" style="width: 200px">
-                        <div class="input-group" style="width: 100%;">
-                            <button type="button" class="btn btn-default center-block btn-primary " ng-click="fecharDialog('#produtoDialogFuncoes')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+    </body>
+</html>

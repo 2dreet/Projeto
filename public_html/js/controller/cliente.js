@@ -4,6 +4,8 @@
         function ($rootScope, $scope, $http, BuscaCep, Formulario, Utilitario, Factory) {
             Factory.verificaToken(true);
             Factory.ajustaMenuLateral('#btnCliente');
+            $rootScope.paginaAtual = "Clientes";
+            $rootScope.paginaAtualClass = "fa fa-users botaoComIconeMenuLateral";
 
             $scope.clienteAtual = {};
             $scope.listaCliente = [];
