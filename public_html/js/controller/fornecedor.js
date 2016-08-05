@@ -33,6 +33,18 @@
                 $scope.getListaFornecedorAll(1);
                 $scope.fecharDialog('#localizarFornecedorDialog');
             };
+            
+            $scope.getTituloCrud = function () {
+                if ($scope.tipoFuncao === "inserir") {
+                    return  "Cadastrar Fornecedor";
+                } else if ($scope.tipoFuncao === "alterar") {
+                    return  "Alterar Fornecedor";
+                } else if ($scope.tipoFuncao === "deletar") {
+                    return  "Deletar Fornecedor";
+                } else if ($scope.tipoFuncao === "vizualizar") {
+                    return  "Vizualizar Fornecedor";
+                }
+            };
 
             $scope.getListaFornecedorAll = function (pagina) {
                 if (Factory.verificaToken(true)) {
@@ -56,67 +68,21 @@
                 }
             };
 
-            $scope.updateFornecedor = function () {
-                if (Factory.verificaToken(true) && $scope.validaFornecedor('#msgFornecedorAlt', 'Alterar')) {
-                    var envio = {'dados': $scope.fornecedorAtual, 'token': Factory.getToken()};
+            $scope.enviarFornecedor = function () {
+                if (Factory.verificaToken(true) && $scope.validaFornecedor('#msgFornecedor')) {
+                    var envio = {'dados': $scope.fornecedorAtual, 'token': Factory.getToken(), 'tipoFuncao': $scope.tipoFuncao};
                     $scope.send = $http({
                         method: 'POST',
                         crossDomain: true,
-                        url: Factory.urlWs + "fornecedor/updateFornecedor",
+                        url: Factory.urlWs + "fornecedor/enviarFornecedor",
                         data: envio,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
-                        $scope.fecharDialog('#cadastroFornecedorDialogAlterar');
+                        $scope.fecharDialog('#dialogFornecedor');
                         if (!response.data.token) {
                             Factory.refazerLogin();
                         } else {
-                            Factory.setMensagemTemporaria('sucesso', 'Fornecedor alterado!', '#msgFornecedorGeral');
-                            $scope.getListaFornecedorAll(1);
-                        }
-                    }, function errorCallback(response) {
-                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFornecedorGeral');
-                    });
-                }
-            };
-
-            $scope.insertFornecedor = function () {
-                if (Factory.verificaToken(true) && $scope.validaFornecedor('#msgFornecedorCad', '')) {
-                    var envio = {'dados': $scope.fornecedorAtual, 'token': Factory.getToken()};
-                    $scope.send = $http({
-                        method: 'POST',
-                        crossDomain: true,
-                        url: Factory.urlWs + "fornecedor/insertFornecedor",
-                        data: envio,
-                        headers: {'Content-Type': 'application/json'}
-                    }).then(function successCallback(response) {
-                        $scope.fecharDialog('#cadastroFornecedorDialog');
-                        if (!response.data.token) {
-                            Factory.refazerLogin();
-                        } else {
-                            Factory.setMensagemTemporaria('sucesso', 'Fornecedor cadastrado!', '#msgFornecedorGeral');
-                            $scope.getListaFornecedorAll(1);
-                        }
-                    }, function errorCallback(response) {
-                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFornecedorGeral');
-                    });
-                }
-            };
-
-            $scope.deleteFornecedor = function () {
-                if (Factory.verificaToken(true)) {
-                    var envio = {'dados': $scope.fornecedorAtual, 'token': Factory.getToken()};
-                    $scope.send = $http({
-                        method: 'POST',
-                        crossDomain: true,
-                        url: Factory.urlWs + "fornecedor/deleteFornecedor",
-                        data: envio,
-                        headers: {'Content-Type': 'application/json'}
-                    }).then(function successCallback(response) {
-                        $scope.fecharDialog('#cadastroFornecedorDialogDeletar');
-                        if (!response.data.token) {
-                            Factory.refazerLogin();
-                        } else {
-                            Factory.setMensagemTemporaria('sucesso', 'Fornecedor deletado!', '#msgFornecedorGeral');
+                            Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgFornecedorGeral');
                             $scope.getListaFornecedorAll(1);
                         }
                     }, function errorCallback(response) {
@@ -158,6 +124,7 @@
 
             $scope.novoFornecedor = function () {
                 $scope.fornecedorAtual = {};
+                $scope.tipoFuncao = "inserir";
             };
 
             $scope.preparaFornecedor = function (fornecedor) {
@@ -165,6 +132,11 @@
             };
 
             $scope.fecharDialog = function (idModal) {
+                $(idModal).modal('hide');
+            };
+            
+            $scope.preparaCrud = function (idModal, tipoFuncao) {
+                $scope.tipoFuncao = tipoFuncao;
                 $(idModal).modal('hide');
             };
 

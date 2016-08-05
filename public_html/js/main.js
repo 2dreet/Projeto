@@ -47592,6 +47592,18 @@ $('#menu-lateral ul li').click(function () {
                 $scope.getListaFornecedorAll(1);
                 $scope.fecharDialog('#localizarFornecedorDialog');
             };
+            
+            $scope.getTituloCrud = function () {
+                if ($scope.tipoFuncao === "inserir") {
+                    return  "Cadastrar Fornecedor";
+                } else if ($scope.tipoFuncao === "alterar") {
+                    return  "Alterar Fornecedor";
+                } else if ($scope.tipoFuncao === "deletar") {
+                    return  "Deletar Fornecedor";
+                } else if ($scope.tipoFuncao === "vizualizar") {
+                    return  "Vizualizar Fornecedor";
+                }
+            };
 
             $scope.getListaFornecedorAll = function (pagina) {
                 if (Factory.verificaToken(true)) {
@@ -47615,67 +47627,21 @@ $('#menu-lateral ul li').click(function () {
                 }
             };
 
-            $scope.updateFornecedor = function () {
-                if (Factory.verificaToken(true) && $scope.validaFornecedor('#msgFornecedorAlt', 'Alterar')) {
-                    var envio = {'dados': $scope.fornecedorAtual, 'token': Factory.getToken()};
+            $scope.enviarFornecedor = function () {
+                if (Factory.verificaToken(true) && $scope.validaFornecedor('#msgFornecedor')) {
+                    var envio = {'dados': $scope.fornecedorAtual, 'token': Factory.getToken(), 'tipoFuncao': $scope.tipoFuncao};
                     $scope.send = $http({
                         method: 'POST',
                         crossDomain: true,
-                        url: Factory.urlWs + "fornecedor/updateFornecedor",
+                        url: Factory.urlWs + "fornecedor/enviarFornecedor",
                         data: envio,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
-                        $scope.fecharDialog('#cadastroFornecedorDialogAlterar');
+                        $scope.fecharDialog('#dialogFornecedor');
                         if (!response.data.token) {
                             Factory.refazerLogin();
                         } else {
-                            Factory.setMensagemTemporaria('sucesso', 'Fornecedor alterado!', '#msgFornecedorGeral');
-                            $scope.getListaFornecedorAll(1);
-                        }
-                    }, function errorCallback(response) {
-                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFornecedorGeral');
-                    });
-                }
-            };
-
-            $scope.insertFornecedor = function () {
-                if (Factory.verificaToken(true) && $scope.validaFornecedor('#msgFornecedorCad', '')) {
-                    var envio = {'dados': $scope.fornecedorAtual, 'token': Factory.getToken()};
-                    $scope.send = $http({
-                        method: 'POST',
-                        crossDomain: true,
-                        url: Factory.urlWs + "fornecedor/insertFornecedor",
-                        data: envio,
-                        headers: {'Content-Type': 'application/json'}
-                    }).then(function successCallback(response) {
-                        $scope.fecharDialog('#cadastroFornecedorDialog');
-                        if (!response.data.token) {
-                            Factory.refazerLogin();
-                        } else {
-                            Factory.setMensagemTemporaria('sucesso', 'Fornecedor cadastrado!', '#msgFornecedorGeral');
-                            $scope.getListaFornecedorAll(1);
-                        }
-                    }, function errorCallback(response) {
-                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFornecedorGeral');
-                    });
-                }
-            };
-
-            $scope.deleteFornecedor = function () {
-                if (Factory.verificaToken(true)) {
-                    var envio = {'dados': $scope.fornecedorAtual, 'token': Factory.getToken()};
-                    $scope.send = $http({
-                        method: 'POST',
-                        crossDomain: true,
-                        url: Factory.urlWs + "fornecedor/deleteFornecedor",
-                        data: envio,
-                        headers: {'Content-Type': 'application/json'}
-                    }).then(function successCallback(response) {
-                        $scope.fecharDialog('#cadastroFornecedorDialogDeletar');
-                        if (!response.data.token) {
-                            Factory.refazerLogin();
-                        } else {
-                            Factory.setMensagemTemporaria('sucesso', 'Fornecedor deletado!', '#msgFornecedorGeral');
+                            Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgFornecedorGeral');
                             $scope.getListaFornecedorAll(1);
                         }
                     }, function errorCallback(response) {
@@ -47717,6 +47683,7 @@ $('#menu-lateral ul li').click(function () {
 
             $scope.novoFornecedor = function () {
                 $scope.fornecedorAtual = {};
+                $scope.tipoFuncao = "inserir";
             };
 
             $scope.preparaFornecedor = function (fornecedor) {
@@ -47724,6 +47691,11 @@ $('#menu-lateral ul li').click(function () {
             };
 
             $scope.fecharDialog = function (idModal) {
+                $(idModal).modal('hide');
+            };
+            
+            $scope.preparaCrud = function (idModal, tipoFuncao) {
+                $scope.tipoFuncao = tipoFuncao;
                 $(idModal).modal('hide');
             };
 
@@ -47839,6 +47811,72 @@ $('#menu-lateral ul li').click(function () {
             $scope.totalItems = 0;
             $scope.currentPage = 1;
             $scope.itensPorPagina = 10;
+
+            $scope.tipoFuncao = 0;
+            $scope.getTituloCrudAssociado = function () {
+                if ($scope.tipoFuncao === 0) {
+                    return  "Cadastro de Pedido";
+                } else if ($scope.tipoFuncao === 1) {
+                    return  "Alterar Pedido";
+                } else if ($scope.tipoFuncao === 2) {
+                    return  "Deletar Pedido";
+                } else if ($scope.tipoFuncao === 3) {
+                    return  "Vizualizar Pedido";
+                }
+            };
+
+            $scope.getImagem = function (idItem) {
+                if (Factory.verificaToken(true) && idItem > 0) {
+                    var random = (new Date()).toString();
+                    return Factory.urlImagem + idItem + "/" + Factory.getToken() + "?cb=" + random;
+                }
+            };
+
+            $scope.getListaPedidoAll = function (pagina) {
+                if (Factory.verificaToken(true)) {
+                    var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBusca, 'limit': $scope.itensPorPagina};
+                    $rootScope.loading = $http({
+                        method: 'POST',
+                        data: envio,
+                        crossDomain: true,
+                        url: Factory.urlWs + "cliente/getAllCliente",
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        if (!response.data.token) {
+                            Factory.refazerLogin();
+                        } else {
+                            $scope.listaCliente = response.data.dados;
+                            $scope.totalItems = response.data.totalRegistro;
+                        }
+                    }, function errorCallback(response) {
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
+                    });
+                }
+            };
+
+            $scope.enviarPedido = function () {
+                if (Factory.verificaToken(true)) {
+                    var envio = {'dados': $scope.pedidoAtual, 'token': Factory.getToken(), 'tipoFuncao': $scope.tipoFuncao};
+                    $scope.send = $http({
+                        method: 'POST',
+                        crossDomain: true,
+                        url: Factory.urlWs + "pedido/enviarPedido",
+                        data: envio,
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        $scope.fecharDialog('#pedidoDialog');
+                        if (!response.data.token) {
+                            Factory.refazerLogin();
+                        } else {
+                            Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgPedidoGeral');
+                            $scope.getListaClienteAll(1);
+                        }
+                    }, function errorCallback(response) {
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgPedidoGeral');
+                    });
+                }
+            };
+
         }]);
 })();
 
