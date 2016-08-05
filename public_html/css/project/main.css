@@ -162,11 +162,15 @@ input::-webkit-inner-spin-button {
     margin: 0px;
 }
 
-.menu-ul li:hover {
-    background: #1ABB9C;
+.menu-ul li:hover  {
+    background: #E7E7E7;
 }
 
-.navbar-nav>li>a:focus,.navbar-default .navbar-nav>li>a:focus,.navbar-default .navbar-nav>li>a:focus span {color:#000;background-color:#1ABB9C}
+.menu-ul>li:hover>a>span{
+    color: #000;
+}
+
+.navbar-nav>li>a:focus,.navbar-default .navbar-nav>li>a:focus,.navbar-default .navbar-nav>li>a:focus span {color:#000;background-color:#E7E7E7}
 
 .header-panel{
     text-transform: uppercase;

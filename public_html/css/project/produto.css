@@ -94,6 +94,13 @@
     max-height: 310px;
 }
 
+.produto-lista-conteudo-pedido{
+    margin: 0; 
+    padding: 0px;
+    min-height: 100px;
+    max-height: 100px;
+}
+
 .imagem-produto-lista{
     width: 150px; 
     height: 150px;
@@ -141,6 +148,13 @@
 .imagem-produto-lista-div{
     margin: auto;
     width: 150px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+}
+.imagem-produto-lista-div-pedido{
+    margin: auto;
+    width: 90px;
     padding-top: 5px;
     padding-bottom: 5px;
 

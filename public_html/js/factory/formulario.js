@@ -21,6 +21,13 @@
         this.getTipoMovimentacao = function () {
             return [{id: 4, descricao: 'Cortesia'}, {id: 5, descricao: 'Correção'}, {id: 1, descricao: 'Entrada'}, {id: 3, descricao: 'Perda'}];
         };
-
+        
+        this.getTipoPedido = function () {
+            return [{id: 1, descricao: 'Prontra Entrega'}, {id: 2, descricao: 'Encomenda'}];
+        };
+        
+        this.getFormaPagamento = function () {
+            return [{id: 1, descricao: 'Dinheiro'}, {id: 2, descricao: 'Cartão de Débito'}, {id: 3, descricao: 'Cartão de Crédito'}];
+        };
     });
 })();

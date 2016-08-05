@@ -47097,7 +47097,14 @@ app.value('cgBusyDefaults', {
         this.getTipoMovimentacao = function () {
             return [{id: 4, descricao: 'Cortesia'}, {id: 5, descricao: 'Correção'}, {id: 1, descricao: 'Entrada'}, {id: 3, descricao: 'Perda'}];
         };
-
+        
+        this.getTipoPedido = function () {
+            return [{id: 1, descricao: 'Prontra Entrega'}, {id: 2, descricao: 'Encomenda'}];
+        };
+        
+        this.getFormaPagamento = function () {
+            return [{id: 1, descricao: 'Dinheiro'}, {id: 2, descricao: 'Cartão de Débito'}, {id: 3, descricao: 'Cartão de Crédito'}];
+        };
     });
 })();
 $('#btn-menu-lateral').click(function () {
@@ -47809,11 +47816,29 @@ $('#menu-lateral ul li').click(function () {
 })();
 (function () {
     'use strict';
-    angular.module('www.geve.com.br').controller("pedidoControler", ['$rootScope', '$scope', '$http', 'Factory', function ($rootScope, $scope, $http, Factory) {
+    angular.module('www.geve.com.br').controller("pedidoControler", ['$rootScope', '$scope', '$http', 'Factory', 'Formulario', function ($rootScope, $scope, $http, Factory, Formulario) {
             Factory.verificaToken(true);
             Factory.ajustaMenuLateral('#btnPedido');
             $rootScope.paginaAtual = "Pedidos";
             $rootScope.paginaAtualClass = "fa fa-shopping-cart botaoComIconeMenuLateral";
+            $scope.listaPedido = [];
+            $scope.listaTipoPedido = Formulario.getTipoPedido();
+            $scope.listaFormaPagamento = Formulario.getFormaPagamento();
+            $scope.pedidoAtual = {tipoPedido: $scope.listaTipoPedido[0], formaPagamento: $scope.listaFormaPagamento[0], pedidoConfirmado: true};
+            $scope.valorBuscaPedido = "";
+            $scope.buscaAvancada = {};
+            $scope.dataVencimento = {opened: true};
+            $scope.opendataVencimento = function () {
+                $scope.dataVencimento.opened = true;
+            };
+            $scope.dataEntrega = {opened: true};
+            $scope.opendataEntrega = function () {
+                $scope.dataEntrega.opened = true;
+            };
+            $scope.maxSize = 3;
+            $scope.totalItems = 0;
+            $scope.currentPage = 1;
+            $scope.itensPorPagina = 10;
         }]);
 })();
 
