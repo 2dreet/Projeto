@@ -1,6 +1,23 @@
 (function () {
     'use strict';
     angular.module('www.geve.com.br').service('Utilitario', function () {
+        this.getViaCep = function (cep) {
+            return  $http({
+                method: 'GET',
+                crossDomain: true,
+                url: "https://viacep.com.br/ws/" + cep + "/json/"
+            }).then(function successCallback(response) {
+                var retorno = {erro: false, data: {}};
+                if (response.erro) {
+                    retorno.erro = true;
+                } else {
+                    retorno.data = response.data;
+                }
+                return retorno;
+            }, function errorCallback(response) {
+                return {erro: true, conection: true};
+            });
+        };
 
         this.validaCPF = function (strCPF) {
             var Soma;
@@ -28,6 +45,14 @@
             if (Resto !== parseInt(strCPF.substring(10, 11)))
                 return false;
             return true;
+        };
+
+        this.fecharDialog = function (idComponente) {
+            $(idComponente).modal('hide');
+        };
+
+        this.abrirDialog = function (idComponente) {
+            $(idComponente).modal('show');
         };
     });
 })();

@@ -2,28 +2,28 @@ var app = angular.module('www.geve.com.br', ['ngRoute', 'ui.utils.masks', 'ui.ma
 app.config(function ($routeProvider, $locationProvider) {
     $routeProvider
             .when('/', {
-                templateUrl: 'com.br.html/inicio/inicio.html'
+                templateUrl: 'inicio/inicio.html'
             })
             .when('/fornecedor', {
-                templateUrl: 'com.br.html/fornecedor/fornecedor.html'
+                templateUrl: 'fornecedor/fornecedor.html'
             })
             .when('/cliente', {
-                templateUrl: 'com.br.html/cliente/cliente.html'
+                templateUrl: 'cliente/cliente.html'
             })
             .when('/produto', {
-                templateUrl: 'com.br.html/produto/produto.html'
+                templateUrl: 'produto/produto.html'
             })
             .when('/pedido', {
-                templateUrl: 'com.br.html/pedido/pedido.html'
+                templateUrl: 'pedido/pedido.html'
             })
             .when('/despesas', {
-                templateUrl: 'com.br.html/despesas/despesas.html'
+                templateUrl: 'despesas/despesas.html'
             })
             .when('/usuario', {
-                templateUrl: 'com.br.html/usuario/usuario.html'
+                templateUrl: 'usuario/usuario.html'
             })
             .when('/info', {
-                templateUrl: 'com.br.html/info/info.html'
+                templateUrl: 'info/info.html'
             })
             .otherwise({
                 redirectTo: '/'

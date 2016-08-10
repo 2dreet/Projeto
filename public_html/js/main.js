@@ -46899,28 +46899,28 @@ var app = angular.module('www.geve.com.br', ['ngRoute', 'ui.utils.masks', 'ui.ma
 app.config(function ($routeProvider, $locationProvider) {
     $routeProvider
             .when('/', {
-                templateUrl: 'com.br.html/inicio/inicio.html'
+                templateUrl: 'inicio/inicio.html'
             })
             .when('/fornecedor', {
-                templateUrl: 'com.br.html/fornecedor/fornecedor.html'
+                templateUrl: 'fornecedor/fornecedor.html'
             })
             .when('/cliente', {
-                templateUrl: 'com.br.html/cliente/cliente.html'
+                templateUrl: 'cliente/cliente.html'
             })
             .when('/produto', {
-                templateUrl: 'com.br.html/produto/produto.html'
+                templateUrl: 'produto/produto.html'
             })
             .when('/pedido', {
-                templateUrl: 'com.br.html/pedido/pedido.html'
+                templateUrl: 'pedido/pedido.html'
             })
             .when('/despesas', {
-                templateUrl: 'com.br.html/despesas/despesas.html'
+                templateUrl: 'despesas/despesas.html'
             })
             .when('/usuario', {
-                templateUrl: 'com.br.html/usuario/usuario.html'
+                templateUrl: 'usuario/usuario.html'
             })
             .when('/info', {
-                templateUrl: 'com.br.html/info/info.html'
+                templateUrl: 'info/info.html'
             })
             .otherwise({
                 redirectTo: '/'
@@ -46991,9 +46991,6 @@ app.value('cgBusyDefaults', {
 })();
 (function () {
     'use strict';
-
-
-
     angular.module('www.geve.com.br').service('Factory', function () {
         this.urlWs = "http://localhost:8088/WsJosePhp/";
         this.urlImagem = this.urlWs + "produto/getProdutoImagem/";
@@ -47119,6 +47116,23 @@ $('#menu-lateral ul li').click(function () {
 (function () {
     'use strict';
     angular.module('www.geve.com.br').service('Utilitario', function () {
+        this.getViaCep = function (cep) {
+            return  $http({
+                method: 'GET',
+                crossDomain: true,
+                url: "https://viacep.com.br/ws/" + cep + "/json/"
+            }).then(function successCallback(response) {
+                var retorno = {erro: false, data: {}};
+                if (response.erro) {
+                    retorno.erro = true;
+                } else {
+                    retorno.data = response.data;
+                }
+                return retorno;
+            }, function errorCallback(response) {
+                return {erro: true, conection: true};
+            });
+        };
 
         this.validaCPF = function (strCPF) {
             var Soma;
@@ -47146,6 +47160,14 @@ $('#menu-lateral ul li').click(function () {
             if (Resto !== parseInt(strCPF.substring(10, 11)))
                 return false;
             return true;
+        };
+
+        this.fecharDialog = function (idComponente) {
+            $(idComponente).modal('hide');
+        };
+
+        this.abrirDialog = function (idComponente) {
+            $(idComponente).modal('show');
         };
     });
 })();
@@ -47788,7 +47810,7 @@ $('#menu-lateral ul li').click(function () {
 })();
 (function () {
     'use strict';
-    angular.module('www.geve.com.br').controller("pedidoControler", ['$rootScope', '$scope', '$http', 'Factory', 'Formulario', function ($rootScope, $scope, $http, Factory, Formulario) {
+    angular.module('www.geve.com.br').controller("pedidoControler", ['$rootScope', '$scope', '$http', 'Factory', 'Formulario', 'Utilitario', function ($rootScope, $scope, $http, Factory, Formulario, Utilitario) {
             Factory.verificaToken(true);
             Factory.ajustaMenuLateral('#btnPedido');
             $rootScope.paginaAtual = "Pedidos";
@@ -47824,6 +47846,9 @@ $('#menu-lateral ul li').click(function () {
             $scope.totalItemsCliente = 0;
             $scope.currentPageCliente = 1;
 
+            $scope.iniciarLocalizacaoProduto = false;
+            $scope.iniciarLocalizacaoCliente = false;
+
             $scope.getTituloCrudPedido = function () {
                 if ($scope.tipoFuncao === 0) {
                     return  "Cadastro de Pedido";
@@ -47833,13 +47858,6 @@ $('#menu-lateral ul li').click(function () {
                     return  "Deletar Pedido";
                 } else if ($scope.tipoFuncao === 3) {
                     return  "Vizualizar Pedido";
-                }
-            };
-
-            $scope.getImagem = function (idItem) {
-                if (Factory.verificaToken(true) && idItem > 0) {
-                    var random = (new Date()).toString();
-                    return Factory.urlImagem + idItem + "/" + Factory.getToken() + "?cb=" + random;
                 }
             };
 
@@ -47875,7 +47893,7 @@ $('#menu-lateral ul li').click(function () {
                         data: envio,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
-                        $scope.fecharDialog('#pedidoDialog');
+                        Utilitario.fecharDialog('#pedidoDialog');
                         if (!response.data.token) {
                             Factory.refazerLogin();
                         } else {
@@ -47908,45 +47926,50 @@ $('#menu-lateral ul li').click(function () {
 
             $scope.novoPedido = function () {
                 $scope.pedidoAtual = {tipoPedido: $scope.listaTipoPedido[0], formaPagamento: $scope.listaFormaPagamento[0], pedidoConfirmado: true, cliente: {pessoa: {nome: "", sobreNome: ""}}};
+                $scope.tipoFuncao = 0;
             };
 
-            $scope.limpaBuscaClienteComBusca = function () {
-                $scope.valorBuscaCliente = "";
+            $scope.localizarProduto = function () {
+                Utilitario.abrirDialog("#filtroProduto");
+                if ($scope.iniciarLocalizacaoProduto === false) {
+                    $('#filtroProduto').on('hide.bs.modal', function (event) {
+                        $scope.iniciarLocalizacaoProduto = true;
+                        if ($scope.pedidoAtual.listaProduto === undefined) {
+                            $scope.pedidoAtual.listaProduto = [];
+                        }
+                        var encontrou = false;
+                        for (var i = $scope.pedidoAtual.listaProduto.length; i--; ) {
+                            if ($rootScope.produtoSelecionado.id !== undefined && $scope.pedidoAtual.listaProduto[i].id !== undefined &&
+                                    $rootScope.produtoSelecionado.id === $scope.pedidoAtual.listaProduto[i].id) {
+                                $scope.pedidoAtual.listaProduto[i].quantidadeCompra++;
+                                encontrou = true;
+                                $rootScope.produtoSelecionado = {};
+                            }
+                        }
+                        if (encontrou === false) {
+                            var produtoAux = JSON.parse(JSON.stringify($rootScope.produtoSelecionado));
+                            $rootScope.produtoSelecionado = {};
+                            if (produtoAux.id !== undefined) {
+                                produtoAux.quantidadeCompra = 1;
+                                $scope.pedidoAtual.listaProduto.push(produtoAux);
+                            }
+                        }
+                    });
+                }
             };
 
-            $scope.limpaBuscaProdutoComBusca = function () {
-                $scope.buscaAvancadaProduto = {};
-                $scope.valorBuscaProduto = "";
-            };
-
-            $scope.selecionarCliente = function (cliente) {
-                if ($scope.pedidoAtual.cliente === undefined) {
-                    $scope.pedidoAtual.cliente = {};
+            $scope.localizarCliente = function () {
+                Utilitario.abrirDialog("#filtroCliente");
+                if ($scope.iniciarLocalizacaoCliente === false) {
+                    $('#filtroCliente').on('hide.bs.modal', function (event) {
+                        $scope.iniciarLocalizacaoCliente = true;
+                        if ($scope.pedidoAtual.cliente === undefined) {
+                            $scope.pedidoAtual.cliente = {};
+                        }
+                        $scope.pedidoAtual.cliente = JSON.parse(JSON.stringify($rootScope.clienteSelecionado));
+                        $rootScope.clienteSelecionado = {};
+                    });
                 }
-                $scope.pedidoAtual.cliente = JSON.parse(JSON.stringify(cliente));
-                $scope.fecharDialog("#localizarClienteDialog");
-                $scope.limpaBuscaClienteComBusca();
-            };
-
-            $scope.incluirProduto = function (produto) {
-                if ($scope.pedidoAtual.listaProduto === undefined) {
-                    $scope.pedidoAtual.listaProduto = [];
-                }
-                var encontrou = false;
-                for (var i = $scope.pedidoAtual.listaProduto.length; i--; ) {
-                    if (produto.id !== undefined && $scope.pedidoAtual.listaProduto[i].id !== undefined &&
-                            produto.id === $scope.pedidoAtual.listaProduto[i].id) {
-                        $scope.pedidoAtual.listaProduto[i].quantidadeCompra++;
-                        encontrou = true;
-                    }
-                }
-                if (encontrou === false) {
-                    var produtoAux = JSON.parse(JSON.stringify(produto));
-                    produtoAux.quantidadeCompra = 1;
-                    $scope.pedidoAtual.listaProduto.push(produtoAux);
-                }
-                $scope.fecharDialog("#localizarProdutoPedidoDialog");
-                $scope.limpaBuscaProdutoComBusca();
             };
 
             $scope.removeProduto = function (produto) {
@@ -47955,57 +47978,6 @@ $('#menu-lateral ul li').click(function () {
                         $scope.pedidoAtual.listaProduto.splice(i, 1);
                     }
                 }
-            };
-
-            $scope.getListaProdutoAll = function (pagina) {
-                if (Factory.verificaToken(true)) {
-                    var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaAvancada': $scope.buscaAvancadaProduto, 'buscaDescricao': $scope.valorBuscaProduto};
-                    $rootScope.loading = $http({
-                        method: 'POST',
-                        data: envio,
-                        crossDomain: true,
-                        url: Factory.urlWs + "produto/getAllproduto",
-                        headers: {'Content-Type': 'application/json'}
-                    }).then(function successCallback(response) {
-                        if (!response.data.token) {
-                            Factory.refazerLogin();
-                        } else {
-                            $scope.listaProduto = response.data.dados;
-                            $scope.totalItemsProduto = response.data.totalRegistro;
-                        }
-                    }, function errorCallback(response) {
-                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgLocalizarProdutoDialog');
-                    });
-                }
-            };
-
-            $scope.getListaClienteAll = function (pagina) {
-                if (Factory.verificaToken(true)) {
-                    var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaAvancada': {}, 'buscaDescricao': $scope.valorBuscaCliente, 'limit': $scope.itensPorPagina};
-                    $rootScope.loading = $http({
-                        method: 'POST',
-                        data: envio,
-                        crossDomain: true,
-                        url: Factory.urlWs + "cliente/getAllCliente",
-                        headers: {'Content-Type': 'application/json'}
-                    }).then(function successCallback(response) {
-                        if (!response.data.token) {
-                            Factory.refazerLogin();
-                        } else {
-                            $scope.listaCliente = response.data.dados;
-                            $scope.totalItemsCliente = response.data.totalRegistro;
-                        }
-                    }, function errorCallback(response) {
-                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgLocalizarClienteDialog');
-                    });
-                }
-            };
-
-            $scope.abrirDialog = function (idModal) {
-                $(idModal).modal('show');
-            };
-            $scope.fecharDialog = function (idModal) {
-                $(idModal).modal('hide');
             };
 
             $scope.novoPedido();
@@ -48476,5 +48448,96 @@ $('#menu-lateral ul li').click(function () {
             $rootScope.paginaAtual = "Usuário";
             $rootScope.paginaAtualClass = "fa fa-cog botaoComIconeMenuLateral";
             $scope.usuario = {usuario: '', senha: ''};
+        }]);
+})();
+
+(function () {
+    'use strict';
+    angular.module('www.geve.com.br').controller("filtroClienteController", ['$rootScope', '$scope', '$http', 'Factory', 'Utilitario', function ($rootScope, $scope, $http, Factory, Utilitario) {
+            $scope.buscaAvancadaCliente = {};
+            $scope.valorBuscaCliente = "";
+            $scope.listaCliente = [];
+
+            $scope.maxSize = 3;
+            $scope.totalItems = 0;
+            $scope.currentPage = 1;
+            $scope.itensPorPagina = 10;
+            $scope.tipoFuncao = 0;
+            
+            $scope.getListaClienteAll = function (pagina) {
+                if (Factory.verificaToken(true)) {
+                    var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaAvancada': $scope.buscaAvancadaCliente, 'buscaDescricao': $scope.valorBuscaCliente, 'limit': $scope.itensPorPagina};
+                    $rootScope.loading = $http({
+                        method: 'POST',
+                        data: envio,
+                        crossDomain: true,
+                        url: Factory.urlWs + "cliente/getAllCliente",
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        if (!response.data.token) {
+                            Factory.refazerLogin();
+                        } else {
+                            $scope.listaCliente = response.data.dados;
+                            $scope.totalItems = response.data.totalRegistro;
+                        }
+                    }, function errorCallback(response) {
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFiltrarCliente');
+                    });
+                }
+            };
+
+            $scope.selecionarCliente = function (cliente) {
+                $rootScope.clienteSelecionado = JSON.parse(JSON.stringify(cliente));
+                Utilitario.fecharDialog("#filtroCliente");
+            };
+        }]);
+})();
+
+(function () {
+    'use strict';
+    angular.module('www.geve.com.br').controller("filtroProdutoController", ['$rootScope', '$scope', '$http', 'Factory', 'Utilitario', function ($rootScope, $scope, $http, Factory, Utilitario) {
+            $scope.buscaAvancadaProduto = {};
+            $scope.valorBuscaProduto = "";
+            $scope.listaProduto = [];
+
+            $scope.maxSize = 3;
+            $scope.totalItems = 0;
+            $scope.currentPage = 1;
+            $scope.itensPorPagina = 10;
+            $scope.tipoFuncao = 0;
+
+            $scope.getImagem = function (idItem) {
+                if (Factory.verificaToken(true) && idItem > 0) {
+                    var random = (new Date()).toString();
+                    return Factory.urlImagem + idItem + "/" + Factory.getToken() + "?cb=" + random;
+                }
+            };
+
+            $scope.getListaProdutoAll = function (pagina) {
+                if (Factory.verificaToken(true)) {
+                    var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaAvancada': $scope.buscaAvancadaProduto, 'buscaDescricao': $scope.valorBuscaProduto};
+                    $rootScope.loading = $http({
+                        method: 'POST',
+                        data: envio,
+                        crossDomain: true,
+                        url: Factory.urlWs + "produto/getAllproduto",
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        if (!response.data.token) {
+                            Factory.refazerLogin();
+                        } else {
+                            $scope.listaProduto = response.data.dados;
+                            $scope.totalItems = response.data.totalRegistro;
+                        }
+                    }, function errorCallback(response) {
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFiltroProduto');
+                    });
+                }
+            };
+
+            $scope.selecionarProduto = function (produto) {
+                $rootScope.produtoSelecionado = JSON.parse(JSON.stringify(produto));
+                Utilitario.fecharDialog("#filtroProduto");
+            };
         }]);
 })();

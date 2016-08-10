@@ -1,8 +1,5 @@
 (function () {
     'use strict';
-
-
-
     angular.module('www.geve.com.br').service('Factory', function () {
         this.urlWs = "http://localhost:8088/WsJosePhp/";
         this.urlImagem = this.urlWs + "produto/getProdutoImagem/";
