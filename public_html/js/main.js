@@ -47835,17 +47835,6 @@ $('#menu-lateral ul li').click(function () {
             $scope.itensPorPagina = 10;
             $scope.tipoFuncao = 0;
 
-            $scope.buscaAvancadaProduto = {};
-            $scope.valorBuscaProduto = "";
-            $scope.listaProduto = [];
-            $scope.totalItemsProduto = 0;
-            $scope.currentPageProduto = 1;
-
-            $scope.listaCliente = [];
-            $scope.valorBuscaCliente = "";
-            $scope.totalItemsCliente = 0;
-            $scope.currentPageCliente = 1;
-
             $scope.iniciarLocalizacaoProduto = false;
             $scope.iniciarLocalizacaoCliente = false;
 
@@ -47963,11 +47952,13 @@ $('#menu-lateral ul li').click(function () {
                 if ($scope.iniciarLocalizacaoCliente === false) {
                     $('#filtroCliente').on('hide.bs.modal', function (event) {
                         $scope.iniciarLocalizacaoCliente = true;
-                        if ($scope.pedidoAtual.cliente === undefined) {
-                            $scope.pedidoAtual.cliente = {};
+                        if ($rootScope.clienteSelecionado.id !== undefined) {
+                            if ($scope.pedidoAtual.cliente === undefined) {
+                                $scope.pedidoAtual.cliente = {};
+                            }
+                            $scope.pedidoAtual.cliente = JSON.parse(JSON.stringify($rootScope.clienteSelecionado));
+                            $rootScope.clienteSelecionado = {};
                         }
-                        $scope.pedidoAtual.cliente = JSON.parse(JSON.stringify($rootScope.clienteSelecionado));
-                        $rootScope.clienteSelecionado = {};
                     });
                 }
             };
