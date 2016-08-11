@@ -5,20 +5,30 @@
             $scope.buscaAvancadaProduto = {};
             $scope.valorBuscaProduto = "";
             $scope.listaProduto = [];
-
             $scope.maxSize = 3;
             $scope.totalItems = 0;
             $scope.currentPage = 1;
             $scope.itensPorPagina = 10;
             $scope.tipoFuncao = 0;
-
             $scope.getImagem = function (idItem) {
                 if (Factory.verificaToken(true) && idItem > 0) {
                     var random = (new Date()).toString();
                     return Factory.urlImagem + idItem + "/" + Factory.getToken() + "?cb=" + random;
                 }
             };
-
+            $scope.limpaFiltroAvancado = function () {
+                $scope.buscaAvancadaProduto = {descricao: "", fornecedor: "", estoquePositivo: ""};
+                $scope.valorBuscaProduto = "";
+            };
+            $scope.filtroPorDescricao = function () {
+                $scope.buscaAvancadaProduto = {descricao: "", fornecedor: "", estoquePositivo: ""};
+                $scope.getListaProdutoAll(1);
+            };
+            $scope.filtrarAvancado = function () {
+                $scope.valorBuscaProduto = "";
+                $scope.getListaProdutoAll(1);
+                Utilitario.fecharDialog('#filtroProdutoAvancado');
+            };
             $scope.getListaProdutoAll = function (pagina) {
                 if (Factory.verificaToken(true)) {
                     var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaAvancada': $scope.buscaAvancadaProduto, 'buscaDescricao': $scope.valorBuscaProduto};
@@ -40,10 +50,13 @@
                     });
                 }
             };
-
             $scope.selecionarProduto = function (produto) {
                 $rootScope.produtoSelecionado = JSON.parse(JSON.stringify(produto));
                 Utilitario.fecharDialog("#filtroProduto");
             };
+            $scope.fechar = function (idComponente) {
+                Utilitario.fecharDialog(idComponente);
+            };
+            $scope.getListaProdutoAll(1);
         }]);
 })();

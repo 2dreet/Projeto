@@ -47116,23 +47116,23 @@ $('#menu-lateral ul li').click(function () {
 (function () {
     'use strict';
     angular.module('www.geve.com.br').service('Utilitario', function () {
-        this.getViaCep = function (cep) {
-            return  $http({
-                method: 'GET',
-                crossDomain: true,
-                url: "https://viacep.com.br/ws/" + cep + "/json/"
-            }).then(function successCallback(response) {
-                var retorno = {erro: false, data: {}};
-                if (response.erro) {
-                    retorno.erro = true;
-                } else {
-                    retorno.data = response.data;
-                }
-                return retorno;
-            }, function errorCallback(response) {
-                return {erro: true, conection: true};
-            });
-        };
+//        this.getViaCep = function (cep) {
+//            return  $http({
+//                method: 'GET',
+//                crossDomain: true,
+//                url: "https://viacep.com.br/ws/" + cep + "/json/"
+//            }).then(function successCallback(response) {
+//                var retorno = {erro: false, data: {}};
+//                if (response.erro) {
+//                    retorno.erro = true;
+//                } else {
+//                    retorno.data = response.data;
+//                }
+//                return retorno;
+//            }, function errorCallback(response) {
+//                return {erro: true, conection: true};
+//            });
+//        };
 
         this.validaCPF = function (strCPF) {
             var Soma;
@@ -47834,9 +47834,22 @@ $('#menu-lateral ul li').click(function () {
             $scope.currentPage = 1;
             $scope.itensPorPagina = 10;
             $scope.tipoFuncao = 0;
-
             $scope.iniciarLocalizacaoProduto = false;
             $scope.iniciarLocalizacaoCliente = false;
+            $scope.modoManter = false;
+            $scope.modoView = true;
+            $scope.indice = 0;
+            $scope.setModoManter = function () {
+                $scope.modoManter = true;
+                $scope.modoView = false;
+                $scope.indice = 0;
+                $scope.novoPedido();
+            };
+            $scope.setModoView = function () {
+                $scope.indice = 0;
+                $scope.modoManter = false;
+                $scope.modoView = true;
+            };
 
             $scope.getTituloCrudPedido = function () {
                 if ($scope.tipoFuncao === 0) {
@@ -47922,25 +47935,27 @@ $('#menu-lateral ul li').click(function () {
                 Utilitario.abrirDialog("#filtroProduto");
                 if ($scope.iniciarLocalizacaoProduto === false) {
                     $('#filtroProduto').on('hide.bs.modal', function (event) {
-                        $scope.iniciarLocalizacaoProduto = true;
-                        if ($scope.pedidoAtual.listaProduto === undefined) {
-                            $scope.pedidoAtual.listaProduto = [];
-                        }
-                        var encontrou = false;
-                        for (var i = $scope.pedidoAtual.listaProduto.length; i--; ) {
-                            if ($rootScope.produtoSelecionado.id !== undefined && $scope.pedidoAtual.listaProduto[i].id !== undefined &&
-                                    $rootScope.produtoSelecionado.id === $scope.pedidoAtual.listaProduto[i].id) {
-                                $scope.pedidoAtual.listaProduto[i].quantidadeCompra++;
-                                encontrou = true;
-                                $rootScope.produtoSelecionado = {};
+                        if ($rootScope.produtoSelecionado !== undefined) {
+                            $scope.iniciarLocalizacaoProduto = true;
+                            if ($scope.pedidoAtual.listaProduto === undefined) {
+                                $scope.pedidoAtual.listaProduto = [];
                             }
-                        }
-                        if (encontrou === false) {
-                            var produtoAux = JSON.parse(JSON.stringify($rootScope.produtoSelecionado));
-                            $rootScope.produtoSelecionado = {};
-                            if (produtoAux.id !== undefined) {
-                                produtoAux.quantidadeCompra = 1;
-                                $scope.pedidoAtual.listaProduto.push(produtoAux);
+                            var encontrou = false;
+                            for (var i = $scope.pedidoAtual.listaProduto.length; i--; ) {
+                                if ($rootScope.produtoSelecionado.id !== undefined && $scope.pedidoAtual.listaProduto[i].id !== undefined &&
+                                        $rootScope.produtoSelecionado.id === $scope.pedidoAtual.listaProduto[i].id) {
+                                    $scope.pedidoAtual.listaProduto[i].quantidadeCompra++;
+                                    encontrou = true;
+                                    $rootScope.produtoSelecionado = {};
+                                }
+                            }
+                            if (encontrou === false) {
+                                var produtoAux = JSON.parse(JSON.stringify($rootScope.produtoSelecionado));
+                                $rootScope.produtoSelecionado = {};
+                                if (produtoAux.id !== undefined) {
+                                    produtoAux.quantidadeCompra = 1;
+                                    $scope.pedidoAtual.listaProduto.push(produtoAux);
+                                }
                             }
                         }
                     });
@@ -47971,6 +47986,9 @@ $('#menu-lateral ul li').click(function () {
                 }
             };
 
+            $scope.fechar = function (idComponente) {
+                Utilitario.fecharDialog(idComponente);
+            };
             $scope.novoPedido();
         }]);
 })();
@@ -48454,7 +48472,7 @@ $('#menu-lateral ul li').click(function () {
             $scope.currentPage = 1;
             $scope.itensPorPagina = 10;
             $scope.tipoFuncao = 0;
-            
+
             $scope.getListaClienteAll = function (pagina) {
                 if (Factory.verificaToken(true)) {
                     var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaAvancada': $scope.buscaAvancadaCliente, 'buscaDescricao': $scope.valorBuscaCliente, 'limit': $scope.itensPorPagina};
@@ -48481,6 +48499,8 @@ $('#menu-lateral ul li').click(function () {
                 $rootScope.clienteSelecionado = JSON.parse(JSON.stringify(cliente));
                 Utilitario.fecharDialog("#filtroCliente");
             };
+            
+            $scope.getListaClienteAll(1);
         }]);
 })();
 
@@ -48490,20 +48510,30 @@ $('#menu-lateral ul li').click(function () {
             $scope.buscaAvancadaProduto = {};
             $scope.valorBuscaProduto = "";
             $scope.listaProduto = [];
-
             $scope.maxSize = 3;
             $scope.totalItems = 0;
             $scope.currentPage = 1;
             $scope.itensPorPagina = 10;
             $scope.tipoFuncao = 0;
-
             $scope.getImagem = function (idItem) {
                 if (Factory.verificaToken(true) && idItem > 0) {
                     var random = (new Date()).toString();
                     return Factory.urlImagem + idItem + "/" + Factory.getToken() + "?cb=" + random;
                 }
             };
-
+            $scope.limpaFiltroAvancado = function () {
+                $scope.buscaAvancadaProduto = {descricao: "", fornecedor: "", estoquePositivo: ""};
+                $scope.valorBuscaProduto = "";
+            };
+            $scope.filtroPorDescricao = function () {
+                $scope.buscaAvancadaProduto = {descricao: "", fornecedor: "", estoquePositivo: ""};
+                $scope.getListaProdutoAll(1);
+            };
+            $scope.filtrarAvancado = function () {
+                $scope.valorBuscaProduto = "";
+                $scope.getListaProdutoAll(1);
+                Utilitario.fecharDialog('#filtroProdutoAvancado');
+            };
             $scope.getListaProdutoAll = function (pagina) {
                 if (Factory.verificaToken(true)) {
                     var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaAvancada': $scope.buscaAvancadaProduto, 'buscaDescricao': $scope.valorBuscaProduto};
@@ -48525,10 +48555,13 @@ $('#menu-lateral ul li').click(function () {
                     });
                 }
             };
-
             $scope.selecionarProduto = function (produto) {
                 $rootScope.produtoSelecionado = JSON.parse(JSON.stringify(produto));
                 Utilitario.fecharDialog("#filtroProduto");
             };
+            $scope.fechar = function (idComponente) {
+                Utilitario.fecharDialog(idComponente);
+            };
+            $scope.getListaProdutoAll(1);
         }]);
 })();

@@ -11,7 +11,7 @@
             $scope.currentPage = 1;
             $scope.itensPorPagina = 10;
             $scope.tipoFuncao = 0;
-            
+
             $scope.getListaClienteAll = function (pagina) {
                 if (Factory.verificaToken(true)) {
                     var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaAvancada': $scope.buscaAvancadaCliente, 'buscaDescricao': $scope.valorBuscaCliente, 'limit': $scope.itensPorPagina};
@@ -38,5 +38,7 @@
                 $rootScope.clienteSelecionado = JSON.parse(JSON.stringify(cliente));
                 Utilitario.fecharDialog("#filtroCliente");
             };
+            
+            $scope.getListaClienteAll(1);
         }]);
 })();

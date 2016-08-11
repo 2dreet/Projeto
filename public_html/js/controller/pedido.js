@@ -24,9 +24,22 @@
             $scope.currentPage = 1;
             $scope.itensPorPagina = 10;
             $scope.tipoFuncao = 0;
-
             $scope.iniciarLocalizacaoProduto = false;
             $scope.iniciarLocalizacaoCliente = false;
+            $scope.modoManter = false;
+            $scope.modoView = true;
+            $scope.indice = 0;
+            $scope.setModoManter = function () {
+                $scope.modoManter = true;
+                $scope.modoView = false;
+                $scope.indice = 0;
+                $scope.novoPedido();
+            };
+            $scope.setModoView = function () {
+                $scope.indice = 0;
+                $scope.modoManter = false;
+                $scope.modoView = true;
+            };
 
             $scope.getTituloCrudPedido = function () {
                 if ($scope.tipoFuncao === 0) {
@@ -112,25 +125,27 @@
                 Utilitario.abrirDialog("#filtroProduto");
                 if ($scope.iniciarLocalizacaoProduto === false) {
                     $('#filtroProduto').on('hide.bs.modal', function (event) {
-                        $scope.iniciarLocalizacaoProduto = true;
-                        if ($scope.pedidoAtual.listaProduto === undefined) {
-                            $scope.pedidoAtual.listaProduto = [];
-                        }
-                        var encontrou = false;
-                        for (var i = $scope.pedidoAtual.listaProduto.length; i--; ) {
-                            if ($rootScope.produtoSelecionado.id !== undefined && $scope.pedidoAtual.listaProduto[i].id !== undefined &&
-                                    $rootScope.produtoSelecionado.id === $scope.pedidoAtual.listaProduto[i].id) {
-                                $scope.pedidoAtual.listaProduto[i].quantidadeCompra++;
-                                encontrou = true;
-                                $rootScope.produtoSelecionado = {};
+                        if ($rootScope.produtoSelecionado !== undefined) {
+                            $scope.iniciarLocalizacaoProduto = true;
+                            if ($scope.pedidoAtual.listaProduto === undefined) {
+                                $scope.pedidoAtual.listaProduto = [];
                             }
-                        }
-                        if (encontrou === false) {
-                            var produtoAux = JSON.parse(JSON.stringify($rootScope.produtoSelecionado));
-                            $rootScope.produtoSelecionado = {};
-                            if (produtoAux.id !== undefined) {
-                                produtoAux.quantidadeCompra = 1;
-                                $scope.pedidoAtual.listaProduto.push(produtoAux);
+                            var encontrou = false;
+                            for (var i = $scope.pedidoAtual.listaProduto.length; i--; ) {
+                                if ($rootScope.produtoSelecionado.id !== undefined && $scope.pedidoAtual.listaProduto[i].id !== undefined &&
+                                        $rootScope.produtoSelecionado.id === $scope.pedidoAtual.listaProduto[i].id) {
+                                    $scope.pedidoAtual.listaProduto[i].quantidadeCompra++;
+                                    encontrou = true;
+                                    $rootScope.produtoSelecionado = {};
+                                }
+                            }
+                            if (encontrou === false) {
+                                var produtoAux = JSON.parse(JSON.stringify($rootScope.produtoSelecionado));
+                                $rootScope.produtoSelecionado = {};
+                                if (produtoAux.id !== undefined) {
+                                    produtoAux.quantidadeCompra = 1;
+                                    $scope.pedidoAtual.listaProduto.push(produtoAux);
+                                }
                             }
                         }
                     });
@@ -161,6 +176,9 @@
                 }
             };
 
+            $scope.fechar = function (idComponente) {
+                Utilitario.fecharDialog(idComponente);
+            };
             $scope.novoPedido();
         }]);
 })();
