@@ -155,11 +155,12 @@ input::-webkit-inner-spin-button {
 
 #conteudo{
     width: 100%;
-    height: calc(100% - 70px);
-    max-height: calc(100% - 70px);
-    min-height: calc(100% - 70px);
+    /*height: calc(100% - 70px);*/
+/*    max-height: calc(100% - 70px);
+    min-height: calc(100% - 70px);*/
     padding: 0px;
     margin: 0px;
+    overflow-x: auto;
 }
 
 .menu-ul li:hover  {
