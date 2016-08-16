@@ -29,30 +29,31 @@
             $scope.modoManter = false;
             $scope.modoView = true;
             $scope.indice = 0;
-            $scope.setModoManter = function () {
+            $scope.setModoManter = function (isNovo) {
                 $scope.modoManter = true;
                 $scope.modoView = false;
                 $scope.indice = 0;
-                $scope.novoPedido();
+                if (isNovo) {
+                    $scope.novoPedido();
+                }
             };
             $scope.setModoView = function () {
                 $scope.indice = 0;
                 $scope.modoManter = false;
                 $scope.modoView = true;
+                $scope.pedidoAtual = {};
             };
-
-            $scope.getTituloCrudPedido = function () {
-                if ($scope.tipoFuncao === 0) {
-                    return  "Cadastro de Pedido";
-                } else if ($scope.tipoFuncao === 1) {
+            $scope.getTituloCrud = function () {
+                if ($scope.tipoFuncao === "inserir") {
+                    return  "Cadastrar Pedido";
+                } else if ($scope.tipoFuncao === "alterar") {
                     return  "Alterar Pedido";
-                } else if ($scope.tipoFuncao === 2) {
+                } else if ($scope.tipoFuncao === "deletar") {
                     return  "Deletar Pedido";
-                } else if ($scope.tipoFuncao === 3) {
+                } else if ($scope.tipoFuncao === "vizualizar") {
                     return  "Vizualizar Pedido";
                 }
             };
-
             $scope.getListaPedidoAll = function (pagina) {
                 if (Factory.verificaToken(true)) {
                     var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBusca, 'limit': $scope.itensPorPagina};
@@ -74,14 +75,13 @@
                     });
                 }
             };
-
             $scope.enviarPedido = function () {
-                if (Factory.verificaToken(true)) {
+                if (Factory.verificaToken(true) && validarPedido()) {
                     var envio = {'dados': $scope.pedidoAtual, 'token': Factory.getToken(), 'tipoFuncao': $scope.tipoFuncao};
                     $scope.send = $http({
                         method: 'POST',
                         crossDomain: true,
-                        url: Factory.urlWs + "pedido/enviarPedido",
+                        url: Factory.urlWs + "pedido/enviarPedido"+Factory.debug,
                         data: envio,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
@@ -97,7 +97,6 @@
                     });
                 }
             };
-
             $scope.getClientePedido = function () {
                 var clientePedido = "";
                 if ($scope.pedidoAtual.cliente !== undefined && $scope.pedidoAtual.cliente.pessoa !== undefined) {
@@ -105,7 +104,6 @@
                 }
                 return clientePedido;
             };
-
             $scope.getValorPedido = function () {
                 var valorTotal = 0;
                 if ($scope.pedidoAtual.listaProduto !== undefined) {
@@ -115,12 +113,10 @@
                 }
                 return valorTotal;
             };
-
             $scope.novoPedido = function () {
-                $scope.pedidoAtual = {tipoPedido: $scope.listaTipoPedido[0], formaPagamento: $scope.listaFormaPagamento[0], pedidoConfirmado: true, cliente: {pessoa: {nome: "", sobreNome: ""}}};
-                $scope.tipoFuncao = 0;
+                $scope.pedidoAtual = {tipoPedido: $scope.listaTipoPedido[0], formaPagamento: $scope.listaFormaPagamento[0], pedidoPago: true, cliente: {pessoa: {nome: "", sobreNome: ""}}};
+                $scope.tipoFuncao = "inserir";
             };
-
             $scope.localizarProduto = function () {
                 Utilitario.abrirDialog("#filtroProduto");
                 if ($scope.iniciarLocalizacaoProduto === false) {
@@ -151,7 +147,6 @@
                     });
                 }
             };
-
             $scope.localizarCliente = function () {
                 Utilitario.abrirDialog("#filtroCliente");
                 if ($scope.iniciarLocalizacaoCliente === false) {
@@ -167,7 +162,6 @@
                     });
                 }
             };
-
             $scope.removeProduto = function (produto) {
                 for (var i = $scope.pedidoAtual.listaProduto.length; i--; ) {
                     if ($scope.pedidoAtual.listaProduto[i] === produto) {
@@ -175,7 +169,26 @@
                     }
                 }
             };
-
+            function validarPedido() {
+                if ($scope.pedidoAtual.listaProduto === undefined || $scope.pedidoAtual.listaProduto === null || $scope.pedidoAtual.listaProduto.length <= 0) {
+                    Factory.setMensagemTemporaria('erro', 'Adicionar produtos!', "#msgManterPedido");
+                    return false;
+                } else if ($scope.pedidoAtual.cliente === undefined || $scope.pedidoAtual.cliente === null) {
+                    $('#pedidoAtualCliente').focus();
+                    Factory.setMensagemTemporaria('erro', 'Selecionar cliente!', "#msgManterPedido");
+                    return false;
+                } else if ($scope.pedidoAtual.descricao === undefined || $scope.pedidoAtual.descricao === null || $scope.pedidoAtual.descricao.trim() === "") {
+                    $('#produtoDescricao').focus();
+                    Factory.setMensagemTemporaria('erro', 'Informar descrição!', "#msgManterPedido");
+                    return false;
+                } else if ($scope.pedidoAtual.dataVencimento === undefined || $scope.pedidoAtual.dataVencimento === null) {
+                    $('#pedidoDataVencimento').focus();
+                    Factory.setMensagemTemporaria('erro', 'Informar vencimento', "#msgManterPedido");
+                    return false;
+                }
+                return true;
+            }
+            ;
             $scope.fechar = function (idComponente) {
                 Utilitario.fecharDialog(idComponente);
             };

@@ -12,7 +12,7 @@
                         <div class="navbar-header col-sm-8 col-md-6 col-lg-8" style="padding: 0px; margin: 0px; border: none" >
                             <ol class="nav navbar-nav menu-ul menu-top-pagina btn-group" style="padding: 0px; margin: 0px; border: none">
                                 <li><a href="" ng-click="setModoView()"> <span class="fa fa-chevron-left botaoComIcone"></span><span>Pedidos</span></a></li>
-                                <li class="active"><a href="" ><span ng-bind="getTituloCrudPedido()"></span></a></li>
+                                <li class="active"><a href="" ><span ng-bind="getTituloCrud()"></span></a></li>
                             </ol>
                         </div>
                     </div>
@@ -51,7 +51,7 @@
                                 <div class="row" style="padding-left: 15px;padding-right:  15px">
                                     <div class="form-group col-sm-4 col-md-2 col-lg-2">
                                         <label>Descrição</label>
-                                        <input type="text"  class="form-control"  id="produtoDescricao" ng-model="pedidoAtual.descricao" maxlength="32">
+                                        <input type="text"  class="form-control" id="produtoDescricao" ng-model="pedidoAtual.descricao" maxlength="32">
                                     </div>
                                     <div class="form-group col-sm-4 col-md-2 col-lg-2">
                                         <label>Tipo Pedido</label>
@@ -105,12 +105,12 @@
                                     </div>
                                 </div>
                                 <div class="input-group" style="padding-left: 15px">
-                                    <label class="checkbox-inline"><input type="checkbox" ng-model="pedidoAtual.pedidoConfirmado">Confirmar Pedido!</label>
+                                    <label class="checkbox-inline"><input type="checkbox" ng-model="pedidoAtual.pedidoPago">Pedido Pago!</label>
                                 </div>
                                 <div class="modal-footer">
                                     <div class="input-group" style="width: 100%;">
-                                        <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fechar('#pedidoDialog')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
-                                        <button type="submit" class="btn btn-default pull-right btn-success " ng-click="salvarPedido()" ><span class="glyphicon glyphicon-floppy-disk botaoComIcone" aria-hidden="true"></span>Salvar</button>
+                                        <button type="button" class="btn btn-default pull-left btn-danger " ng-click="setModoView()"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
+                                        <button type="submit" class="btn btn-default pull-right btn-success " ng-click="enviarPedido()" ><span class="glyphicon glyphicon-floppy-disk botaoComIcone" aria-hidden="true"></span>Salvar</button>
                                     </div>
                                 </div>
                             </uib-tab>
@@ -118,7 +118,6 @@
                         <div id="msgManterPedido" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"></div>
                     </form>   
                 </div>
-
             </div>
         </div>
     </body>
