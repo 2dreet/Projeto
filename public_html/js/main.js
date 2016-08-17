@@ -47871,13 +47871,13 @@ $('#menu-lateral ul li').click(function () {
                         method: 'POST',
                         data: envio,
                         crossDomain: true,
-                        url: Factory.urlWs + "cliente/getAllCliente",
+                        url: Factory.urlWs + "pedido/getAllPedido" + Factory.debug,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
                         if (!response.data.token) {
                             Factory.refazerLogin();
                         } else {
-                            $scope.listaCliente = response.data.dados;
+                            $scope.listaPedido = response.data.dados;
                             $scope.totalItems = response.data.totalRegistro;
                         }
                     }, function errorCallback(response) {
@@ -47891,7 +47891,7 @@ $('#menu-lateral ul li').click(function () {
                     $scope.send = $http({
                         method: 'POST',
                         crossDomain: true,
-                        url: Factory.urlWs + "pedido/enviarPedido"+Factory.debug,
+                        url: Factory.urlWs + "pedido/enviarPedido",
                         data: envio,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
@@ -47900,7 +47900,7 @@ $('#menu-lateral ul li').click(function () {
                             Factory.refazerLogin();
                         } else {
                             Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgPedidoGeral');
-                            $scope.getListaClienteAll(1);
+                            $scope.getListaPedidoAll(1);
                         }
                     }, function errorCallback(response) {
                         Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgPedidoGeral');
@@ -47999,10 +47999,14 @@ $('#menu-lateral ul li').click(function () {
                 return true;
             }
             ;
+            $scope.preparaPedido = function (pedido) {
+                $scope.pedidoAtual = JSON.parse(JSON.stringify(pedido));
+            };
             $scope.fechar = function (idComponente) {
                 Utilitario.fecharDialog(idComponente);
             };
             $scope.novoPedido();
+            $scope.getListaPedidoAll(1);
         }]);
 })();
 
