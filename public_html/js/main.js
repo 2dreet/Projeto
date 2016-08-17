@@ -47094,11 +47094,11 @@ app.value('cgBusyDefaults', {
         this.getTipoMovimentacao = function () {
             return [{id: 4, descricao: 'Cortesia'}, {id: 5, descricao: 'Correção'}, {id: 1, descricao: 'Entrada'}, {id: 3, descricao: 'Perda'}];
         };
-        
+
         this.getTipoPedido = function () {
             return [{id: 1, descricao: 'Prontra Entrega'}, {id: 2, descricao: 'Encomenda'}];
         };
-        
+
         this.getFormaPagamento = function () {
             return [{id: 1, descricao: 'Dinheiro'}, {id: 2, descricao: 'Cartão de Débito'}, {id: 3, descricao: 'Cartão de Crédito'}];
         };
@@ -47887,6 +47887,7 @@ $('#menu-lateral ul li').click(function () {
             };
             $scope.enviarPedido = function () {
                 if (Factory.verificaToken(true) && validarPedido()) {
+                    $scope.pedidoAtual.valorPedido = $scope.getValorPedido();
                     var envio = {'dados': $scope.pedidoAtual, 'token': Factory.getToken(), 'tipoFuncao': $scope.tipoFuncao};
                     $scope.send = $http({
                         method: 'POST',
@@ -47976,6 +47977,12 @@ $('#menu-lateral ul li').click(function () {
                 for (var i = $scope.pedidoAtual.listaProduto.length; i--; ) {
                     if ($scope.pedidoAtual.listaProduto[i] === produto) {
                         $scope.pedidoAtual.listaProduto.splice(i, 1);
+                        if ($scope.tipoFuncao === "alterar") {
+                            if ($scope.pedidoAtual.listaProdutoRemovido === undefined) {
+                                $scope.pedidoAtual.listaProdutoRemovido = [];
+                            }
+                            $scope.pedidoAtual.listaProdutoRemovido.push(JSON.parse(JSON.stringify(produto)));
+                        }
                     }
                 }
             };
@@ -47999,12 +48006,29 @@ $('#menu-lateral ul li').click(function () {
                 return true;
             }
             ;
+            var dataDbToJS = function (data) {
+                if (data !== undefined && data !== null) {
+                    return (new Date(data.substring(0, 4), data.substring(5, 7) - 1, data.substring(8, 10)));
+                } else {
+                    return "";
+                }
+            };
             $scope.preparaPedido = function (pedido) {
                 $scope.pedidoAtual = JSON.parse(JSON.stringify(pedido));
+                $scope.pedidoAtual.dataVencimento = dataDbToJS($scope.pedidoAtual.dataVencimento);
             };
             $scope.fechar = function (idComponente) {
                 Utilitario.fecharDialog(idComponente);
             };
+
+            $scope.getTipoPedido = function (id) {
+                for (var i = $scope.listaTipoPedido.length; i--; ) {
+                    if ($scope.listaTipoPedido[i].id === id) {
+                        return $scope.listaTipoPedido[i].descricao;
+                    }
+                }
+            };
+            
             $scope.novoPedido();
             $scope.getListaPedidoAll(1);
         }]);

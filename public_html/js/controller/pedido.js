@@ -77,6 +77,7 @@
             };
             $scope.enviarPedido = function () {
                 if (Factory.verificaToken(true) && validarPedido()) {
+                    $scope.pedidoAtual.valorPedido = $scope.getValorPedido();
                     var envio = {'dados': $scope.pedidoAtual, 'token': Factory.getToken(), 'tipoFuncao': $scope.tipoFuncao};
                     $scope.send = $http({
                         method: 'POST',
@@ -166,6 +167,12 @@
                 for (var i = $scope.pedidoAtual.listaProduto.length; i--; ) {
                     if ($scope.pedidoAtual.listaProduto[i] === produto) {
                         $scope.pedidoAtual.listaProduto.splice(i, 1);
+                        if ($scope.tipoFuncao === "alterar") {
+                            if ($scope.pedidoAtual.listaProdutoRemovido === undefined) {
+                                $scope.pedidoAtual.listaProdutoRemovido = [];
+                            }
+                            $scope.pedidoAtual.listaProdutoRemovido.push(JSON.parse(JSON.stringify(produto)));
+                        }
                     }
                 }
             };
@@ -189,12 +196,29 @@
                 return true;
             }
             ;
+            var dataDbToJS = function (data) {
+                if (data !== undefined && data !== null) {
+                    return (new Date(data.substring(0, 4), data.substring(5, 7) - 1, data.substring(8, 10)));
+                } else {
+                    return "";
+                }
+            };
             $scope.preparaPedido = function (pedido) {
                 $scope.pedidoAtual = JSON.parse(JSON.stringify(pedido));
+                $scope.pedidoAtual.dataVencimento = dataDbToJS($scope.pedidoAtual.dataVencimento);
             };
             $scope.fechar = function (idComponente) {
                 Utilitario.fecharDialog(idComponente);
             };
+
+            $scope.getTipoPedido = function (id) {
+                for (var i = $scope.listaTipoPedido.length; i--; ) {
+                    if ($scope.listaTipoPedido[i].id === id) {
+                        return $scope.listaTipoPedido[i].descricao;
+                    }
+                }
+            };
+            
             $scope.novoPedido();
             $scope.getListaPedidoAll(1);
         }]);
