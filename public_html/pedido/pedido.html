@@ -51,12 +51,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="pedido in listaPedido" ng-click="preparaPedido(pedido)" data-toggle="modal" data-target="#pedidoDialogFuncoes">
+                                <tr ng-repeat="pedido in listaPedido" ng-click="getPedido(pedido.id)" data-toggle="modal" data-target="#pedidoDialogFuncoes">
                                     <td ng-bind="pedido.descricao"></td>
                                     <td ng-bind="pedido.cliente"></td>
                                     <td class="visible-md visible-lg" ng-bind="pedido.dataVencimento | date: 'dd/MM/yyyy'" > </td>
-                                    <td ng-bind="pedido.status.descricao"></td>
-                                    <td ng-bind="getTipoPedido(pedido.tipoPedido)"></td>
+                                    <td ng-bind="getStatusPedido(pedido.status).descricao"></td>
+                                    <td ng-bind="getTipoPedido(pedido.tipo_pedido).descricao"></td>
                                     <td ng-bind="pedido.valor | currency"></td>
                                 </tr>
                             </tbody>

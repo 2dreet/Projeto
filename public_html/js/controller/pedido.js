@@ -61,7 +61,7 @@
                         method: 'POST',
                         data: envio,
                         crossDomain: true,
-                        url: Factory.urlWs + "pedido/getAllPedido" + Factory.debug,
+                        url: Factory.urlWs + "pedido/getAllPedido",
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
                         if (!response.data.token) {
@@ -71,13 +71,38 @@
                             $scope.totalItems = response.data.totalRegistro;
                         }
                     }, function errorCallback(response) {
-                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgPedidoGeral');
+                    });
+                }
+            };
+            $scope.getPedido = function (id) {
+                if (Factory.verificaToken(true)) {
+                    var envio = {'token': Factory.getToken(), 'idPedido': id};
+                    $rootScope.loading = $http({
+                        method: 'POST',
+                        data: envio,
+                        crossDomain: true,
+                        url: Factory.urlWs + "pedido/getPedido"+Factory.debug,
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        if (!response.data.token) {
+                            Factory.refazerLogin();
+                        } else {
+                            var pedido = response.data.pedido;
+                            pedido.data_vencimento = dataDbToJS(pedido.data_vencimento);
+                            pedido.tipo_pedido = $scope.getTipoPedido(pedido.tipo_pedido);
+                            pedido.status = $scope.getStatusPedido(pedido.status);
+                            pedido.forma_pagamento = $scope.getFormaPagamentoPedido(pedido.forma_pagamento);
+                            $scope.pedidoAtual = pedido;
+                        }
+                    }, function errorCallback(response) {
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgPedidoGeral');
                     });
                 }
             };
             $scope.enviarPedido = function () {
                 if (Factory.verificaToken(true) && validarPedido()) {
-                    $scope.pedidoAtual.valorPedido = $scope.getValorPedido();
+                    $scope.pedidoAtual.valor = $scope.getValorPedido();
                     var envio = {'dados': $scope.pedidoAtual, 'token': Factory.getToken(), 'tipoFuncao': $scope.tipoFuncao};
                     $scope.send = $http({
                         method: 'POST',
@@ -92,6 +117,7 @@
                         } else {
                             Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgPedidoGeral');
                             $scope.getListaPedidoAll(1);
+                            $scope.setModoView();
                         }
                     }, function errorCallback(response) {
                         Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgPedidoGeral');
@@ -109,13 +135,13 @@
                 var valorTotal = 0;
                 if ($scope.pedidoAtual.listaProduto !== undefined) {
                     for (var i = $scope.pedidoAtual.listaProduto.length; i--; ) {
-                        valorTotal = valorTotal + ($scope.pedidoAtual.listaProduto[i].valor * $scope.pedidoAtual.listaProduto[i].quantidadeCompra);
+                        valorTotal = valorTotal + ($scope.pedidoAtual.listaProduto[i].valor * $scope.pedidoAtual.listaProduto[i].quantidade);
                     }
                 }
                 return valorTotal;
             };
             $scope.novoPedido = function () {
-                $scope.pedidoAtual = {tipoPedido: $scope.listaTipoPedido[0], formaPagamento: $scope.listaFormaPagamento[0], pedidoPago: true, cliente: {pessoa: {nome: "", sobreNome: ""}}};
+                $scope.pedidoAtual = {tipo_pedido: $scope.listaTipoPedido[0], forma_pagamento: $scope.listaFormaPagamento[0], pedido_pago: false, cliente: null};
                 $scope.tipoFuncao = "inserir";
             };
             $scope.localizarProduto = function () {
@@ -131,16 +157,17 @@
                             for (var i = $scope.pedidoAtual.listaProduto.length; i--; ) {
                                 if ($rootScope.produtoSelecionado.id !== undefined && $scope.pedidoAtual.listaProduto[i].id !== undefined &&
                                         $rootScope.produtoSelecionado.id === $scope.pedidoAtual.listaProduto[i].id) {
-                                    $scope.pedidoAtual.listaProduto[i].quantidadeCompra++;
+                                    $scope.pedidoAtual.listaProduto[i].quantidade++;
                                     encontrou = true;
                                     $rootScope.produtoSelecionado = {};
                                 }
                             }
                             if (encontrou === false) {
                                 var produtoAux = JSON.parse(JSON.stringify($rootScope.produtoSelecionado));
+                                produtoAux = {id: produtoAux.id, descricao: produtoAux.descricao, valor: produtoAux.valor};
                                 $rootScope.produtoSelecionado = {};
                                 if (produtoAux.id !== undefined) {
-                                    produtoAux.quantidadeCompra = 1;
+                                    produtoAux.quantidade = 1;
                                     $scope.pedidoAtual.listaProduto.push(produtoAux);
                                 }
                             }
@@ -157,7 +184,9 @@
                             if ($scope.pedidoAtual.cliente === undefined) {
                                 $scope.pedidoAtual.cliente = {};
                             }
-                            $scope.pedidoAtual.cliente = JSON.parse(JSON.stringify($rootScope.clienteSelecionado));
+                            var clienteAux = JSON.parse(JSON.stringify($rootScope.clienteSelecionado));
+                            clienteAux = {id: clienteAux.id, nome: clienteAux.pessoa.nome + ' ' + clienteAux.pessoa.sobreNome};
+                            $scope.pedidoAtual.cliente = clienteAux;
                             $rootScope.clienteSelecionado = {};
                         }
                     });
@@ -188,7 +217,7 @@
                     $('#produtoDescricao').focus();
                     Factory.setMensagemTemporaria('erro', 'Informar descrição!', "#msgManterPedido");
                     return false;
-                } else if ($scope.pedidoAtual.dataVencimento === undefined || $scope.pedidoAtual.dataVencimento === null) {
+                } else if ($scope.pedidoAtual.data_vencimento === undefined || $scope.pedidoAtual.data_vencimento === null) {
                     $('#pedidoDataVencimento').focus();
                     Factory.setMensagemTemporaria('erro', 'Informar vencimento', "#msgManterPedido");
                     return false;
@@ -203,22 +232,20 @@
                     return "";
                 }
             };
-            $scope.preparaPedido = function (pedido) {
-                $scope.pedidoAtual = JSON.parse(JSON.stringify(pedido));
-                $scope.pedidoAtual.dataVencimento = dataDbToJS($scope.pedidoAtual.dataVencimento);
-            };
+
             $scope.fechar = function (idComponente) {
                 Utilitario.fecharDialog(idComponente);
             };
-
             $scope.getTipoPedido = function (id) {
-                for (var i = $scope.listaTipoPedido.length; i--; ) {
-                    if ($scope.listaTipoPedido[i].id === id) {
-                        return $scope.listaTipoPedido[i].descricao;
-                    }
-                }
+                return Formulario.getTipoPedidoId(id);
             };
-            
+            $scope.getStatusPedido = function (id) {
+                return Formulario.getStatusPedidoId(id);
+            };
+            $scope.getFormaPagamentoPedido = function (id) {
+                return Formulario.getFormaPagamentoId(id);
+            };
+
             $scope.novoPedido();
             $scope.getListaPedidoAll(1);
         }]);

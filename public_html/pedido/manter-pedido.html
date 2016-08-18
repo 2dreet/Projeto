@@ -40,7 +40,7 @@
                                             <td ng-bind="produto.descricao"></td>
                                             <td ng-bind="produto.valor"></td>
                                             <td>
-                                                <input type="text" ui-number-mask="0" class="form-control" style="font-size: 12px; height: 22px" ng-model="produto.quantidadeCompra">
+                                                <input type="text" ui-number-mask="0" class="form-control" style="font-size: 12px; height: 22px" ng-model="produto.quantidade">
                                             </td>
                                             <td><button type="button" class="btn btn-xs pull-left btn-danger" ng-click="removeProduto(produto)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></td>
                                         </tr>
@@ -55,7 +55,7 @@
                                     </div>
                                     <div class="form-group col-sm-4 col-md-2 col-lg-2">
                                         <label>Tipo Pedido</label>
-                                        <select class="form-control" ng-model="pedidoAtual.tipoPedido" 
+                                        <select class="form-control" ng-model="pedidoAtual.tipo_pedido" 
                                                 ng-options="option.descricao for option in listaTipoPedido track by option.id"> </select>
                                     </div>
                                     <div class="form-group col-sm-4 col-md-2 col-lg-2">
@@ -65,7 +65,7 @@
                                     <div class="form-group col-sm-4 col-md-2 col-lg-2" style="padding: 0px; margin: 0px; padding-left: 15px">
                                         <label>Data Vencimento</label>
                                         <p class="input-group" style="width: 140px;">
-                                            <input type="text" id="pedidoDataVencimento" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="pedidoAtual.dataVencimento"  uib-datepicker-popup="ddMMyyyy" is-open="dataVencimento.opened"  alt-input-formats="['d!/M!/yyyy']" />
+                                            <input type="text" id="pedidoDataVencimento" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="pedidoAtual.data_vencimento"  uib-datepicker-popup="ddMMyyyy" is-open="dataVencimento.opened"  alt-input-formats="['d!/M!/yyyy']" />
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default" ng-click="opendataVencimento()"><i class="glyphicon glyphicon-calendar"></i></button>
                                             </span>
@@ -73,7 +73,7 @@
                                     </div>
                                     <div class="form-group col-sm-4 col-md-2 col-lg-2">
                                         <label>Forma Pagamento</label>
-                                        <select class="form-control" ng-model="pedidoAtual.formaPagamento" 
+                                        <select class="form-control" ng-model="pedidoAtual.forma_pagamento" 
                                                 ng-options="option.descricao for option in listaFormaPagamento track by option.id"> </select>
                                     </div>
                                     <div class="form-group col-sm-4 col-md-2 col-lg-2" >
@@ -87,7 +87,7 @@
                                         <span class="input-group-btn">
                                             <button class="btn btn-primary" style="width: 100px" type="button" ng-click="localizarCliente()"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
                                         </span>
-                                        <input type="text" class="form-control" ng-readonly="true" id="pedidoAtualCliente" value="{{pedidoAtual.cliente.pessoa.nome + ' ' + pedidoAtual.cliente.pessoa.sobreNome}}" />
+                                        <input type="text" class="form-control" ng-readonly="true" id="pedidoAtualCliente" value="{{pedidoAtual.cliente.nome}}" />
                                     </div>
                                 </div>
                                 <div style="text-align: center; padding-top: 10px">
@@ -105,7 +105,7 @@
                                     </div>
                                 </div>
                                 <div class="input-group" style="padding-left: 15px">
-                                    <label class="checkbox-inline"><input type="checkbox" ng-model="pedidoAtual.pedidoPago">Pedido Pago!</label>
+                                    <label class="checkbox-inline"><input type="checkbox" ng-model="pedidoAtual.pedido_pago">Pedido Pago!</label>
                                 </div>
                                 <div class="modal-footer">
                                     <div class="input-group" style="width: 100%;">
