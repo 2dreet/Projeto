@@ -82,18 +82,22 @@
                         method: 'POST',
                         data: envio,
                         crossDomain: true,
-                        url: Factory.urlWs + "pedido/getPedido"+Factory.debug,
+                        url: Factory.urlWs + "pedido/getPedido",
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
                         if (!response.data.token) {
                             Factory.refazerLogin();
                         } else {
                             var pedido = response.data.pedido;
-                            pedido.data_vencimento = dataDbToJS(pedido.data_vencimento);
+                            pedido.data_vencimento = Utilitario.dataDbToJS(pedido.data_vencimento);
                             pedido.tipo_pedido = $scope.getTipoPedido(pedido.tipo_pedido);
                             pedido.status = $scope.getStatusPedido(pedido.status);
                             pedido.forma_pagamento = $scope.getFormaPagamentoPedido(pedido.forma_pagamento);
                             $scope.pedidoAtual = pedido;
+                            for (var i = $scope.pedidoAtual.listaParcelas.length; i--; ) {
+                                $scope.pedidoAtual.listaParcelas[i].data_pagamento = Utilitario.dataDbToJS($scope.pedidoAtual.listaParcelas[i].data_pagamento);
+                            }
+                            Utilitario.abrirDialog("#pedidoDialogFuncoes");
                         }
                     }, function errorCallback(response) {
                         Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgPedidoGeral');
@@ -121,6 +125,32 @@
                         }
                     }, function errorCallback(response) {
                         Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgPedidoGeral');
+                    });
+                }
+            };
+            $scope.pagarParcela = function (parcela) {
+                if (Factory.verificaToken(true) && validarPedido()) {
+                    $scope.pedidoAtual.valor = $scope.getValorPedido();
+                    var envio = {'parcela': parcela, 'pedidoId': $scope.pedidoAtual.id, 'token': Factory.getToken()};
+                    $scope.send = $http({
+                        method: 'POST',
+                        crossDomain: true,
+                        url: Factory.urlWs + "pedido/pagarParcela" + Factory.debug,
+                        data: envio,
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        if (!response.data.token) {
+                            Factory.refazerLogin();
+                        } else {
+                            Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgParcelaGeral');
+                            for (var i = $scope.pedidoAtual.listaParcelas.length; i--; ) {
+                                if (parcela.id === $scope.pedidoAtual.listaParcelas[i].id) {
+                                    $scope.pedidoAtual.listaParcelas[i].status = 2;
+                                }
+                            }
+                        }
+                    }, function errorCallback(response) {
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgParcelaGeral');
                     });
                 }
             };
@@ -225,16 +255,11 @@
                 return true;
             }
             ;
-            var dataDbToJS = function (data) {
-                if (data !== undefined && data !== null) {
-                    return (new Date(data.substring(0, 4), data.substring(5, 7) - 1, data.substring(8, 10)));
-                } else {
-                    return "";
-                }
-            };
-
             $scope.fechar = function (idComponente) {
                 Utilitario.fecharDialog(idComponente);
+            };
+            $scope.abrir = function (idComponente) {
+                Utilitario.abrirDialog(idComponente);
             };
             $scope.getTipoPedido = function (id) {
                 return Formulario.getTipoPedidoId(id);

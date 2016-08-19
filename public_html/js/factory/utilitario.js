@@ -19,6 +19,14 @@
 //            });
 //        };
 
+        this.dataDbToJS = function (data) {
+            if (data !== undefined && data !== null) {
+                return (new Date(data.substring(0, 4), data.substring(5, 7) - 1, data.substring(8, 10)));
+            } else {
+                return "";
+            }
+        };
+
         this.validaCPF = function (strCPF) {
             var Soma;
             var Resto;
