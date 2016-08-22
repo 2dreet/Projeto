@@ -82,8 +82,9 @@
                             </div>
                             <div class="modal-body" style="width: 200px">
                                 <div class="list-group">
-                                    <a class="list-group-item" ng-click="setModoManter(false); fechar('#pedidoDialogFuncoes'); tipoFuncao = 'alterar'"> <span class="glyphicon glyphicon-pencil btn btn-default btn-warning " aria-hidden="true"></span>  Editar</a>
-                                    <a class="list-group-item" ng-show="pedidoAtual.listaParcelas != null || pedidoAtual.listaParcelas.length > 0" ng-click="fechar('#pedidoDialogFuncoes'); abrir('#pedidoDialogParcelas'); tipoFuncao = 'parcelas'"> <span class="glyphicon glyphicon-pencil btn btn-default btn-warning " aria-hidden="true"></span>  Parcelas</a>
+                                    <a class="list-group-item" ng-click="setModoManter(false); fechar('#pedidoDialogFuncoes'); tipoFuncao = 'alterar'"> <span class="fa fa-pencil btn btn-default btn-warning " aria-hidden="true"></span>  Editar</a>
+                                    <a class="list-group-item" ng-show="pedidoAtual.listaParcelas.length > 0" ng-click="fechar('#pedidoDialogFuncoes'); abrir('#pedidoDialogParcelas'); tipoFuncao = 'parcelas'"> <span class="fa fa-usd btn btn-default btn-success " style="width: 38px" aria-hidden="true"></span>  Parcelas</a>
+                                    <a class="list-group-item" ng-show="pedidoAtual.listaParcelas.length == 0 && pedidoAtual.status.id == 1" ng-click="fechar('#pedidoDialogFuncoes'); pagarPedido(); tipoFuncao = 'pagar_pedido'"> <span class="fa fa-usd btn btn-default btn-success " style="width: 38px" aria-hidden="true"></span>  Pagar Pedido</a>
                                 </div>
                             </div>
                             <div class="modal-footer" style="width: 200px">
