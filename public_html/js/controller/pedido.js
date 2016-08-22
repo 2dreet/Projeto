@@ -138,7 +138,7 @@
                     $scope.send = $http({
                         method: 'POST',
                         crossDomain: true,
-                        url: Factory.urlWs + "pedido/pagarParcela" ,
+                        url: Factory.urlWs + "pedido/pagarParcela",
                         data: envio,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
@@ -177,6 +177,32 @@
                                     $scope.listaPedido[i].status = 2;
                                 }
                             }
+                        }
+                    }, function errorCallback(response) {
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgPedidoGeral');
+                    });
+                }
+            };
+            $scope.entregarPedido = function () {
+                if (Factory.verificaToken(true) && validarPedido()) {
+                    $scope.pedidoAtual.valor = $scope.getValorPedido();
+                    var envio = {'pedidoId': $scope.pedidoAtual.id, 'token': Factory.getToken()};
+                    $scope.send = $http({
+                        method: 'POST',
+                        crossDomain: true,
+                        url: Factory.urlWs + "pedido/entregarPedido",
+                        data: envio,
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        if (!response.data.token) {
+                            Factory.refazerLogin();
+                        } else {
+                            for (var i = $scope.listaPedido.length; i--; ) {
+                                if ($scope.pedidoAtual.id === $scope.listaPedido[i].id) {
+                                    $scope.listaPedido[i].entregue = 1;
+                                }
+                            }
+                            Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgPedidoGeral');
                         }
                     }, function errorCallback(response) {
                         Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgPedidoGeral');
@@ -299,7 +325,13 @@
             $scope.getFormaPagamentoPedido = function (id) {
                 return Formulario.getFormaPagamentoId(id);
             };
-
+            $scope.isEntregue = function (entregue) {
+                if (entregue == 1) {
+                    return " / Entregue";
+                } else {
+                    return " / Não Entregue";
+                }
+            };
             $scope.novoPedido();
             $scope.getListaPedidoAll(1);
         }]);
