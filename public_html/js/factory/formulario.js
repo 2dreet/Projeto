@@ -20,8 +20,7 @@
             return [{id: 1, descricao: 'Prontra Entrega'}, {id: 2, descricao: 'Encomenda'}];
         };
         this.getStatusPedidoId = function (id) {
-            var listaStatus = [{id: 1, descricao: 'Não Pago'}, {id: 2, descricao: 'Pago'}, {id: 3, descricao: 'Pago e Entregue'},
-            {id: 4, descricao: 'Pago Parcialmente'}, {id: 5, descricao: 'Pago Parcialmente e Entregue'}];
+            var listaStatus = [{id: 1, descricao: 'Não Pago'}, {id: 2, descricao: 'Pago'}, {id: 3, descricao: 'Pago Parcialmente'}];
             for (var i = listaStatus.length; i--; ) {
                 if (id == listaStatus[i].id) {
                     return listaStatus[i];

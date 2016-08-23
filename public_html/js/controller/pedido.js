@@ -100,6 +100,7 @@
                             for (var i = $scope.pedidoAtual.listaParcelas.length; i--; ) {
                                 $scope.pedidoAtual.listaParcelas[i].data_pagamento = Utilitario.dataDbToJS($scope.pedidoAtual.listaParcelas[i].data_pagamento);
                             }
+                            $scope.pedidoAtual.parcelas = $scope.pedidoAtual.listaParcelas.length;
                             Utilitario.abrirDialog("#pedidoDialogFuncoes");
                         }
                     }, function errorCallback(response) {
@@ -123,7 +124,7 @@
                             Factory.refazerLogin();
                         } else {
                             Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgPedidoGeral');
-                            $scope.getListaPedidoAll(1);
+                            $scope.getListaPedidoAll($scope.currentPage);
                             $scope.setModoView();
                         }
                     }, function errorCallback(response) {
@@ -150,6 +151,7 @@
                                 if (parcela.id === $scope.pedidoAtual.listaParcelas[i].id) {
                                     $scope.pedidoAtual.listaParcelas[i].status = 2;
                                 }
+                                $scope.getListaPedidoAll($scope.currentPage);
                             }
                         }
                     }, function errorCallback(response) {
@@ -172,11 +174,7 @@
                             Factory.refazerLogin();
                         } else {
                             Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgPedidoGeral');
-                            for (var i = $scope.listaPedido.length; i--; ) {
-                                if ($scope.pedidoAtual.id === $scope.listaPedido[i].id) {
-                                    $scope.listaPedido[i].status = 2;
-                                }
-                            }
+                            $scope.getListaPedidoAll($scope.currentPage);
                         }
                     }, function errorCallback(response) {
                         Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgPedidoGeral');
@@ -197,12 +195,8 @@
                         if (!response.data.token) {
                             Factory.refazerLogin();
                         } else {
-                            for (var i = $scope.listaPedido.length; i--; ) {
-                                if ($scope.pedidoAtual.id === $scope.listaPedido[i].id) {
-                                    $scope.listaPedido[i].entregue = 1;
-                                }
-                            }
                             Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgPedidoGeral');
+                            $scope.getListaPedidoAll($scope.currentPage);
                         }
                     }, function errorCallback(response) {
                         Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgPedidoGeral');

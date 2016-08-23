@@ -47093,8 +47093,7 @@ app.value('cgBusyDefaults', {
             return [{id: 1, descricao: 'Prontra Entrega'}, {id: 2, descricao: 'Encomenda'}];
         };
         this.getStatusPedidoId = function (id) {
-            var listaStatus = [{id: 1, descricao: 'Não Pago'}, {id: 2, descricao: 'Pago'}, {id: 3, descricao: 'Pago e Entregue'},
-            {id: 4, descricao: 'Pago Parcialmente'}, {id: 5, descricao: 'Pago Parcialmente e Entregue'}];
+            var listaStatus = [{id: 1, descricao: 'Não Pago'}, {id: 2, descricao: 'Pago'}, {id: 3, descricao: 'Pago Parcialmente'}];
             for (var i = listaStatus.length; i--; ) {
                 if (id == listaStatus[i].id) {
                     return listaStatus[i];
@@ -47936,6 +47935,7 @@ $('#menu-lateral ul li').click(function () {
                             for (var i = $scope.pedidoAtual.listaParcelas.length; i--; ) {
                                 $scope.pedidoAtual.listaParcelas[i].data_pagamento = Utilitario.dataDbToJS($scope.pedidoAtual.listaParcelas[i].data_pagamento);
                             }
+                            $scope.pedidoAtual.parcelas = $scope.pedidoAtual.listaParcelas.length;
                             Utilitario.abrirDialog("#pedidoDialogFuncoes");
                         }
                     }, function errorCallback(response) {
@@ -47959,7 +47959,7 @@ $('#menu-lateral ul li').click(function () {
                             Factory.refazerLogin();
                         } else {
                             Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgPedidoGeral');
-                            $scope.getListaPedidoAll(1);
+                            $scope.getListaPedidoAll($scope.currentPage);
                             $scope.setModoView();
                         }
                     }, function errorCallback(response) {
@@ -47986,6 +47986,7 @@ $('#menu-lateral ul li').click(function () {
                                 if (parcela.id === $scope.pedidoAtual.listaParcelas[i].id) {
                                     $scope.pedidoAtual.listaParcelas[i].status = 2;
                                 }
+                                $scope.getListaPedidoAll($scope.currentPage);
                             }
                         }
                     }, function errorCallback(response) {
@@ -48008,11 +48009,7 @@ $('#menu-lateral ul li').click(function () {
                             Factory.refazerLogin();
                         } else {
                             Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgPedidoGeral');
-                            for (var i = $scope.listaPedido.length; i--; ) {
-                                if ($scope.pedidoAtual.id === $scope.listaPedido[i].id) {
-                                    $scope.listaPedido[i].status = 2;
-                                }
-                            }
+                            $scope.getListaPedidoAll($scope.currentPage);
                         }
                     }, function errorCallback(response) {
                         Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgPedidoGeral');
@@ -48033,12 +48030,8 @@ $('#menu-lateral ul li').click(function () {
                         if (!response.data.token) {
                             Factory.refazerLogin();
                         } else {
-                            for (var i = $scope.listaPedido.length; i--; ) {
-                                if ($scope.pedidoAtual.id === $scope.listaPedido[i].id) {
-                                    $scope.listaPedido[i].entregue = 1;
-                                }
-                            }
                             Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgPedidoGeral');
+                            $scope.getListaPedidoAll($scope.currentPage);
                         }
                     }, function errorCallback(response) {
                         Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgPedidoGeral');

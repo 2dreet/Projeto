@@ -335,6 +335,7 @@ html, body {
     min-height: calc(500px);
     max-width: 100%;
     overflow-x: hidden;
+    background-color: #2A3F54;    
 }
 
 input[type='number'] {
@@ -390,6 +391,7 @@ input::-webkit-inner-spin-button {
     float: left;
     margin: 0px;
     padding: 0px;
+    background-color: #fff;    
 }
 
 #app-meio-row{

@@ -55,7 +55,7 @@
                                     <td ng-bind="pedido.descricao"></td>
                                     <td ng-bind="pedido.cliente"></td>
                                     <td class="visible-md visible-lg" ng-bind="pedido.dataVencimento | date: 'dd/MM/yyyy'" > </td>
-                                    <td ng-bind="getStatusPedido(pedido.status).descricao+ isEntregue(pedido.entregue)"></td>
+                                    <td ng-bind="getStatusPedido(pedido.status).descricao + isEntregue(pedido.entregue)"></td>
                                     <td ng-bind="getTipoPedido(pedido.tipo_pedido).descricao"></td>
                                     <td ng-bind="(pedido.valor - pedido.desconto) | currency"></td>
                                 </tr>
@@ -82,10 +82,12 @@
                             </div>
                             <div class="modal-body" style="width: 200px">
                                 <div class="list-group">
-                                    <a class="list-group-item" ng-show="pedidoAtual.status.id == 1" ng-click="setModoManter(false); fechar('#pedidoDialogFuncoes'); tipoFuncao = 'alterar'"> <span class="fa fa-pencil btn btn-default btn-warning " aria-hidden="true"></span>  Editar</a>
-                                    <a class="list-group-item" ng-show="pedidoAtual.listaParcelas.length > 0 " ng-click="fechar('#pedidoDialogFuncoes'); abrir('#pedidoDialogParcelas'); tipoFuncao = 'parcelas'"> <span class="fa fa-usd btn btn-default btn-success " style="width: 38px" aria-hidden="true"></span>  Parcelas</a>
-                                    <a class="list-group-item" ng-show="pedidoAtual.listaParcelas.length == 0 && pedidoAtual.status.id == 1" ng-click="fechar('#pedidoDialogFuncoes'); pagarPedido(); tipoFuncao = 'pagar_pedido'"> <span class="fa fa-usd btn btn-default btn-success " style="width: 38px" aria-hidden="true"></span>  Pagar </a>
-                                    <a class="list-group-item" ng-show="pedidoAtual.entregue == false" ng-click="fechar('#pedidoDialogFuncoes'); entregarPedido(); tipoFuncao = 'entregar_pedido'"> <span class="fa fa-truck btn btn-default btn-primary " style="width: 38px" aria-hidden="true"></span>  Entregar </a>
+                                    <a class="list-group-item" ng-click="setModoManter(false); fechar('#pedidoDialogFuncoes'); tipoFuncao = 'vizualizar'"> <span class="fa fa-file-text-o btn btn-primary " aria-hidden="true"></span>  Vizualizar</a>
+                                    <a class="list-group-item" ng-show="pedidoAtual.status.id == 1" ng-click="setModoManter(false); fechar('#pedidoDialogFuncoes'); tipoFuncao = 'alterar'"> <span class="fa fa-pencil btn  btn-warning " aria-hidden="true"></span>  Editar</a>
+                                    <a class="list-group-item" ng-show="pedidoAtual.listaParcelas.length > 0" ng-click="fechar('#pedidoDialogFuncoes'); abrir('#pedidoDialogParcelas'); tipoFuncao = 'parcelas'"> <span class="fa fa-usd btn btn-success " style="width: 38px" aria-hidden="true"></span>  Parcelas</a>
+                                    <a class="list-group-item" ng-show="pedidoAtual.listaParcelas.length == 0 && pedidoAtual.status.id == 1" ng-click="fechar('#pedidoDialogFuncoes'); pagarPedido(); tipoFuncao = 'pagar_pedido'"> <span class="fa fa-usd btn  btn-success " style="width: 38px" aria-hidden="true"></span>  Pagar </a>
+                                    <a class="list-group-item" ng-show="pedidoAtual.entregue == false" ng-click="fechar('#pedidoDialogFuncoes'); entregarPedido(); tipoFuncao = 'entregar_pedido'"> <span class="fa fa-truck btn btn-primary " style="width: 38px" aria-hidden="true"></span>  Entregar </a>
+                                    <a class="list-group-item" ng-click="setModoManter(false); fechar('#pedidoDialogFuncoes'); tipoFuncao = 'deletar'"> <span class="fa fa-file-text-o btn btn-danger " aria-hidden="true"></span>  Deletar</a>
                                 </div>
                             </div>
                             <div class="modal-footer" style="width: 200px">
@@ -114,7 +116,7 @@
                                                 <th>Valor</th>
                                                 <th>Status</th>
                                                 <th>Data Pagamento</th>
-                                                <th>Pagar</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
