@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div ng-controller="pedidoControler" style="min-width: 400px;">
+        <div ng-controller="pedidoControler" style="min-width: 600px;">
             <div class="panel panel-default" ng-show="modoView">
                 <div class="panel-heading" style="padding: 0px; margin: 0px;">
                     <nav class="navbar navbar-default" style="padding: 0px; margin: 0px; border: none; ">
@@ -15,21 +15,21 @@
                                     <li><a href="" class="btn-success cor-font-global" ng-click="setModoManter(true)"><span class="fa fa-plus botaoComIcone"></span> <span> Novo Pedido </span></a></li>
                                 </ul>
                             </div>
-                            <div class="input-group pull-right col-sm-4 col-md-6 col-lg-4" style="padding-top: 8px;">
+                            <div class="input-group pull-right col-sm-4 col-md-6 col-lg-4" style="padding-top: 8px; padding-right: 8px">
                                 <span class="input-group-btn">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  style="height: 34px">
                                             <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu">
                                             <li><a href="" ><span class="glyphicon glyphicon-filter" aria-hidden="true" style="padding-right: 5px"></span>Filtro Avançado</a></li>
-                                            <li><a href="" ><span class="glyphicon glyphicon-remove-circle" aria-hidden="true" style="padding-right: 5px"></span>Limpar Filtro</a></li>
+                                            <li><a href="" ng-click="limpaFiltro()"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true" style="padding-right: 5px" ></span>Limpar Filtro</a></li>
                                         </ul>
                                     </div>
                                 </span>
                                 <input type="text" class="form-control" placeholder="Localizar...">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-primary" type="button"><span class="fa fa-search "></span></button>
+                                    <button class="btn btn-primary" type="button" ng-click="filtrar(true)"  style="height: 34px"><span class="fa fa-search " ></span></button>
                                 </span>
                             </div>
                         </div>
@@ -46,7 +46,7 @@
                                     <th>Cliente</th>
                                     <th>Vencimento</th>
                                     <th>Status</th>
-                                    <th>Tipo</th>
+                                    <th class="visible-md visible-lg">Tipo</th>
                                     <th>Valor</th>
                                 </tr>
                             </thead>
@@ -54,7 +54,7 @@
                                 <tr ng-repeat="pedido in listaPedido" ng-click="getPedido(pedido.id)">
                                     <td ng-bind="pedido.descricao"></td>
                                     <td ng-bind="pedido.cliente"></td>
-                                    <td class="visible-md visible-lg" ng-bind="pedido.dataVencimento | date: 'dd/MM/yyyy'" > </td>
+                                    <td class="visible-md visible-lg" ng-bind="pedido.dataVencimento | date: 'dd / MM / yyyy'" > </td>
                                     <td ng-bind="getStatusPedido(pedido.status).descricao + isEntregue(pedido.entregue)"></td>
                                     <td ng-bind="getTipoPedido(pedido.tipo_pedido).descricao"></td>
                                     <td ng-bind="(pedido.valor - pedido.desconto) | currency"></td>
@@ -123,7 +123,7 @@
                                             <tr ng-repeat="parcela in pedidoAtual.listaParcelas">
                                                 <td ng-bind="parcela.valor | currency"></td>
                                                 <td ng-bind="getStatusPedido(parcela.status).descricao"></td>
-                                                <td class="visible-md visible-lg" ng-bind="parcela.data_pagamento | date: 'dd/MM/yyyy'" > </td>
+                                                <td class="visible-md visible-lg" ng-bind="parcela.data_pagamento | date: 'dd / MM / yyyy'" > </td>
                                                 <td><button type="button" ng-show="parcela.status == 1" class="btn btn-xs pull-left btn-success" ng-click="pagarParcela(parcela)"><span class="fa fa-usd" aria-hidden="true"></span></button></td>
                                             </tr>
                                         </tbody>

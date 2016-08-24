@@ -47864,6 +47864,21 @@ $('#menu-lateral ul li').click(function () {
             $scope.modoManter = false;
             $scope.modoView = true;
             $scope.indice = 0;
+            $scope.limpaFiltro = function () {
+                $scope.buscaAvancada = {};
+                $scope.valorBusca = "";
+                $scope.currentPage = 1;
+                $scope.getListaFornecedorAll(1);
+            };
+            $scope.filtrar = function (porDescricao) {
+                if (porDescricao) {
+                    $scope.buscaAvancada = {};
+                } else {
+                    $scope.valorBusca = "";
+                }
+                $scope.currentPage = 1;
+                $scope.getListaPedidoAll(1);
+            };
             $scope.setModoManter = function (isNovo) {
                 $scope.modoManter = true;
                 $scope.modoView = false;
@@ -47959,7 +47974,11 @@ $('#menu-lateral ul li').click(function () {
                             Factory.refazerLogin();
                         } else {
                             Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgPedidoGeral');
-                            $scope.getListaPedidoAll($scope.currentPage);
+                            if ($scope.tipoFuncao === "inserir" || $scope.tipoFuncao === "alterar") {
+                                $scope.listaPedido = [];
+                                $scope.listaPedido.push(response.data.pedido);
+                                $scope.totalItems = 1;
+                            }
                             $scope.setModoView();
                         }
                     }, function errorCallback(response) {
@@ -48055,7 +48074,7 @@ $('#menu-lateral ul li').click(function () {
                 return valorTotal;
             };
             $scope.novoPedido = function () {
-                $scope.pedidoAtual = {tipo_pedido: $scope.listaTipoPedido[0], forma_pagamento: $scope.listaFormaPagamento[0], pedido_pago: false, cliente: null};
+                $scope.pedidoAtual = {tipo_pedido: $scope.listaTipoPedido[0], forma_pagamento: $scope.listaFormaPagamento[0], cliente: null};
                 $scope.tipoFuncao = "inserir";
             };
             $scope.localizarProduto = function () {
