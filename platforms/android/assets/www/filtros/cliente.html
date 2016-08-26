@@ -1,0 +1,37 @@
+<div class="modal fade" id="filtroCliente" role="dialog" aria-hidden="true" cg-busy="loadingDialog" ng-controller="filtroClienteController">
+    <div class="modal-dialog">
+        <div class="modal-content dialog-produto">
+            <form>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Localizar Cliente</h4>
+                </div>
+
+                <div class="media-body" style="padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px">
+                    <div class="input-group" style="padding-bottom: 10px">
+                        <input type="text" class="form-control"  ng-model="valorBuscaCliente">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button" ng-click="getListaClienteAll(1)"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                        </span>
+                    </div>
+                    <div id="msgFiltrarCliente" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px"></div>
+                    <div class="alert alert-warning" role="alert"  ng-show="listaCliente == null"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Sem dados</div>
+                    <div class="list-group" style="max-height: 300px; overflow-y: auto">
+                        <button type="button" class="list-group-item" ng-bind="cliente.pessoa.nome + ' ' + cliente.pessoa.sobreNome" ng-repeat="cliente in listaCliente" ng-click="selecionarCliente(cliente)"></button>
+                    </div>
+                    <div class="row" style="width: 100%; margin: 0; padding: 0; padding-left: 10px; padding-top: 10px" ng-show="totalItemsCliente > 10">
+                        <div style="width: auto; margin: auto; padding: 0; padding-right: 5px;" class="pull-right">
+                            <uib-pagination style="margin: 0; padding: 0; " next-text="Próximo" previous-text="Anterior" total-items="totalItemsCliente" ng-model="currentPageCliente" ng-change="getListaFornecedorAll(currentPageCliente)" max-size="maxSize" class="pagination-sm" items-per-page="itensPorPagina" num-pages="numPages"></uib-pagination>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="input-group" style="width: 100%;">
+                        <button type="button" class="btn btn-default center-block btn-primary " ng-click="fecharDialog('#localizarClienteDialog')" ><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

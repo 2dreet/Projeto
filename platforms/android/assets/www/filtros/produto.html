@@ -1,0 +1,109 @@
+<div ng-controller="filtroProdutoController">
+    <div class="modal fade" id="filtroProduto" role="dialog" aria-hidden="true" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Localizar Produto</h4>
+                    </div>
+
+                    <div class="media-body" style="padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px">
+                        <div class="input-group" style="padding-bottom: 10px">
+                            <span class="input-group-btn">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="" data-toggle="modal" data-target="#filtroProdutoAvancado"><span class="glyphicon glyphicon-filter" aria-hidden="true" style="padding-right: 5px"></span>Filtro Avançado</a></li>
+                                        <li><a href="" ng-click="limpaFiltroAvancado()"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true" style="padding-right: 5px"></span>Limpar Filtro</a></li>
+                                    </ul>
+                                </div>
+                            </span>
+                            <input type="text" class="form-control"  ng-model="valorBuscaProduto">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button" ng-click="getListaProdutoAll(1)"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                            </span>
+                        </div>
+                        <div id="msgFiltroProduto" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px"></div>
+                        <div class="row" style="padding: 0px; margin: 0px;padding-top: 15px; height: 400px; overflow-y: auto">
+                            <div class="alert alert-warning" role="alert"  ng-show="listaProduto == null || listaProduto.length < 1" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Sem dados</div>
+                            <ul style="padding: 0px; margin: 0px; overflow-y: auto">
+                                <li ng-repeat="p in listaProduto" class="product-item" >
+                                    <a href="" style="text-decoration: none;" ng-click="selecionarProduto(p)">
+                                        <div class="produto-lista-conteudo-pedido row">
+                                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding: 0px; margin: 0px; padding-top: 10px">
+                                                <img class="media-object" style="width: 80px; height: 80px" ng-src="{{getImagem(p.id)}}"/>
+                                            </div>
+                                            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding-left: 20px;padding-top: 10px; text-align: left;">
+                                                <strong class="text-uppercase" ng-bind="p.descricao"></strong><br/>
+                                                <strong > Estoque: </strong> <span ng-bind="p.estoque"></span><br/> 
+                                                <span  ui-number-mask="decimals" ng-bind="p.valor | currency"></span><br/>  
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div style="width: 100%; margin: 0; padding: 0; padding-left: 10px " ng-show="totalItems > 10">
+                                <div style="width: auto; margin: auto; padding: 0; padding-right: 5px" class="pull-right">
+                                    <uib-pagination style="margin: 0; padding: 0; " next-text="Próximo" previous-text="Anterior" total-items="totalItems" ng-model="currentPage" ng-change="getListaProdutoAll(currentPage)" max-size="maxSize" class="pagination-sm" items-per-page="itensPorPagina" num-pages="numPages"></uib-pagination>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="input-group" style="width: 100%;">
+                            <button type="button" class="btn btn-default center-block btn-primary" ng-click="fechar('#filtroProduto')" ><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="filtroProdutoAvancado" role="dialog" aria-hidden="true" >
+        <div class="modal-dialog">
+            <div class="modal-content dialog-produto">
+                <form>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Filtrar Avançado</h4>
+                    </div>
+
+                    <div class="media-body" style="padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px">
+                        <div class="form-group" style="width: 100%;">
+                            <label>Descrição</label>
+                            <input type="text" class="form-control" ng-model="buscaAvancadaProduto.descricao" maxlength="32">
+                        </div>
+                        <div class="form-group" style="width: 100%;">
+                            <label>Fornecedor</label>
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" style="width: 100px" type="button" ng-click="abrirDialogLocalizarFornecedor(buscaAvancada)"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
+                                </span>
+                                <input type="text" class="form-control" ng-readonly="true" ng-model="buscaAvancadaProduto.fornecedor.descricao">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" ng-click="limpaBuscaFornecedor(buscaAvancada)"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="checkbox-inline"><input type="checkbox" ng-model="buscaAvancadaProduto.estoquePositivo">Estoque Positivo</label>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <div class="input-group" style="width: 100%">
+                            <div class="btn-group pull-left" role="group" aria-label="...">
+                                <button type="button" class="btn btn-default btn-danger " ng-click="fechar('#filtroProdutoAvancado')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
+                                <button type="button" class="btn btn-default btn-warning " ng-click="limpaFiltroAvancado()"><span class="glyphicon glyphicon-remove-circle botaoComIcone" aria-hidden="true"></span>Limpar Filtro</button>
+                            </div>
+                            <button type="submit" class="btn btn-default pull-right btn-primary" ng-click="filtrarAvancado()" ><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
