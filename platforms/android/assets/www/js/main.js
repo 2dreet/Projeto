@@ -46992,7 +46992,7 @@ app.value('cgBusyDefaults', {
 (function () {
     'use strict';
     angular.module('www.geve.com.br').service('Factory', function () {
-        this.urlWs = "http://localhost:8088/WsJosePhp/";
+        this.urlWs = "http://192.168.1.90:8088/WsJosePhp/";
         this.urlImagem = this.urlWs + "produto/getProdutoImagem/";
         this.cookieNomeToken = "www.geve.com.br.token";
         this.debug = "?XDEBUG_SESSION_START=netbeans-xdebug";
@@ -47789,7 +47789,7 @@ $('#menu-lateral ul li').click(function () {
                             $scope.verifica();
                         }
                     }, function errorCallback(response) {
-                        Factory.setMensagemTemporaria('erro', "Erro de comunicação", '#msgUsuario');
+                        Factory.setMensagemTemporaria('erro', "Erro de comunicação ur"+Factory.urlWs, '#msgUsuario');
                     });
                 }
             };

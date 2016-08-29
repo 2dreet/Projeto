@@ -21,7 +21,7 @@
                             $scope.verifica();
                         }
                     }, function errorCallback(response) {
-                        Factory.setMensagemTemporaria('erro', "Erro de comunicação", '#msgUsuario');
+                        Factory.setMensagemTemporaria('erro', "Erro de comunicação ur"+Factory.urlWs, '#msgUsuario');
                     });
                 }
             };
