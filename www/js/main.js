@@ -47859,8 +47859,6 @@ $('#menu-lateral ul li').click(function () {
             $scope.currentPage = 1;
             $scope.itensPorPagina = 10;
             $scope.tipoFuncao = 0;
-            $scope.iniciarLocalizacaoProduto = false;
-            $scope.iniciarLocalizacaoCliente = false;
             $scope.modoManter = false;
             $scope.modoView = true;
             $scope.indice = 0;
@@ -48082,51 +48080,47 @@ $('#menu-lateral ul li').click(function () {
             };
             $scope.localizarProduto = function () {
                 Utilitario.abrirDialog("#filtroProduto");
-                if ($scope.iniciarLocalizacaoProduto === false) {
-                    $('#filtroProduto').on('hide.bs.modal', function (event) {
-                        if ($rootScope.produtoSelecionado !== undefined) {
-                            $scope.iniciarLocalizacaoProduto = true;
-                            if ($scope.pedidoAtual.listaProduto === undefined) {
-                                $scope.pedidoAtual.listaProduto = [];
-                            }
-                            var encontrou = false;
-                            for (var i = $scope.pedidoAtual.listaProduto.length; i--; ) {
-                                if ($rootScope.produtoSelecionado.id !== undefined && $scope.pedidoAtual.listaProduto[i].id !== undefined &&
-                                        $rootScope.produtoSelecionado.id === $scope.pedidoAtual.listaProduto[i].id) {
-                                    $scope.pedidoAtual.listaProduto[i].quantidade++;
-                                    encontrou = true;
-                                    $rootScope.produtoSelecionado = {};
-                                }
-                            }
-                            if (encontrou === false) {
-                                var produtoAux = JSON.parse(JSON.stringify($rootScope.produtoSelecionado));
-                                produtoAux = {id: produtoAux.id, descricao: produtoAux.descricao, valor: produtoAux.valor};
+                $('#filtroProduto').on('hide.bs.modal', function (event) {
+                    if ($rootScope.produtoSelecionado !== undefined) {
+                        if ($scope.pedidoAtual.listaProduto === undefined) {
+                            $scope.pedidoAtual.listaProduto = [];
+                        }
+                        var encontrou = false;
+                        for (var i = $scope.pedidoAtual.listaProduto.length; i--; ) {
+                            if ($rootScope.produtoSelecionado.id !== undefined && $scope.pedidoAtual.listaProduto[i].id !== undefined &&
+                                    $rootScope.produtoSelecionado.id === $scope.pedidoAtual.listaProduto[i].id) {
+                                $scope.pedidoAtual.listaProduto[i].quantidade++;
+                                encontrou = true;
                                 $rootScope.produtoSelecionado = {};
-                                if (produtoAux.id !== undefined) {
-                                    produtoAux.quantidade = 1;
-                                    $scope.pedidoAtual.listaProduto.push(produtoAux);
-                                }
                             }
                         }
-                    });
-                }
+                        if (encontrou === false) {
+                            var produtoAux = JSON.parse(JSON.stringify($rootScope.produtoSelecionado));
+                            produtoAux = {id: produtoAux.id, descricao: produtoAux.descricao, valor: produtoAux.valor};
+                            $rootScope.produtoSelecionado = {};
+                            if (produtoAux.id !== undefined) {
+                                produtoAux.quantidade = 1;
+                                $scope.pedidoAtual.listaProduto.push(produtoAux);
+                            }
+                        }
+                    }
+                    $('#filtroProduto').off('hide.bs.modal');
+                });
             };
             $scope.localizarCliente = function (entidade) {
                 Utilitario.abrirDialog("#filtroCliente");
-                if ($scope.iniciarLocalizacaoCliente === false) {
-                    $('#filtroCliente').on('hide.bs.modal', function (event) {
-                        $scope.iniciarLocalizacaoCliente = true;
-                        if ($rootScope.clienteSelecionado.id !== undefined) {
-                            if ($scope.pedidoAtual.cliente === undefined) {
-                                $scope.pedidoAtual.cliente = {};
-                            }
-                            var clienteAux = JSON.parse(JSON.stringify($rootScope.clienteSelecionado));
-                            clienteAux = {id: clienteAux.id, nome: clienteAux.pessoa.nome + ' ' + clienteAux.pessoa.sobreNome};
-                            entidade.cliente = clienteAux;
-                            $rootScope.clienteSelecionado = {};
+                $('#filtroCliente').on('hide.bs.modal', function (event) {
+                    if ($rootScope.clienteSelecionado !== undefined && $rootScope.clienteSelecionado.id !== undefined) {
+                        var clienteAux = JSON.parse(JSON.stringify($rootScope.clienteSelecionado));
+                        clienteAux = {id: clienteAux.id, nome: clienteAux.pessoa.nome + ' ' + clienteAux.pessoa.sobreNome};
+                        if (entidade.cliente === undefined) {
+                            entidade.cliente = {};
                         }
-                    });
-                }
+                        entidade.cliente = clienteAux;
+                        $rootScope.clienteSelecionado = {};
+                    }
+                    $('#filtroCliente').off('hide.bs.modal');
+                });
             };
             $scope.removeProduto = function (produto) {
                 for (var i = $scope.pedidoAtual.listaProduto.length; i--; ) {

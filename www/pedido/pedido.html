@@ -69,9 +69,6 @@
                     </div>
                 </div>
             </div>
-            <div ng-include="'pedido/manter-pedido.html'"></div>
-            <div ng-include="'filtros/produto.html'"></div>
-            <div ng-include="'filtros/cliente.html'"></div>
             <div class="modal fade" id="pedidoDialogFuncoes" role="dialog" style="width: 210px; margin: auto">
                 <div class="modal-dialog" style="width: 200px">
                     <div class="modal-content" style="width: 200px">
@@ -170,7 +167,7 @@
                                         <label>Cliente</label>
                                         <div class="input-group">
                                             <span class="input-group-btn">
-                                                <button class="btn btn-primary" style="width: 100px" type="button" ng-click="localizarCliente(buscaAvancada)"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
+                                                <button class="btn btn-primary" style="width: 100px" type="button" ng-click="localizarCliente(buscaAvancada);"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
                                             </span>
                                             <input type="text" class="form-control" ng-readonly="true" id="pedidoAtualCliente" value="{{buscaAvancada.cliente.nome}}" />
                                         </div>
@@ -226,6 +223,9 @@
                     </div>
                 </div>
             </div>
+            <div ng-include="'pedido/manter-pedido.html'"></div>
+            <div ng-include="'filtros/produto.html'"></div>
+            <div ng-include="'filtros/cliente.html'"></div>
         </div>
     </body>
 </html>

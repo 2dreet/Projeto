@@ -91,7 +91,7 @@
                                     <input type="text" class="form-control" ng-readonly="true" id="pedidoAtualCliente" value="{{pedidoAtual.cliente.nome}}" ng-readonly ng-show="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'"/>
                                     <div class="input-group"  ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'">
                                         <span class="input-group-btn">
-                                            <button class="btn btn-primary" style="width: 100px" type="button" ng-click="localizarCliente(pedidoAtual)"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
+                                            <button class="btn btn-primary" style="width: 100px" type="button" ng-click="localizarCliente(pedidoAtual);"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
                                         </span>
                                         <input type="text" class="form-control" ng-readonly="true" id="pedidoAtualCliente" value="{{pedidoAtual.cliente.nome}}" />
                                     </div>
