@@ -10,9 +10,9 @@
                 <div class="panel-heading" style="padding: 0px; margin: 0px;">
                     <nav class="navbar navbar-default" style="padding: 0px; margin: 0px; border: none; ">
                         <div class="container-fluid " style="padding: 0px; margin: 0px;">
-                            <div class="navbar-header col-sm-8 col-md-6 col-lg-8" style="padding-left: 0px">
+                            <div class="navbar-header col-sm-8 col-md-6 col-lg-8" style="padding-top: 8px; padding-left: 8px">
                                 <ul class="nav navbar-nav menu-ul menu-top-pagina" style="padding: 0px; margin: 0px;">
-                                    <li><a href="" class="btn-success cor-font-global" ng-click="setModoManter(true)"><span class="fa fa-plus botaoComIcone"></span> <span> Novo Pedido </span></a></li>
+                                    <li style="padding-left: 0px; "><button class=" btn btn-success cor-font-global" ng-click="setModoManter(true)"><span class="fa fa-plus botaoComIcone"></span> <span> Novo Pedido </span></button></li>
                                 </ul>
                             </div>
                             <div class="input-group pull-right col-sm-4 col-md-6 col-lg-4" style="padding-top: 8px; padding-right: 8px">
@@ -22,7 +22,7 @@
                                             <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a href="" ><span class="glyphicon glyphicon-filter" aria-hidden="true" style="padding-right: 5px"></span>Filtro Avançado</a></li>
+                                            <li><a href="" ng-click="preparaFiltrar()"><span class="glyphicon glyphicon-filter" aria-hidden="true" style="padding-right: 5px"></span>Filtro Avançado</a></li>
                                             <li><a href="" ng-click="limpaFiltro()"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true" style="padding-right: 5px" ></span>Limpar Filtro</a></li>
                                         </ul>
                                     </div>
@@ -123,8 +123,8 @@
                                             <tr ng-repeat="parcela in pedidoAtual.listaParcelas">
                                                 <td ng-bind="parcela.valor | currency"></td>
                                                 <td ng-bind="getStatusPedido(parcela.status).descricao"></td>
-                                                <td class="visible-md visible-lg" ng-bind="parcela.data_pagamento | date: 'dd / MM / yyyy'" > </td>
-                                                <td><button type="button" ng-show="parcela.status == 1" class="btn btn-xs pull-left btn-success" ng-click="pagarParcela(parcela)"><span class="fa fa-usd" aria-hidden="true"></span></button></td>
+                                                <td ng-bind="parcela.data_pagamento | date: 'dd / MM / yyyy'" > </td>
+                                                <td><button type="button" ng-show="parcela.status == 1" class="btn btn-xs pull-left btn-success" ng-click="pagarParcela(parcela)"><span class="fa fa-usd" aria-hidden="true"></span>Pagar</button></td>
                                             </tr>
                                         </tbody>
                                     </table> 
@@ -150,20 +150,22 @@
                             <div class="modal-body" >
                                 <div id="msgParcelaGeral" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"></div>
                                 <div class="row" style="padding-left: 15px;padding-right:  15px">
-                                    <div class="form-group col-sm-4 col-md-2 col-lg-2">
+                                    <div class="form-group col-sm-4 col-md-4 col-lg-4">
                                         <label>Descrição</label>
                                         <input type="text"  class="form-control" id="produtoDescricao" ng-model="buscaAvancada.descricao" maxlength="32"> 
                                     </div>
-                                    <div class="form-group col-sm-4 col-md-2 col-lg-2">
+                                    <div class="form-group col-sm-4 col-md-4 col-lg-4">
                                         <label>Tipo Pedido</label>
                                         <select class="form-control" ng-model="buscaAvancada.tipo_pedido" 
                                                 ng-options="option.descricao for option in listaTipoPedido track by option.id" > </select>
                                     </div>
-                                    <div class="form-group col-sm-4 col-md-2 col-lg-2">
+                                    <div class="form-group col-sm-4 col-md-4 col-lg-4">
                                         <label>Forma Pagamento</label>
                                         <select class="form-control" ng-model="buscaAvancada.forma_pagamento" 
                                                 ng-options="option.descricao for option in listaFormaPagamento track by option.id"> </select>
                                     </div>
+                                </div>
+                                <div class="row" style="padding-left: 15px; padding-right:  15px">
                                     <div class="form-group col-sm-12 col-md-12 col-lg-12">
                                         <label>Cliente</label>
                                         <div class="input-group">
@@ -173,7 +175,9 @@
                                             <input type="text" class="form-control" ng-readonly="true" id="pedidoAtualCliente" value="{{buscaAvancada.cliente.nome}}" />
                                         </div>
                                     </div>
-                                    <div class="form-group col-sm-4 col-md-2 col-lg-2" style="padding: 0px; margin: 0px; padding-left: 15px">
+                                </div>
+                                <div class="row" style="padding-left: 15px; padding-right:  15px">
+                                    <div class="form-group col-sm-6 col-md-6 col-lg-6">
                                         <label>Data Vencimento Inicial</label>
                                         <p class="input-group" style="width: 140px;"  >
                                             <input type="text" id="pedidoDataVencimento" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="buscaAvancada.data_vencimento_inicial"  uib-datepicker-popup="ddMMyyyy" is-open="dataVencimento.opened"  alt-input-formats="['d!/M!/yyyy']"  />
@@ -182,7 +186,7 @@
                                             </span>
                                         </p>
                                     </div>
-                                    <div class="form-group col-sm-4 col-md-2 col-lg-2" style="padding: 0px; margin: 0px; padding-left: 15px">
+                                    <div class="form-group col-sm-6 col-md-6 col-lg-6">
                                         <label>Data Vencimento Final</label>
                                         <p class="input-group" style="width: 140px;"  >
                                             <input type="text" id="pedidoDataVencimento" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="buscaAvancada.data_vencimento_final"  uib-datepicker-popup="ddMMyyyy" is-open="dataVencimento.opened"  alt-input-formats="['d!/M!/yyyy']"  />
@@ -191,7 +195,7 @@
                                             </span>
                                         </p>
                                     </div>
-                                    <div class="form-group col-sm-4 col-md-2 col-lg-2" style="padding: 0px; margin: 0px; padding-left: 15px">
+                                    <div class="form-group col-sm-6 col-md-6 col-lg-6" >
                                         <label>Data Pagamento Inicial</label>
                                         <p class="input-group" style="width: 140px;"  >
                                             <input type="text" id="pedidoDataVencimento" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="buscaAvancada.data_pagamento_inicial"  uib-datepicker-popup="ddMMyyyy" is-open="dataVencimento.opened"  alt-input-formats="['d!/M!/yyyy']"  />
@@ -200,7 +204,7 @@
                                             </span>
                                         </p>
                                     </div>
-                                    <div class="form-group col-sm-4 col-md-2 col-lg-2" style="padding: 0px; margin: 0px; padding-left: 15px">
+                                    <div class="form-group col-sm-6 col-md-6 col-lg-6">
                                         <label>Data Pagamento Final</label>
                                         <p class="input-group" style="width: 140px;"  >
                                             <input type="text" id="pedidoDataVencimento" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="buscaAvancada.data_pagamento_final"  uib-datepicker-popup="ddMMyyyy" is-open="dataVencimento.opened"  alt-input-formats="['d!/M!/yyyy']"  />

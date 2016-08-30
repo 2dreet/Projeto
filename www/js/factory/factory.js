@@ -49,7 +49,7 @@
 
         this.refazerLogin = function () {
             document.cookie = this.cookieNomeToken + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
-            $(window.document.location).attr('href', "login.html");
+            $(window.document.location).attr('href', "index.html");
         };
 
         this.setMensagem = function (tipoMenssagem, texto, idComponente) {

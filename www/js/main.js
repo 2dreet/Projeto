@@ -47040,7 +47040,7 @@ app.value('cgBusyDefaults', {
 
         this.refazerLogin = function () {
             document.cookie = this.cookieNomeToken + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
-            $(window.document.location).attr('href', "login.html");
+            $(window.document.location).attr('href', "index.html");
         };
 
         this.setMensagem = function (tipoMenssagem, texto, idComponente) {
@@ -47796,7 +47796,7 @@ $('#menu-lateral ul li').click(function () {
 
             $scope.verifica = function () {
                 if (Factory.verificaToken(false)) {
-                    $(window.document.location).attr('href', "index.html");
+                    $(window.document.location).attr('href', "home.html");
                 }
             };
 
@@ -47870,6 +47870,9 @@ $('#menu-lateral ul li').click(function () {
                 $scope.currentPage = 1;
                 $scope.getListaFornecedorAll(1);
             };
+            $scope.preparaFiltrar = function () {
+                $scope.abrir("#pedidoDialogLocalizar");
+            };
             $scope.filtrar = function (porDescricao) {
                 if (porDescricao) {
                     $scope.buscaAvancada = {};
@@ -47895,7 +47898,7 @@ $('#menu-lateral ul li').click(function () {
             };
             $scope.getTituloCrud = function () {
                 if ($scope.tipoFuncao === "inserir") {
-                    return  "Cadastrar Pedido";
+                    return  "Cadastro de Pedido";
                 } else if ($scope.tipoFuncao === "alterar") {
                     return  "Alterar Pedido";
                 } else if ($scope.tipoFuncao === "deletar") {
@@ -48686,9 +48689,13 @@ $('#menu-lateral ul li').click(function () {
                     });
                 }
             };
-
+            
             $scope.selecionarCliente = function (cliente) {
                 $rootScope.clienteSelecionado = JSON.parse(JSON.stringify(cliente));
+                Utilitario.fecharDialog("#filtroCliente");
+            };
+            
+            $scope.fechar = function () {
                 Utilitario.fecharDialog("#filtroCliente");
             };
             

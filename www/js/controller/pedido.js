@@ -35,6 +35,9 @@
                 $scope.currentPage = 1;
                 $scope.getListaFornecedorAll(1);
             };
+            $scope.preparaFiltrar = function () {
+                $scope.abrir("#pedidoDialogLocalizar");
+            };
             $scope.filtrar = function (porDescricao) {
                 if (porDescricao) {
                     $scope.buscaAvancada = {};
@@ -60,7 +63,7 @@
             };
             $scope.getTituloCrud = function () {
                 if ($scope.tipoFuncao === "inserir") {
-                    return  "Cadastrar Pedido";
+                    return  "Cadastro de Pedido";
                 } else if ($scope.tipoFuncao === "alterar") {
                     return  "Alterar Pedido";
                 } else if ($scope.tipoFuncao === "deletar") {

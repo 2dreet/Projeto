@@ -33,9 +33,13 @@
                     });
                 }
             };
-
+            
             $scope.selecionarCliente = function (cliente) {
                 $rootScope.clienteSelecionado = JSON.parse(JSON.stringify(cliente));
+                Utilitario.fecharDialog("#filtroCliente");
+            };
+            
+            $scope.fechar = function () {
                 Utilitario.fecharDialog("#filtroCliente");
             };
             

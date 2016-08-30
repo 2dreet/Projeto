@@ -28,7 +28,7 @@
 
             $scope.verifica = function () {
                 if (Factory.verificaToken(false)) {
-                    $(window.document.location).attr('href', "index.html");
+                    $(window.document.location).attr('href', "home.html");
                 }
             };
 
