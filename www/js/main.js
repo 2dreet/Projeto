@@ -47092,6 +47092,9 @@ app.value('cgBusyDefaults', {
         this.getTipoPedido = function () {
             return [{id: 1, descricao: 'Prontra Entrega'}, {id: 2, descricao: 'Encomenda'}];
         };
+        this.getStatusPedido = function () {
+            return [{id: 1, descricao: 'Não Pago'}, {id: 2, descricao: 'Pago'}, {id: 3, descricao: 'Pago Parcialmente'}];
+        };
         this.getStatusPedidoId = function (id) {
             var listaStatus = [{id: 1, descricao: 'Não Pago'}, {id: 2, descricao: 'Pago'}, {id: 3, descricao: 'Pago Parcialmente'}];
             for (var i = listaStatus.length; i--; ) {
@@ -47841,14 +47844,39 @@ $('#menu-lateral ul li').click(function () {
             $rootScope.paginaAtual = "Pedidos";
             $rootScope.paginaAtualClass = "fa fa-shopping-cart botaoComIconeMenuLateral";
             $scope.listaPedido = [];
+            $scope.listaEntregue = [{'valor': true, 'descricao': 'Entregue'}, {'valor': false, 'descricao': 'Não Entregue'}];
+            $scope.listaStatusPedido = Formulario.getStatusPedido();
             $scope.listaTipoPedido = Formulario.getTipoPedido();
             $scope.listaFormaPagamento = Formulario.getFormaPagamento();
+            $scope.listaStatusPedidoFiltro = Formulario.getStatusPedido();
+            $scope.listaTipoPedidoFiltro = Formulario.getTipoPedido();
+            $scope.listaFormaPagamentoFiltro = Formulario.getFormaPagamento();
+            $scope.listaStatusPedidoFiltro.push({'id': 0, 'descricao': 'Todos'});
+            $scope.listaTipoPedidoFiltro.push({'id': 0, 'descricao': 'Todos'});
+            $scope.listaFormaPagamentoFiltro.push({'id': 0, 'descricao': 'Todos'});
+            $scope.listaEntregue.push({'valor': 0, 'descricao': 'Todos'});
             $scope.pedidoAtual = {};
             $scope.valorBuscaPedido = "";
             $scope.buscaAvancada = {};
             $scope.dataVencimento = {opened: true};
+            $scope.dataVencimentoInicial = {opened: true};
+            $scope.dataVencimentoFinal = {opened: true};
+            $scope.dataPagamentoInicial = {opened: true};
+            $scope.dataPagamentoFinal = {opened: true};
             $scope.opendataVencimento = function () {
                 $scope.dataVencimento.opened = true;
+            };
+            $scope.opendataVencimentoInicial = function () {
+                $scope.dataVencimentoInicial.opened = true;
+            };
+            $scope.opendataVencimentoFinal = function () {
+                $scope.dataVencimentoFinal.opened = true;
+            };
+            $scope.opendataPagamentoInicial = function () {
+                $scope.dataPagamentoInicial.opened = true;
+            };
+            $scope.opendataPagamentoFinal = function () {
+                $scope.dataPagamentoFinal.opened = true;
             };
             $scope.dataEntrega = {opened: true};
             $scope.opendataEntrega = function () {
@@ -47866,16 +47894,21 @@ $('#menu-lateral ul li').click(function () {
                 $scope.buscaAvancada = {};
                 $scope.valorBusca = "";
                 $scope.currentPage = 1;
-                $scope.getListaFornecedorAll(1);
+                $scope.getListaPedidoAll(1);
             };
             $scope.preparaFiltrar = function () {
                 $scope.abrir("#pedidoDialogLocalizar");
+                if ($scope.buscaAvancada.tipo_pedido === undefined) {
+                    $scope.buscaAvancada = {'tipo_pedido': $scope.listaTipoPedidoFiltro[2], 'status_pedido': $scope.listaStatusPedidoFiltro[3], 'forma_pagamento': $scope.listaFormaPagamentoFiltro[3],
+                        'entregue': $scope.listaEntregue[2]};
+                }
             };
             $scope.filtrar = function (porDescricao) {
                 if (porDescricao) {
                     $scope.buscaAvancada = {};
                 } else {
                     $scope.valorBusca = "";
+                    Utilitario.fecharDialog("#pedidoDialogLocalizar");
                 }
                 $scope.currentPage = 1;
                 $scope.getListaPedidoAll(1);
@@ -47912,7 +47945,7 @@ $('#menu-lateral ul li').click(function () {
                         method: 'POST',
                         data: envio,
                         crossDomain: true,
-                        url: Factory.urlWs + "pedido/getAllPedido",
+                        url: Factory.urlWs + "pedido/getAllPedido" + Factory.debug,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
                         if (!response.data.token) {

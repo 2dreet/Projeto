@@ -27,7 +27,7 @@
                                         </ul>
                                     </div>
                                 </span>
-                                <input type="text" class="form-control" placeholder="Localizar...">
+                                <input type="text" class="form-control" placeholder="Localizar..." ng-model="valorBusca">
                                 <span class="input-group-btn">
                                     <button class="btn btn-primary" type="button" ng-click="filtrar(true)"  style="height: 34px"><span class="fa fa-search " ></span></button>
                                 </span>
@@ -147,19 +147,24 @@
                             <div class="modal-body" >
                                 <div id="msgParcelaGeral" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"></div>
                                 <div class="row" style="padding-left: 15px;padding-right:  15px">
-                                    <div class="form-group col-sm-4 col-md-4 col-lg-4">
+                                    <div class="form-group col-sm-6 col-md-6 col-lg-6">
                                         <label>Descrição</label>
-                                        <input type="text"  class="form-control" id="produtoDescricao" ng-model="buscaAvancada.descricao" maxlength="32"> 
+                                        <input type="text"  class="form-control" ng-model="buscaAvancada.descricao" maxlength="32"> 
                                     </div>
-                                    <div class="form-group col-sm-4 col-md-4 col-lg-4">
+                                    <div class="form-group col-sm-6 col-md-6 col-lg-6">
                                         <label>Tipo Pedido</label>
                                         <select class="form-control" ng-model="buscaAvancada.tipo_pedido" 
-                                                ng-options="option.descricao for option in listaTipoPedido track by option.id" > </select>
+                                                ng-options="option.descricao for option in listaTipoPedidoFiltro track by option.id" > </select>
                                     </div>
-                                    <div class="form-group col-sm-4 col-md-4 col-lg-4">
+                                    <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                        <label>Status Pedido</label>
+                                        <select class="form-control" ng-model="buscaAvancada.status_pedido" 
+                                                ng-options="option.descricao for option in listaStatusPedidoFiltro track by option.id" > </select>
+                                    </div>
+                                    <div class="form-group col-sm-6 col-md-6 col-lg-6">
                                         <label>Forma Pagamento</label>
                                         <select class="form-control" ng-model="buscaAvancada.forma_pagamento" 
-                                                ng-options="option.descricao for option in listaFormaPagamento track by option.id"> </select>
+                                                ng-options="option.descricao for option in listaFormaPagamentoFiltro track by option.id"> </select>
                                     </div>
                                 </div>
                                 <div class="row" style="padding-left: 15px; padding-right:  15px">
@@ -169,7 +174,10 @@
                                             <span class="input-group-btn">
                                                 <button class="btn btn-primary" style="width: 100px" type="button" ng-click="localizarCliente(buscaAvancada);"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
                                             </span>
-                                            <input type="text" class="form-control" ng-readonly="true" id="pedidoAtualCliente" value="{{buscaAvancada.cliente.nome}}" />
+                                            <input type="text" class="form-control" ng-readonly="true" value="{{buscaAvancada.cliente.nome}}" />
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" type="button" ng-click="buscaAvancada.cliente = null"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></button>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -177,45 +185,52 @@
                                     <div class="form-group col-sm-6 col-md-6 col-lg-6">
                                         <label>Data Vencimento Inicial</label>
                                         <p class="input-group" style="width: 140px;"  >
-                                            <input type="text" id="pedidoDataVencimento" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="buscaAvancada.data_vencimento_inicial"  uib-datepicker-popup="ddMMyyyy" is-open="dataVencimento.opened"  alt-input-formats="['d!/M!/yyyy']"  />
+                                            <input type="text" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="buscaAvancada.data_vencimento_inicial"  uib-datepicker-popup="ddMMyyyy" is-open="dataVencimentoInicial.opened"  alt-input-formats="['d!/M!/yyyy']"  />
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default" ng-click="opendataVencimento()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                <button type="button" class="btn btn-default" ng-click="opendataVencimentoInicial()"><i class="glyphicon glyphicon-calendar"></i></button>
                                             </span>
                                         </p>
                                     </div>
                                     <div class="form-group col-sm-6 col-md-6 col-lg-6">
                                         <label>Data Vencimento Final</label>
                                         <p class="input-group" style="width: 140px;"  >
-                                            <input type="text" id="pedidoDataVencimento" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="buscaAvancada.data_vencimento_final"  uib-datepicker-popup="ddMMyyyy" is-open="dataVencimento.opened"  alt-input-formats="['d!/M!/yyyy']"  />
+                                            <input type="text" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="buscaAvancada.data_vencimento_final"  uib-datepicker-popup="ddMMyyyy" is-open="dataVencimentoFinal.opened"  alt-input-formats="['d!/M!/yyyy']"  />
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default" ng-click="opendataVencimento()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                <button type="button" class="btn btn-default" ng-click="opendataVencimentoFinal()"><i class="glyphicon glyphicon-calendar"></i></button>
                                             </span>
                                         </p>
                                     </div>
                                     <div class="form-group col-sm-6 col-md-6 col-lg-6" >
                                         <label>Data Pagamento Inicial</label>
                                         <p class="input-group" style="width: 140px;"  >
-                                            <input type="text" id="pedidoDataVencimento" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="buscaAvancada.data_pagamento_inicial"  uib-datepicker-popup="ddMMyyyy" is-open="dataVencimento.opened"  alt-input-formats="['d!/M!/yyyy']"  />
+                                            <input type="text" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="buscaAvancada.data_pagamento_inicial"  uib-datepicker-popup="ddMMyyyy" is-open="dataPagamentoInicial.opened"  alt-input-formats="['d!/M!/yyyy']"  />
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default" ng-click="opendataVencimento()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                <button type="button" class="btn btn-default" ng-click="opendataPagamentoInicial()"><i class="glyphicon glyphicon-calendar"></i></button>
                                             </span>
                                         </p>
                                     </div>
                                     <div class="form-group col-sm-6 col-md-6 col-lg-6">
                                         <label>Data Pagamento Final</label>
                                         <p class="input-group" style="width: 140px;"  >
-                                            <input type="text" id="pedidoDataVencimento" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="buscaAvancada.data_pagamento_final"  uib-datepicker-popup="ddMMyyyy" is-open="dataVencimento.opened"  alt-input-formats="['d!/M!/yyyy']"  />
+                                            <input type="text" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="buscaAvancada.data_pagamento_final"  uib-datepicker-popup="ddMMyyyy" is-open="dataPagamentoFinal.opened"  alt-input-formats="['d!/M!/yyyy']"  />
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default" ng-click="opendataVencimento()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                <button type="button" class="btn btn-default" ng-click="opendataPagamentoFinal()"><i class="glyphicon glyphicon-calendar"></i></button>
                                             </span>
                                         </p>
                                     </div>
 
                                 </div>
+                                <div class="row" style="padding-left: 15px; padding-right:  15px">
+                                    <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                        <label>Situação</label>
+                                        <select class="form-control" ng-model="buscaAvancada.entregue" 
+                                                ng-options="option.descricao for option in listaEntregue track by option.valor" > </select>
+                                    </div>
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <div class="input-group" style="width: 100%">
-                                    <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#pedidoDialogLocalizar')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
+                                    <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fechar('#pedidoDialogLocalizar')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
                                     <button type="submit" class="btn btn-default pull-right btn-primary " ng-click="filtrar(false);" ><span class="glyphicon glyphicon-filter botaoComIcone" aria-hidden="true"></span>Localizar</button>
                                 </div>
                             </div>
