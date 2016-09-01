@@ -81,6 +81,7 @@
                 $scope.indice = 0;
                 if (isNovo) {
                     $scope.novoPedido();
+                    $scope.tipoFuncao = "inserir";
                 }
             };
             $scope.setModoView = function () {
@@ -271,7 +272,6 @@
             };
             $scope.novoPedido = function () {
                 $scope.pedidoAtual = {tipo_pedido: $scope.listaTipoPedido[0], forma_pagamento: $scope.listaFormaPagamento[0], cliente: null};
-                $scope.tipoFuncao = "inserir";
             };
             $scope.localizarProduto = function () {
                 Utilitario.abrirDialog("#filtroProduto");
