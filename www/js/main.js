@@ -47207,7 +47207,6 @@ $('#menu-lateral ul li').click(function () {
             Factory.ajustaMenuLateral('#btnCliente');
             $rootScope.paginaAtual = "Clientes";
             $rootScope.paginaAtualClass = "fa fa-users botaoComIconeMenuLateral";
-
             $scope.clienteAtual = {};
             $scope.listaCliente = [];
             $scope.valorBuscaCliente = "";
@@ -47226,13 +47225,39 @@ $('#menu-lateral ul li').click(function () {
             $scope.totalItems = 0;
             $scope.currentPage = 1;
             $scope.itensPorPagina = 10;
-
+            $scope.modoManter = false;
+            $scope.modoView = true;
+            $scope.setModoManter = function (isNovo) {
+                $scope.modoManter = true;
+                $scope.modoView = false;
+                if (isNovo) {
+                    $scope.tipoFuncao = "inserir";
+                    $scope.novoCliente();
+                }
+            };
+            $scope.setModoView = function () {
+                $scope.indice = 0;
+                $scope.modoManter = false;
+                $scope.modoView = true;
+                $scope.clienteAtual = {};
+            };
+            $scope.getTituloCrud = function () {
+                if ($scope.tipoFuncao === "inserir") {
+                    return  "Cadastrar Cliente";
+                } else if ($scope.tipoFuncao === "alterar") {
+                    return  "Alterar Cliente";
+                } else if ($scope.tipoFuncao === "deletar") {
+                    return  "Deletar Cliente";
+                } else if ($scope.tipoFuncao === "vizualizar") {
+                    return  "Vizualizar Cliente";
+                }
+            };
             $scope.limparFiltroAvancado = function () {
-                 $scope.buscaAvancada = {sexo: $scope.listaSexoBusca[0]};
+                $scope.buscaAvancada = {sexo: $scope.listaSexoBusca[0]};
             };
 
             $scope.filtrarAvancado = function () {
-                $scope.fecharDialog('#clienteDialogLocalizar');
+                $scope.fechar('#clienteDialogLocalizar');
                 $scope.getListaClienteAll(1);
             };
 
@@ -47280,71 +47305,32 @@ $('#menu-lateral ul li').click(function () {
                 }
             };
 
-            $scope.insertCliente = function () {
-                if (Factory.verificaToken(true) && validaEnvioCliente('#msgClienteCadatro', '')) {
-                    var envio = {'dados': $scope.clienteAtual, 'token': Factory.getToken()};
+            $scope.enviarCliente = function () {
+                if (Factory.verificaToken(true) && validaEnvioCliente()) {
+                    var envio = {'dados': $scope.clienteAtual, 'token': Factory.getToken(), 'tipoFuncao': $scope.tipoFuncao};
                     $scope.send = $http({
                         method: 'POST',
                         crossDomain: true,
-                        url: Factory.urlWs + "cliente/insertCliente",
+                        url: Factory.urlWs + "cliente/enviarCliente",
                         data: envio,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
-                        $scope.fecharDialog('#clienteDialogCadastro');
                         if (!response.data.token) {
                             Factory.refazerLogin();
                         } else {
-                            Factory.setMensagemTemporaria('sucesso', 'Cliente cadastrado!', '#msgClienteGeral');
-                            $scope.getListaClienteAll(1);
+                            if ($scope.tipoFuncao === "inserir" || $scope.tipoFuncao === "alterar") {
+                                $scope.listaCliente = [];
+                                $scope.listaCliente.push($scope.clienteAtual);
+                                $scope.totalItems = 1;
+                            } else {
+                                $scope.currentPage = 1;
+                                $scope.getListaClienteAll(1);
+                            }
+                            $scope.setModoView();
+                            Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgClienteGeral');
                         }
                     }, function errorCallback(response) {
-                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgClienteGeral');
-                    });
-                }
-            };
-
-            $scope.updateCliente = function () {
-                if (Factory.verificaToken(true) && validaEnvioCliente('#msgClienteAlterar', 'Alterar')) {
-                    var envio = {'dados': $scope.clienteAtual, 'token': Factory.getToken()};
-                    $scope.send = $http({
-                        method: 'POST',
-                        crossDomain: true,
-                        url: Factory.urlWs + "cliente/updateCliente",
-                        data: envio,
-                        headers: {'Content-Type': 'application/json'}
-                    }).then(function successCallback(response) {
-                        $scope.fecharDialog('#clienteDialogAlterar');
-                        if (!response.data.token) {
-                            Factory.refazerLogin();
-                        } else {
-                            Factory.setMensagemTemporaria('sucesso', 'Cliente Alterado!', '#msgClienteGeral');
-                            $scope.getListaClienteAll(1);
-                        }
-                    }, function errorCallback(response) {
-                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgClienteGeral');
-                    });
-                }
-            };
-
-            $scope.deleteCliente = function () {
-                if (Factory.verificaToken(true)) {
-                    var envio = {'dados': $scope.clienteAtual.pessoa, 'token': Factory.getToken()};
-                    $scope.send = $http({
-                        method: 'POST',
-                        crossDomain: true,
-                        url: Factory.urlWs + "cliente/deleteCliente",
-                        data: envio,
-                        headers: {'Content-Type': 'application/json'}
-                    }).then(function successCallback(response) {
-                        $scope.fecharDialog('#clienteDialogDeletar');
-                        if (!response.data.token) {
-                            Factory.refazerLogin();
-                        } else {
-                            Factory.setMensagemTemporaria('sucesso', 'Cliente Deletado!', '#msgClienteGeral');
-                            $scope.getListaClienteAll(1);
-                        }
-                    }, function errorCallback(response) {
-                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgClienteGeral');
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgManterCliente');
                     });
                 }
             };
@@ -47360,12 +47346,11 @@ $('#menu-lateral ul li').click(function () {
                 $scope.telefone = JSON.parse(JSON.stringify(telefone));
             };
 
-            $scope.salvaTelefone = function (idMsg, idComplementar) {
-                if (validaFone(idMsg, idComplementar)) {
+            $scope.salvaTelefone = function () {
+                if (validaFone()) {
                     for (var i = $scope.clienteAtual.listaTelefone.length; i--; ) {
                         if (($scope.telefone.id !== undefined && $scope.clienteAtual.listaTelefone[i].id !== undefined &&
                                 $scope.telefone.id === $scope.clienteAtual.listaTelefone[i].id) || i === $scope.telefone.index) {
-
                             $scope.clienteAtual.listaTelefone[i] = $scope.telefone;
                             $scope.novoTelefone();
                         }
@@ -47373,9 +47358,8 @@ $('#menu-lateral ul li').click(function () {
                 }
             };
 
-
-            $scope.addTelefone = function (idMsg, idComplementar) {
-                if (validaFone(idMsg, idComplementar)) {
+            $scope.addTelefone = function () {
+                if (validaFone()) {
                     var telefoneAux = JSON.parse(JSON.stringify($scope.telefone));
                     telefoneAux.index = $scope.clienteAtual.listaTelefone.length;
                     $scope.clienteAtual.listaTelefone.push(telefoneAux);
@@ -47405,99 +47389,104 @@ $('#menu-lateral ul li').click(function () {
                 }
             };
 
-            var validaFone = function (idMsg, idComplementar) {
+            var validaFone = function () {
                 var retorno = false;
                 if ($scope.telefone.numero !== null && $scope.telefone.numero !== undefined && $scope.telefone.numero.trim() !== "" && ($scope.telefone.numero.length === 10 || $scope.telefone.numero.length === 11)) {
                     retorno = true;
                 } else {
-                    $('#clienteTelefone' + idComplementar).focus();
-                    Factory.setMensagemTemporaria('erro', 'Informar Telefone!', idMsg);
+                    $('#clienteTelefone').focus();
+                    Factory.setMensagemTemporaria('erro', 'Informar Telefone!', '#msgManterCliente');
                     return false;
                 }
 
                 if ($scope.telefone.tipoTelefone !== null && $scope.telefone.tipoTelefone !== undefined) {
                     retorno = true;
                 } else {
-                    Factory.setMensagemTemporaria('erro', 'Informar Tipo!', idMsg);
+                    Factory.setMensagemTemporaria('erro', 'Informar Tipo!', '#msgManterCliente');
                     return false;
                 }
                 return retorno;
             };
 
-            var validaListaFone = function (idMsg) {
-                $scope.indice = 2;
+            var validaListaFone = function () {
                 var retorno = false;
                 if ($scope.clienteAtual.listaTelefone !== null && $scope.clienteAtual.listaTelefone.length > 0) {
                     retorno = true;
                 } else {
-                    Factory.setMensagemTemporaria('erro', 'Informar Telefone!', idMsg);
+                    Factory.setMensagemTemporaria('erro', 'Informar Telefone!', '#msgManterCliente');
+                    $scope.indice = 2;
                     return false;
                 }
                 return retorno;
             };
 
-            var validaEndereco = function (idMsg, idComplementar) {
-                $scope.indice = 1;
+            var validaEndereco = function () {
                 var retorno = false;
                 if ($scope.clienteAtual.endereco.cep !== undefined && $scope.clienteAtual.endereco.cep !== null && ($scope.clienteAtual.endereco.cep.trim()).length === 8) {
                     retorno = true;
                 } else {
-                    $('#clienteCep' + idComplementar).focus();
-                    Factory.setMensagemTemporaria('erro', 'Cep Inválido!', idMsg);
+                    $('#clienteCep').focus();
+                    Factory.setMensagemTemporaria('erro', 'Cep Inválido!', '#msgManterCliente');
+                    $scope.indice = 1;
                     return false;
                 }
                 if ($scope.clienteAtual.endereco.logradouro !== undefined && $scope.clienteAtual.endereco.logradouro !== null && ($scope.clienteAtual.endereco.logradouro.trim()).length > 0) {
                     retorno = true;
                 } else {
-                    $('#clienteLogradouro' + idComplementar).focus();
-                    Factory.setMensagemTemporaria('erro', 'Logradouro Inválido!', idMsg);
+                    $('#clienteLogradouro').focus();
+                    Factory.setMensagemTemporaria('erro', 'Logradouro Inválido!', '#msgManterCliente');
+                    $scope.indice = 1;
                     return false;
                 }
                 if ($scope.clienteAtual.endereco.bairro !== undefined && $scope.clienteAtual.endereco.bairro !== null && ($scope.clienteAtual.endereco.bairro.trim()).length > 0) {
                     retorno = true;
                 } else {
-                    $('#clienteBairro' + idComplementar).focus();
-                    Factory.setMensagemTemporaria('erro', 'Bairro Inválido!', idMsg);
+                    $('#clienteBairro').focus();
+                    Factory.setMensagemTemporaria('erro', 'Bairro Inválido!', '#msgManterCliente');
+                    $scope.indice = 1;
                     return false;
                 }
                 if ($scope.clienteAtual.endereco.cidade !== undefined && $scope.clienteAtual.endereco.cidade !== null && ($scope.clienteAtual.endereco.cidade.trim()).length > 0) {
                     retorno = true;
                 } else {
-                    $('#clienteCidade' + idComplementar).focus();
-                    Factory.setMensagemTemporaria('erro', 'Cidade Inválida!', idMsg);
+                    $('#clienteCidade').focus();
+                    Factory.setMensagemTemporaria('erro', 'Cidade Inválida!', '#msgManterCliente');
+                    $scope.indice = 1;
                     return false;
                 }
                 if ($scope.clienteAtual.endereco.uf !== undefined && $scope.clienteAtual.endereco.uf !== null && ($scope.clienteAtual.endereco.uf.trim()).length === 2) {
                     retorno = true;
                 } else {
-                    Factory.setMensagemTemporaria('erro', 'UF Inválida!', idMsg);
+                    Factory.setMensagemTemporaria('erro', 'UF Inválida!', '#msgManterCliente');
+                    $scope.indice = 1;
                     return false;
                 }
                 if ($scope.clienteAtual.endereco.numero !== undefined && $scope.clienteAtual.endereco.numero !== null && $scope.clienteAtual.endereco.numero > 0) {
                     retorno = true;
                 } else {
-                    $('#clienteNumero' + idComplementar).focus();
-                    Factory.setMensagemTemporaria('erro', 'Número Inválido!', idMsg);
+                    $('#clienteNumero').focus();
+                    Factory.setMensagemTemporaria('erro', 'Número Inválido!', '#msgManterCliente');
+                    $scope.indice = 1;
                     return false;
                 }
                 return retorno;
             };
 
-            var validaEnvioCliente = function (idMsg, idComplementar) {
+            var validaEnvioCliente = function () {
                 var retorno = false;
-                if (validaCliente(idMsg, idComplementar)) {
+                if (validaCliente()) {
                     retorno = true;
                 } else {
                     $scope.indice = 0;
                     return false;
                 }
-                if (validaEndereco(idMsg, idComplementar)) {
+                if (validaEndereco()) {
                     retorno = true;
                 } else {
                     $scope.indice = 1;
                     return false;
                 }
-                if (validaListaFone(idMsg)) {
+                if (validaListaFone()) {
                     retorno = true;
                 } else {
                     $scope.indice = 2;
@@ -47506,54 +47495,56 @@ $('#menu-lateral ul li').click(function () {
                 return  retorno;
             };
 
-            $scope.avancaCliente = function (i, idMsg, idComplementar) {
-                if (i === 0 && validaCliente(idMsg, idComplementar)) {
+            $scope.avancaCliente = function (i) {
+                if (i === 0 && validaCliente()) {
                     $scope.indice = i + 1;
-                } else if (i === 1 && validaEndereco(idMsg, idComplementar)) {
+                } else if (i === 1 && validaEndereco()) {
                     $scope.indice = i + 1;
                 }
+                return $scope.indice;
             };
 
-            var validaCliente = function (idMsg, idComplementar) {
-                $scope.indice = 0;
+            var validaCliente = function () {
                 var retorno = false;
                 if ($scope.clienteAtual !== null) {
-
                     if ($scope.clienteAtual.pessoa.nome !== null && $scope.clienteAtual.pessoa.nome !== undefined && $scope.clienteAtual.pessoa.nome.trim() !== "") {
                         retorno = true;
                     } else {
-                        $('#clienteNome' + idComplementar).focus();
-                        Factory.setMensagemTemporaria('erro', 'Nome Inválido!', idMsg);
+                        $('#clienteNome').focus();
+                        Factory.setMensagemTemporaria('erro', 'Nome Inválido!', '#msgManterCliente');
+                        $scope.indice = 0;
                         return false;
                     }
                     if ($scope.clienteAtual.pessoa.sobreNome !== null && $scope.clienteAtual.pessoa.sobreNome !== undefined && $scope.clienteAtual.pessoa.sobreNome.trim() !== "") {
                         retorno = true;
                     } else {
-                        $('#clienteSobreNome' + idComplementar).focus();
-                        Factory.setMensagemTemporaria('erro', 'Sobrenome Inválido!', idMsg);
+                        $('#clienteSobreNome').focus();
+                        Factory.setMensagemTemporaria('erro', 'Sobrenome Inválido!', '#msgManterCliente');
+                        $scope.indice = 0;
                         return false;
                     }
                     if ($scope.clienteAtual.pessoa.dataNascimento !== null && $scope.clienteAtual.pessoa.dataNascimento !== undefined) {
                         retorno = true;
                     } else {
-                        $('#clienteDataNascimento' + idComplementar).focus();
-                        Factory.setMensagemTemporaria('erro', 'Informar Data Nascimento!', idMsg);
+                        $('#clienteDataNascimento').focus();
+                        Factory.setMensagemTemporaria('erro', 'Informar Data Nascimento!', '#msgManterCliente');
+                        $scope.indice = 0;
                         return false;
                     }
-
                     if ($scope.clienteAtual.cpf === null || $scope.clienteAtual.cpf === undefined || $scope.clienteAtual.cpf.trim() === "" || ($scope.clienteAtual.cpf !== null && $scope.clienteAtual.cpf !== undefined && $scope.clienteAtual.cpf.trim() !== "" && Utilitario.validaCPF($scope.clienteAtual.cpf))) {
                         retorno = true;
                     } else {
-                        $('#clienteCpf' + idComplementar).focus();
-                        Factory.setMensagemTemporaria('erro', 'CPF é Inválido!', idMsg);
+                        $('#clienteCpf').focus();
+                        Factory.setMensagemTemporaria('erro', 'CPF é Inválido!', '#msgManterCliente');
+                        $scope.indice = 0;
                         return false;
                     }
-
                     if ($scope.clienteAtual.email !== null && $scope.clienteAtual.email !== undefined && $scope.clienteAtual.email.trim() !== "") {
                         retorno = true;
                     } else {
-                        $('#clienteEmail' + idComplementar).focus();
-                        Factory.setMensagemTemporaria('erro', 'Email Inválido!', idMsg);
+                        $('#clienteEmail').focus();
+                        Factory.setMensagemTemporaria('erro', 'Email Inválido!', '#msgManterCliente');
+                        $scope.indice = 0;
                         return false;
                     }
                 }
@@ -47577,7 +47568,6 @@ $('#menu-lateral ul li').click(function () {
 
             $scope.novoCliente = function () {
                 limparDadosCliente();
-                $scope.abrirDialog('#clienteDialogCadastro');
             };
 
             $scope.preparaCliente = function (varAux) {
@@ -47586,11 +47576,11 @@ $('#menu-lateral ul li').click(function () {
                 $scope.clienteAtual.pessoa.dataNascimento = dataDbToJS($scope.clienteAtual.pessoa.dataNascimento);
             };
 
-            $scope.fecharDialog = function (idModal) {
-                $(idModal).modal('hide');
+            $scope.fechar = function (idComponente) {
+                Utilitario.fecharDialog(idComponente);
             };
-            $scope.abrirDialog = function (idModal) {
-                $(idModal).modal('show');
+            $scope.abrir = function (idComponente) {
+                Utilitario.abrirDialog(idComponente);
             };
 
             $scope.getListaClienteAll(1);
