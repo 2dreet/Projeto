@@ -213,6 +213,10 @@ input::-webkit-inner-spin-button {
     padding-right: 8px;
 }
 
+textarea:read-only {
+    background: white;
+}
+
 input[type="text"]:read-only{
     background: white;
 } 

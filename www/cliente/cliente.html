@@ -9,16 +9,16 @@
             <div class="panel panel-default" ng-show="modoView">
                 <div class="panel-heading"  style="padding: 0px; margin: 0px;">
                     <nav class="navbar navbar-default" style="padding: 0px; margin: 0px; border: none; ">
-                        <div class="container-fluid ">
-                            <div class="navbar-header col-sm-8 col-md-6 col-lg-8" style="padding-left: 0px">
-                                <ul class="nav navbar-nav menu-ul menu-top-pagina">
-                                    <li><a href=""  class="btn-success cor-font-global " ng-click="setModoManter(true)"><span class="fa fa-plus botaoComIcone"></span> <span>Novo Cliente</span></a></li>
+                        <div class="container-fluid " style="padding: 0px; margin: 0px;">
+                            <div class="navbar-header col-sm-6 col-md-6 col-lg-8" style="padding-top: 8px; padding-left: 8px">
+                                <ul class="nav navbar-nav menu-ul menu-top-pagina" style="padding: 0px; margin: 0px;">
+                                    <li style="padding-left: 0px; "><button class=" btn btn-success cor-font-global" ng-click="setModoManter(true); mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle')"><span class="fa fa-plus botaoComIcone"></span> <span> Novo Cliente </span></button></li>
                                 </ul>
                             </div>
-                            <div class="input-group pull-right col-sm-4 col-md-6 col-lg-4" style="padding-top: 8px;">
+                            <div class="input-group pull-right col-sm-6 col-md-6 col-lg-4" style="padding-top: 8px; padding-right: 8px">
                                 <span class="input-group-btn">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="height: 34px">
                                             <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu">
@@ -28,7 +28,7 @@
                                     </div>
                                 </span>
                                 <input type="text" class="form-control"  ng-model="valorBusca" placeholder="Descrição...">
-                                <span class="input-group-btn">
+                                <span class="input-group-btn" style="height: 34px">
                                     <button class="btn btn-primary" type="button" ng-click="getListaClienteAll(1)"><span class="fa fa-search "></span></button>
                                 </span>
                             </div>
@@ -108,7 +108,7 @@
                                                 <div class="input-group">
                                                     <input type="text" ui-br-cep-mask class="form-control"  ng-model="buscaAvancada.cep" maxlength="32" />
                                                     <span class="input-group-btn">
-                                                        <button class="btn btn-primary" type="button" ng-click="getCepFiltro()" ><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                                                        <button class="btn btn-primary" type="button" ng-click="getCepFiltro()" style="height: 34px"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                                                     </span>
                                                 </div>
                                             </div>
@@ -155,9 +155,9 @@
                                 </div>
                                 <div class="modal-body" style="width: 200px">
                                     <div class="list-group">
-                                        <a class="list-group-item" ng-click="setModoManter(false); fechar('#clienteDialogFuncoes'); tipoFuncao = 'vizualizar';"><span class="glyphicon glyphicon-list-alt btn btn-default btn-primary" aria-hidden="true"></span>  Vizualizar</a>
-                                        <a class="list-group-item" ng-click="setModoManter(false); fechar('#clienteDialogFuncoes'); tipoFuncao = 'alterar';"><span class="glyphicon glyphicon-pencil btn btn-default btn-warning " aria-hidden="true"></span>  Editar</a>
-                                        <a class="list-group-item" ng-click="setModoManter(false); fechar('#clienteDialogFuncoes'); tipoFuncao = 'deletar';"><span class="glyphicon glyphicon-trash btn btn-default btn-danger" aria-hidden="true"></span>  Deletar</a>
+                                        <a class="list-group-item" ng-click="setModoManter(false); fechar('#clienteDialogFuncoes'); tipoFuncao = 'vizualizar'; mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle')"><span class="glyphicon glyphicon-list-alt btn btn-default btn-primary" aria-hidden="true"></span>  Vizualizar</a>
+                                        <a class="list-group-item" ng-click="setModoManter(false); fechar('#clienteDialogFuncoes'); tipoFuncao = 'alterar'; mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle')"><span class="glyphicon glyphicon-pencil btn btn-default btn-warning " aria-hidden="true"></span>  Editar</a>
+                                        <a class="list-group-item" ng-click="setModoManter(false); fechar('#clienteDialogFuncoes'); tipoFuncao = 'deletar'; mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle')"><span class="glyphicon glyphicon-trash btn btn-default btn-danger" aria-hidden="true"></span>  Deletar</a>
                                     </div>
                                 </div>
                                 <div class="modal-footer" style="width: 200px">

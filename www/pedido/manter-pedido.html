@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div class="panel panel-default" ng-show="modoManter" cg-busy="loadingLocal">
+        <div class="panel panel-default" ng-show="modoManter" cg-busy="{promise:send, templateUrl:'send.html'}">
             <div class="panel-heading" style="padding: 0px; margin: 0px; ">
                 <nav class="navbar navbar-default" style="padding: 0px; margin: 0px; border: none">
                     <div class="container-fluid " style="padding: 0px; margin: 0px; border: none">
@@ -67,7 +67,7 @@
                                     </div>
                                     <div class="form-group col-sm-4 col-md-2 col-lg-2" style="padding: 0px; margin: 0px; padding-left: 15px">
                                         <label>Data Vencimento</label>
-                                        <input type="text" id="pedidoDataVencimento" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="pedidoAtual.data_vencimento"  uib-datepicker-popup="ddMMyyyy"  alt-input-formats="['d!/M!/yyyy']" ng-readonly ng-show="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'" />
+                                        <input type="text"  class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="pedidoAtual.data_vencimento"  uib-datepicker-popup="ddMMyyyy"  alt-input-formats="['d!/M!/yyyy']" ng-readonly ng-show="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'" />
                                         <p class="input-group" style="width: 140px;"  ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'">
                                             <input type="text" id="pedidoDataVencimento" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="pedidoAtual.data_vencimento"  uib-datepicker-popup="ddMMyyyy" is-open="dataVencimento.opened"  alt-input-formats="['d!/M!/yyyy']"  />
                                             <span class="input-group-btn">

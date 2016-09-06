@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div class="panel panel-default" ng-show="modoManter" cg-busy="loadingLocal">
+        <div class="panel panel-default" ng-show="modoManter" cg-busy="{promise:send, templateUrl:'send.html'}">
             <div class="panel-heading" style="padding: 0px; margin: 0px; ">
                 <nav class="navbar navbar-default" style="padding: 0px; margin: 0px; border: none">
                     <div class="container-fluid " style="padding: 0px; margin: 0px; border: none">
@@ -24,8 +24,16 @@
                 <div class="media-body" cg-busy="loadingLocal">
                     <form>
                         <div class="modal-body">
-                            <uib-tabset active="indice" style="min-height: 530px; max-height: 530px;">
-                                <uib-tab index="0" heading="Dados Cliente">
+
+                            <!-- Nav tabs -->
+                            <ul id="TabClienteCrudTitle" class="nav nav-tabs" role="tablist">
+                                <li role="presentation" id="tabDadosDoClienteTitle"><a href="" ng-click="mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle')"  role="tab" data-toggle="tab">Dados do Cliente</a></li>
+                                <li role="presentation"  id="tabEnderecoTitle" ><a href="" ng-click="mudaTab('#tabEndereco', '#tabEnderecoTitle')"  role="tab" data-toggle="tab">Endereço</a></li>
+                                <li role="presentation"  id="tabTelefoneTitle"><a href=""  ng-click="mudaTab('#tabTelefone', '#tabTelefoneTitle')"  role="tab" data-toggle="tab">Telefone</a></li>
+                            </ul>
+                            <!-- Tab panes -->
+                            <div id="TabClienteCrud" class="tab-content">
+                                <div role="tabpanel" class="tab-pane" id="tabDadosDoCliente">
                                     <div class="form-group" style="padding-left: 10px;padding-right: 10px">
                                         <label>Nome</label>
                                         <input type="text" id="clienteNome" class="form-control"  ng-model="clienteAtual.pessoa.nome" maxlength="32" ng-readonly="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'"/>
@@ -36,17 +44,19 @@
                                     </div>
                                     <div class="form-group" style="padding-left: 10px;padding-right: 10px">
                                         <label>Data Nascimento</label>
-                                        <p class="input-group" style="width: 140px;">
-                                            <input type="text" id="clienteDataNascimento" class="form-control" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-readonly="true" ng-model="clienteAtual.pessoa.dataNascimento"  uib-datepicker-popup="dd/MM/yyyy" is-open="dataNascimento.opened"  alt-input-formats="altInputFormats" />
+                                        <input type="text" class="form-control" ui-mask="99/99/9999" ng-model="clienteAtual.pessoa.dataNascimento" uib-datepicker-popup="ddMMyyyy" alt-input-formats="['d!/M!/yyyy']" readonly ng-show="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'" />
+                                        <p class="input-group" style="width: 140px;" ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'">
+                                            <input type="text" id="clienteDataNascimento" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="clienteAtual.pessoa.dataNascimento"  uib-datepicker-popup="ddMMyyyy" is-open="dataNascimento.opened"  alt-input-formats="['d!/M!/yyyy']"  />
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default" ng-click="opendataNascimento()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                <button type="button" class="btn btn-default" ng-click="opendataNascimento()" style="height: 34px"><i class="glyphicon glyphicon-calendar"></i></button>
                                             </span>
                                         </p>
                                     </div>
                                     <div class="form-group" style="padding-left: 10px;padding-right: 10px">
                                         <label>Sexo</label>
+                                        <input type="text" ui-br-cep-mask class="form-control"  value="{{clienteAtual.pessoa.sexo}}" readonly maxlength="32" ng-show="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'"/>
                                         <select class="form-control" ng-model="clienteAtual.pessoa.sexo" 
-                                                ng-options="option for option in listaSexo track by option"> </select>
+                                                ng-options="option for option in listaSexo track by option" ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'"> </select>
                                     </div>
                                     <div class="form-group" style="padding-left: 10px;padding-right: 10px">
                                         <label>RG</label>
@@ -60,14 +70,15 @@
                                         <label>Email</label>
                                         <input type="email" id="clienteEmail"  class="form-control"  ng-model="clienteAtual.email" maxlength="50" ng-readonly="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'"/>
                                     </div>
-                                </uib-tab>
-                                <uib-tab index="1" heading="Endereço" disable="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'">
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="tabEndereco">
                                     <div class="form-group" style="padding-left: 10px;padding-right: 10px">
                                         <label>Cep</label>
-                                        <div class="input-group">
+                                        <input type="text" ui-br-cep-mask class="form-control"  ng-model="clienteAtual.endereco.cep" readonly maxlength="32" ng-show="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'"/>
+                                        <div class="input-group" ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'">
                                             <input type="text" id="clienteCep" ui-br-cep-mask class="form-control"  ng-model="clienteAtual.endereco.cep" maxlength="32" />
                                             <span class="input-group-btn">
-                                                <button class="btn btn-primary" type="button" ng-click="getCep()" ><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                                                <button class="btn btn-primary" type="button" ng-click="getCep()" style="height: 34px"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                                             </span>
                                         </div>
                                     </div>
@@ -96,8 +107,8 @@
                                         <select class="form-control" ng-model="clienteAtual.endereco.uf" 
                                                 ng-options="option for option in listaUF track by option"> </select>
                                     </div>
-                                </uib-tab>
-                                <uib-tab index="2" heading="Telefone" disable="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'">
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="tabTelefone">
                                     <div class="form-group" style="padding-left: 10px;padding-right: 10px" ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'">
                                         <label>Telefone</label>
                                         <input type="text" id="clienteTelefone"  ui-br-phone-number class="form-control" ng-model="telefone.numero" maxlength="32"/>
@@ -114,7 +125,7 @@
                                         <button type="button" class="btn btn-sm pull-left btn-warning" ng-click="salvaTelefone('#msgClienteCadatro', '')" ><span class="glyphicon glyphicon-floppy-disk botaoComIcone" aria-hidden="true"></span>Salvar</button>
                                         <button type="button" class="btn btn-sm pull-left btn-danger" ng-click="novoTelefone()" style="margin-left: 10px"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
                                     </div>
-                                    <table ng-show="clienteAtual.listaTelefone != null && clienteAtual.listaTelefone.length > 0" class="table table-striped table-hover" style="border: none; " >
+                                    <table ng-show="clienteAtual.listaTelefone != null && clienteAtual.listaTelefone.length > 0" class="table table-striped table-hover table-bordered" style="border: none; margin-top: 10px" >
                                         <thead style="display: block; padding-left: 10px">
                                             <tr>
                                                 <th style="width: 150px">Número</th>
@@ -134,12 +145,7 @@
                                             </tr>
                                         </tbody>
                                     </table> 
-                                </uib-tab>
-                            </uib-tabset>
-
-                            <div class="input-group" style="width: 100%; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 5px" >
-                                <button type="submit" ng-show="indice < 2" class="btn btn-sm pull-right btn-primary " ng-click="indice = avancaCliente(indice);"><span class="glyphicon glyphicon-chevron-right botaoComIcone" aria-hidden="true"></span>Próximo</button>
-                                <button type="button" ng-show="indice > 0" class="btn btn-sm pull-left btn-primary " ng-click="indice = indice - 1"><span class="glyphicon glyphicon-chevron-left botaoComIcone" aria-hidden="true"></span>Anterior</button>
+                                </div>
                             </div>
                             <div id="msgManterCliente" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"></div>
                         </div>

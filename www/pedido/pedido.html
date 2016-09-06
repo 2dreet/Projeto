@@ -54,7 +54,7 @@
                                 <tr ng-repeat="pedido in listaPedido" ng-click="getPedido(pedido.id)">
                                     <td ng-bind="pedido.descricao"></td>
                                     <td ng-bind="pedido.cliente"></td>
-                                    <td class="visible-md visible-lg" ng-bind="pedido.dataVencimento | date: 'dd / MM / yyyy'" > </td>
+                                    <td class="visible-md visible-lg" ng-bind="pedido.dataVencimento | date: 'dd/MM/yyyy'" > </td>
                                     <td ng-bind="getStatusPedido(pedido.status).descricao + isEntregue(pedido.entregue)"></td>
                                     <td ng-bind="getTipoPedido(pedido.tipo_pedido).descricao"></td>
                                     <td ng-bind="(pedido.valor - pedido.desconto) | currency"></td>
@@ -120,7 +120,7 @@
                                             <tr ng-repeat="parcela in pedidoAtual.listaParcelas">
                                                 <td ng-bind="parcela.valor | currency"></td>
                                                 <td ng-bind="getStatusPedido(parcela.status).descricao"></td>
-                                                <td ng-bind="parcela.data_pagamento | date: 'dd / MM / yyyy'" > </td>
+                                                <td ng-bind="parcela.data_pagamento | date: 'dd/MM/yyyy'" > </td>
                                                 <td><button type="button" ng-show="parcela.status == 1" class="btn btn-xs pull-left btn-success" ng-click="pagarParcela(parcela)"><span class="fa fa-usd" aria-hidden="true"></span>Pagar</button></td>
                                             </tr>
                                         </tbody>

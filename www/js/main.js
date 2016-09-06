@@ -47236,7 +47236,6 @@ $('#menu-lateral ul li').click(function () {
                 }
             };
             $scope.setModoView = function () {
-                $scope.indice = 0;
                 $scope.modoManter = false;
                 $scope.modoView = true;
                 $scope.clienteAtual = {};
@@ -47413,8 +47412,8 @@ $('#menu-lateral ul li').click(function () {
                 if ($scope.clienteAtual.listaTelefone !== null && $scope.clienteAtual.listaTelefone.length > 0) {
                     retorno = true;
                 } else {
+                    $scope.mudaTab('#tabTelefone', '#tabTelefoneTitle');
                     Factory.setMensagemTemporaria('erro', 'Informar Telefone!', '#msgManterCliente');
-                    $scope.indice = 2;
                     return false;
                 }
                 return retorno;
@@ -47425,48 +47424,48 @@ $('#menu-lateral ul li').click(function () {
                 if ($scope.clienteAtual.endereco.cep !== undefined && $scope.clienteAtual.endereco.cep !== null && ($scope.clienteAtual.endereco.cep.trim()).length === 8) {
                     retorno = true;
                 } else {
+                    $scope.mudaTab('#tabEndereco', '#tabEnderecoTitle');
                     $('#clienteCep').focus();
                     Factory.setMensagemTemporaria('erro', 'Cep Inválido!', '#msgManterCliente');
-                    $scope.indice = 1;
                     return false;
                 }
                 if ($scope.clienteAtual.endereco.logradouro !== undefined && $scope.clienteAtual.endereco.logradouro !== null && ($scope.clienteAtual.endereco.logradouro.trim()).length > 0) {
                     retorno = true;
                 } else {
+                    $scope.mudaTab('#tabEndereco', '#tabEnderecoTitle');
                     $('#clienteLogradouro').focus();
                     Factory.setMensagemTemporaria('erro', 'Logradouro Inválido!', '#msgManterCliente');
-                    $scope.indice = 1;
                     return false;
                 }
                 if ($scope.clienteAtual.endereco.bairro !== undefined && $scope.clienteAtual.endereco.bairro !== null && ($scope.clienteAtual.endereco.bairro.trim()).length > 0) {
                     retorno = true;
                 } else {
+                    $scope.mudaTab('#tabEndereco', '#tabEnderecoTitle');
                     $('#clienteBairro').focus();
                     Factory.setMensagemTemporaria('erro', 'Bairro Inválido!', '#msgManterCliente');
-                    $scope.indice = 1;
                     return false;
                 }
                 if ($scope.clienteAtual.endereco.cidade !== undefined && $scope.clienteAtual.endereco.cidade !== null && ($scope.clienteAtual.endereco.cidade.trim()).length > 0) {
                     retorno = true;
                 } else {
+                    $scope.mudaTab('#tabEndereco', '#tabEnderecoTitle');
                     $('#clienteCidade').focus();
                     Factory.setMensagemTemporaria('erro', 'Cidade Inválida!', '#msgManterCliente');
-                    $scope.indice = 1;
                     return false;
                 }
                 if ($scope.clienteAtual.endereco.uf !== undefined && $scope.clienteAtual.endereco.uf !== null && ($scope.clienteAtual.endereco.uf.trim()).length === 2) {
                     retorno = true;
                 } else {
+                    $scope.mudaTab('#tabEndereco', '#tabEnderecoTitle');
                     Factory.setMensagemTemporaria('erro', 'UF Inválida!', '#msgManterCliente');
-                    $scope.indice = 1;
                     return false;
                 }
                 if ($scope.clienteAtual.endereco.numero !== undefined && $scope.clienteAtual.endereco.numero !== null && $scope.clienteAtual.endereco.numero > 0) {
                     retorno = true;
                 } else {
+                    $scope.mudaTab('#tabEndereco', '#tabEnderecoTitle');
                     $('#clienteNumero').focus();
                     Factory.setMensagemTemporaria('erro', 'Número Inválido!', '#msgManterCliente');
-                    $scope.indice = 1;
                     return false;
                 }
                 return retorno;
@@ -47477,31 +47476,19 @@ $('#menu-lateral ul li').click(function () {
                 if (validaCliente()) {
                     retorno = true;
                 } else {
-                    $scope.indice = 0;
                     return false;
                 }
                 if (validaEndereco()) {
                     retorno = true;
                 } else {
-                    $scope.indice = 1;
                     return false;
                 }
                 if (validaListaFone()) {
                     retorno = true;
                 } else {
-                    $scope.indice = 2;
                     return false;
                 }
                 return  retorno;
-            };
-
-            $scope.avancaCliente = function (i) {
-                if (i === 0 && validaCliente()) {
-                    $scope.indice = i + 1;
-                } else if (i === 1 && validaEndereco()) {
-                    $scope.indice = i + 1;
-                }
-                return $scope.indice;
             };
 
             var validaCliente = function () {
@@ -47510,41 +47497,41 @@ $('#menu-lateral ul li').click(function () {
                     if ($scope.clienteAtual.pessoa.nome !== null && $scope.clienteAtual.pessoa.nome !== undefined && $scope.clienteAtual.pessoa.nome.trim() !== "") {
                         retorno = true;
                     } else {
+                        $scope.mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle');
                         $('#clienteNome').focus();
                         Factory.setMensagemTemporaria('erro', 'Nome Inválido!', '#msgManterCliente');
-                        $scope.indice = 0;
                         return false;
                     }
                     if ($scope.clienteAtual.pessoa.sobreNome !== null && $scope.clienteAtual.pessoa.sobreNome !== undefined && $scope.clienteAtual.pessoa.sobreNome.trim() !== "") {
                         retorno = true;
                     } else {
+                        $scope.mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle');
                         $('#clienteSobreNome').focus();
                         Factory.setMensagemTemporaria('erro', 'Sobrenome Inválido!', '#msgManterCliente');
-                        $scope.indice = 0;
                         return false;
                     }
                     if ($scope.clienteAtual.pessoa.dataNascimento !== null && $scope.clienteAtual.pessoa.dataNascimento !== undefined) {
                         retorno = true;
                     } else {
+                        $scope.mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle');
                         $('#clienteDataNascimento').focus();
                         Factory.setMensagemTemporaria('erro', 'Informar Data Nascimento!', '#msgManterCliente');
-                        $scope.indice = 0;
                         return false;
                     }
                     if ($scope.clienteAtual.cpf === null || $scope.clienteAtual.cpf === undefined || $scope.clienteAtual.cpf.trim() === "" || ($scope.clienteAtual.cpf !== null && $scope.clienteAtual.cpf !== undefined && $scope.clienteAtual.cpf.trim() !== "" && Utilitario.validaCPF($scope.clienteAtual.cpf))) {
                         retorno = true;
                     } else {
+                        $scope.mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle');
                         $('#clienteCpf').focus();
                         Factory.setMensagemTemporaria('erro', 'CPF é Inválido!', '#msgManterCliente');
-                        $scope.indice = 0;
                         return false;
                     }
                     if ($scope.clienteAtual.email !== null && $scope.clienteAtual.email !== undefined && $scope.clienteAtual.email.trim() !== "") {
                         retorno = true;
                     } else {
+                        $scope.mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle');
                         $('#clienteEmail').focus();
                         Factory.setMensagemTemporaria('erro', 'Email Inválido!', '#msgManterCliente');
-                        $scope.indice = 0;
                         return false;
                     }
                 }
@@ -47563,7 +47550,6 @@ $('#menu-lateral ul li').click(function () {
             var limparDadosCliente = function () {
                 $scope.novoTelefone();
                 $scope.clienteAtual = {pessoa: {sexo: $scope.listaSexo[0]}, endereco: {uf: "AC"}, listaTelefone: [], listaTelefoneRemovido: []};
-                $scope.indice = 0;
             };
 
             $scope.novoCliente = function () {
@@ -47584,6 +47570,13 @@ $('#menu-lateral ul li').click(function () {
             };
 
             $scope.getListaClienteAll(1);
+
+            $scope.mudaTab = function (tab, title) {
+                $('#TabClienteCrud div').removeClass('active');
+                $(tab).addClass('active');
+                $('#TabClienteCrudTitle li').removeClass('active');
+                $(title).addClass('active');
+            };
 
         }]);
 })();
@@ -48235,7 +48228,7 @@ $('#menu-lateral ul li').click(function () {
 
 (function () {
     'use strict';
-    angular.module('www.geve.com.br').controller("produtoControler", ['$rootScope', '$scope', '$http', 'Formulario', 'Factory', function ($rootScope, $scope, $http, Formulario, Factory) {
+    angular.module('www.geve.com.br').controller("produtoControler", ['$rootScope', '$scope', '$http', 'Formulario', 'Factory', 'Utilitario', function ($rootScope, $scope, $http, Formulario, Factory, Utilitario) {
             Factory.verificaToken(true);
             Factory.ajustaMenuLateral('#btnProduto');
             $rootScope.paginaAtual = "Produtos";
@@ -48246,25 +48239,7 @@ $('#menu-lateral ul li').click(function () {
             $scope.dataFinalMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth() + 1, 0));
             $scope.dataInicial = {opened: true};
             $scope.dataFinal = {opened: true};
-            $scope.openDataInicial = function () {
-                $scope.dataInicial.opened = true;
-                $scope.dateOptionsInicial.maxDate = $scope.dataFinalMovimento;
-            };
-            $scope.openDataFinal = function () {
-                $scope.dataFinal.opened = true;
-                $scope.dateOptionsFinal.minDate = $scope.dataInicialMovimento;
-            };
-            $scope.dateOptionsInicial = {
-                maxDate: $scope.dataFinalMovimento,
-                startingDay: 1
-            };
-            $scope.dateOptionsFinal = {
-                minDate: $scope.dataInicialMovimento,
-                startingDay: 1
-            };
             $scope.estoqueFuturo = 0;
-            $scope.listaFornecedores = [];
-            $scope.valorBuscaFornecedor = "";
             $scope.produtoAtual = {observacao: ""};
             $scope.listaProduto = [];
             $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
@@ -48278,23 +48253,72 @@ $('#menu-lateral ul li').click(function () {
             $scope.itensPorPagina = 10;
             $scope.totalItemsMovimentacao = 0;
             $scope.currentPageMovimentacao = 1;
-            $scope.totalItemsFornecedor = 0;
-            $scope.currentPageFornecedor = 1;
-            $scope.itensPorPaginaFornecedor = 5;
+            $scope.modoManter = false;
+            $scope.modoView = true;
+            $scope.openDataInicial = function () {
+                $scope.dataInicial.opened = true;
+                $scope.dateOptionsInicial.maxDate = $scope.dataFinalMovimento;
+            };
+
+            $scope.openDataFinal = function () {
+                $scope.dataFinal.opened = true;
+                $scope.dateOptionsFinal.minDate = $scope.dataInicialMovimento;
+            };
+
+            $scope.dateOptionsInicial = {
+                maxDate: $scope.dataFinalMovimento,
+                startingDay: 1
+            };
+
+            $scope.dateOptionsFinal = {
+                minDate: $scope.dataInicialMovimento,
+                startingDay: 1
+            };
+
             $scope.limpaFiltroAvancado = function () {
                 $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
                 $scope.valorBuscaProduto = "";
                 $scope.getListaProdutoAll(1);
             };
+
             $scope.filtroPorDescricao = function () {
                 $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
                 $scope.getListaProdutoAll(1);
             };
+
             $scope.filtrarAvancado = function () {
                 $scope.valorBuscaProduto = "";
                 $scope.getListaProdutoAll(1);
-                $scope.fecharDialog('#localizarProdutoDialog');
+                $scope.fechar('#localizarProdutoDialog');
             };
+
+            $scope.setModoManter = function (isNovo) {
+                $scope.modoManter = true;
+                $scope.modoView = false;
+                if (isNovo) {
+                    $scope.tipoFuncao = "inserir";
+                    $scope.novoProduto();
+                }
+            };
+
+            $scope.setModoView = function () {
+                $scope.modoManter = false;
+                $scope.modoView = true;
+                $scope.produtoAtual = {observacao: ""};
+            };
+
+            $scope.getTituloCrud = function () {
+                if ($scope.tipoFuncao === "inserir") {
+                    return  "Cadastrar Produto";
+                } else if ($scope.tipoFuncao === "alterar") {
+                    return  "Alterar Produto";
+                } else if ($scope.tipoFuncao === "deletar") {
+                    return  "Deletar Produto";
+                } else if ($scope.tipoFuncao === "vizualizar") {
+                    return  "Vizualizar Produto";
+                }
+            };
+
             $scope.getListaProdutoAll = function (pagina) {
                 if (Factory.verificaToken(true)) {
                     var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBuscaProduto};
@@ -48316,6 +48340,7 @@ $('#menu-lateral ul li').click(function () {
                     });
                 }
             };
+
             $scope.getListaMovimentacao = function (pagina) {
                 if (Factory.verificaToken(true) && ($scope.dataInicialMovimento !== null && $scope.dataFinalMovimento !== null)) {
                     var envio = {'id': $scope.produtoAtual.id, 'pagina': (pagina - 1), 'token': Factory.getToken(), 'data_inicial': $scope.dataInicialMovimento, 'data_final': $scope.dataFinalMovimento};
@@ -48342,12 +48367,14 @@ $('#menu-lateral ul li').click(function () {
                     $scope.totalItemsMovimentacao = 0;
                 }
             };
+
             $scope.getImagem = function (idItem) {
                 if (Factory.verificaToken(true) && idItem > 0) {
                     var random = (new Date()).toString();
                     return Factory.urlImagem + idItem + "/" + Factory.getToken() + "?cb=" + random;
                 }
             };
+
             $scope.validaImagem = function (mostraMenssagemErro, idCampoImagem, idCampoMsg) {
                 var campoImagem = $(idCampoImagem).prop('files');
                 if (campoImagem !== null && $(idCampoImagem).eq(0).val() !== "") {
@@ -48377,6 +48404,7 @@ $('#menu-lateral ul li').click(function () {
                     }
                 }
             };
+
             $scope.mostrarImagem = function (idCampoImagem, idCampoMsg, idCampoDestino) {
                 if ($scope.validaImagem(true, idCampoImagem, idCampoMsg)) {
                     var campoImagem = $(idCampoImagem).prop('files');
@@ -48388,10 +48416,10 @@ $('#menu-lateral ul li').click(function () {
                     reader.readAsDataURL(imagem);
                 }
             };
-            $scope.insertProduto = function () {
-                $scope.message = "";
+
+            $scope.enviarProduto = function () {
                 if (Factory.verificaToken(true)) {
-                    if ($scope.validaProduto('#msgProduto', '')) {
+                    if ($scope.validaProduto()) {
                         var fd = new FormData();
                         if ($scope.validaImagem(false, '#produtoImagemCadastro', '#msgProduto')) {
                             var campoImagem = $('#produtoImagemCadastro').prop('files');
@@ -48399,9 +48427,10 @@ $('#menu-lateral ul li').click(function () {
                             fd.append('imagem', imagem);
                         }
                         fd.append('token', Factory.getToken());
+                        fd.append('tipoFuncao', $scope.tipoFuncao);
                         fd.append('dados', angular.toJson($scope.produtoAtual));
                         $scope.send = $http({
-                            url: Factory.urlWs + 'produto/insertProduto',
+                            url: Factory.urlWs + 'produto/enviarProduto'+Factory.debug,
                             method: 'POST',
                             data: fd,
                             transformRequest: angular.identity,
@@ -48410,73 +48439,25 @@ $('#menu-lateral ul li').click(function () {
                             if (!response.data.token) {
                                 Factory.refazerLogin();
                             } else {
-                                $scope.fecharDialog("#produtoCadastroDialog");
-                                Factory.setMensagemTemporaria('sucesso', 'Produto cadastrado!', '#msgProdutoGeral');
-                                $scope.getListaProdutoAll(1);
+                                if ($scope.tipoFuncao === "inserir" || $scope.tipoFuncao === "alterar") {
+                                    $scope.listaProduto = [];
+                                    $scope.produtoAtual = response.data.produto;
+                                    $scope.listaProduto.push($scope.produtoAtual);
+                                    $scope.totalItems = 1;
+                                } else {
+                                    $scope.currentPage = 1;
+                                    $scope.getListaProdutoAll(1);
+                                }
+                                $scope.setModoView();
+                                Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgProdutoGeral');
                             }
                         }, function errorCallback(response) {
-                            $scope.fecharDialog("#produtoCadastroDialog");
-                            Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
+                            Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgManterProduto');
                         });
                     }
                 }
             };
-            $scope.updateProduto = function () {
-                $scope.message = "";
-                if (Factory.verificaToken(true)) {
-                    if ($scope.validaProduto('#msgProdutoAlterar', 'Alterar')) {
-                        var fd = new FormData();
-                        if ($scope.validaImagem(false, '#produtoImagemAlterar', '#msgProdutoAlterar')) {
-                            var campoImagem = $('#produtoImagemAlterar').prop('files');
-                            var imagem = campoImagem[0];
-                            fd.append('imagem', imagem);
-                        }
-                        fd.append('token', Factory.getToken());
-                        fd.append('dados', angular.toJson($scope.produtoAtual));
-                        $scope.send = $http({
-                            url: Factory.urlWs + 'produto/updatetProduto',
-                            method: 'POST',
-                            data: fd,
-                            transformRequest: angular.identity,
-                            headers: {'Content-Type': undefined}
-                        }).then(function successCallback(response) {
-                            if (!response.data.token) {
-                                Factory.refazerLogin();
-                            } else {
-                                $scope.getListaProdutoAll(1);
-                                $scope.fecharDialog("#produtoDialogAlterar");
-                                Factory.setMensagemTemporaria('sucesso', 'Produto alterado!', '#msgProdutoGeral');
-                            }
-                        }, function errorCallback(response) {
-                            $scope.fecharDialog("#produtoDialogAlterar");
-                            Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
-                        });
-                    }
-                }
-            };
-            $scope.deleteProduto = function () {
-                if (Factory.verificaToken(true)) {
-                    var envio = {'dados': $scope.produtoAtual, 'token': Factory.getToken()};
-                    $scope.send = $http({
-                        method: 'POST',
-                        crossDomain: true,
-                        url: Factory.urlWs + "produto/deleteProduto",
-                        data: envio,
-                        headers: {'Content-Type': 'application/json'}
-                    }).then(function successCallback(response) {
-                        if (!response.data.token) {
-                            Factory.refazerLogin();
-                        } else {
-                            $scope.getListaProdutoAll(1);
-                            $scope.fecharDialog("#produtoDialogDeletar");
-                            Factory.setMensagemTemporaria('sucesso', 'Produto Deletado!', '#msgProdutoGeral');
-                        }
-                    }, function errorCallback(response) {
-                        $scope.fecharDialog("#produtoDialogDeletar");
-                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
-                    });
-                }
-            };
+
             $scope.movimentarProdutoCorrecao = function () {
                 $scope.message = "";
                 if (Factory.verificaToken(true)) {
@@ -48494,8 +48475,8 @@ $('#menu-lateral ul li').click(function () {
                                 Factory.refazerLogin();
                             } else if (response.data.sucesso) {
                                 $scope.preparaProdutoMovimentacao(false);
-                                $scope.fecharDialog("#produtoDialogMovimentacaoCorrecao");
-                                $scope.abrirDialog("#produtoDialogMovimentacao");
+                                $scope.fechar("#produtoDialogMovimentacaoCorrecao");
+                                $scope.abrir("#produtoDialogMovimentacao");
                                 Factory.setMensagemTemporaria('sucesso', 'Estoque Movimentado!', '#msgCorrecaoView');
                                 $scope.produtoAtual.estoque = response.data.estoque;
                                 $scope.getListaProdutoAll(1);
@@ -48507,38 +48488,19 @@ $('#menu-lateral ul li').click(function () {
                                 }
                             }
                         }, function errorCallback(response) {
-                            $scope.fecharDialog("#produtoDialogMovimentacaoCorrecao");
+                            $scope.fechar("#produtoDialogMovimentacaoCorrecao");
                             Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
                         });
                     }
                 }
             };
+
             $scope.fecharCorrecaoMovimentacao = function () {
                 $scope.preparaProdutoMovimentacao(false);
-                $scope.fecharDialog("#produtoDialogMovimentacaoCorrecao");
-                $scope.abrirDialog("#produtoDialogMovimentacao");
+                $scope.fechar("#produtoDialogMovimentacaoCorrecao");
+                $scope.abrir("#produtoDialogMovimentacao");
             };
-            $scope.getListaFornecedorAll = function (pagina) {
-                if (Factory.verificaToken(true)) {
-                    var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaDescricao': $scope.valorBuscaFornecedor, 'limit': $scope.itensPorPaginaFornecedor};
-                    $scope.loadingDialog = $http({
-                        method: 'POST',
-                        crossDomain: true,
-                        url: Factory.urlWs + "fornecedor/getAllfornecedor",
-                        data: envio,
-                        headers: {'Content-Type': 'application/json'}
-                    }).then(function successCallback(response) {
-                        if (!response.data.token) {
-                            Factory.refazerLogin();
-                        } else {
-                            $scope.listaFornecedores = response.data.dados;
-                            $scope.totalItemsFornecedor = response.data.totalRegistro;
-                        }
-                    }, function errorCallback(response) {
-                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgProdutoGeral');
-                    });
-                }
-            };
+
             $scope.validaCorrecao = function () {
                 var retorno = false;
                 if ($scope.produtoAtual !== null) {
@@ -48577,45 +48539,50 @@ $('#menu-lateral ul li').click(function () {
                 }
                 return retorno;
             };
-            $scope.validaProduto = function (idMsg, idComplementar) {
+
+            $scope.validaProduto = function () {
                 var retorno = false;
                 if ($scope.produtoAtual !== null) {
                     if ($scope.produtoAtual.descricao !== undefined && $scope.produtoAtual.descricao !== null && $scope.produtoAtual.descricao.trim() !== "") {
                         retorno = true;
                     } else {
-                        Factory.setMensagemTemporaria('erro', 'Deve informar descrição!', idMsg);
-                        $('#produtoDescricao' + idComplementar).focus();
+                        Factory.setMensagemTemporaria('erro', 'Deve informar descrição!', '#msgManterProduto');
+                        $('#produtoDescricao').focus();
                         return false;
                     }
                     if ($scope.produtoAtual.valor !== undefined && $scope.produtoAtual.valor !== null && $scope.produtoAtual.valor > 0) {
                         retorno = true;
                     } else {
-                        Factory.setMensagemTemporaria('erro', 'Deve informar valor!', idMsg);
-                        $('#produtoValor' + idComplementar).focus();
+                        Factory.setMensagemTemporaria('erro', 'Deve informar valor!', '#msgManterProduto');
+                        $('#produtoValor').focus();
                         return false;
                     }
                     if ($scope.produtoAtual.fornecedor !== undefined && $scope.produtoAtual.fornecedor !== null) {
                         retorno = true;
                     } else {
-                        Factory.setMensagemTemporaria('erro', 'Deve informar o fornecedor!', idMsg);
-                        $('#produtoFornecedor' + idComplementar).focus();
+                        Factory.setMensagemTemporaria('erro', 'Deve informar o fornecedor!', '#msgManterProduto');
+                        $('#produtoFornecedor').focus();
                         return false;
                     }
                 }
                 return retorno;
             };
+
             $scope.novoProduto = function () {
                 $scope.produtoAtual = {observacao: ""};
                 $(":file").val(null);
                 $(":file").filestyle('clear');
                 $("#produtoImagemCadastroView").removeAttr('src');
             };
+
             $scope.preparaProduto = function (produto) {
                 $scope.produtoAtual = JSON.parse(JSON.stringify(produto));
                 $(":file").val(null);
                 $(":file").filestyle('clear');
-                $scope.abrirDialog('#produtoDialogFuncoes');
+                $("#produtoImagemCadastroView").attr("src",$scope.getImagem($scope.produtoAtual.id));
+                $scope.abrir('#produtoDialogFuncoes');
             };
+
             $scope.preparaProdutoMovimentacao = function (prepraView) {
                 $scope.dataInicialMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth(), 1));
                 $scope.dataFinalMovimento = (new Date(dataAtual.getFullYear(), dataAtual.getMonth() + 1, 0));
@@ -48629,49 +48596,43 @@ $('#menu-lateral ul li').click(function () {
                     $scope.preparaProdutoView('#produtoDialogFuncoes', '#produtoDialogMovimentacao');
                 }
             };
+
+            $scope.localizarFornecedor = function (entidade) {
+                $scope.abrir("#filtroFornecedor");
+                $('#filtroFornecedor').on('hide.bs.modal', function (event) {
+                    if ($rootScope.fornecedorSelecionado !== undefined && $rootScope.fornecedorSelecionado.id !== undefined) {
+                        var fornecedorAux = JSON.parse(JSON.stringify($rootScope.fornecedorSelecionado));
+                        fornecedorAux = {id: fornecedorAux.id, descricao: fornecedorAux.descricao};
+                        if (entidade.fornecedor === undefined) {
+                            entidade.fornecedor = {};
+                        }
+                        entidade.fornecedor = fornecedorAux;
+                        $rootScope.fornecedorSelecionado = {};
+                    }
+                    $('#filtroFornecedor').off('hide.bs.modal');
+                });
+            };
+
             $scope.preparaProdutoView = function (idModalPai, idModalFilho) {
                 if (idModalPai !== null) {
-                    $scope.fecharDialog(idModalPai);
+                    $scope.fechar(idModalPai);
                 }
-
                 if (idModalFilho !== null) {
-                    $scope.abrirDialog(idModalFilho);
+                    $scope.abrir(idModalFilho);
                 }
             };
-            $scope.selecionarFornecedor = function (idModal, fornecedor) {
-                $scope.entidadeSelecionada.fornecedor = fornecedor;
-                $scope.fecharDialog(idModal);
-                $scope.limpaBuscaFornecedor(null);
+
+
+            $scope.abrir = function (idModal) {
+                Utilitario.abrirDialog(idModal);
             };
-            $scope.abrirDialog = function (idModal) {
-                $(idModal).modal('show');
+
+            $scope.fechar = function (idModal) {
+                Utilitario.fecharDialog(idModal);
             };
-            $scope.fecharDialog = function (idModal) {
-                $(idModal).modal('hide');
-            };
-            $scope.abrirDialogLocalizarFornecedor = function ($entidade) {
-                $scope.limpaBuscaFornecedor($entidade);
-                $scope.getListaFornecedorAll(1);
-                $('#localizarFornecedorDialog').modal('show');
-            };
-            $scope.limpaBuscaFornecedorComBusca = function () {
-                $scope.listaFornecedores = [];
-                $scope.valorBuscaFornecedor = "";
-                $scope.currentPageFornecedor = 1;
-                $scope.totalItemsFornecedor = 0;
-                $scope.getListaFornecedorAll(1);
-            };
-            $scope.limpaBuscaFornecedor = function ($entidade) {
-                $scope.listaFornecedores = [];
-                $scope.valorBuscaFornecedor = "";
-                $scope.currentPageFornecedor = 1;
-                $scope.totalItemsFornecedor = 0;
-                if ($entidade !== null) {
-                    $entidade.fornecedor = null;
-                    $scope.entidadeSelecionada = $entidade;
-                }
-            };
+
             $scope.getListaProdutoAll(1);
+
             $scope.corLinha = function (tipoMovimentacao) {
                 var cor = {color: 'black'};
                 if (tipoMovimentacao == 1) {
@@ -48745,6 +48706,54 @@ $('#menu-lateral ul li').click(function () {
             };
             
             $scope.getListaClienteAll(1);
+        }]);
+})();
+
+(function () {
+    'use strict';
+    angular.module('www.geve.com.br').controller("filtroFornecedorController", ['$rootScope', '$scope', '$http', 'Factory', 'Utilitario', function ($rootScope, $scope, $http, Factory, Utilitario) {
+            $scope.buscaAvancadaCliente = {};
+            $scope.valorBuscaFornecedor = "";
+            $scope.listaFornecedor = [];
+
+            $scope.maxSize = 3;
+            $scope.totalItems = 0;
+            $scope.currentPage = 1;
+            $scope.itensPorPagina = 10;
+            $scope.tipoFuncao = 0;
+
+            $scope.getListaFornecedorAll = function (pagina) {
+                if (Factory.verificaToken(true)) {
+                    var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaAvancada': $scope.buscaAvancadaCliente, 'buscaDescricao': $scope.valorBuscaCliente, 'limit': $scope.itensPorPagina};
+                    $rootScope.loading = $http({
+                        method: 'POST',
+                        data: envio,
+                        crossDomain: true,
+                        url: Factory.urlWs + "fornecedor/getAllFornecedor",
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        if (!response.data.token) {
+                            Factory.refazerLogin();
+                        } else {
+                            $scope.listaFornecedor = response.data.dados;
+                            $scope.totalItems = response.data.totalRegistro;
+                        }
+                    }, function errorCallback(response) {
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFiltrarFornecedor');
+                    });
+                }
+            };
+            
+            $scope.selecionarFornecedor = function (fornecedor) {
+                $rootScope.fornecedorSelecionado = JSON.parse(JSON.stringify(fornecedor));
+                Utilitario.fecharDialog("#filtroFornecedor");
+            };
+            
+            $scope.fechar = function () {
+                Utilitario.fecharDialog("#filtroFornecedor");
+            };
+            
+            $scope.getListaFornecedorAll(1);
         }]);
 })();
 

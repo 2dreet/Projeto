@@ -35,7 +35,6 @@
                 }
             };
             $scope.setModoView = function () {
-                $scope.indice = 0;
                 $scope.modoManter = false;
                 $scope.modoView = true;
                 $scope.clienteAtual = {};
@@ -212,8 +211,8 @@
                 if ($scope.clienteAtual.listaTelefone !== null && $scope.clienteAtual.listaTelefone.length > 0) {
                     retorno = true;
                 } else {
+                    $scope.mudaTab('#tabTelefone', '#tabTelefoneTitle');
                     Factory.setMensagemTemporaria('erro', 'Informar Telefone!', '#msgManterCliente');
-                    $scope.indice = 2;
                     return false;
                 }
                 return retorno;
@@ -224,48 +223,48 @@
                 if ($scope.clienteAtual.endereco.cep !== undefined && $scope.clienteAtual.endereco.cep !== null && ($scope.clienteAtual.endereco.cep.trim()).length === 8) {
                     retorno = true;
                 } else {
+                    $scope.mudaTab('#tabEndereco', '#tabEnderecoTitle');
                     $('#clienteCep').focus();
                     Factory.setMensagemTemporaria('erro', 'Cep Inválido!', '#msgManterCliente');
-                    $scope.indice = 1;
                     return false;
                 }
                 if ($scope.clienteAtual.endereco.logradouro !== undefined && $scope.clienteAtual.endereco.logradouro !== null && ($scope.clienteAtual.endereco.logradouro.trim()).length > 0) {
                     retorno = true;
                 } else {
+                    $scope.mudaTab('#tabEndereco', '#tabEnderecoTitle');
                     $('#clienteLogradouro').focus();
                     Factory.setMensagemTemporaria('erro', 'Logradouro Inválido!', '#msgManterCliente');
-                    $scope.indice = 1;
                     return false;
                 }
                 if ($scope.clienteAtual.endereco.bairro !== undefined && $scope.clienteAtual.endereco.bairro !== null && ($scope.clienteAtual.endereco.bairro.trim()).length > 0) {
                     retorno = true;
                 } else {
+                    $scope.mudaTab('#tabEndereco', '#tabEnderecoTitle');
                     $('#clienteBairro').focus();
                     Factory.setMensagemTemporaria('erro', 'Bairro Inválido!', '#msgManterCliente');
-                    $scope.indice = 1;
                     return false;
                 }
                 if ($scope.clienteAtual.endereco.cidade !== undefined && $scope.clienteAtual.endereco.cidade !== null && ($scope.clienteAtual.endereco.cidade.trim()).length > 0) {
                     retorno = true;
                 } else {
+                    $scope.mudaTab('#tabEndereco', '#tabEnderecoTitle');
                     $('#clienteCidade').focus();
                     Factory.setMensagemTemporaria('erro', 'Cidade Inválida!', '#msgManterCliente');
-                    $scope.indice = 1;
                     return false;
                 }
                 if ($scope.clienteAtual.endereco.uf !== undefined && $scope.clienteAtual.endereco.uf !== null && ($scope.clienteAtual.endereco.uf.trim()).length === 2) {
                     retorno = true;
                 } else {
+                    $scope.mudaTab('#tabEndereco', '#tabEnderecoTitle');
                     Factory.setMensagemTemporaria('erro', 'UF Inválida!', '#msgManterCliente');
-                    $scope.indice = 1;
                     return false;
                 }
                 if ($scope.clienteAtual.endereco.numero !== undefined && $scope.clienteAtual.endereco.numero !== null && $scope.clienteAtual.endereco.numero > 0) {
                     retorno = true;
                 } else {
+                    $scope.mudaTab('#tabEndereco', '#tabEnderecoTitle');
                     $('#clienteNumero').focus();
                     Factory.setMensagemTemporaria('erro', 'Número Inválido!', '#msgManterCliente');
-                    $scope.indice = 1;
                     return false;
                 }
                 return retorno;
@@ -276,31 +275,19 @@
                 if (validaCliente()) {
                     retorno = true;
                 } else {
-                    $scope.indice = 0;
                     return false;
                 }
                 if (validaEndereco()) {
                     retorno = true;
                 } else {
-                    $scope.indice = 1;
                     return false;
                 }
                 if (validaListaFone()) {
                     retorno = true;
                 } else {
-                    $scope.indice = 2;
                     return false;
                 }
                 return  retorno;
-            };
-
-            $scope.avancaCliente = function (i) {
-                if (i === 0 && validaCliente()) {
-                    $scope.indice = i + 1;
-                } else if (i === 1 && validaEndereco()) {
-                    $scope.indice = i + 1;
-                }
-                return $scope.indice;
             };
 
             var validaCliente = function () {
@@ -309,41 +296,41 @@
                     if ($scope.clienteAtual.pessoa.nome !== null && $scope.clienteAtual.pessoa.nome !== undefined && $scope.clienteAtual.pessoa.nome.trim() !== "") {
                         retorno = true;
                     } else {
+                        $scope.mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle');
                         $('#clienteNome').focus();
                         Factory.setMensagemTemporaria('erro', 'Nome Inválido!', '#msgManterCliente');
-                        $scope.indice = 0;
                         return false;
                     }
                     if ($scope.clienteAtual.pessoa.sobreNome !== null && $scope.clienteAtual.pessoa.sobreNome !== undefined && $scope.clienteAtual.pessoa.sobreNome.trim() !== "") {
                         retorno = true;
                     } else {
+                        $scope.mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle');
                         $('#clienteSobreNome').focus();
                         Factory.setMensagemTemporaria('erro', 'Sobrenome Inválido!', '#msgManterCliente');
-                        $scope.indice = 0;
                         return false;
                     }
                     if ($scope.clienteAtual.pessoa.dataNascimento !== null && $scope.clienteAtual.pessoa.dataNascimento !== undefined) {
                         retorno = true;
                     } else {
+                        $scope.mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle');
                         $('#clienteDataNascimento').focus();
                         Factory.setMensagemTemporaria('erro', 'Informar Data Nascimento!', '#msgManterCliente');
-                        $scope.indice = 0;
                         return false;
                     }
                     if ($scope.clienteAtual.cpf === null || $scope.clienteAtual.cpf === undefined || $scope.clienteAtual.cpf.trim() === "" || ($scope.clienteAtual.cpf !== null && $scope.clienteAtual.cpf !== undefined && $scope.clienteAtual.cpf.trim() !== "" && Utilitario.validaCPF($scope.clienteAtual.cpf))) {
                         retorno = true;
                     } else {
+                        $scope.mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle');
                         $('#clienteCpf').focus();
                         Factory.setMensagemTemporaria('erro', 'CPF é Inválido!', '#msgManterCliente');
-                        $scope.indice = 0;
                         return false;
                     }
                     if ($scope.clienteAtual.email !== null && $scope.clienteAtual.email !== undefined && $scope.clienteAtual.email.trim() !== "") {
                         retorno = true;
                     } else {
+                        $scope.mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle');
                         $('#clienteEmail').focus();
                         Factory.setMensagemTemporaria('erro', 'Email Inválido!', '#msgManterCliente');
-                        $scope.indice = 0;
                         return false;
                     }
                 }
@@ -362,7 +349,6 @@
             var limparDadosCliente = function () {
                 $scope.novoTelefone();
                 $scope.clienteAtual = {pessoa: {sexo: $scope.listaSexo[0]}, endereco: {uf: "AC"}, listaTelefone: [], listaTelefoneRemovido: []};
-                $scope.indice = 0;
             };
 
             $scope.novoCliente = function () {
@@ -383,6 +369,13 @@
             };
 
             $scope.getListaClienteAll(1);
+
+            $scope.mudaTab = function (tab, title) {
+                $('#TabClienteCrud div').removeClass('active');
+                $(tab).addClass('active');
+                $('#TabClienteCrudTitle li').removeClass('active');
+                $(title).addClass('active');
+            };
 
         }]);
 })();
