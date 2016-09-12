@@ -50,7 +50,7 @@
                             <tbody>
                                 <tr ng-repeat="despesa in listaDespesas" data-toggle="modal" data-target="#despesaDialogFuncoes" ng-click="preparaDespesa(despesa)">
                                     <td ng-bind="despesa.descricao"></td>
-                                    <td class="visible-sm visible-md visible-lg" ng-bind="despesa.data_lancamento | date: 'dd / MM / yyyy'"></td>
+                                    <td class="visible-sm visible-md visible-lg" ng-bind="despesa.data_lancamento | date: 'dd/MM/yyyy'"></td>
                                     <td class="" ng-bind="despesa.valor | currency"> </td>
                                 </tr>
                             </tbody>
