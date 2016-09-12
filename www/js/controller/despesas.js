@@ -90,7 +90,7 @@
             };
 
             $scope.enviarDespesa = function () {
-                if (Factory.verificaToken(true) && $scope.validaDespesa()) {
+                if (Factory.verificaToken(true) && validaDespesa()) {
                     var envio = {'dados': $scope.despesaAtual, 'token': Factory.getToken(), 'tipoFuncao': $scope.tipoFuncao};
                     $scope.send = $http({
                         method: 'POST',
@@ -119,7 +119,7 @@
                 }
             };
 
-            $scope.validaDespesa = function () {
+            function validaDespesa() {
                 var retorno = false;
                 if ($scope.despesaAtual !== null) {
 
