@@ -146,8 +146,7 @@
                     }
                 }
                 return retorno;
-            }
-            ;
+            };
 
             $scope.novoFornecedor = function () {
                 $scope.fornecedorAtual = {};
