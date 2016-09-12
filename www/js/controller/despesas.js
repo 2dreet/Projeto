@@ -119,7 +119,7 @@
                 }
             };
 
-            function validaDespesa() {
+            var validaDespesa = function () {
                 var retorno = false;
                 if ($scope.despesaAtual !== null) {
 

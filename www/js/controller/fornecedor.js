@@ -88,7 +88,7 @@
             };
 
             $scope.enviarFornecedor = function () {
-                if (Factory.verificaToken(true) && $scope.validaFornecedor()) {
+                if (Factory.verificaToken(true) && validaFornecedor()) {
                     var envio = {'dados': $scope.fornecedorAtual, 'token': Factory.getToken(), 'tipoFuncao': $scope.tipoFuncao};
                     $scope.send = $http({
                         method: 'POST',
@@ -117,7 +117,7 @@
                 }
             };
 
-            $scope.validaFornecedor = function () {
+            var validaFornecedor = function () {
                 var retorno = false;
                 if ($scope.fornecedorAtual !== null) {
 
@@ -146,7 +146,8 @@
                     }
                 }
                 return retorno;
-            };
+            }
+            ;
 
             $scope.novoFornecedor = function () {
                 $scope.fornecedorAtual = {};

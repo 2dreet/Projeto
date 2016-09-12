@@ -328,7 +328,7 @@
                     }
                 }
             };
-            function validarPedido() {
+            var validarPedido = function () {
                 if ($scope.pedidoAtual.listaProduto === undefined || $scope.pedidoAtual.listaProduto === null || $scope.pedidoAtual.listaProduto.length <= 0) {
                     $scope.mudaTab('#tabProdutosDoPedido', '#tabProdutosDoPedidoTitle');
                     Factory.setMensagemTemporaria('erro', 'Adicionar produtos!', "#msgManterPedido");

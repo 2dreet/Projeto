@@ -192,7 +192,7 @@
 
             $scope.enviarProduto = function () {
                 if (Factory.verificaToken(true)) {
-                    if ($scope.validaProduto()) {
+                    if (validaProduto()) {
                         var fd = new FormData();
                         if ($scope.validaImagem(false, '#produtoImagemCadastro', '#msgProduto')) {
                             var campoImagem = $('#produtoImagemCadastro').prop('files');
@@ -234,7 +234,7 @@
             $scope.movimentarProdutoCorrecao = function () {
                 $scope.message = "";
                 if (Factory.verificaToken(true)) {
-                    if ($scope.validaCorrecao()) {
+                    if (validaCorrecao()) {
                         var produto = {id: $scope.produtoAtual.id, estoque: $scope.produtoAtual.estoque, tipoMovimentacao: $scope.produtoAtual.tipoMovimentacao.id, estoque_movimento_observacao: $scope.produtoAtual.estoque_movimento_observacao, estoque_movimento: $scope.produtoAtual.estoque_movimento};
                         var envio = {'dados': produto, 'token': Factory.getToken()};
                         $scope.send = $http({
@@ -274,7 +274,7 @@
                 $scope.abrir("#produtoDialogMovimentacao");
             };
 
-            $scope.validaCorrecao = function () {
+            var validaCorrecao = function () {
                 var retorno = false;
                 if ($scope.produtoAtual !== null) {
                     if ($scope.produtoAtual.estoque_movimento !== null && $scope.produtoAtual.estoque_movimento > 0) {
@@ -313,7 +313,7 @@
                 return retorno;
             };
 
-            $scope.validaProduto = function () {
+            var validaProduto = function () {
                 var retorno = false;
                 if ($scope.produtoAtual !== null) {
                     if ($scope.produtoAtual.descricao !== undefined && $scope.produtoAtual.descricao !== null && $scope.produtoAtual.descricao.trim() !== "") {
