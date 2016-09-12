@@ -61,7 +61,7 @@
                                     </div>
                                     <div class="form-group col-sm-4 col-md-2 col-lg-2">
                                         <label>Tipo Pedido</label>
-                                        <input type="text"  class="form-control" ng-model="pedidoAtual.tipo_pedido.descricao" maxlength="32" ng-readonly ng-show="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'"> 
+                                        <input type="text"  class="form-control" ng-model="pedidoAtual.tipo_pedido.descricao" maxlength="32" readonly ng-show="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'"> 
                                         <select class="form-control" ng-model="pedidoAtual.tipo_pedido" 
                                                 ng-options="option.descricao for option in listaTipoPedido track by option.id" ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'"> </select>
                                     </div>
@@ -71,7 +71,7 @@
                                     </div>
                                     <div class="form-group col-sm-4 col-md-2 col-lg-2" style="padding: 0px; margin: 0px; padding-left: 15px">
                                         <label>Data Vencimento</label>
-                                        <input type="text"  class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="pedidoAtual.data_vencimento"  uib-datepicker-popup="ddMMyyyy"  alt-input-formats="['d!/M!/yyyy']" ng-readonly ng-show="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'" />
+                                        <input type="text"  class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="pedidoAtual.data_vencimento"  uib-datepicker-popup="ddMMyyyy"  alt-input-formats="['d!/M!/yyyy']" readonly ng-show="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'" />
                                         <p class="input-group" style="width: 140px;"  ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'">
                                             <input type="text" id="pedidoDataVencimento" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="pedidoAtual.data_vencimento"  uib-datepicker-popup="ddMMyyyy" is-open="dataVencimento.opened"  alt-input-formats="['d!/M!/yyyy']"  />
                                             <span class="input-group-btn">
@@ -81,7 +81,7 @@
                                     </div>
                                     <div class="form-group col-sm-4 col-md-2 col-lg-2">
                                         <label>Forma Pagamento</label>
-                                        <input type="text"  class="form-control" ng-model="pedidoAtual.forma_pagamento.descricao" maxlength="32" ng-readonly ng-show="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'"> 
+                                        <input type="text"  class="form-control" ng-model="pedidoAtual.forma_pagamento.descricao" maxlength="32" readonly ng-show="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'"> 
                                         <select class="form-control" ng-model="pedidoAtual.forma_pagamento" 
                                                 ng-options="option.descricao for option in listaFormaPagamento track by option.id" ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'"> </select>
                                     </div>

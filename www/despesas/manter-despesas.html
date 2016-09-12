@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div class="panel panel-default" ng-show="modoManter" cg-busy="{promise:send, templateUrl:'send.html'}">
+            <div class="panel-heading" style="padding: 0px; margin: 0px; ">
+                <nav class="navbar navbar-default" style="padding: 0px; margin: 0px; border: none">
+                    <div class="container-fluid " style="padding: 0px; margin: 0px; border: none">
+                        <div class="navbar-header col-sm-8 col-md-6 col-lg-8"  style="padding: 0px; margin: 0px;">
+                            <ul class="nav navbar-nav menu-ul menu-top-pagina" style="padding: 0px; margin: 0px; padding-top: 8px; padding-left: 8px">
+                                <li><button class=" btn btn-primary cor-font-global" ng-click="setModoView()"> <span class="fa fa-chevron-left botaoComIcone"></span><span>Voltar</span></button></li>
+                            </ul>
+                            <ol class="nav navbar-nav menu-ul menu-top-pagina btn-group" style="padding: 0px; margin: 0px; border: none; padding-left: 8px">
+                                <li style="background: #e3e3e3; color: #fff "><a href="" ><span style="color: #2A3F54" ng-bind="getTituloCrud()"></span></a></li>
+                            </ol>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div class="panel-body"  style="padding: 0px; margin: 0px; padding-top: 10px;  ">
+                <div class="media-body" cg-busy="loadingLocal">
+                    <form>
+                        <div class="modal-body" style="overflow-y: auto">
+                            <div class="form-group" style="width: 100%;">
+                                <label>Descrição</label>
+                                <input type="text" id="descricao" class="form-control" maxlength="50" ng-model="despesaAtual.descricao" ng-readonly="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'">
+                            </div>
+
+                            <div class="form-group" style="padding-top: 0px; width: 100%;">
+                                <label>Valor</label>
+                                <input type="text" id="valor"  class="form-control"  maxlength="50" ui-number-mask="decimals" ng-model="despesaAtual.valor" ng-readonly="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'">
+                            </div>
+
+                            <div class="form-group" style="padding-top: 0px; width: 100%;">
+                                <label>Data</label>
+                                <input type="text"  class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="despesaAtual.data_lancamento"  uib-datepicker-popup="ddMMyyyy"  alt-input-formats="['d!/M!/yyyy']" readonly ng-show="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'" />
+                                <p class="input-group" style="width: 140px;"  ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'">
+                                    <input type="text" id="data" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="despesaAtual.data_lancamento"  uib-datepicker-popup="ddMMyyyy" is-open="data.opened"  alt-input-formats="['d!/M!/yyyy']"  />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="openData()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </div>
+                            <div id="msgManterDespesa" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"></div>
+                        </div>
+                        <div style="padding-left: 16px; padding-right: 16px; padding-bottom: 16px" ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar' || tipoFuncao == 'deletar'">
+                            <div class="input-group" style="width: 100%;" >
+                                <div class="alert alert-warning" role="alert" ng-show="tipoFuncao == 'deletar'" style="text-align: center"><span class="glyphicon glyphicon-warning-sign botaoComIcone" aria-hidden="true"></span> Deseja Deletar a Despesa ?</div>
+                                <button type="button" class="btn btn-default pull-left btn-warning " ng-click="setModoView()"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
+                                <button type="submit" class="btn btn-default pull-right btn-success " ng-click="enviarDespesa()" ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'"><span class="glyphicon glyphicon-floppy-disk botaoComIcone" aria-hidden="true"></span>Salvar</button>
+                                <button type="submit" class="btn btn-default pull-right btn-danger " ng-click="enviarDespesa()" ng-show="tipoFuncao == 'deletar'"><span class="glyphicon glyphicon-floppy-disk botaoComIcone" aria-hidden="true"></span>Deletar</button>
+                            </div>
+                        </div>
+                    </form>   
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
