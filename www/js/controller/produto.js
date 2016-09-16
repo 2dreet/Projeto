@@ -217,6 +217,7 @@
                                     $scope.produtoAtual = response.data.produto;
                                     $scope.listaProduto.push($scope.produtoAtual);
                                     $scope.totalItems = 1;
+                                    $scope.currentPage = 1;
                                 } else {
                                     $scope.currentPage = 1;
                                     $scope.getListaProdutoAll(1);

@@ -127,7 +127,7 @@
                         method: 'POST',
                         data: envio,
                         crossDomain: true,
-                        url: Factory.urlWs + "pedido/getPedido",
+                        url: Factory.urlWs + "pedido/getPedido"+Factory.debug,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
                         if (!response.data.token) {
