@@ -72,7 +72,7 @@
                                     <h4 class="modal-title">Localizar Despesa</h4>
                                 </div>
 
-                                <div class="media-body" style="padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px">
+                                <div class="media-body" style="padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px; overflow-y: auto">
                                     <div class="row" style="padding-left: 15px; padding-right:  15px">
                                         <div class="form-group  col-sm-12 col-md-12 col-lg-12" >
                                             <label>Descrição</label>
@@ -84,18 +84,18 @@
                                         <div class="form-group col-sm-6 col-md-6 col-lg-6">
                                             <label>Data Inicial</label>
                                             <p class="input-group" style="width: 140px;"  >
-                                                <input type="text" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="buscaAvancada.dataInicio"  uib-datepicker-popup="ddMMyyyy" is-open="dataVencimentoInicial.opened"  alt-input-formats="['d!/M!/yyyy']"  />
+                                                <input type="text" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="buscaAvancada.dataInicio"  uib-datepicker-popup="ddMMyyyy" is-open="dataInicioFiltro.opened"  alt-input-formats="['d!/M!/yyyy']"  />
                                                 <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-default" ng-click="opendataVencimentoInicial()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    <button type="button" class="btn btn-default" ng-click="openDataInicioFiltro()"><i class="glyphicon glyphicon-calendar"></i></button>
                                                 </span>
                                             </p>
                                         </div>
                                         <div class="form-group col-sm-6 col-md-6 col-lg-6">
                                             <label>Data Final</label>
                                             <p class="input-group" style="width: 140px;"  >
-                                                <input type="text" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="buscaAvancada.dataFim"  uib-datepicker-popup="ddMMyyyy" is-open="dataVencimentoFinal.opened"  alt-input-formats="['d!/M!/yyyy']"  />
+                                                <input type="text" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="buscaAvancada.dataFim"  uib-datepicker-popup="ddMMyyyy" is-open="dataFimFiltro.opened"  alt-input-formats="['d!/M!/yyyy']"  />
                                                 <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-default" ng-click="opendataVencimentoFinal()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    <button type="button" class="btn btn-default" ng-click="openDataFimFiltro()"><i class="glyphicon glyphicon-calendar"></i></button>
                                                 </span>
                                             </p>
                                         </div>

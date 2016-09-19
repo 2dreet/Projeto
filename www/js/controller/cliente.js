@@ -58,6 +58,12 @@
                 $scope.fechar('#clienteDialogLocalizar');
                 $scope.getListaClienteAll(1);
             };
+            $scope.limpaFiltro = function () {
+                $scope.buscaAvancada = {};
+                $scope.valorBusca = "";
+                $scope.currentPage = 1;
+                $scope.getListaClienteAll(1);
+            };
 
             $scope.getListaClienteAll = function (pagina) {
                 if (Factory.verificaToken(true)) {
@@ -121,8 +127,9 @@
                                 $scope.listaCliente.push($scope.clienteAtual);
                                 $scope.totalItems = 1;
                             } else {
-                                $scope.currentPage = 1;
-                                $scope.getListaClienteAll(1);
+                                if ($scope.tipoFuncao === "deletar") {
+                                    $scope.limpaFiltro();
+                                }
                             }
                             $scope.setModoView();
                             Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgClienteGeral');

@@ -127,7 +127,7 @@
                         method: 'POST',
                         data: envio,
                         crossDomain: true,
-                        url: Factory.urlWs + "pedido/getPedido"+Factory.debug,
+                        url: Factory.urlWs + "pedido/getPedido" + Factory.debug,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
                         if (!response.data.token) {
@@ -173,6 +173,10 @@
                                 $scope.listaPedido = [];
                                 $scope.listaPedido.push(response.data.pedido);
                                 $scope.totalItems = 1;
+                            } else {
+                                if ($scope.tipoFuncao === "deletar") {
+                                    $scope.limpaFiltro();
+                                }
                             }
                             $scope.setModoView();
                         }

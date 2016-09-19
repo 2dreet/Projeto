@@ -106,8 +106,9 @@
                                 $scope.listaFornecedores.push($scope.fornecedorAtual);
                                 $scope.totalItems = 1;
                             } else {
-                                $scope.currentPage = 1;
-                                $scope.getListaFornecedorAll(1);
+                                if ($scope.tipoFuncao === "deletar") {
+                                    $scope.limpaFiltro();
+                                }
                             }
                             $scope.setModoView();
                         }

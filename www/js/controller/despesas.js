@@ -20,6 +20,14 @@
             $scope.openData = function () {
                 $scope.data.opened = true;
             };
+            $scope.dataInicioFiltro = {opened: true};
+            $scope.openDataInicioFiltro = function () {
+                $scope.dataInicioFiltro.opened = true;
+            };
+            $scope.dataFimFiltro = {opened: true};
+            $scope.openDataFimFiltro = function () {
+                $scope.dataFimFiltro.opened = true;
+            };
             $scope.setModoManter = function (isNovo) {
                 $scope.modoManter = true;
                 $scope.modoView = false;
@@ -108,8 +116,9 @@
                                 $scope.listaDespesas.push($scope.despesaAtual);
                                 $scope.totalItems = 1;
                             } else {
-                                $scope.currentPage = 1;
-                                $scope.getListaDespesaAll(1);
+                                if ($scope.tipoFuncao === "deletar") {
+                                    $scope.limpaFiltro();
+                                }
                             }
                             $scope.setModoView();
                         }

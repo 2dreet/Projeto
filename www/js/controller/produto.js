@@ -64,6 +64,13 @@
                 $scope.getListaProdutoAll(1);
                 $scope.fechar('#localizarProdutoDialog');
             };
+            
+            $scope.limpaFiltro = function () {
+                $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
+                $scope.valorBuscaProduto = "";
+                $scope.currentPage = 1;
+                $scope.getListaProdutoAll(1);
+            };
 
             $scope.setModoManter = function (isNovo) {
                 $scope.modoManter = true;
@@ -203,7 +210,7 @@
                         fd.append('tipoFuncao', $scope.tipoFuncao);
                         fd.append('dados', angular.toJson($scope.produtoAtual));
                         $scope.send = $http({
-                            url: Factory.urlWs + 'produto/enviarProduto'+Factory.debug,
+                            url: Factory.urlWs + 'produto/enviarProduto' + Factory.debug,
                             method: 'POST',
                             data: fd,
                             transformRequest: angular.identity,
@@ -219,8 +226,9 @@
                                     $scope.totalItems = 1;
                                     $scope.currentPage = 1;
                                 } else {
-                                    $scope.currentPage = 1;
-                                    $scope.getListaProdutoAll(1);
+                                    if ($scope.tipoFuncao === "deletar") {
+                                        $scope.limpaFiltro();
+                                    }
                                 }
                                 $scope.setModoView();
                                 Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgProdutoGeral');
@@ -353,7 +361,7 @@
                 $scope.produtoAtual = JSON.parse(JSON.stringify(produto));
                 $(":file").val(null);
                 $(":file").filestyle('clear');
-                $("#produtoImagemCadastroView").attr("src",$scope.getImagem($scope.produtoAtual.id));
+                $("#produtoImagemCadastroView").attr("src", $scope.getImagem($scope.produtoAtual.id));
                 $scope.abrir('#produtoDialogFuncoes');
             };
 

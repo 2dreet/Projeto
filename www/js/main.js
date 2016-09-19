@@ -49741,6 +49741,12 @@ $('#menu-lateral ul li').click(function () {
                 $scope.fechar('#clienteDialogLocalizar');
                 $scope.getListaClienteAll(1);
             };
+            $scope.limpaFiltro = function () {
+                $scope.buscaAvancada = {};
+                $scope.valorBusca = "";
+                $scope.currentPage = 1;
+                $scope.getListaClienteAll(1);
+            };
 
             $scope.getListaClienteAll = function (pagina) {
                 if (Factory.verificaToken(true)) {
@@ -49804,8 +49810,9 @@ $('#menu-lateral ul li').click(function () {
                                 $scope.listaCliente.push($scope.clienteAtual);
                                 $scope.totalItems = 1;
                             } else {
-                                $scope.currentPage = 1;
-                                $scope.getListaClienteAll(1);
+                                if ($scope.tipoFuncao === "deletar") {
+                                    $scope.limpaFiltro();
+                                }
                             }
                             $scope.setModoView();
                             Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgClienteGeral');
@@ -50084,6 +50091,14 @@ $('#menu-lateral ul li').click(function () {
             $scope.openData = function () {
                 $scope.data.opened = true;
             };
+            $scope.dataInicioFiltro = {opened: true};
+            $scope.openDataInicioFiltro = function () {
+                $scope.dataInicioFiltro.opened = true;
+            };
+            $scope.dataFimFiltro = {opened: true};
+            $scope.openDataFimFiltro = function () {
+                $scope.dataFimFiltro.opened = true;
+            };
             $scope.setModoManter = function (isNovo) {
                 $scope.modoManter = true;
                 $scope.modoView = false;
@@ -50172,8 +50187,9 @@ $('#menu-lateral ul li').click(function () {
                                 $scope.listaDespesas.push($scope.despesaAtual);
                                 $scope.totalItems = 1;
                             } else {
-                                $scope.currentPage = 1;
-                                $scope.getListaDespesaAll(1);
+                                if ($scope.tipoFuncao === "deletar") {
+                                    $scope.limpaFiltro();
+                                }
                             }
                             $scope.setModoView();
                         }
@@ -50346,8 +50362,9 @@ $('#menu-lateral ul li').click(function () {
                                 $scope.listaFornecedores.push($scope.fornecedorAtual);
                                 $scope.totalItems = 1;
                             } else {
-                                $scope.currentPage = 1;
-                                $scope.getListaFornecedorAll(1);
+                                if ($scope.tipoFuncao === "deletar") {
+                                    $scope.limpaFiltro();
+                                }
                             }
                             $scope.setModoView();
                         }
@@ -50624,7 +50641,7 @@ $('#menu-lateral ul li').click(function () {
                         method: 'POST',
                         data: envio,
                         crossDomain: true,
-                        url: Factory.urlWs + "pedido/getPedido"+Factory.debug,
+                        url: Factory.urlWs + "pedido/getPedido" + Factory.debug,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
                         if (!response.data.token) {
@@ -50670,6 +50687,10 @@ $('#menu-lateral ul li').click(function () {
                                 $scope.listaPedido = [];
                                 $scope.listaPedido.push(response.data.pedido);
                                 $scope.totalItems = 1;
+                            } else {
+                                if ($scope.tipoFuncao === "deletar") {
+                                    $scope.limpaFiltro();
+                                }
                             }
                             $scope.setModoView();
                         }
@@ -50946,6 +50967,13 @@ $('#menu-lateral ul li').click(function () {
                 $scope.getListaProdutoAll(1);
                 $scope.fechar('#localizarProdutoDialog');
             };
+            
+            $scope.limpaFiltro = function () {
+                $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
+                $scope.valorBuscaProduto = "";
+                $scope.currentPage = 1;
+                $scope.getListaProdutoAll(1);
+            };
 
             $scope.setModoManter = function (isNovo) {
                 $scope.modoManter = true;
@@ -51085,7 +51113,7 @@ $('#menu-lateral ul li').click(function () {
                         fd.append('tipoFuncao', $scope.tipoFuncao);
                         fd.append('dados', angular.toJson($scope.produtoAtual));
                         $scope.send = $http({
-                            url: Factory.urlWs + 'produto/enviarProduto'+Factory.debug,
+                            url: Factory.urlWs + 'produto/enviarProduto' + Factory.debug,
                             method: 'POST',
                             data: fd,
                             transformRequest: angular.identity,
@@ -51101,8 +51129,9 @@ $('#menu-lateral ul li').click(function () {
                                     $scope.totalItems = 1;
                                     $scope.currentPage = 1;
                                 } else {
-                                    $scope.currentPage = 1;
-                                    $scope.getListaProdutoAll(1);
+                                    if ($scope.tipoFuncao === "deletar") {
+                                        $scope.limpaFiltro();
+                                    }
                                 }
                                 $scope.setModoView();
                                 Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgProdutoGeral');
@@ -51235,7 +51264,7 @@ $('#menu-lateral ul li').click(function () {
                 $scope.produtoAtual = JSON.parse(JSON.stringify(produto));
                 $(":file").val(null);
                 $(":file").filestyle('clear');
-                $("#produtoImagemCadastroView").attr("src",$scope.getImagem($scope.produtoAtual.id));
+                $("#produtoImagemCadastroView").attr("src", $scope.getImagem($scope.produtoAtual.id));
                 $scope.abrir('#produtoDialogFuncoes');
             };
 
