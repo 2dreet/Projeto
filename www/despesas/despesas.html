@@ -55,6 +55,12 @@
                                 </tr>
                             </tbody>
                         </table> 
+                        <div style="text-align: center; padding-top: 10px; padding-right: 10px">
+                            <div class="form-group pull-right" style="width: 200px">
+                                <label>Valor Total</label>
+                                <input type="text" class="valor-produto-lista form-control" style="color: #738BFF; font-size: 16px; text-align: right" value="{{valorTotal | currency}}" readonly>
+                            </div>
+                        </div>
                     </div>
                     <div style="width: 100%; margin: 0; padding: 0; padding-left: 10px; padding-top: 10px" ng-show="totalItems > itensPorPagina">
                         <div style="width: auto; margin: auto; padding: 0; padding-right: 5px;" class="pull-right">

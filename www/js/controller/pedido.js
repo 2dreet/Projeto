@@ -5,6 +5,8 @@
             Factory.ajustaMenuLateral('#btnPedido');
             $rootScope.paginaAtual = "Pedidos";
             $rootScope.paginaAtualClass = "fa fa-shopping-cart botaoComIconeMenuLateral";
+            $scope.valorTotal = '0,00';
+            $scope.descontoTotal = '0,00';
             $scope.listaPedido = [];
             $scope.listaEntregue = [{'valor': true, 'descricao': 'Entregue'}, {'valor': false, 'descricao': 'Não Entregue'}];
             $scope.listaStatusPedido = Formulario.getStatusPedido();
@@ -109,11 +111,14 @@
                         url: Factory.urlWs + "pedido/getAllPedido" + Factory.debug,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
+                        $scope.valorTotal = '0,00';
                         if (!response.data.token) {
                             Factory.refazerLogin();
                         } else {
                             $scope.listaPedido = response.data.dados;
                             $scope.totalItems = response.data.totalRegistro;
+                            $scope.valorTotal = response.data.valorTotal;
+                            $scope.descontoTotal = response.data.descontoTotal;
                         }
                     }, function errorCallback(response) {
                         Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgPedidoGeral');
@@ -173,6 +178,8 @@
                                 $scope.listaPedido = [];
                                 $scope.listaPedido.push(response.data.pedido);
                                 $scope.totalItems = 1;
+                                $scope.valorTotal = response.data.pedido.valor;
+                                $scope.descontoTotal = response.data.pedido.desconto;
                             } else {
                                 if ($scope.tipoFuncao === "deletar") {
                                     $scope.limpaFiltro();
