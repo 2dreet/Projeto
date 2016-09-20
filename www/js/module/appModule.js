@@ -1,4 +1,4 @@
-var app = angular.module('www.geve.com.br', ['ngRoute', 'ui.utils.masks', 'ui.mask', 'cgBusy', 'ui.bootstrap']);
+var app = angular.module('www.geve.com.br', ['ngRoute', 'ui.utils.masks', 'ui.mask', 'cgBusy', 'ui.bootstrap', 'ngMaterial']);
 app.config(function ($routeProvider, $locationProvider) {
     $routeProvider
             .when('/', {

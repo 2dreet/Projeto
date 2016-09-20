@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    angular.module('www.geve.com.br').controller("masterPageControler", ['$scope', '$http', 'Factory', function ($scope, $http, Factory) {
+    angular.module('www.geve.com.br').controller("masterPageControler", ['$scope', '$http', 'Factory', '$mdSidenav', function ($scope, $http, Factory, $mdSidenav) {
             $scope.pessoa = {nome: ''};
             $scope.sair = function () {
                 Factory.refazerLogin();
@@ -25,6 +25,17 @@
                     });
                 }
             };
+            $scope.open = function () {
+                // Component lookup should always be available since we are not using `ng-if`
+                $mdSidenav('left').open();
+            };
+            $scope.close = function () {
+                // Component lookup should always be available since we are not using `ng-if`
+                $mdSidenav('left').close();
+            };
             $scope.verifica();
+            onload = function () {
+                document.body.style.visibility = "visible";
+            };
         }]);
 })();

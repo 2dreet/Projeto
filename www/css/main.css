@@ -424,10 +424,6 @@ input::-webkit-inner-spin-button {
     color: #E7E7E7 !important;
 }
 
-#menu-lateral ul li{
-    /*border-bottom: 1px solid #181c20;*/
-}
-
 .info-usuario{
     padding-top: 10px;
     padding-right: 10px;
@@ -474,10 +470,6 @@ input::-webkit-inner-spin-button {
     border-bottom: 1px solid #181c20;
 }
 
-#menu-lateral ul li a {
-    border-left: 3px solid #2e353d;
-}
-
 #menu-lateral ul li a:hover{
     color: #ffffff;
     border-right: 5px solid #1ABB9C;
@@ -486,9 +478,6 @@ input::-webkit-inner-spin-button {
 
 #conteudo{
     width: 100%;
-    /*height: calc(100% - 70px);*/
-/*    max-height: calc(100% - 70px);
-    min-height: calc(100% - 70px);*/
     padding: 0px;
     margin: 0px;
     overflow-x: auto;
@@ -558,72 +547,20 @@ input[type="email"]:read-only{
     background: white;
 } 
 
-@media screen and (max-width: 1300px) {
-    #btn-menu-lateral{
-        display:block;
-    }
-    .row-offcanvas {
-        position: relative;
-        -webkit-transition: all .25s ease-out;
-        -moz-transition: all .25s ease-out;
-        transition: all .25s ease-out;
-    }
-
-    .row-offcanvas-right {
-        right: 0;
-    }
-
-    .row-offcanvas-left {
-        left: 0;
-    }
-
-    .row-offcanvas-right #menu-lateral {
-        right: -250px;
-    }
-
-    .row-offcanvas-left #menu-lateral {
-        left: -250px;
-    }
-
-    .row-offcanvas-right.active {
-        right: calc(250px);
-    }
-
-    .row-offcanvas-left.active {
-        left: calc(250px);
-    }
-
-    #menu-lateral {
-        position: absolute;
-        width: 250px;
-    }
-
-    #app-meio{
-        width: 100%;
-        padding: 0;
-    }
-
-    #nav-meio{
-        padding-left: 5px;
-    }
-
-    html, body {
-        margin: 0px;
-        padding: 0px;
-    }
-
-    .menu-top-pagina{
-        padding-left: 5px;
-        padding-right: 5px;
-    }
-    .menu-ul{
-        padding-left: 5px;
-    }
-}
-
 @media screen and (max-width: 767px) {
     .menu-ul{
         padding-left: 20px;
+    }
+    
+    .padinng-tela-pequena-novo{
+        padding-left: 15px;
+    }
+    .padinng-tela-pequena{
+        padding-left: 8px;
+        padding-bottom: 10px;
+    }
+    .padinng-tela-pequena-pesquisa{
+        padding-left: 8px;
     }
 }
 #tabela-produto{
