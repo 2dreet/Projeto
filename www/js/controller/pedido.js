@@ -108,7 +108,7 @@
                         method: 'POST',
                         data: envio,
                         crossDomain: true,
-                        url: Factory.urlWs + "pedido/getAllPedido" + Factory.debug,
+                        url: Factory.urlWs + "pedido/getAllPedido" ,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
                         $scope.valorTotal = '0,00';
@@ -132,7 +132,7 @@
                         method: 'POST',
                         data: envio,
                         crossDomain: true,
-                        url: Factory.urlWs + "pedido/getPedido" + Factory.debug,
+                        url: Factory.urlWs + "pedido/getPedido" ,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
                         if (!response.data.token) {
