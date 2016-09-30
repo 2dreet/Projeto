@@ -50712,7 +50712,7 @@ $('#menu-lateral ul li').click(function () {
                         method: 'POST',
                         data: envio,
                         crossDomain: true,
-                        url: Factory.urlWs + "pedido/getPedido" ,
+                        url: Factory.urlWs + "pedido/getPedido",
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
                         if (!response.data.token) {
@@ -50732,7 +50732,9 @@ $('#menu-lateral ul li').click(function () {
                             }
                             $scope.pedidoAtual.parcelas = $scope.pedidoAtual.listaParcelas.length;
                             var clienteAux = JSON.parse(JSON.stringify($scope.pedidoAtual.cliente));
-                            clienteAux = {id: clienteAux.id, nome: clienteAux.pessoa.nome + ' ' + clienteAux.pessoa.sobreNome};
+                            if (clienteAux !== null && clienteAux.id !== undefined) {
+                                clienteAux = {id: clienteAux.id, nome: clienteAux.pessoa.nome + ' ' + clienteAux.pessoa.sobreNome};
+                            }
                             if ($scope.pedidoAtual.cliente === undefined) {
                                 $scope.pedidoAtual.cliente = {};
                             }
@@ -50751,7 +50753,7 @@ $('#menu-lateral ul li').click(function () {
                     $scope.send = $http({
                         method: 'POST',
                         crossDomain: true,
-                        url: Factory.urlWs + "pedido/enviarPedido"+ Factory.debug,
+                        url: Factory.urlWs + "pedido/enviarPedido",
                         data: envio,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
