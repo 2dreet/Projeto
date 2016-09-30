@@ -1,3 +1,70 @@
-<div class="" ng-controller="inicioControler">
-    
-</div>
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div ng-controller="inicioControler" style="min-width: 300px; ">
+            <div class="panel panel-default">
+                <div class="panel-body" >
+                    <div style="text-align: center; padding-top: 10px; overflow-y: auto; overflow-x: hidden">
+                        <div id="msgInicioGeral" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"></div>
+                        <div class="row" style="width: 70px;">
+                            <button class="btn btn-default" type="button" ng-click="getDados()" style="height: 34px" aria-label=""><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                <label>Cliente</label>
+                                <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary" style="width: 100px; height: 34px" type="button" ng-click="localizarCliente();" aria-label=""><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
+                                    </span>
+                                    <input type="text" class="form-control" value="{{busca.cliente.nome}}" />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button" ng-click="busca.cliente = null" style="height: 34px" aria-label=""><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="width: 400px;">
+                            <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                <label>Data Inicial</label>
+                                <p class="input-group" style="width: 140px;"  >
+                                    <input type="text" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="busca.dataInicio"  uib-datepicker-popup="ddMMyyyy" is-open="dataInicioDialog.opened"  alt-input-formats="['d!/M!/yyyy']"  />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="openDataInicioDialog()" style="height: 34px" aria-label=""><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                <label>Data Final</label>
+                                <p class="input-group" style="width: 140px;"  >
+                                    <input type="text" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="busca.dataFim"  uib-datepicker-popup="ddMMyyyy" is-open="dataFimDialog.opened"  alt-input-formats="['d!/M!/yyyy']"  />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="openDataFimDialog()" style="height: 34px" aria-label=""><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-4 col-md-4 col-lg-4">
+                                <label>Valor recebido</label>
+                                <input type="text" class="valor-produto-lista form-control" style=" font-size: 16px; text-align: left" value="{{valorRecebido| currency}}" readonly>
+                            </div>
+                            <div class="form-group col-sm-4 col-md-4 col-lg-4">
+                                <label>Valor receber</label>
+                                <input type="text" class="valor-produto-lista form-control" style="color: #738BFF; font-size: 16px; text-align: left" value="{{valorReceber| currency}}" readonly>
+                            </div>
+                            <div class="form-group col-sm-4 col-md-4 col-lg-4">
+                                <label>Valor despesas</label>
+                                <input type="text" class="valor-produto-lista form-control" style="color: #FF5E5E; font-size: 16px; text-align: left" value="{{valorDespesas| currency}}" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-include="'filtros/cliente.html'"></div>
+        </div>
+    </body>
+</html>

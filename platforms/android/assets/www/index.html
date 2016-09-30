@@ -4,77 +4,51 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Geve</title>
+
         <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
-        <link rel="stylesheet" href="css/font-awesome.min.css">
         <link rel="stylesheet" href="css/main.css" >
+        <style>
+            html, body {
+                background: #2e353d;
+            }
+
+            #painel-login{
+                width: 300px;
+                height: 300px;
+                position: absolute;
+                top: calc(50% - 150px);
+                left: calc(50% - 150px);
+
+            }
+
+        </style>
     </head>
-    <body  cg-busy="loading" ng-controller="masterPageControler">
-        <div id="pagina" class="row row-offcanvas row-offcanvas-left" cg-busy="{promise:send, templateUrl:'send.html'}">
 
-            <nav id="menu-lateral" class="navbar-default navbar-static-side" role="navigation">
-                <div class="row" id="headerLateral">
-                    <div class="col-md-12" role="navigation">
-                        <h1>Geve</h1>
-                    </div>
-                </div>
-                <ul class="nav nav-stacked">
-                    <li id="btnHome"><a href="#/home" > <span class="fa fa-home botaoComIconeMenuLateral" aria-hidden="true"></span> início </a></li>
-                    <li id="btnFornecedor" ><a href="#/fornecedor"><span class="fa fa-briefcase botaoComIconeMenuLateral" aria-hidden="true"></span> Fornecedor</a></li>
-                    <li id="btnCliente" ><a href="#/cliente"><span class="fa fa-users botaoComIconeMenuLateral" aria-hidden="true"></span> Cliente</a></li>
-                    <li id="btnProduto" ><a href="#/produto"><span class="fa fa-gift botaoComIconeMenuLateral" aria-hidden="true"></span> Produto</a></li>
-                    <li id="btnPedido" ><a href="#/pedido"><span class="fa fa-shopping-cart botaoComIconeMenuLateral" aria-hidden="true"></span> Pedido</a></li>
-                    <li id="btnDespesas" ><a href="#/despesas"><span class="fa fa-usd botaoComIconeMenuLateral" aria-hidden="true"></span> Despesas</a></li>
-                    <li id="btnUsuario" ><a href="#/usuario"><span class="fa fa-cog botaoComIconeMenuLateral" aria-hidden="true"></span> Usuário</a></li>
-                    <li id="btnInfor" ><a href="#/info"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Info</a></li>
-                </ul>
-            </nav>
-            <div id="app-meio">
-                <div id="app-meio-row" >
-                    <div id="nav-meio" class="navbar navbar-default">
-                        <button id="btn-menu-lateral" type="button" class="navbar-toggle pull-left btn-sm">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <div id="dados-usuario" class="header row" >
-                            <div>
-                                <ul class="nav nav-pills">
-                                    <li class="pull-left" style="padding-left: 30px; padding-top: 10px; ">
-                                        <span ng-class="paginaAtualClass" aria-hidden="true"></span><span ng-bind="paginaAtual"></span>
-                                    </li>
-                                    <li class="dropdown pull-right">
-                                        <ul class="nav nav-pills">
-                                            <li>
-                                                <p class="info-usuario" ><span class="fa fa-user botaoComIcone" aria-hidden="true"></span><span ng-bind="pessoa.nome + ' ' + pessoa.sobre_nome"></span></p>      
-                                            </li>
-                                            <li>
-                                                <a href="" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <span class="caret"></span></a>
-                                                <ul class="dropdown-menu dropdown-menu-right">
-                                                    <li><a href="" ng-click="sair()"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Sair</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
+    <body>
+        <div id="login-page" class="container-fluid" >
+            <div id="painel-login" class="panel panel-default">
+                <div class="panel-body" style="" ng-controller="loginControler">
+                    <form>
+
+                        <div class="row" style="padding-left: 10px; padding-right: 10px; padding-top: 80px">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><input type="text" class="form-control" required="required" placeholder="Usuário" ng-s ng-model="usuario.usuario"></li>
+                                <li><input type="password" class="form-control" required="required" placeholder="Senha" ng-model="usuario.senha"></li>
+                                <li><button type="button" class="btn btn-primary" style="width: 100%" ng-click="logar()">Entrar</button></li>
+                            </ul>
                         </div>
-                    </div>
 
-                    <div ng-view id="conteudo" class="col-xs-12 col-sm-9 col-md-9 col-lg-10 content">
+                        <div id="msgUsuario" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px"></div>
 
-                    </div>
+                        <!--                    <div class="row" style="padding-left: 10px; padding-right: 10px;padding-top: 50px">
+                                                <ul class="nav nav-pills nav-stacked">
+                                                    <li><button type="submit" class="btn btn-success" style="width: 100%">Cadastrar</button></li>
+                                                </ul>
+                                            </div>-->
+                    </form>
                 </div>
             </div>
         </div>
-
         <script language="JavaScript" type="text/javascript" src="js/main.js"></script>
-
-        <script>
-                                       
-
-
-        </script>
-
-
     </body>
 </html>

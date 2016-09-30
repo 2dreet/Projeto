@@ -19,6 +19,9 @@
         this.getTipoPedido = function () {
             return [{id: 1, descricao: 'Prontra Entrega'}, {id: 2, descricao: 'Encomenda'}];
         };
+        this.getStatusPedido = function () {
+            return [{id: 1, descricao: 'Não Pago'}, {id: 2, descricao: 'Pago'}, {id: 3, descricao: 'Pago Parcialmente'}];
+        };
         this.getStatusPedidoId = function (id) {
             var listaStatus = [{id: 1, descricao: 'Não Pago'}, {id: 2, descricao: 'Pago'}, {id: 3, descricao: 'Pago Parcialmente'}];
             for (var i = listaStatus.length; i--; ) {

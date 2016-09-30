@@ -21,14 +21,14 @@
                             $scope.verifica();
                         }
                     }, function errorCallback(response) {
-                        Factory.setMensagemTemporaria('erro', "Erro de comunicação ur"+Factory.urlWs, '#msgUsuario');
+                        Factory.setMensagemTemporaria('erro', "Erro de comunicação", '#msgUsuario');
                     });
                 }
             };
 
             $scope.verifica = function () {
                 if (Factory.verificaToken(false)) {
-                    $(window.document.location).attr('href', "index.html");
+                    $(window.document.location).attr('href', "home.html");
                 }
             };
 

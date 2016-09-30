@@ -10,24 +10,24 @@
                 <div class="panel-heading" style="padding: 0px; margin: 0px;">
                     <nav class="navbar navbar-default" style="padding: 0px; margin: 0px; border: none; ">
                         <div class="container-fluid " style="padding: 0px; margin: 0px;">
-                            <div class="navbar-header col-sm-8 col-md-6 col-lg-8" style="padding-left: 0px">
+                            <div class="navbar-header col-sm-8 col-md-6 col-lg-8" style="padding-top: 8px; padding-left: 8px">
                                 <ul class="nav navbar-nav menu-ul menu-top-pagina" style="padding: 0px; margin: 0px;">
-                                    <li><a href="" class="btn-success cor-font-global" ng-click="setModoManter(true)"><span class="fa fa-plus botaoComIcone"></span> <span> Novo Pedido </span></a></li>
+                                    <li  class="padinng-tela-pequena-novo"><button class=" btn btn-success cor-font-global" ng-click="setModoManter(true)"><span class="fa fa-plus botaoComIcone"></span> <span> Novo Pedido </span></button></li>
                                 </ul>
                             </div>
-                            <div class="input-group pull-right col-sm-4 col-md-6 col-lg-4" style="padding-top: 8px; padding-right: 8px">
-                                <span class="input-group-btn">
+                            <div class="input-group pull-right col-sm-4 col-md-6 col-lg-4 padinng-tela-pequena" style="padding-top: 8px; padding-right: 8px">
+                                <span class="input-group-btn padinng-tela-pequena-pesquisa">
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  style="height: 34px">
                                             <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a href="" ><span class="glyphicon glyphicon-filter" aria-hidden="true" style="padding-right: 5px"></span>Filtro Avançado</a></li>
+                                            <li><a href="" ng-click="preparaFiltrar()"><span class="glyphicon glyphicon-filter" aria-hidden="true" style="padding-right: 5px"></span>Filtro Avançado</a></li>
                                             <li><a href="" ng-click="limpaFiltro()"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true" style="padding-right: 5px" ></span>Limpar Filtro</a></li>
                                         </ul>
                                     </div>
                                 </span>
-                                <input type="text" class="form-control" placeholder="Localizar...">
+                                <input type="text" class="form-control" placeholder="Localizar..." ng-model="valorBusca">
                                 <span class="input-group-btn">
                                     <button class="btn btn-primary" type="button" ng-click="filtrar(true)"  style="height: 34px"><span class="fa fa-search " ></span></button>
                                 </span>
@@ -54,13 +54,27 @@
                                 <tr ng-repeat="pedido in listaPedido" ng-click="getPedido(pedido.id)">
                                     <td ng-bind="pedido.descricao"></td>
                                     <td ng-bind="pedido.cliente"></td>
-                                    <td class="visible-md visible-lg" ng-bind="pedido.dataVencimento | date: 'dd / MM / yyyy'" > </td>
+                                    <td class="visible-md visible-lg" ng-bind="pedido.dataVencimento | date: 'dd/MM/yyyy'" > </td>
                                     <td ng-bind="getStatusPedido(pedido.status).descricao + isEntregue(pedido.entregue)"></td>
                                     <td ng-bind="getTipoPedido(pedido.tipo_pedido).descricao"></td>
                                     <td ng-bind="(pedido.valor - pedido.desconto) | currency"></td>
                                 </tr>
                             </tbody>
                         </table> 
+                        <div style="text-align: center; padding-top: 10px">
+                            <div class="form-group col-sm-4 col-md-4 col-lg-4">
+                                <label>Valor Produto</label>
+                                <input type="text" class="valor-produto-lista form-control" style="color: #738BFF; font-size: 16px; text-align: left" value="{{valorTotal | currency}}" readonly>
+                            </div>
+                            <div class="form-group col-sm-4 col-md-4 col-lg-4">
+                                <label>Valor Desconto</label>
+                                <input type="text" class="valor-produto-lista form-control" style="color: #FF5E5E; font-size: 16px; text-align: left" value="{{descontoTotal| currency}}" readonly>
+                            </div>
+                            <div class="form-group col-sm-4 col-md-4 col-lg-4">
+                                <label>Valor Total</label>
+                                <input type="text" class="valor-produto-lista form-control" style="font-size: 16px; text-align: left" value="{{valorTotal -descontoTotal | currency}}" readonly>
+                            </div>
+                        </div>
                     </div>
                     <div style="width: 100%; margin: 0; padding: 0; padding-left: 10px; padding-top: 10px" ng-show="totalItems > 15">
                         <div style="width: auto; margin: auto; padding: 0; padding-right: 5px;" class="pull-right">
@@ -69,10 +83,7 @@
                     </div>
                 </div>
             </div>
-            <div ng-include="'pedido/manter-pedido.html'"></div>
-            <div ng-include="'filtros/produto.html'"></div>
-            <div ng-include="'filtros/cliente.html'"></div>
-            <div class="modal fade" id="pedidoDialogFuncoes" role="dialog" style="width: 210px; margin: auto">
+            <div class="modal fade" id="pedidoDialogFuncoes" role="dialog" style="width: 210px; margin: auto" cg-busy="{promise:send, templateUrl:'send.html'}">
                 <div class="modal-dialog" style="width: 200px">
                     <div class="modal-content" style="width: 200px">
                         <form>
@@ -99,7 +110,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="pedidoDialogParcelas" role="dialog" style=" margin: auto">
+            <div class="modal fade" id="pedidoDialogParcelas" role="dialog" style=" margin: auto" cg-busy="{promise:send, templateUrl:'send.html'}">
                 <div class="modal-dialog" >
                     <div class="modal-content" >
                         <form>
@@ -123,8 +134,8 @@
                                             <tr ng-repeat="parcela in pedidoAtual.listaParcelas">
                                                 <td ng-bind="parcela.valor | currency"></td>
                                                 <td ng-bind="getStatusPedido(parcela.status).descricao"></td>
-                                                <td class="visible-md visible-lg" ng-bind="parcela.data_pagamento | date: 'dd / MM / yyyy'" > </td>
-                                                <td><button type="button" ng-show="parcela.status == 1" class="btn btn-xs pull-left btn-success" ng-click="pagarParcela(parcela)"><span class="fa fa-usd" aria-hidden="true"></span></button></td>
+                                                <td ng-bind="parcela.data_pagamento | date: 'dd/MM/yyyy'" > </td>
+                                                <td><button type="button" ng-show="parcela.status == 1" class="btn btn-xs pull-left btn-success" ng-click="pagarParcela(parcela)"><span class="fa fa-usd" aria-hidden="true"></span>Pagar</button></td>
                                             </tr>
                                         </tbody>
                                     </table> 
@@ -150,71 +161,90 @@
                             <div class="modal-body" >
                                 <div id="msgParcelaGeral" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"></div>
                                 <div class="row" style="padding-left: 15px;padding-right:  15px">
-                                    <div class="form-group col-sm-4 col-md-2 col-lg-2">
+                                    <div class="form-group col-sm-6 col-md-6 col-lg-6">
                                         <label>Descrição</label>
-                                        <input type="text"  class="form-control" id="produtoDescricao" ng-model="buscaAvancada.descricao" maxlength="32"> 
+                                        <input type="text"  class="form-control" ng-model="buscaAvancada.descricao" maxlength="32"> 
                                     </div>
-                                    <div class="form-group col-sm-4 col-md-2 col-lg-2">
+                                    <div class="form-group col-sm-6 col-md-6 col-lg-6">
                                         <label>Tipo Pedido</label>
                                         <select class="form-control" ng-model="buscaAvancada.tipo_pedido" 
-                                                ng-options="option.descricao for option in listaTipoPedido track by option.id" > </select>
+                                                ng-options="option.descricao for option in listaTipoPedidoFiltro track by option.id" > </select>
                                     </div>
-                                    <div class="form-group col-sm-4 col-md-2 col-lg-2">
+                                    <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                        <label>Status Pedido</label>
+                                        <select class="form-control" ng-model="buscaAvancada.status_pedido" 
+                                                ng-options="option.descricao for option in listaStatusPedidoFiltro track by option.id" > </select>
+                                    </div>
+                                    <div class="form-group col-sm-6 col-md-6 col-lg-6">
                                         <label>Forma Pagamento</label>
                                         <select class="form-control" ng-model="buscaAvancada.forma_pagamento" 
-                                                ng-options="option.descricao for option in listaFormaPagamento track by option.id"> </select>
+                                                ng-options="option.descricao for option in listaFormaPagamentoFiltro track by option.id"> </select>
                                     </div>
+                                </div>
+                                <div class="row" style="padding-left: 15px; padding-right:  15px">
                                     <div class="form-group col-sm-12 col-md-12 col-lg-12">
                                         <label>Cliente</label>
                                         <div class="input-group">
                                             <span class="input-group-btn">
-                                                <button class="btn btn-primary" style="width: 100px" type="button" ng-click="localizarCliente(buscaAvancada)"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
+                                                <button class="btn btn-primary" style="width: 100px" type="button" ng-click="localizarCliente(buscaAvancada);"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
                                             </span>
-                                            <input type="text" class="form-control" ng-readonly="true" id="pedidoAtualCliente" value="{{buscaAvancada.cliente.nome}}" />
+                                            <input type="text" class="form-control" ng-readonly="true" value="{{buscaAvancada.cliente.nome}}" />
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" type="button" ng-click="buscaAvancada.cliente = null"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></button>
+                                            </span>
                                         </div>
                                     </div>
-                                    <div class="form-group col-sm-4 col-md-2 col-lg-2" style="padding: 0px; margin: 0px; padding-left: 15px">
+                                </div>
+                                <div class="row" style="padding-left: 15px; padding-right:  15px">
+                                    <div class="form-group col-sm-6 col-md-6 col-lg-6">
                                         <label>Data Vencimento Inicial</label>
                                         <p class="input-group" style="width: 140px;"  >
-                                            <input type="text" id="pedidoDataVencimento" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="buscaAvancada.data_vencimento_inicial"  uib-datepicker-popup="ddMMyyyy" is-open="dataVencimento.opened"  alt-input-formats="['d!/M!/yyyy']"  />
+                                            <input type="text" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="buscaAvancada.data_vencimento_inicial"  uib-datepicker-popup="ddMMyyyy" is-open="dataVencimentoInicial.opened"  alt-input-formats="['d!/M!/yyyy']"  />
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default" ng-click="opendataVencimento()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                <button type="button" class="btn btn-default" ng-click="opendataVencimentoInicial()"><i class="glyphicon glyphicon-calendar"></i></button>
                                             </span>
                                         </p>
                                     </div>
-                                    <div class="form-group col-sm-4 col-md-2 col-lg-2" style="padding: 0px; margin: 0px; padding-left: 15px">
+                                    <div class="form-group col-sm-6 col-md-6 col-lg-6">
                                         <label>Data Vencimento Final</label>
                                         <p class="input-group" style="width: 140px;"  >
-                                            <input type="text" id="pedidoDataVencimento" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="buscaAvancada.data_vencimento_final"  uib-datepicker-popup="ddMMyyyy" is-open="dataVencimento.opened"  alt-input-formats="['d!/M!/yyyy']"  />
+                                            <input type="text" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="buscaAvancada.data_vencimento_final"  uib-datepicker-popup="ddMMyyyy" is-open="dataVencimentoFinal.opened"  alt-input-formats="['d!/M!/yyyy']"  />
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default" ng-click="opendataVencimento()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                <button type="button" class="btn btn-default" ng-click="opendataVencimentoFinal()"><i class="glyphicon glyphicon-calendar"></i></button>
                                             </span>
                                         </p>
                                     </div>
-                                    <div class="form-group col-sm-4 col-md-2 col-lg-2" style="padding: 0px; margin: 0px; padding-left: 15px">
+                                    <div class="form-group col-sm-6 col-md-6 col-lg-6" >
                                         <label>Data Pagamento Inicial</label>
                                         <p class="input-group" style="width: 140px;"  >
-                                            <input type="text" id="pedidoDataVencimento" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="buscaAvancada.data_pagamento_inicial"  uib-datepicker-popup="ddMMyyyy" is-open="dataVencimento.opened"  alt-input-formats="['d!/M!/yyyy']"  />
+                                            <input type="text" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="buscaAvancada.data_pagamento_inicial"  uib-datepicker-popup="ddMMyyyy" is-open="dataPagamentoInicial.opened"  alt-input-formats="['d!/M!/yyyy']"  />
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default" ng-click="opendataVencimento()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                <button type="button" class="btn btn-default" ng-click="opendataPagamentoInicial()"><i class="glyphicon glyphicon-calendar"></i></button>
                                             </span>
                                         </p>
                                     </div>
-                                    <div class="form-group col-sm-4 col-md-2 col-lg-2" style="padding: 0px; margin: 0px; padding-left: 15px">
+                                    <div class="form-group col-sm-6 col-md-6 col-lg-6">
                                         <label>Data Pagamento Final</label>
                                         <p class="input-group" style="width: 140px;"  >
-                                            <input type="text" id="pedidoDataVencimento" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="buscaAvancada.data_pagamento_final"  uib-datepicker-popup="ddMMyyyy" is-open="dataVencimento.opened"  alt-input-formats="['d!/M!/yyyy']"  />
+                                            <input type="text" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="buscaAvancada.data_pagamento_final"  uib-datepicker-popup="ddMMyyyy" is-open="dataPagamentoFinal.opened"  alt-input-formats="['d!/M!/yyyy']"  />
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default" ng-click="opendataVencimento()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                <button type="button" class="btn btn-default" ng-click="opendataPagamentoFinal()"><i class="glyphicon glyphicon-calendar"></i></button>
                                             </span>
                                         </p>
                                     </div>
 
                                 </div>
+                                <div class="row" style="padding-left: 15px; padding-right:  15px">
+                                    <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                        <label>Situação</label>
+                                        <select class="form-control" ng-model="buscaAvancada.entregue" 
+                                                ng-options="option.descricao for option in listaEntregue track by option.valor" > </select>
+                                    </div>
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <div class="input-group" style="width: 100%">
-                                    <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fecharDialog('#pedidoDialogLocalizar')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
+                                    <button type="button" class="btn btn-default pull-left btn-danger " ng-click="fechar('#pedidoDialogLocalizar')"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
                                     <button type="submit" class="btn btn-default pull-right btn-primary " ng-click="filtrar(false);" ><span class="glyphicon glyphicon-filter botaoComIcone" aria-hidden="true"></span>Localizar</button>
                                 </div>
                             </div>
@@ -222,6 +252,9 @@
                     </div>
                 </div>
             </div>
+            <div ng-include="'pedido/manter-pedido.html'"></div>
+            <div ng-include="'filtros/produto.html'"></div>
+            <div ng-include="'filtros/cliente.html'"></div>
         </div>
     </body>
 </html>

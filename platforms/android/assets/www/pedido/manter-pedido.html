@@ -5,24 +5,30 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div class="panel panel-default" ng-show="modoManter" cg-busy="loadingLocal">
+        <div class="panel panel-default" ng-show="modoManter" cg-busy="{promise:send, templateUrl:'send.html'}">
             <div class="panel-heading" style="padding: 0px; margin: 0px; ">
                 <nav class="navbar navbar-default" style="padding: 0px; margin: 0px; border: none">
                     <div class="container-fluid " style="padding: 0px; margin: 0px; border: none">
-                        <div class="navbar-header col-sm-8 col-md-6 col-lg-8" style="padding: 0px; margin: 0px; border: none" >
-                            <ol class="nav navbar-nav menu-ul menu-top-pagina btn-group" style="padding: 0px; margin: 0px; border: none">
-                                <li><a href="" ng-click="setModoView()"> <span class="fa fa-chevron-left botaoComIcone"></span><span>Pedidos</span></a></li>
-                                <li class="active"><a href="" ><span ng-bind="getTituloCrud()"></span></a></li>
-                            </ol>
+                        <div class="navbar-header"  style="padding: 0px; margin: 0px;">
+                            <div class="input-group pull-left" style="padding-top: 8px; padding-right: 8px; padding-left: 8px">
+                                <span class="input-group-btn" style="height: 34px">
+                                    <button class=" btn btn-primary cor-font-global" ng-click="setModoView()"> <span class="fa fa-chevron-left botaoComIcone"></span><span>Voltar</span></button>
+                                </span>
+                                <input type="text" class="form-control" value="{{getTituloCrud()}}" readonly style="width: 150px">
+                            </div>
                         </div>
                     </div>
                 </nav>
             </div>
             <div class="panel-body"  style="padding: 0px; margin: 0px; padding-top: 10px;  ">
-                <div class="media-body" cg-busy="loadingLocal">
+                <div class="media-body" cg-busy="loadingLocal" style="overflow-y: auto">
                     <form>
-                        <uib-tabset active="indice">
-                            <uib-tab index="0" heading="Produtos" >
+                        <ul id="TabPedidoCrudTitle" class="nav nav-tabs" role="tablist">
+                            <li role="presentation" id="tabProdutosDoPedidoTitle"><a href="" ng-click="mudaTab('#tabProdutosDoPedido', '#tabProdutosDoPedidoTitle')"  role="tab" data-toggle="tab">Produtos</a></li>
+                            <li role="presentation"  id="tabDadosDoPedidoTitle" ><a href="" ng-click="mudaTab('#tabDadosDoPedido', '#tabDadosDoPedidoTitle')"  role="tab" data-toggle="tab">Dados do Pedido</a></li>
+                        </ul>
+                        <div id="TabPedidoCrud" class="tab-content">
+                            <div role="tabpanel" class="tab-pane" id="tabProdutosDoPedido">
                                 <div class="input-group" style="width: 100%; padding-left: 10px; padding-right: 10px; padding-bottom: 10px; padding-top: 10px" ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'" >
                                     <button type="button" class="btn btn-sm pull-left btn-success" ng-click="localizarProduto()"><span class="glyphicon glyphicon-plus botaoComIcone" aria-hidden="true"></span>Incluir Produto</button>
                                 </div>
@@ -46,8 +52,8 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            </uib-tab>
-                            <uib-tab index="1" heading="Dados Pedido" >
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="tabDadosDoPedido">
                                 <div class="row" style="padding-left: 15px;padding-right:  15px">
                                     <div class="form-group col-sm-4 col-md-2 col-lg-2">
                                         <label>Descrição</label>
@@ -55,7 +61,7 @@
                                     </div>
                                     <div class="form-group col-sm-4 col-md-2 col-lg-2">
                                         <label>Tipo Pedido</label>
-                                        <input type="text"  class="form-control" ng-model="pedidoAtual.tipo_pedido.descricao" maxlength="32" ng-readonly ng-show="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'"> 
+                                        <input type="text"  class="form-control" ng-model="pedidoAtual.tipo_pedido.descricao" maxlength="32" readonly ng-show="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'"> 
                                         <select class="form-control" ng-model="pedidoAtual.tipo_pedido" 
                                                 ng-options="option.descricao for option in listaTipoPedido track by option.id" ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'"> </select>
                                     </div>
@@ -65,7 +71,7 @@
                                     </div>
                                     <div class="form-group col-sm-4 col-md-2 col-lg-2" style="padding: 0px; margin: 0px; padding-left: 15px">
                                         <label>Data Vencimento</label>
-                                        <input type="text" id="pedidoDataVencimento" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="pedidoAtual.data_vencimento"  uib-datepicker-popup="ddMMyyyy" is-open="dataVencimento.opened"  alt-input-formats="['d!/M!/yyyy']" ng-readonly ng-show="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'" />
+                                        <input type="text"  class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="pedidoAtual.data_vencimento"  uib-datepicker-popup="ddMMyyyy"  alt-input-formats="['d!/M!/yyyy']" readonly ng-show="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'" />
                                         <p class="input-group" style="width: 140px;"  ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'">
                                             <input type="text" id="pedidoDataVencimento" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="pedidoAtual.data_vencimento"  uib-datepicker-popup="ddMMyyyy" is-open="dataVencimento.opened"  alt-input-formats="['d!/M!/yyyy']"  />
                                             <span class="input-group-btn">
@@ -75,7 +81,7 @@
                                     </div>
                                     <div class="form-group col-sm-4 col-md-2 col-lg-2">
                                         <label>Forma Pagamento</label>
-                                        <input type="text"  class="form-control" ng-model="pedidoAtual.forma_pagamento.descricao" maxlength="32" ng-readonly ng-show="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'"> 
+                                        <input type="text"  class="form-control" ng-model="pedidoAtual.forma_pagamento.descricao" maxlength="32" readonly ng-show="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'"> 
                                         <select class="form-control" ng-model="pedidoAtual.forma_pagamento" 
                                                 ng-options="option.descricao for option in listaFormaPagamento track by option.id" ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'"> </select>
                                     </div>
@@ -89,9 +95,12 @@
                                     <input type="text" class="form-control" ng-readonly="true" id="pedidoAtualCliente" value="{{pedidoAtual.cliente.nome}}" ng-readonly ng-show="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'"/>
                                     <div class="input-group"  ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'">
                                         <span class="input-group-btn">
-                                            <button class="btn btn-primary" style="width: 100px" type="button" ng-click="localizarCliente(pedidoAtual)"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
+                                            <button class="btn btn-primary" style="width: 100px" type="button" ng-click="localizarCliente(pedidoAtual);"><span class="glyphicon glyphicon-search botaoComIcone" aria-hidden="true"></span>Localizar</button>
                                         </span>
                                         <input type="text" class="form-control" ng-readonly="true" id="pedidoAtualCliente" value="{{pedidoAtual.cliente.nome}}" />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" ng-click="pedidoAtual.cliente = null"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></button>
+                                        </span>
                                     </div>
                                 </div>
                                 <div style="text-align: center; padding-top: 10px">
@@ -108,16 +117,16 @@
                                         <input type="text" class="valor-produto-lista form-control" style="font-size: 16px; text-align: right" value="{{getValorPedido() - pedidoAtual.desconto | currency}}" readonly>
                                     </div>
                                 </div>
-                                <div class="modal-footer" ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar' || tipoFuncao == 'deletar'">
+                                <div style="padding-left: 16px; padding-right: 16px" ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar' || tipoFuncao == 'deletar'">
                                     <div class="input-group" style="width: 100%;" >
                                         <div class="alert alert-warning" role="alert" ng-show="tipoFuncao == 'deletar'" style="text-align: center"><span class="glyphicon glyphicon-warning-sign botaoComIcone" aria-hidden="true"></span> Deseja Deletar o Pedido ?</div>
-                                        <button type="button" class="btn btn-default pull-left btn-primary " ng-click="setModoView()"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
+                                        <button type="button" class="btn btn-default pull-left btn-warning " ng-click="setModoView()"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
                                         <button type="submit" class="btn btn-default pull-right btn-success " ng-click="enviarPedido()" ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'"><span class="glyphicon glyphicon-floppy-disk botaoComIcone" aria-hidden="true"></span>Salvar</button>
                                         <button type="submit" class="btn btn-default pull-right btn-danger " ng-click="enviarPedido()" ng-show="tipoFuncao == 'deletar'"><span class="glyphicon glyphicon-floppy-disk botaoComIcone" aria-hidden="true"></span>Deletar</button>
                                     </div>
                                 </div>
-                            </uib-tab>
-                        </uib-tabset>
+                            </div>
+                        </div>
                         <div id="msgManterPedido" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"></div>
                     </form>   
                 </div>

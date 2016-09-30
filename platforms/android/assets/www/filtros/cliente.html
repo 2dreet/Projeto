@@ -19,16 +19,16 @@
                     <div class="list-group" style="max-height: 300px; overflow-y: auto">
                         <button type="button" class="list-group-item" ng-bind="cliente.pessoa.nome + ' ' + cliente.pessoa.sobreNome" ng-repeat="cliente in listaCliente" ng-click="selecionarCliente(cliente)"></button>
                     </div>
-                    <div class="row" style="width: 100%; margin: 0; padding: 0; padding-left: 10px; padding-top: 10px" ng-show="totalItemsCliente > 10">
+                    <div class="row" style="width: 100%; margin: 0; padding: 0; padding-left: 10px; padding-top: 10px" ng-show="totalItems > 10">
                         <div style="width: auto; margin: auto; padding: 0; padding-right: 5px;" class="pull-right">
-                            <uib-pagination style="margin: 0; padding: 0; " next-text="Próximo" previous-text="Anterior" total-items="totalItemsCliente" ng-model="currentPageCliente" ng-change="getListaFornecedorAll(currentPageCliente)" max-size="maxSize" class="pagination-sm" items-per-page="itensPorPagina" num-pages="numPages"></uib-pagination>
+                            <uib-pagination style="margin: 0; padding: 0; " next-text="Próximo" previous-text="Anterior" total-items="totalItems" ng-model="currentPage" ng-change="getListaClienteAll(currentPage)" max-size="maxSize" class="pagination-sm" items-per-page="itensPorPagina" num-pages="numPages"></uib-pagination>
                         </div>
                     </div>
                 </div>
 
                 <div class="modal-footer">
                     <div class="input-group" style="width: 100%;">
-                        <button type="button" class="btn btn-default center-block btn-primary " ng-click="fecharDialog('#localizarClienteDialog')" ><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
+                        <button type="button" class="btn btn-default center-block btn-primary " ng-click="fechar()" ><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Fechar</button>
                     </div>
                 </div>
             </form>

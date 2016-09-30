@@ -1,10 +1,10 @@
 
 (function () {
     'use strict';
-    angular.module('www.geve.com.br').controller("filtroClienteController", ['$rootScope', '$scope', '$http', 'Factory', 'Utilitario', function ($rootScope, $scope, $http, Factory, Utilitario) {
+    angular.module('www.geve.com.br').controller("filtroFornecedorController", ['$rootScope', '$scope', '$http', 'Factory', 'Utilitario', function ($rootScope, $scope, $http, Factory, Utilitario) {
             $scope.buscaAvancadaCliente = {};
-            $scope.valorBuscaCliente = "";
-            $scope.listaCliente = [];
+            $scope.valorBuscaFornecedor = "";
+            $scope.listaFornecedor = [];
 
             $scope.maxSize = 3;
             $scope.totalItems = 0;
@@ -12,37 +12,37 @@
             $scope.itensPorPagina = 10;
             $scope.tipoFuncao = 0;
 
-            $scope.getListaClienteAll = function (pagina) {
+            $scope.getListaFornecedorAll = function (pagina) {
                 if (Factory.verificaToken(true)) {
                     var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaAvancada': $scope.buscaAvancadaCliente, 'buscaDescricao': $scope.valorBuscaCliente, 'limit': $scope.itensPorPagina};
                     $rootScope.loading = $http({
                         method: 'POST',
                         data: envio,
                         crossDomain: true,
-                        url: Factory.urlWs + "cliente/getAllCliente",
+                        url: Factory.urlWs + "fornecedor/getAllFornecedor",
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
                         if (!response.data.token) {
                             Factory.refazerLogin();
                         } else {
-                            $scope.listaCliente = response.data.dados;
+                            $scope.listaFornecedor = response.data.dados;
                             $scope.totalItems = response.data.totalRegistro;
                         }
                     }, function errorCallback(response) {
-                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFiltrarCliente');
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFiltrarFornecedor');
                     });
                 }
             };
             
-            $scope.selecionarCliente = function (cliente) {
-                $rootScope.clienteSelecionado = JSON.parse(JSON.stringify(cliente));
-                Utilitario.fecharDialog("#filtroCliente");
+            $scope.selecionarFornecedor = function (fornecedor) {
+                $rootScope.fornecedorSelecionado = JSON.parse(JSON.stringify(fornecedor));
+                Utilitario.fecharDialog("#filtroFornecedor");
             };
             
             $scope.fechar = function () {
-                Utilitario.fecharDialog("#filtroCliente");
+                Utilitario.fecharDialog("#filtroFornecedor");
             };
             
-            $scope.getListaClienteAll(1);
+            $scope.getListaFornecedorAll(1);
         }]);
 })();

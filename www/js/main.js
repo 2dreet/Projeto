@@ -50564,14 +50564,14 @@ $('#menu-lateral ul li').click(function () {
                     });
                 }
             };
-            $scope.open = function () {
-                // Component lookup should always be available since we are not using `ng-if`
-                $mdSidenav('left').open();
-            };
-            $scope.close = function () {
-                // Component lookup should always be available since we are not using `ng-if`
-                $mdSidenav('left').close();
-            };
+//            $scope.open = function () {
+//                // Component lookup should always be available since we are not using `ng-if`
+//                $mdSidenav('left').open();
+//            };
+//            $scope.close = function () {
+//                // Component lookup should always be available since we are not using `ng-if`
+//                $mdSidenav('left').close();
+//            };
             $scope.verifica();
             onload = function () {
                 document.body.style.visibility = "visible";
