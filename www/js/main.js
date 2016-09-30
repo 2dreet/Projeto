@@ -50688,7 +50688,7 @@ $('#menu-lateral ul li').click(function () {
                         method: 'POST',
                         data: envio,
                         crossDomain: true,
-                        url: Factory.urlWs + "pedido/getAllPedido" ,
+                        url: Factory.urlWs + "pedido/getAllPedido",
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
                         $scope.valorTotal = '0,00';
@@ -50731,6 +50731,12 @@ $('#menu-lateral ul li').click(function () {
                                 $scope.pedidoAtual.listaParcelas[i].data_pagamento = Utilitario.dataDbToJS($scope.pedidoAtual.listaParcelas[i].data_pagamento);
                             }
                             $scope.pedidoAtual.parcelas = $scope.pedidoAtual.listaParcelas.length;
+                            var clienteAux = JSON.parse(JSON.stringify($scope.pedidoAtual.cliente));
+                            clienteAux = {id: clienteAux.id, nome: clienteAux.pessoa.nome + ' ' + clienteAux.pessoa.sobreNome};
+                            if ($scope.pedidoAtual.cliente === undefined) {
+                                $scope.pedidoAtual.cliente = {};
+                            }
+                            $scope.pedidoAtual.cliente = clienteAux;
                             Utilitario.abrirDialog("#pedidoDialogFuncoes");
                         }
                     }, function errorCallback(response) {
@@ -50745,7 +50751,7 @@ $('#menu-lateral ul li').click(function () {
                     $scope.send = $http({
                         method: 'POST',
                         crossDomain: true,
-                        url: Factory.urlWs + "pedido/enviarPedido",
+                        url: Factory.urlWs + "pedido/enviarPedido"+ Factory.debug,
                         data: envio,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {

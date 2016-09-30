@@ -103,9 +103,6 @@
                                         </li>
                                     </ul>
 
-                                    <md-datepicker ng-model="dataFinalMovimento" md-placeholder="Enter date"
-                                                   md-date-filter="onlyWeekendsPredicate"></md-datepicker>
-
                                     <div style="padding-bottom: 5px; overflow: hidden; text-align: left; ">
                                         <strong class="font-titulo-produto"> Estoque Atual: </strong> <strong class="font-produto" ng-bind="produtoAtual.estoque"></strong><br/> 
                                     </div>
@@ -122,7 +119,7 @@
                                             </thead>
                                             <tbody>
                                                 <tr ng-repeat="produtoMovimentacao in listaProdutoMovimentacao" ng-style="corLinha(produtoMovimentacao.tipoMovimentacao)">
-                                                    <td ng-bind="(produtoMovimentacao.data_movimento) | date: 'dd/MM/yyyy HH:mm'"></td>
+                                                    <td ng-bind="(produtoMovimentacao.data_movimento) | date: 'dd / MM / yyyy HH:mm'"></td>
                                                     <td class="visible-md visible-lg" ng-bind="produtoMovimentacao.observacao"></td>
                                                     <td ng-bind="produtoMovimentacao.quantidade"></td>
                                                     <td ng-bind="produtoMovimentacao.descricao" > </td>
@@ -219,7 +216,10 @@
                                         </div>
                                     </div>
                                     <div class="input-group">
-                                        <label class="checkbox-inline"><input type="checkbox" ng-model="buscaAvancada.estoquePositivo">Estoque Positivo</label>
+                                        <md-checkbox ng-model="buscaAvancada.estoquePositivo" aria-label="Estoque Positivo">
+                                            Estoque Positivo
+                                        </md-checkbox>
+                                        <!--<label class="checkbox-inline"><input type="checkbox" ng-model="buscaAvancada.estoquePositivo">Estoque Positivo</label>-->
                                     </div>
 
                                 </div>
