@@ -165,6 +165,9 @@
 
             $scope.addTelefone = function () {
                 if (validaFone()) {
+                    if ($scope.clienteAtual.listaTelefone === undefined) {
+                        $scope.clienteAtual.listaTelefone = [];
+                    }
                     var telefoneAux = JSON.parse(JSON.stringify($scope.telefone));
                     telefoneAux.index = $scope.clienteAtual.listaTelefone.length;
                     $scope.clienteAtual.listaTelefone.push(telefoneAux);
