@@ -134,7 +134,7 @@
                                         </thead>
                                         <tbody style="display: block; height:270px; overflow-y: auto; padding-left: 10px">
                                             <tr ng-repeat="telefoneAux in clienteAtual.listaTelefone">
-                                                <td style="width: 150px" ng-bind="telefoneAux.numero"></td>
+                                                <td style="width: 150px" ng-bind="telefoneAux.numero | tel"></td>
                                                 <td style="width: 150px" ng-bind="telefoneAux.tipoTelefone.descricao"></td>
                                                 <td style="width: 50px" ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'">
                                                     <div class="input-group" style="width: 50px; padding-left: 0px; padding-right: 0px; padding-top: 0px; padding-bottom: 0px" >
