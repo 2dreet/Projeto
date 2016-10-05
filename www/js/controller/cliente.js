@@ -197,7 +197,9 @@
                 if (validaFone()) {
                     for (var i = $scope.clienteAtual.listaTelefone.length; i--; ) {
                         if (($scope.telefone.id !== undefined && $scope.clienteAtual.listaTelefone[i].id !== undefined &&
-                                $scope.telefone.id === $scope.clienteAtual.listaTelefone[i].id) || $scope.clienteAtual.listaTelefone[i].index === $scope.telefone.index) {
+                                $scope.telefone.id === $scope.clienteAtual.listaTelefone[i].id) || 
+                                ($scope.telefone.index !== undefined && $scope.clienteAtual.listaTelefone[i].index !== undefined && 
+                                $scope.clienteAtual.listaTelefone[i].index === $scope.telefone.index)) {
                             $scope.clienteAtual.listaTelefone[i] = $scope.telefone;
                             $scope.novoTelefone();
                         }
