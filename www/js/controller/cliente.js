@@ -176,9 +176,13 @@
             };
 
             $scope.removeTelefone = function (item) {
-                for (var i = $scope.clienteAtual.listaTelefone.length; i--; ) {
-                    if ($scope.clienteAtual.listaTelefone[i] === item) {
-                        $scope.clienteAtual.listaTelefone.splice(i, 1);
+                if (item.id !== undefined) {
+                    $scope.removeTelefoneEditando(item);
+                } else {
+                    for (var i = $scope.clienteAtual.listaTelefone.length; i--; ) {
+                        if ($scope.clienteAtual.listaTelefone[i] === item) {
+                            $scope.clienteAtual.listaTelefone.splice(i, 1);
+                        }
                     }
                 }
             };
@@ -188,11 +192,10 @@
                     $scope.clienteAtual.listaTelefoneRemovido = [];
                 }
                 for (var i = $scope.clienteAtual.listaTelefone.length; i--; ) {
-                    if ($scope.clienteAtual.listaTelefone[i] === item) {
-                        if ($scope.clienteAtual.listaTelefone[i].id !== undefined) {
+                    if ($scope.clienteAtual.listaTelefone[i].id !== undefined) {
+                        if ($scope.clienteAtual.listaTelefone[i].id === item.id) {
                             $scope.clienteAtual.listaTelefoneRemovido.push($scope.clienteAtual.listaTelefone[i]);
                         }
-                        $scope.clienteAtual.listaTelefone.splice(i, 1);
                     }
                 }
             };
