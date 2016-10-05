@@ -49824,6 +49824,49 @@ $('#menu-lateral ul li').click(function () {
                 }
             };
 
+            $scope.addTelefone = function () {
+                if (validaFone()) {
+                    if ($scope.clienteAtual.listaTelefone === undefined) {
+                        $scope.clienteAtual.listaTelefone = [];
+                    }
+                    var telefoneAux = JSON.parse(JSON.stringify($scope.telefone));
+                    telefoneAux.index = $scope.clienteAtual.listaTelefone.length;
+                    $scope.clienteAtual.listaTelefone.push(telefoneAux);
+                    $scope.novoTelefone();
+                }
+            };
+
+            $scope.removeTelefone = function (item) {
+                if (item.id !== undefined) {
+                    $scope.removeTelefoneEditando(item);
+                } else {
+                    for (var i = $scope.clienteAtual.listaTelefone.length; i--; ) {
+                        if ($scope.clienteAtual.listaTelefone[i].index === item.index) {
+                            $scope.clienteAtual.listaTelefone.splice(i, 1);
+                        }
+                    }
+
+                    for (var i = $scope.clienteAtual.listaTelefone.length; i--; ) {
+                        if ($scope.clienteAtual.listaTelefone[i].index !== undefined) {
+                            $scope.clienteAtual.listaTelefone[i].index = i;
+                        }
+                    }
+                }
+            };
+
+            $scope.removeTelefoneEditando = function (item) {
+                if ($scope.clienteAtual.listaTelefoneRemovido === undefined) {
+                    $scope.clienteAtual.listaTelefoneRemovido = [];
+                }
+                for (var i = $scope.clienteAtual.listaTelefone.length; i--; ) {
+                    if ($scope.clienteAtual.listaTelefone[i].id !== undefined) {
+                        if ($scope.clienteAtual.listaTelefone[i].id == item.id) {
+                            $scope.clienteAtual.listaTelefoneRemovido.push($scope.clienteAtual.listaTelefone[i]);
+                            $scope.clienteAtual.listaTelefone.splice(i, 1);
+                        }
+                    }
+                }
+            };
             $scope.novoTelefone = function () {
                 $scope.telefone = {};
                 $scope.editandoTelefone = false;
@@ -49834,46 +49877,16 @@ $('#menu-lateral ul li').click(function () {
                 $scope.editandoTelefone = true;
                 $scope.telefone = JSON.parse(JSON.stringify(telefone));
             };
-
             $scope.salvaTelefone = function () {
                 if (validaFone()) {
                     for (var i = $scope.clienteAtual.listaTelefone.length; i--; ) {
                         if (($scope.telefone.id !== undefined && $scope.clienteAtual.listaTelefone[i].id !== undefined &&
-                                $scope.telefone.id === $scope.clienteAtual.listaTelefone[i].id) || i === $scope.telefone.index) {
+                                $scope.telefone.id === $scope.clienteAtual.listaTelefone[i].id) ||
+                                ($scope.telefone.index !== undefined && $scope.clienteAtual.listaTelefone[i].index !== undefined &&
+                                        $scope.clienteAtual.listaTelefone[i].index === $scope.telefone.index)) {
                             $scope.clienteAtual.listaTelefone[i] = $scope.telefone;
                             $scope.novoTelefone();
                         }
-                    }
-                }
-            };
-
-            $scope.addTelefone = function () {
-                if (validaFone()) {
-                    var telefoneAux = JSON.parse(JSON.stringify($scope.telefone));
-                    telefoneAux.index = $scope.clienteAtual.listaTelefone.length;
-                    $scope.clienteAtual.listaTelefone.push(telefoneAux);
-                    $scope.novoTelefone();
-                }
-            };
-
-            $scope.removeTelefone = function (item) {
-                for (var i = $scope.clienteAtual.listaTelefone.length; i--; ) {
-                    if ($scope.clienteAtual.listaTelefone[i] === item) {
-                        $scope.clienteAtual.listaTelefone.splice(i, 1);
-                    }
-                }
-            };
-
-            $scope.removeTelefoneEditando = function (item) {
-                if ($scope.clienteAtual.listaTelefoneRemovido === undefined) {
-                    $scope.clienteAtual.listaTelefoneRemovido = [];
-                }
-                for (var i = $scope.clienteAtual.listaTelefone.length; i--; ) {
-                    if ($scope.clienteAtual.listaTelefone[i] === item) {
-                        if ($scope.clienteAtual.listaTelefone[i].id !== undefined) {
-                            $scope.clienteAtual.listaTelefoneRemovido.push($scope.clienteAtual.listaTelefone[i]);
-                        }
-                        $scope.clienteAtual.listaTelefone.splice(i, 1);
                     }
                 }
             };
@@ -50049,6 +50062,9 @@ $('#menu-lateral ul li').click(function () {
             $scope.preparaCliente = function (varAux) {
                 limparDadosCliente();
                 $scope.clienteAtual = JSON.parse(JSON.stringify(varAux));
+                if ($scope.clienteAtual.listaTelefone === undefined || $scope.clienteAtual.listaTelefone === null) {
+                    $scope.clienteAtual.listaTelefone = [];
+                }
                 $scope.clienteAtual.pessoa.dataNascimento = dataDbToJS($scope.clienteAtual.pessoa.dataNascimento);
             };
 

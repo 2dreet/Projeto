@@ -119,10 +119,10 @@
                                                 ng-options="option.descricao for option in listaTipoTelefone track by option.id"> </select>
                                     </div>
                                     <div class="input-group" ng-show="editandoTelefone === false && (tipoFuncao == 'inserir' || tipoFuncao == 'alterar')" style="width: 100%; padding-left: 10px; padding-right: 10px; padding-bottom: 10px">
-                                        <button type="button" class="btn btn-sm pull-left btn-success" ng-click="addTelefone('#msgClienteCadatro', '')"><span class="glyphicon glyphicon-plus botaoComIcone" aria-hidden="true"></span>Incluir</button>
+                                        <button type="button" class="btn btn-sm pull-left btn-success" ng-click="addTelefone()"><span class="glyphicon glyphicon-plus botaoComIcone" aria-hidden="true"></span>Incluir</button>
                                     </div>
                                     <div class="input-group" ng-show="editandoTelefone === true" style="width: 100%; padding-left: 10px; padding-right: 10px; padding-bottom: 10px" ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'">
-                                        <button type="button" class="btn btn-sm pull-left btn-warning" ng-click="salvaTelefone('#msgClienteCadatro', '')" ><span class="glyphicon glyphicon-floppy-disk botaoComIcone" aria-hidden="true"></span>Salvar</button>
+                                        <button type="button" class="btn btn-sm pull-left btn-warning" ng-click="salvaTelefone()" ><span class="glyphicon glyphicon-floppy-disk botaoComIcone" aria-hidden="true"></span>Salvar</button>
                                         <button type="button" class="btn btn-sm pull-left btn-danger" ng-click="novoTelefone()" style="margin-left: 10px"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
                                     </div>
                                     <table ng-show="clienteAtual.listaTelefone != null && clienteAtual.listaTelefone.length > 0" class="table table-striped table-hover table-bordered" style="border: none; margin-top: 10px" >

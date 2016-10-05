@@ -151,7 +151,7 @@
                     $scope.novoTelefone();
                 }
             };
-            
+
             $scope.removeTelefone = function (item) {
                 if (item.id !== undefined) {
                     $scope.removeTelefoneEditando(item);
@@ -161,7 +161,7 @@
                             $scope.clienteAtual.listaTelefone.splice(i, 1);
                         }
                     }
-                    
+
                     for (var i = $scope.clienteAtual.listaTelefone.length; i--; ) {
                         if ($scope.clienteAtual.listaTelefone[i].index !== undefined) {
                             $scope.clienteAtual.listaTelefone[i].index = i;
@@ -197,16 +197,16 @@
                 if (validaFone()) {
                     for (var i = $scope.clienteAtual.listaTelefone.length; i--; ) {
                         if (($scope.telefone.id !== undefined && $scope.clienteAtual.listaTelefone[i].id !== undefined &&
-                                $scope.telefone.id === $scope.clienteAtual.listaTelefone[i].id) || 
-                                ($scope.telefone.index !== undefined && $scope.clienteAtual.listaTelefone[i].index !== undefined && 
-                                $scope.clienteAtual.listaTelefone[i].index === $scope.telefone.index)) {
+                                $scope.telefone.id === $scope.clienteAtual.listaTelefone[i].id) ||
+                                ($scope.telefone.index !== undefined && $scope.clienteAtual.listaTelefone[i].index !== undefined &&
+                                        $scope.clienteAtual.listaTelefone[i].index === $scope.telefone.index)) {
                             $scope.clienteAtual.listaTelefone[i] = $scope.telefone;
                             $scope.novoTelefone();
                         }
                     }
                 }
             };
-            
+
             var validaFone = function () {
                 var retorno = false;
                 if ($scope.telefone.numero !== null && $scope.telefone.numero !== undefined && $scope.telefone.numero.trim() !== "" && ($scope.telefone.numero.length === 10 || $scope.telefone.numero.length === 11)) {
@@ -378,6 +378,9 @@
             $scope.preparaCliente = function (varAux) {
                 limparDadosCliente();
                 $scope.clienteAtual = JSON.parse(JSON.stringify(varAux));
+                if ($scope.clienteAtual.listaTelefone === undefined || $scope.clienteAtual.listaTelefone === null) {
+                    $scope.clienteAtual.listaTelefone = [];
+                }
                 $scope.clienteAtual.pessoa.dataNascimento = dataDbToJS($scope.clienteAtual.pessoa.dataNascimento);
             };
 
