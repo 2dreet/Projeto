@@ -140,29 +140,6 @@
                 }
             };
 
-            $scope.novoTelefone = function () {
-                $scope.telefone = {};
-                $scope.editandoTelefone = false;
-                $scope.telefone.tipoTelefone = $scope.listaTipoTelefone[0];
-            };
-
-            $scope.editaTelefone = function (telefone) {
-                $scope.editandoTelefone = true;
-                $scope.telefone = JSON.parse(JSON.stringify(telefone));
-            };
-
-            $scope.salvaTelefone = function () {
-                if (validaFone()) {
-                    for (var i = $scope.clienteAtual.listaTelefone.length; i--; ) {
-                        if (($scope.telefone.id !== undefined && $scope.clienteAtual.listaTelefone[i].id !== undefined &&
-                                $scope.telefone.id === $scope.clienteAtual.listaTelefone[i].id) || i === $scope.telefone.index) {
-                            $scope.clienteAtual.listaTelefone[i] = $scope.telefone;
-                            $scope.novoTelefone();
-                        }
-                    }
-                }
-            };
-
             $scope.addTelefone = function () {
                 if (validaFone()) {
                     if ($scope.clienteAtual.listaTelefone === undefined) {
@@ -174,14 +151,20 @@
                     $scope.novoTelefone();
                 }
             };
-
+            
             $scope.removeTelefone = function (item) {
                 if (item.id !== undefined) {
                     $scope.removeTelefoneEditando(item);
                 } else {
                     for (var i = $scope.clienteAtual.listaTelefone.length; i--; ) {
-                        if ($scope.clienteAtual.listaTelefone[i] === item) {
+                        if ($scope.clienteAtual.listaTelefone[i].index === item.index) {
                             $scope.clienteAtual.listaTelefone.splice(i, 1);
+                        }
+                    }
+                    
+                    for (var i = $scope.clienteAtual.listaTelefone.length; i--; ) {
+                        if ($scope.clienteAtual.listaTelefone[i].index !== undefined) {
+                            $scope.clienteAtual.listaTelefone[i].index = i;
                         }
                     }
                 }
@@ -193,13 +176,35 @@
                 }
                 for (var i = $scope.clienteAtual.listaTelefone.length; i--; ) {
                     if ($scope.clienteAtual.listaTelefone[i].id !== undefined) {
-                        if ($scope.clienteAtual.listaTelefone[i].id === item.id) {
+                        if ($scope.clienteAtual.listaTelefone[i].id == item.id) {
                             $scope.clienteAtual.listaTelefoneRemovido.push($scope.clienteAtual.listaTelefone[i]);
+                            $scope.clienteAtual.listaTelefone.splice(i, 1);
                         }
                     }
                 }
             };
+            $scope.novoTelefone = function () {
+                $scope.telefone = {};
+                $scope.editandoTelefone = false;
+                $scope.telefone.tipoTelefone = $scope.listaTipoTelefone[0];
+            };
 
+            $scope.editaTelefone = function (telefone) {
+                $scope.editandoTelefone = true;
+                $scope.telefone = JSON.parse(JSON.stringify(telefone));
+            };
+            $scope.salvaTelefone = function () {
+                if (validaFone()) {
+                    for (var i = $scope.clienteAtual.listaTelefone.length; i--; ) {
+                        if (($scope.telefone.id !== undefined && $scope.clienteAtual.listaTelefone[i].id !== undefined &&
+                                $scope.telefone.id === $scope.clienteAtual.listaTelefone[i].id) || $scope.clienteAtual.listaTelefone[i].index === $scope.telefone.index) {
+                            $scope.clienteAtual.listaTelefone[i] = $scope.telefone;
+                            $scope.novoTelefone();
+                        }
+                    }
+                }
+            };
+            
             var validaFone = function () {
                 var retorno = false;
                 if ($scope.telefone.numero !== null && $scope.telefone.numero !== undefined && $scope.telefone.numero.trim() !== "" && ($scope.telefone.numero.length === 10 || $scope.telefone.numero.length === 11)) {
