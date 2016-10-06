@@ -16,6 +16,10 @@ html, body {
     background-color: #2A3F54;    
 }
 
+input[type="text"]{
+    height: 33px;
+} 
+
 input[type='number'] {
     -moz-appearance:textfield;
 }
