@@ -6,12 +6,13 @@
 html, body {
     margin: 0px;
     padding: 0px;
-    height: calc(100% - 0px);
+    height: calc(100% - 12px);
     width: 100%;
-    max-height: calc(100% - 0px);
+    max-height: calc(100% - 12px);
     min-height: calc(500px);
     max-width: 100%;
     overflow-x: hidden;
+    overflow-y: visible;
     background-color: #2A3F54;    
 }
 
@@ -152,6 +153,7 @@ input::-webkit-inner-spin-button {
     padding: 0px;
     margin: 0px;
     overflow-x: auto;
+    overflow-y: visible;
 }
 
 .menu-ul li:hover  {
@@ -218,6 +220,21 @@ input[type="email"]:read-only{
     background: white;
 } 
 
+md-radio-group.md-default-theme[disabled], md-radio-group[disabled], md-radio-button.md-default-theme[disabled], md-radio-button[disabled]{
+    color: #000;
+}
+
+checkbox.md-default-theme[disabled].md-primary.md-checked .md-icon, md-checkbox[disabled].md-checked .md-icon {
+    background-color : #337ab7;
+}
+group.md-default-theme[disabled].md-primary .md-on, md-radio-group[disabled].md-primary .md-on, md-radio-group.md-default-theme[disabled].md-primary .md-on, md-radio-group[disabled].md-primary .md-on, md-radio-button.md-default-theme[disabled].md-primary .md-on, md-radio-button[disabled].md-primary .md-on, md-radio-button.md-default-theme[disabled].md-primary .md-on, md-radio-button[disabled].md-primary .md-on {
+    background-color : #337ab7;
+}
+
+.panel.panel-default{
+    border-bottom: none;
+}
+
 @media screen and (max-width: 1300px) {
     #btn-menu-lateral{
         display:block;
@@ -259,8 +276,17 @@ input[type="email"]:read-only{
     }
 
     #app-meio{
-        width: 100%;
-        padding: 0;
+        height: calc(100%);
+        min-height: calc(100%);
+        width: calc(100% - 250px);
+        float: left;
+        margin: 0px;
+        padding: 0px;
+        background-color: #fff;
+        border-bottom: 1px solid #ccc!important;
+        border-bottom-left-radius: 8px;
+        border-top: none!important;
+        overflow-y: auto;
     }
 
     #nav-meio{
@@ -285,7 +311,7 @@ input[type="email"]:read-only{
     .menu-ul{
         padding-left: 20px;
     }
-    
+
     .padinng-tela-pequena-novo{
         padding-left: 15px;
     }
