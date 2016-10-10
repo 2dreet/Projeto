@@ -50550,6 +50550,10 @@ $('#menu-lateral ul li').click(function () {
                 }
             };
 
+            onload = function () {
+                document.body.style.visibility = "visible";
+            };
+
             $scope.verifica();
         }]);
 })();

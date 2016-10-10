@@ -32,6 +32,10 @@
                 }
             };
 
+            onload = function () {
+                document.body.style.visibility = "visible";
+            };
+
             $scope.verifica();
         }]);
 })();
