@@ -1,7 +1,7 @@
 (function () {
     'use strict';
     angular.module('www.geve.com.br').service('Factory', function () {
-        this.urlWs = "http://geven.esy.es/WsJosePhp/";
+        this.urlWs = "WsJosePhp/";
         this.urlImagem = this.urlWs + "produto/getProdutoImagem/";
         this.cookieNomeToken = "www.geve.com.br.token";
         this.debug = "?XDEBUG_SESSION_START=netbeans-xdebug";
