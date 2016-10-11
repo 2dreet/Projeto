@@ -68,12 +68,17 @@ input::-webkit-inner-spin-button {
 }
 
 #app-meio{
-    height: 100%;
+    height: calc(100%);
+    min-height: calc(100%);
     width: calc(100% - 250px);
     float: left;
     margin: 0px;
     padding: 0px;
-    background-color: #fff;    
+    background-color: #fff;
+    border-bottom: 1px solid #ccc!important;
+    border-bottom-left-radius: 8px;
+    border-top: none!important;
+    overflow-y: auto;
 }
 
 #app-meio-row{
@@ -239,6 +244,14 @@ group.md-default-theme[disabled].md-primary .md-on, md-radio-group[disabled].md-
     border-bottom: none;
 }
 
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    background: white;
+}
+
+.panel.panel-default{
+    border-bottom: none;
+}
+
 @media screen and (max-width: 1300px) {
     #btn-menu-lateral{
         display:block;
@@ -282,7 +295,7 @@ group.md-default-theme[disabled].md-primary .md-on, md-radio-group[disabled].md-
     #app-meio{
         height: calc(100%);
         min-height: calc(100%);
-        width: calc(100% - 250px);
+        width: calc(100%);
         float: left;
         margin: 0px;
         padding: 0px;
@@ -325,5 +338,9 @@ group.md-default-theme[disabled].md-primary .md-on, md-radio-group[disabled].md-
     }
     .padinng-tela-pequena-pesquisa{
         padding-left: 8px;
+    }
+    
+    #app-meio{
+        width: calc(100%);
     }
 }
