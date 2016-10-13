@@ -43,6 +43,9 @@
                 Utilitario.fecharDialog("#filtroFornecedor");
             };
             
-            $scope.getListaFornecedorAll(1);
+            $('#filtroFornecedor').on('show.bs.modal', function (event) {
+                $scope.valorBuscaCliente = "";
+                $scope.getListaFornecedorAll(1);
+            });
         }]);
 })();

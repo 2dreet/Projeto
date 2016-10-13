@@ -173,7 +173,7 @@
                     $scope.send = $http({
                         method: 'POST',
                         crossDomain: true,
-                        url: Factory.urlWs + "pedido/enviarPedido",
+                        url: Factory.urlWs + "pedido/enviarPedido" + Factory.debug,
                         data: envio,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
@@ -181,19 +181,28 @@
                         if (!response.data.token) {
                             Factory.refazerLogin();
                         } else {
-                            Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgPedidoGeral');
-                            if ($scope.tipoFuncao === "inserir" || $scope.tipoFuncao === "alterar") {
-                                $scope.listaPedido = [];
-                                $scope.listaPedido.push(response.data.pedido);
-                                $scope.totalItems = 1;
-                                $scope.valorTotal = response.data.pedido.valor;
-                                $scope.descontoTotal = response.data.pedido.desconto;
-                            } else {
-                                if ($scope.tipoFuncao === "deletar") {
-                                    $scope.limpaFiltro();
+                            if (response.data.EstoqueNegativo !== undefined && response.data.EstoqueNegativo !== null) {
+                                var msg = " Produto(s) Com estoque (Futuro) negativo <br />";
+                                for (var i = response.data.EstoqueNegativo.length; i--; ) {
+                                    msg += " * " + response.data.EstoqueNegativo[i] + " <br />";
                                 }
+                                $scope.mudaTab('#tabProdutosDoPedido', '#tabProdutosDoPedidoTitle');
+                                Factory.setMensagemTemporaria('alerta', msg, '#msgManterPedido');
+                            } else {
+                                Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgPedidoGeral');
+                                if ($scope.tipoFuncao === "inserir" || $scope.tipoFuncao === "alterar") {
+                                    $scope.listaPedido = [];
+                                    $scope.listaPedido.push(response.data.pedido);
+                                    $scope.totalItems = 1;
+                                    $scope.valorTotal = response.data.pedido.valor;
+                                    $scope.descontoTotal = response.data.pedido.desconto;
+                                } else {
+                                    if ($scope.tipoFuncao === "deletar") {
+                                        $scope.limpaFiltro();
+                                    }
+                                }
+                                $scope.setModoView();
                             }
-                            $scope.setModoView();
                         }
                     }, function errorCallback(response) {
                         Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgPedidoGeral');

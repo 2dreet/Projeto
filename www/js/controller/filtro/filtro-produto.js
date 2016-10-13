@@ -57,6 +57,9 @@
             $scope.fechar = function (idComponente) {
                 Utilitario.fecharDialog(idComponente);
             };
-            $scope.getListaProdutoAll(1);
+            $('#filtroProduto').on('show.bs.modal', function (event) {
+                $scope.limpaFiltroAvancado();
+                $scope.getListaProdutoAll(1);
+            });
         }]);
 })();

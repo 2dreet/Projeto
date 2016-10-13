@@ -577,8 +577,9 @@ group.md-default-theme[disabled].md-primary .md-on, md-radio-group[disabled].md-
     background: white;
 }
 
-.panel.panel-default{
+.no-border-bottom{
     border-bottom: none;
+    box-shadow: none;
 }
 
 @media screen and (max-width: 1300px) {

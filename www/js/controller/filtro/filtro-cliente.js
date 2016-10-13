@@ -33,16 +33,19 @@
                     });
                 }
             };
-            
+
             $scope.selecionarCliente = function (cliente) {
                 $rootScope.clienteSelecionado = JSON.parse(JSON.stringify(cliente));
                 Utilitario.fecharDialog("#filtroCliente");
             };
-            
+
             $scope.fechar = function () {
                 Utilitario.fecharDialog("#filtroCliente");
             };
-            
-            $scope.getListaClienteAll(1);
+
+            $('#filtroCliente').on('show.bs.modal', function (event) {
+                $scope.valorBuscaCliente = "";
+                $scope.getListaClienteAll(1);
+            });
         }]);
 })();
