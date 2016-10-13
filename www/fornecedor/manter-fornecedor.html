@@ -23,6 +23,9 @@
             <div class="panel-body"  style="padding: 0px; margin: 0px; padding-top: 10px;  ">
                 <div class="media-body" cg-busy="loadingLocal">
                     <form>
+                        <div class="row" style="padding-left: 15px; padding-right:  15px">
+                            <div id="msgManterFornecedor" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"></div>
+                        </div>
                         <div class="modal-body">
                             <div class="form-group" style="width: 100%;">
                                 <label>Fornecedor</label>
@@ -38,7 +41,7 @@
                                 <label>Telefone</label>
                                 <input ui-br-phone-number id="fornecedorFone" type="text"   class="form-control"  aria-describedby="fornecedorTelefone" ng-model="fornecedorAtual.telefone" ng-readonly="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'">
                             </div>
-                            <div id="msgManterFornecedor" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"></div>
+
                         </div>
                         <div style="padding-left: 16px; padding-right: 16px; padding-bottom: 16px" ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar' || tipoFuncao == 'deletar'">
                             <div class="input-group" style="width: 100%;" >

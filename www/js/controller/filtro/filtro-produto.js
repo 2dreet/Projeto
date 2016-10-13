@@ -58,6 +58,7 @@
                 Utilitario.fecharDialog(idComponente);
             };
             $('#filtroProduto').on('show.bs.modal', function (event) {
+                alert('a');
                 $scope.limpaFiltroAvancado();
                 $scope.getListaProdutoAll(1);
             });

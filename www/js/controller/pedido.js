@@ -77,7 +77,6 @@
                 $scope.getListaPedidoAll(1);
             };
             $scope.setModoManter = function (isNovo) {
-                $scope.mudaTab('#tabProdutosDoPedido', '#tabProdutosDoPedidoTitle');
                 $scope.modoManter = true;
                 $scope.modoView = false;
                 if (isNovo) {
@@ -186,7 +185,6 @@
                                 for (var i = response.data.EstoqueNegativo.length; i--; ) {
                                     msg += " * " + response.data.EstoqueNegativo[i] + " <br />";
                                 }
-                                $scope.mudaTab('#tabProdutosDoPedido', '#tabProdutosDoPedidoTitle');
                                 Factory.setMensagemTemporaria('alerta', msg, '#msgManterPedido');
                             } else {
                                 Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgPedidoGeral');
@@ -358,21 +356,17 @@
             };
             var validarPedido = function () {
                 if ($scope.pedidoAtual.listaProduto === undefined || $scope.pedidoAtual.listaProduto === null || $scope.pedidoAtual.listaProduto.length <= 0) {
-                    $scope.mudaTab('#tabProdutosDoPedido', '#tabProdutosDoPedidoTitle');
                     Factory.setMensagemTemporaria('erro', 'Adicionar produtos!', "#msgManterPedido");
                     return false;
                 } else if ($scope.pedidoAtual.cliente === undefined || $scope.pedidoAtual.cliente === null) {
-                    $scope.mudaTab('#tabDadosDoPedido', '#tabDadosDoPedidoTitle');
                     $('#pedidoAtualCliente').focus();
                     Factory.setMensagemTemporaria('erro', 'Selecionar cliente!', "#msgManterPedido");
                     return false;
                 } else if ($scope.pedidoAtual.descricao === undefined || $scope.pedidoAtual.descricao === null || $scope.pedidoAtual.descricao.trim() === "") {
-                    $scope.mudaTab('#tabDadosDoPedido', '#tabDadosDoPedidoTitle');
                     $('#produtoDescricao').focus();
                     Factory.setMensagemTemporaria('erro', 'Informar descrição!', "#msgManterPedido");
                     return false;
                 } else if ($scope.pedidoAtual.data_vencimento === undefined || $scope.pedidoAtual.data_vencimento === null) {
-                    $scope.mudaTab('#tabDadosDoPedido', '#tabDadosDoPedidoTitle');
                     $('#pedidoDataVencimento').focus();
                     Factory.setMensagemTemporaria('erro', 'Informar vencimento', "#msgManterPedido");
                     return false;
@@ -403,11 +397,5 @@
             };
             $scope.novoPedido();
             $scope.getListaPedidoAll(1);
-            $scope.mudaTab = function (tab, title) {
-                $('#TabPedidoCrud div').removeClass('active');
-                $(tab).addClass('active');
-                $('#TabPedidoCrudTitle li').removeClass('active');
-                $(title).addClass('active');
-            };
         }]);
 })();

@@ -536,7 +536,6 @@ $('#menu-lateral ul li').click(function () {
                 if ($scope.clienteAtual.listaTelefone !== null && $scope.clienteAtual.listaTelefone.length > 0) {
                     retorno = true;
                 } else {
-                    $scope.mudaTab('#tabTelefone', '#tabTelefoneTitle');
                     Factory.setMensagemTemporaria('erro', 'Informar Telefone!', '#msgManterCliente');
                     return false;
                 }
@@ -548,7 +547,6 @@ $('#menu-lateral ul li').click(function () {
                 if ($scope.clienteAtual.endereco.cep !== undefined && $scope.clienteAtual.endereco.cep !== null && ($scope.clienteAtual.endereco.cep.trim()).length === 8) {
                     retorno = true;
                 } else {
-                    $scope.mudaTab('#tabEndereco', '#tabEnderecoTitle');
                     $('#clienteCep').focus();
                     Factory.setMensagemTemporaria('erro', 'Cep Inválido!', '#msgManterCliente');
                     return false;
@@ -556,7 +554,6 @@ $('#menu-lateral ul li').click(function () {
                 if ($scope.clienteAtual.endereco.logradouro !== undefined && $scope.clienteAtual.endereco.logradouro !== null && ($scope.clienteAtual.endereco.logradouro.trim()).length > 0) {
                     retorno = true;
                 } else {
-                    $scope.mudaTab('#tabEndereco', '#tabEnderecoTitle');
                     $('#clienteLogradouro').focus();
                     Factory.setMensagemTemporaria('erro', 'Logradouro Inválido!', '#msgManterCliente');
                     return false;
@@ -564,7 +561,6 @@ $('#menu-lateral ul li').click(function () {
                 if ($scope.clienteAtual.endereco.bairro !== undefined && $scope.clienteAtual.endereco.bairro !== null && ($scope.clienteAtual.endereco.bairro.trim()).length > 0) {
                     retorno = true;
                 } else {
-                    $scope.mudaTab('#tabEndereco', '#tabEnderecoTitle');
                     $('#clienteBairro').focus();
                     Factory.setMensagemTemporaria('erro', 'Bairro Inválido!', '#msgManterCliente');
                     return false;
@@ -572,7 +568,6 @@ $('#menu-lateral ul li').click(function () {
                 if ($scope.clienteAtual.endereco.cidade !== undefined && $scope.clienteAtual.endereco.cidade !== null && ($scope.clienteAtual.endereco.cidade.trim()).length > 0) {
                     retorno = true;
                 } else {
-                    $scope.mudaTab('#tabEndereco', '#tabEnderecoTitle');
                     $('#clienteCidade').focus();
                     Factory.setMensagemTemporaria('erro', 'Cidade Inválida!', '#msgManterCliente');
                     return false;
@@ -580,14 +575,12 @@ $('#menu-lateral ul li').click(function () {
                 if ($scope.clienteAtual.endereco.uf !== undefined && $scope.clienteAtual.endereco.uf !== null && ($scope.clienteAtual.endereco.uf.trim()).length === 2) {
                     retorno = true;
                 } else {
-                    $scope.mudaTab('#tabEndereco', '#tabEnderecoTitle');
                     Factory.setMensagemTemporaria('erro', 'UF Inválida!', '#msgManterCliente');
                     return false;
                 }
                 if ($scope.clienteAtual.endereco.numero !== undefined && $scope.clienteAtual.endereco.numero !== null && $scope.clienteAtual.endereco.numero > 0) {
                     retorno = true;
                 } else {
-                    $scope.mudaTab('#tabEndereco', '#tabEnderecoTitle');
                     $('#clienteNumero').focus();
                     Factory.setMensagemTemporaria('erro', 'Número Inválido!', '#msgManterCliente');
                     return false;
@@ -621,7 +614,6 @@ $('#menu-lateral ul li').click(function () {
                     if ($scope.clienteAtual.pessoa.nome !== null && $scope.clienteAtual.pessoa.nome !== undefined && $scope.clienteAtual.pessoa.nome.trim() !== "") {
                         retorno = true;
                     } else {
-                        $scope.mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle');
                         $('#clienteNome').focus();
                         Factory.setMensagemTemporaria('erro', 'Nome Inválido!', '#msgManterCliente');
                         return false;
@@ -629,7 +621,6 @@ $('#menu-lateral ul li').click(function () {
                     if ($scope.clienteAtual.pessoa.sobreNome !== null && $scope.clienteAtual.pessoa.sobreNome !== undefined && $scope.clienteAtual.pessoa.sobreNome.trim() !== "") {
                         retorno = true;
                     } else {
-                        $scope.mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle');
                         $('#clienteSobreNome').focus();
                         Factory.setMensagemTemporaria('erro', 'Sobrenome Inválido!', '#msgManterCliente');
                         return false;
@@ -637,7 +628,6 @@ $('#menu-lateral ul li').click(function () {
                     if ($scope.clienteAtual.pessoa.dataNascimento !== null && $scope.clienteAtual.pessoa.dataNascimento !== undefined) {
                         retorno = true;
                     } else {
-                        $scope.mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle');
                         $('#clienteDataNascimento').focus();
                         Factory.setMensagemTemporaria('erro', 'Informar Data Nascimento!', '#msgManterCliente');
                         return false;
@@ -645,7 +635,6 @@ $('#menu-lateral ul li').click(function () {
                     if ($scope.clienteAtual.cpf === null || $scope.clienteAtual.cpf === undefined || $scope.clienteAtual.cpf.trim() === "" || ($scope.clienteAtual.cpf !== null && $scope.clienteAtual.cpf !== undefined && $scope.clienteAtual.cpf.trim() !== "" && Utilitario.validaCPF($scope.clienteAtual.cpf))) {
                         retorno = true;
                     } else {
-                        $scope.mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle');
                         $('#clienteCpf').focus();
                         Factory.setMensagemTemporaria('erro', 'CPF é Inválido!', '#msgManterCliente');
                         return false;
@@ -653,7 +642,6 @@ $('#menu-lateral ul li').click(function () {
                     if ($scope.clienteAtual.email !== null && $scope.clienteAtual.email !== undefined && $scope.clienteAtual.email.trim() !== "") {
                         retorno = true;
                     } else {
-                        $scope.mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle');
                         $('#clienteEmail').focus();
                         Factory.setMensagemTemporaria('erro', 'Email Inválido!', '#msgManterCliente');
                         return false;
@@ -697,14 +685,6 @@ $('#menu-lateral ul li').click(function () {
             };
 
             $scope.getListaClienteAll(1);
-
-            $scope.mudaTab = function (tab, title) {
-                $('#TabClienteCrud div').removeClass('active');
-                $(tab).addClass('active');
-                $('#TabClienteCrudTitle li').removeClass('active');
-                $(title).addClass('active');
-            };
-
         }]);
 })();
 (function () {
@@ -1298,7 +1278,6 @@ $('#menu-lateral ul li').click(function () {
                 $scope.getListaPedidoAll(1);
             };
             $scope.setModoManter = function (isNovo) {
-                $scope.mudaTab('#tabProdutosDoPedido', '#tabProdutosDoPedidoTitle');
                 $scope.modoManter = true;
                 $scope.modoView = false;
                 if (isNovo) {
@@ -1407,7 +1386,6 @@ $('#menu-lateral ul li').click(function () {
                                 for (var i = response.data.EstoqueNegativo.length; i--; ) {
                                     msg += " * " + response.data.EstoqueNegativo[i] + " <br />";
                                 }
-                                $scope.mudaTab('#tabProdutosDoPedido', '#tabProdutosDoPedidoTitle');
                                 Factory.setMensagemTemporaria('alerta', msg, '#msgManterPedido');
                             } else {
                                 Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgPedidoGeral');
@@ -1579,21 +1557,17 @@ $('#menu-lateral ul li').click(function () {
             };
             var validarPedido = function () {
                 if ($scope.pedidoAtual.listaProduto === undefined || $scope.pedidoAtual.listaProduto === null || $scope.pedidoAtual.listaProduto.length <= 0) {
-                    $scope.mudaTab('#tabProdutosDoPedido', '#tabProdutosDoPedidoTitle');
                     Factory.setMensagemTemporaria('erro', 'Adicionar produtos!', "#msgManterPedido");
                     return false;
                 } else if ($scope.pedidoAtual.cliente === undefined || $scope.pedidoAtual.cliente === null) {
-                    $scope.mudaTab('#tabDadosDoPedido', '#tabDadosDoPedidoTitle');
                     $('#pedidoAtualCliente').focus();
                     Factory.setMensagemTemporaria('erro', 'Selecionar cliente!', "#msgManterPedido");
                     return false;
                 } else if ($scope.pedidoAtual.descricao === undefined || $scope.pedidoAtual.descricao === null || $scope.pedidoAtual.descricao.trim() === "") {
-                    $scope.mudaTab('#tabDadosDoPedido', '#tabDadosDoPedidoTitle');
                     $('#produtoDescricao').focus();
                     Factory.setMensagemTemporaria('erro', 'Informar descrição!', "#msgManterPedido");
                     return false;
                 } else if ($scope.pedidoAtual.data_vencimento === undefined || $scope.pedidoAtual.data_vencimento === null) {
-                    $scope.mudaTab('#tabDadosDoPedido', '#tabDadosDoPedidoTitle');
                     $('#pedidoDataVencimento').focus();
                     Factory.setMensagemTemporaria('erro', 'Informar vencimento', "#msgManterPedido");
                     return false;
@@ -1624,12 +1598,6 @@ $('#menu-lateral ul li').click(function () {
             };
             $scope.novoPedido();
             $scope.getListaPedidoAll(1);
-            $scope.mudaTab = function (tab, title) {
-                $('#TabPedidoCrud div').removeClass('active');
-                $(tab).addClass('active');
-                $('#TabPedidoCrudTitle li').removeClass('active');
-                $(title).addClass('active');
-            };
         }]);
 })();
 
@@ -2238,6 +2206,7 @@ $('#menu-lateral ul li').click(function () {
                 Utilitario.fecharDialog(idComponente);
             };
             $('#filtroProduto').on('show.bs.modal', function (event) {
+                alert('a');
                 $scope.limpaFiltroAvancado();
                 $scope.getListaProdutoAll(1);
             });

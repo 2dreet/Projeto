@@ -231,7 +231,6 @@
                 if ($scope.clienteAtual.listaTelefone !== null && $scope.clienteAtual.listaTelefone.length > 0) {
                     retorno = true;
                 } else {
-                    $scope.mudaTab('#tabTelefone', '#tabTelefoneTitle');
                     Factory.setMensagemTemporaria('erro', 'Informar Telefone!', '#msgManterCliente');
                     return false;
                 }
@@ -243,7 +242,6 @@
                 if ($scope.clienteAtual.endereco.cep !== undefined && $scope.clienteAtual.endereco.cep !== null && ($scope.clienteAtual.endereco.cep.trim()).length === 8) {
                     retorno = true;
                 } else {
-                    $scope.mudaTab('#tabEndereco', '#tabEnderecoTitle');
                     $('#clienteCep').focus();
                     Factory.setMensagemTemporaria('erro', 'Cep Inválido!', '#msgManterCliente');
                     return false;
@@ -251,7 +249,6 @@
                 if ($scope.clienteAtual.endereco.logradouro !== undefined && $scope.clienteAtual.endereco.logradouro !== null && ($scope.clienteAtual.endereco.logradouro.trim()).length > 0) {
                     retorno = true;
                 } else {
-                    $scope.mudaTab('#tabEndereco', '#tabEnderecoTitle');
                     $('#clienteLogradouro').focus();
                     Factory.setMensagemTemporaria('erro', 'Logradouro Inválido!', '#msgManterCliente');
                     return false;
@@ -259,7 +256,6 @@
                 if ($scope.clienteAtual.endereco.bairro !== undefined && $scope.clienteAtual.endereco.bairro !== null && ($scope.clienteAtual.endereco.bairro.trim()).length > 0) {
                     retorno = true;
                 } else {
-                    $scope.mudaTab('#tabEndereco', '#tabEnderecoTitle');
                     $('#clienteBairro').focus();
                     Factory.setMensagemTemporaria('erro', 'Bairro Inválido!', '#msgManterCliente');
                     return false;
@@ -267,7 +263,6 @@
                 if ($scope.clienteAtual.endereco.cidade !== undefined && $scope.clienteAtual.endereco.cidade !== null && ($scope.clienteAtual.endereco.cidade.trim()).length > 0) {
                     retorno = true;
                 } else {
-                    $scope.mudaTab('#tabEndereco', '#tabEnderecoTitle');
                     $('#clienteCidade').focus();
                     Factory.setMensagemTemporaria('erro', 'Cidade Inválida!', '#msgManterCliente');
                     return false;
@@ -275,14 +270,12 @@
                 if ($scope.clienteAtual.endereco.uf !== undefined && $scope.clienteAtual.endereco.uf !== null && ($scope.clienteAtual.endereco.uf.trim()).length === 2) {
                     retorno = true;
                 } else {
-                    $scope.mudaTab('#tabEndereco', '#tabEnderecoTitle');
                     Factory.setMensagemTemporaria('erro', 'UF Inválida!', '#msgManterCliente');
                     return false;
                 }
                 if ($scope.clienteAtual.endereco.numero !== undefined && $scope.clienteAtual.endereco.numero !== null && $scope.clienteAtual.endereco.numero > 0) {
                     retorno = true;
                 } else {
-                    $scope.mudaTab('#tabEndereco', '#tabEnderecoTitle');
                     $('#clienteNumero').focus();
                     Factory.setMensagemTemporaria('erro', 'Número Inválido!', '#msgManterCliente');
                     return false;
@@ -316,7 +309,6 @@
                     if ($scope.clienteAtual.pessoa.nome !== null && $scope.clienteAtual.pessoa.nome !== undefined && $scope.clienteAtual.pessoa.nome.trim() !== "") {
                         retorno = true;
                     } else {
-                        $scope.mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle');
                         $('#clienteNome').focus();
                         Factory.setMensagemTemporaria('erro', 'Nome Inválido!', '#msgManterCliente');
                         return false;
@@ -324,7 +316,6 @@
                     if ($scope.clienteAtual.pessoa.sobreNome !== null && $scope.clienteAtual.pessoa.sobreNome !== undefined && $scope.clienteAtual.pessoa.sobreNome.trim() !== "") {
                         retorno = true;
                     } else {
-                        $scope.mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle');
                         $('#clienteSobreNome').focus();
                         Factory.setMensagemTemporaria('erro', 'Sobrenome Inválido!', '#msgManterCliente');
                         return false;
@@ -332,7 +323,6 @@
                     if ($scope.clienteAtual.pessoa.dataNascimento !== null && $scope.clienteAtual.pessoa.dataNascimento !== undefined) {
                         retorno = true;
                     } else {
-                        $scope.mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle');
                         $('#clienteDataNascimento').focus();
                         Factory.setMensagemTemporaria('erro', 'Informar Data Nascimento!', '#msgManterCliente');
                         return false;
@@ -340,7 +330,6 @@
                     if ($scope.clienteAtual.cpf === null || $scope.clienteAtual.cpf === undefined || $scope.clienteAtual.cpf.trim() === "" || ($scope.clienteAtual.cpf !== null && $scope.clienteAtual.cpf !== undefined && $scope.clienteAtual.cpf.trim() !== "" && Utilitario.validaCPF($scope.clienteAtual.cpf))) {
                         retorno = true;
                     } else {
-                        $scope.mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle');
                         $('#clienteCpf').focus();
                         Factory.setMensagemTemporaria('erro', 'CPF é Inválido!', '#msgManterCliente');
                         return false;
@@ -348,7 +337,6 @@
                     if ($scope.clienteAtual.email !== null && $scope.clienteAtual.email !== undefined && $scope.clienteAtual.email.trim() !== "") {
                         retorno = true;
                     } else {
-                        $scope.mudaTab('#tabDadosDoCliente', '#tabDadosDoClienteTitle');
                         $('#clienteEmail').focus();
                         Factory.setMensagemTemporaria('erro', 'Email Inválido!', '#msgManterCliente');
                         return false;
@@ -392,13 +380,5 @@
             };
 
             $scope.getListaClienteAll(1);
-
-            $scope.mudaTab = function (tab, title) {
-                $('#TabClienteCrud div').removeClass('active');
-                $(tab).addClass('active');
-                $('#TabClienteCrudTitle li').removeClass('active');
-                $(title).addClass('active');
-            };
-
         }]);
 })();

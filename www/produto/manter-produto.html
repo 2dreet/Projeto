@@ -23,6 +23,9 @@
             <div class="panel-body"  style="padding: 0px; margin: 0px; padding-top: 10px;  ">
                 <div class="media-body" cg-busy="loadingLocal">
                     <form>
+                        <div class="row" style="padding-left: 15px; padding-right:  15px">
+                            <div id="msgManterProduto" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"></div>
+                        </div>
                         <div class="modal-body">
                             <div class="form-group" style="width: 100%;">
                                 <label for="produtoDescricao">Descrição</label>
@@ -61,7 +64,6 @@
                                 <label for="produtoImagemCadastro">Observação</label>
                                 <textarea class="form-control" id="produtoCadastroObservacao"  style="resize: none;" name="produtoCadastroObservacao" ng-model="produtoAtual.observacao" rows="2" maxlength="200" ng-readonly="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'"> </textarea>
                             </div>
-                            <div id="msgManterProduto" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"></div>
                         </div>
                         <div style="padding-left: 16px; padding-right: 16px; padding-bottom: 16px" ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar' || tipoFuncao == 'deletar'">
                             <div class="input-group" style="width: 100%;" >
