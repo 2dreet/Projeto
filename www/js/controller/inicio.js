@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    angular.module('www.geve.com.br').controller("inicioControler", ['$rootScope', '$scope', '$http', 'Factory', 'Utilitario', function ($rootScope, $scope, $http, Factory, Utilitario) {
+    angular.module('www.geve.com.br').controller("inicioControler", ['$rootScope', '$scope', '$http', 'Factory', 'Utilitario', 'FiltroService', function ($rootScope, $scope, $http, Factory, Utilitario, FiltroService) {
             Factory.verificaToken(true);
             Factory.ajustaMenuLateral('#btnHome');
             $rootScope.paginaAtual = "Home";
@@ -40,21 +40,11 @@
                     });
                 }
             };
+            
             $scope.localizarCliente = function (entidade) {
-                Utilitario.abrirDialog("#filtroCliente");
-                $('#filtroCliente').on('hide.bs.modal', function (event) {
-                    if ($rootScope.clienteSelecionado !== undefined && $rootScope.clienteSelecionado.id !== undefined) {
-                        var clienteAux = JSON.parse(JSON.stringify($rootScope.clienteSelecionado));
-                        clienteAux = {id: clienteAux.id, nome: clienteAux.pessoa.nome + ' ' + clienteAux.pessoa.sobreNome};
-                        if ($scope.busca.cliente === undefined) {
-                            $scope.busca.cliente = {};
-                        }
-                        $scope.busca.cliente = clienteAux;
-                        $rootScope.clienteSelecionado = {};
-                    }
-                    $('#filtroCliente').off('hide.bs.modal');
-                });
+                FiltroService.localizarCliente(entidade);
             };
+            
             $scope.getDados();
         }]);
 })();

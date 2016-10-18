@@ -1,4 +1,4 @@
-<div class="modal fade" id="filtroCliente" role="dialog" aria-hidden="true" cg-busy="loadingDialog" ng-controller="filtroClienteController">
+<div class="modal fade clienteModalFiltro" role="dialog" aria-hidden="true" cg-busy="loadingDialog" ng-controller="filtroClienteController">
     <div class="modal-dialog">
         <div class="modal-content dialog-produto">
             <form>
@@ -9,9 +9,9 @@
 
                 <div class="media-body" style="padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px">
                     <div class="input-group" style="padding-bottom: 10px">
-                        <input type="text" class="form-control"  ng-model="valorBuscaCliente">
+                        <input type="text" class="form-control"  ng-model="valorBusca">
                         <span class="input-group-btn">
-                            <button class="btn btn-primary" type="button" ng-click="getListaClienteAll(1)"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                            <button class="btn btn-primary" type="button" ng-click="filtrar()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                         </span>
                     </div>
                     <div id="msgFiltrarCliente" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px"></div>

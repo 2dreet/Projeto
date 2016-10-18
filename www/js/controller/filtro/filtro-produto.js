@@ -1,9 +1,9 @@
 
 (function () {
     'use strict';
-    angular.module('www.geve.com.br').controller("filtroProdutoController", ['$rootScope', '$scope', '$http', 'Factory', 'Utilitario', function ($rootScope, $scope, $http, Factory, Utilitario) {
-            $scope.buscaAvancadaProduto = {};
-            $scope.valorBuscaProduto = "";
+    angular.module('www.geve.com.br').controller("produtoFiltroController", ['$rootScope', '$scope', '$http', 'Factory', 'Utilitario', 'FiltroService', function ($rootScope, $scope, $http, Factory, Utilitario, FiltroService) {
+            $scope.buscaAvancada = {};
+            $scope.valorBusca = "";
             $scope.listaProduto = [];
             $scope.maxSize = 3;
             $scope.totalItems = 0;
@@ -17,21 +17,26 @@
                 }
             };
             $scope.limpaFiltroAvancado = function () {
-                $scope.buscaAvancadaProduto = {descricao: "", fornecedor: "", estoquePositivo: ""};
-                $scope.valorBuscaProduto = "";
+                $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
+                $scope.valorBusca = "";
             };
             $scope.filtroPorDescricao = function () {
-                $scope.buscaAvancadaProduto = {descricao: "", fornecedor: "", estoquePositivo: ""};
+                $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
                 $scope.getListaProdutoAll(1);
             };
             $scope.filtrarAvancado = function () {
-                $scope.valorBuscaProduto = "";
+                $scope.valorBusca = "";
                 $scope.getListaProdutoAll(1);
                 Utilitario.fecharDialog('#filtroProdutoAvancado');
             };
+
+            $scope.localizarFornecedor = function () {
+                FiltroService.localizarFornecedor($scope.buscaAvancada);
+            };
+
             $scope.getListaProdutoAll = function (pagina) {
                 if (Factory.verificaToken(true)) {
-                    var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaAvancada': $scope.buscaAvancadaProduto, 'buscaDescricao': $scope.valorBuscaProduto};
+                    var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBusca};
                     $rootScope.loading = $http({
                         method: 'POST',
                         data: envio,
@@ -50,17 +55,43 @@
                     });
                 }
             };
+
             $scope.selecionarProduto = function (produto) {
                 $rootScope.produtoSelecionado = JSON.parse(JSON.stringify(produto));
-                Utilitario.fecharDialog("#filtroProduto");
+                $(".produtoModalFiltro").modal('hide');
             };
+
             $scope.fechar = function (idComponente) {
-                Utilitario.fecharDialog(idComponente);
+                $(".produtoModalFiltro").modal('hide');
             };
-            $('#filtroProduto').on('show.bs.modal', function (event) {
-                alert('a');
-                $scope.limpaFiltroAvancado();
-                $scope.getListaProdutoAll(1);
-            });
+
+            $scope.fecharDialog = function (idComponente) {
+                $(idComponente).modal('hide');
+            };
+
+            function zeraBusca() {
+                $scope.valorBusca = "";
+                $scope.listaProduto = [];
+                $scope.currentPage = 1;
+                $scope.buscaAvancada = {};
+            }
+
+            $scope.filtrar = function () {
+                $scope.listaProduto = [];
+                $scope.totalItems = 0;
+                $scope.currentPage = 1;
+                $scope.getListaProdutoAll($scope.currentPage);
+            };
+
+            $rootScope.inicioGlobalProdutoModalFiltro = function () {
+                $('.produtoModalFiltro').off();
+                $('.produtoModalFiltro').on('shown.bs.modal', function (event) {
+                    $('input:text:visible:first', this).focus();
+                });
+                $('.produtoModalFiltro').on('show.bs.modal', function (event) {
+                    zeraBusca();
+                    $scope.getListaProdutoAll(1);
+                });
+            };
         }]);
 })();

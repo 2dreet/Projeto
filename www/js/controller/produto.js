@@ -1,7 +1,7 @@
 
 (function () {
     'use strict';
-    angular.module('www.geve.com.br').controller("produtoControler", ['$rootScope', '$scope', '$http', 'Formulario', 'Factory', 'Utilitario', function ($rootScope, $scope, $http, Formulario, Factory, Utilitario) {
+    angular.module('www.geve.com.br').controller("produtoControler", ['$rootScope', '$scope', '$http', 'Formulario', 'Factory', 'Utilitario', 'FiltroService', function ($rootScope, $scope, $http, Formulario, Factory, Utilitario, FiltroService) {
             Factory.verificaToken(true);
             Factory.ajustaMenuLateral('#btnProduto');
             $rootScope.paginaAtual = "Produtos";
@@ -380,19 +380,7 @@
             };
 
             $scope.localizarFornecedor = function (entidade) {
-                $scope.abrir("#filtroFornecedor");
-                $('#filtroFornecedor').on('hide.bs.modal', function (event) {
-                    if ($rootScope.fornecedorSelecionado !== undefined && $rootScope.fornecedorSelecionado.id !== undefined) {
-                        var fornecedorAux = JSON.parse(JSON.stringify($rootScope.fornecedorSelecionado));
-                        fornecedorAux = {id: fornecedorAux.id, descricao: fornecedorAux.descricao};
-                        if (entidade.fornecedor === undefined) {
-                            entidade.fornecedor = {};
-                        }
-                        entidade.fornecedor = fornecedorAux;
-                        $rootScope.fornecedorSelecionado = {};
-                    }
-                    $('#filtroFornecedor').off('hide.bs.modal');
-                });
+                FiltroService.localizarFornecedor(entidade);
             };
 
             $scope.preparaProdutoView = function (idModalPai, idModalFilho) {

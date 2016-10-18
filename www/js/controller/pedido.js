@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    angular.module('www.geve.com.br').controller("pedidoControler", ['$rootScope', '$scope', '$http', 'Factory', 'Formulario', 'Utilitario', function ($rootScope, $scope, $http, Factory, Formulario, Utilitario) {
+    angular.module('www.geve.com.br').controller("pedidoControler", ['$rootScope', '$scope', '$http', 'Factory', 'Formulario', 'Utilitario', 'FiltroService', function ($rootScope, $scope, $http, Factory, Formulario, Utilitario, FiltroService) {
             Factory.verificaToken(true);
             Factory.ajustaMenuLateral('#btnPedido');
             $rootScope.paginaAtual = "Pedidos";
@@ -297,50 +297,14 @@
             $scope.novoPedido = function () {
                 $scope.pedidoAtual = {tipo_pedido: $scope.listaTipoPedido[0], forma_pagamento: $scope.listaFormaPagamento[0], cliente: null};
             };
+            
             $scope.localizarProduto = function () {
-                Utilitario.abrirDialog("#filtroProduto");
-                $('#filtroProduto').on('hide.bs.modal', function (event) {
-                    if ($rootScope.produtoSelecionado !== undefined) {
-                        if ($scope.pedidoAtual.listaProduto === undefined) {
-                            $scope.pedidoAtual.listaProduto = [];
-                        }
-                        var encontrou = false;
-                        for (var i = $scope.pedidoAtual.listaProduto.length; i--; ) {
-                            if ($rootScope.produtoSelecionado.id !== undefined && $scope.pedidoAtual.listaProduto[i].id !== undefined &&
-                                    $rootScope.produtoSelecionado.id === $scope.pedidoAtual.listaProduto[i].id) {
-                                $scope.pedidoAtual.listaProduto[i].quantidade++;
-                                encontrou = true;
-                                $rootScope.produtoSelecionado = {};
-                            }
-                        }
-                        if (encontrou === false) {
-                            var produtoAux = JSON.parse(JSON.stringify($rootScope.produtoSelecionado));
-                            produtoAux = {id: produtoAux.id, descricao: produtoAux.descricao, valor: produtoAux.valor};
-                            $rootScope.produtoSelecionado = {};
-                            if (produtoAux.id !== undefined) {
-                                produtoAux.quantidade = 1;
-                                $scope.pedidoAtual.listaProduto.push(produtoAux);
-                            }
-                        }
-                    }
-                    $('#filtroProduto').off('hide.bs.modal');
-                });
+                FiltroService.localizarProduto($scope.pedidoAtual);
             };
             $scope.localizarCliente = function (entidade) {
-                Utilitario.abrirDialog("#filtroCliente");
-                $('#filtroCliente').on('hide.bs.modal', function (event) {
-                    if ($rootScope.clienteSelecionado !== undefined && $rootScope.clienteSelecionado.id !== undefined) {
-                        var clienteAux = JSON.parse(JSON.stringify($rootScope.clienteSelecionado));
-                        clienteAux = {id: clienteAux.id, nome: clienteAux.pessoa.nome + ' ' + clienteAux.pessoa.sobreNome};
-                        if (entidade.cliente === undefined) {
-                            entidade.cliente = {};
-                        }
-                        entidade.cliente = clienteAux;
-                        $rootScope.clienteSelecionado = {};
-                    }
-                    $('#filtroCliente').off('hide.bs.modal');
-                });
+                FiltroService.localizarCliente(entidade);
             };
+            
             $scope.removeProduto = function (produto) {
                 for (var i = $scope.pedidoAtual.listaProduto.length; i--; ) {
                     if ($scope.pedidoAtual.listaProduto[i] === produto) {

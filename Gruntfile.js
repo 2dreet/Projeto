@@ -2,7 +2,7 @@ module.exports = function (grunt) {
     grunt.initConfig({
         concat: {
             basic: {
-                src: [ 'www/js/module/*.js', 'www/js/factory/*.js', 'www/js/controller/*.js', 'www/js/controller/filtro/*.js'],
+                src: [ 'www/js/module/*.js', 'www/js/factory/*.js', 'www/js/controller/*.js', 'www/js/controller/filtro/*.js', 'www/js/service/*.js'],
                 dest: 'www/js/main3.js',
             },
             extras: {
@@ -12,10 +12,10 @@ module.exports = function (grunt) {
         },
         watch: {
             scripts: {
-                files: ['www/js/module/*.js', 'www/js/factory/*.js', 'www/js/controller/*.js', 'www/js/controller/filtro/*.js'],
+                files: ['www/js/module/*.js', 'www/js/factory/*.js', 'www/js/controller/*.js', 'www/js/controller/filtro/*.js', 'www/js/service/*.js'],
                 tasks: ['concat'],
                 options: {
-                    interrupt: true,
+                    interrupt: true, 
                 },
             },
         }

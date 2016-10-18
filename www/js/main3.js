@@ -1059,7 +1059,7 @@ $('#menu-lateral ul li').click(function () {
 })();
 (function () {
     'use strict';
-    angular.module('www.geve.com.br').controller("inicioControler", ['$rootScope', '$scope', '$http', 'Factory', 'Utilitario', function ($rootScope, $scope, $http, Factory, Utilitario) {
+    angular.module('www.geve.com.br').controller("inicioControler", ['$rootScope', '$scope', '$http', 'Factory', 'Utilitario', 'FiltroService', function ($rootScope, $scope, $http, Factory, Utilitario, FiltroService) {
             Factory.verificaToken(true);
             Factory.ajustaMenuLateral('#btnHome');
             $rootScope.paginaAtual = "Home";
@@ -1099,21 +1099,11 @@ $('#menu-lateral ul li').click(function () {
                     });
                 }
             };
+            
             $scope.localizarCliente = function (entidade) {
-                Utilitario.abrirDialog("#filtroCliente");
-                $('#filtroCliente').on('hide.bs.modal', function (event) {
-                    if ($rootScope.clienteSelecionado !== undefined && $rootScope.clienteSelecionado.id !== undefined) {
-                        var clienteAux = JSON.parse(JSON.stringify($rootScope.clienteSelecionado));
-                        clienteAux = {id: clienteAux.id, nome: clienteAux.pessoa.nome + ' ' + clienteAux.pessoa.sobreNome};
-                        if ($scope.busca.cliente === undefined) {
-                            $scope.busca.cliente = {};
-                        }
-                        $scope.busca.cliente = clienteAux;
-                        $rootScope.clienteSelecionado = {};
-                    }
-                    $('#filtroCliente').off('hide.bs.modal');
-                });
+                FiltroService.localizarCliente(entidade);
             };
+            
             $scope.getDados();
         }]);
 })();
@@ -1201,7 +1191,7 @@ $('#menu-lateral ul li').click(function () {
 })();
 (function () {
     'use strict';
-    angular.module('www.geve.com.br').controller("pedidoControler", ['$rootScope', '$scope', '$http', 'Factory', 'Formulario', 'Utilitario', function ($rootScope, $scope, $http, Factory, Formulario, Utilitario) {
+    angular.module('www.geve.com.br').controller("pedidoControler", ['$rootScope', '$scope', '$http', 'Factory', 'Formulario', 'Utilitario', 'FiltroService', function ($rootScope, $scope, $http, Factory, Formulario, Utilitario, FiltroService) {
             Factory.verificaToken(true);
             Factory.ajustaMenuLateral('#btnPedido');
             $rootScope.paginaAtual = "Pedidos";
@@ -1498,50 +1488,14 @@ $('#menu-lateral ul li').click(function () {
             $scope.novoPedido = function () {
                 $scope.pedidoAtual = {tipo_pedido: $scope.listaTipoPedido[0], forma_pagamento: $scope.listaFormaPagamento[0], cliente: null};
             };
+            
             $scope.localizarProduto = function () {
-                Utilitario.abrirDialog("#filtroProduto");
-                $('#filtroProduto').on('hide.bs.modal', function (event) {
-                    if ($rootScope.produtoSelecionado !== undefined) {
-                        if ($scope.pedidoAtual.listaProduto === undefined) {
-                            $scope.pedidoAtual.listaProduto = [];
-                        }
-                        var encontrou = false;
-                        for (var i = $scope.pedidoAtual.listaProduto.length; i--; ) {
-                            if ($rootScope.produtoSelecionado.id !== undefined && $scope.pedidoAtual.listaProduto[i].id !== undefined &&
-                                    $rootScope.produtoSelecionado.id === $scope.pedidoAtual.listaProduto[i].id) {
-                                $scope.pedidoAtual.listaProduto[i].quantidade++;
-                                encontrou = true;
-                                $rootScope.produtoSelecionado = {};
-                            }
-                        }
-                        if (encontrou === false) {
-                            var produtoAux = JSON.parse(JSON.stringify($rootScope.produtoSelecionado));
-                            produtoAux = {id: produtoAux.id, descricao: produtoAux.descricao, valor: produtoAux.valor};
-                            $rootScope.produtoSelecionado = {};
-                            if (produtoAux.id !== undefined) {
-                                produtoAux.quantidade = 1;
-                                $scope.pedidoAtual.listaProduto.push(produtoAux);
-                            }
-                        }
-                    }
-                    $('#filtroProduto').off('hide.bs.modal');
-                });
+                FiltroService.localizarProduto($scope.pedidoAtual);
             };
             $scope.localizarCliente = function (entidade) {
-                Utilitario.abrirDialog("#filtroCliente");
-                $('#filtroCliente').on('hide.bs.modal', function (event) {
-                    if ($rootScope.clienteSelecionado !== undefined && $rootScope.clienteSelecionado.id !== undefined) {
-                        var clienteAux = JSON.parse(JSON.stringify($rootScope.clienteSelecionado));
-                        clienteAux = {id: clienteAux.id, nome: clienteAux.pessoa.nome + ' ' + clienteAux.pessoa.sobreNome};
-                        if (entidade.cliente === undefined) {
-                            entidade.cliente = {};
-                        }
-                        entidade.cliente = clienteAux;
-                        $rootScope.clienteSelecionado = {};
-                    }
-                    $('#filtroCliente').off('hide.bs.modal');
-                });
+                FiltroService.localizarCliente(entidade);
             };
+            
             $scope.removeProduto = function (produto) {
                 for (var i = $scope.pedidoAtual.listaProduto.length; i--; ) {
                     if ($scope.pedidoAtual.listaProduto[i] === produto) {
@@ -1603,7 +1557,7 @@ $('#menu-lateral ul li').click(function () {
 
 (function () {
     'use strict';
-    angular.module('www.geve.com.br').controller("produtoControler", ['$rootScope', '$scope', '$http', 'Formulario', 'Factory', 'Utilitario', function ($rootScope, $scope, $http, Formulario, Factory, Utilitario) {
+    angular.module('www.geve.com.br').controller("produtoControler", ['$rootScope', '$scope', '$http', 'Formulario', 'Factory', 'Utilitario', 'FiltroService', function ($rootScope, $scope, $http, Formulario, Factory, Utilitario, FiltroService) {
             Factory.verificaToken(true);
             Factory.ajustaMenuLateral('#btnProduto');
             $rootScope.paginaAtual = "Produtos";
@@ -1982,19 +1936,7 @@ $('#menu-lateral ul li').click(function () {
             };
 
             $scope.localizarFornecedor = function (entidade) {
-                $scope.abrir("#filtroFornecedor");
-                $('#filtroFornecedor').on('hide.bs.modal', function (event) {
-                    if ($rootScope.fornecedorSelecionado !== undefined && $rootScope.fornecedorSelecionado.id !== undefined) {
-                        var fornecedorAux = JSON.parse(JSON.stringify($rootScope.fornecedorSelecionado));
-                        fornecedorAux = {id: fornecedorAux.id, descricao: fornecedorAux.descricao};
-                        if (entidade.fornecedor === undefined) {
-                            entidade.fornecedor = {};
-                        }
-                        entidade.fornecedor = fornecedorAux;
-                        $rootScope.fornecedorSelecionado = {};
-                    }
-                    $('#filtroFornecedor').off('hide.bs.modal');
-                });
+                FiltroService.localizarFornecedor(entidade);
             };
 
             $scope.preparaProdutoView = function (idModalPai, idModalFilho) {
@@ -2048,19 +1990,16 @@ $('#menu-lateral ul li').click(function () {
 (function () {
     'use strict';
     angular.module('www.geve.com.br').controller("filtroClienteController", ['$rootScope', '$scope', '$http', 'Factory', 'Utilitario', function ($rootScope, $scope, $http, Factory, Utilitario) {
-            $scope.buscaAvancadaCliente = {};
-            $scope.valorBuscaCliente = "";
+            $scope.valorBusca = "";
             $scope.listaCliente = [];
-
             $scope.maxSize = 3;
             $scope.totalItems = 0;
             $scope.currentPage = 1;
             $scope.itensPorPagina = 10;
-            $scope.tipoFuncao = 0;
 
             $scope.getListaClienteAll = function (pagina) {
                 if (Factory.verificaToken(true)) {
-                    var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaAvancada': $scope.buscaAvancadaCliente, 'buscaDescricao': $scope.valorBuscaCliente, 'limit': $scope.itensPorPagina};
+                    var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaDescricao': $scope.valorBusca, 'limit': $scope.itensPorPagina};
                     $rootScope.loading = $http({
                         method: 'POST',
                         data: envio,
@@ -2082,36 +2021,54 @@ $('#menu-lateral ul li').click(function () {
 
             $scope.selecionarCliente = function (cliente) {
                 $rootScope.clienteSelecionado = JSON.parse(JSON.stringify(cliente));
-                Utilitario.fecharDialog("#filtroCliente");
+                $scope.fechar();
             };
 
             $scope.fechar = function () {
-                Utilitario.fecharDialog("#filtroCliente");
+                $(".clienteModalFiltro").modal('hide');
             };
 
-            $('#filtroCliente').on('show.bs.modal', function (event) {
-                $scope.valorBuscaCliente = "";
-                $scope.getListaClienteAll(1);
-            });
+            function zeraBusca() {
+                $scope.valorBusca = "";
+                $scope.listaCliente = [];
+                $scope.currentPage = 1;
+                $scope.buscaAvancada = {};
+            }
+
+            $scope.filtrar = function () {
+                $scope.listaCliente = [];
+                $scope.totalItems = 0;
+                $scope.currentPage = 1;
+                $scope.getListaClienteAll($scope.currentPage);
+            };
+
+            $rootScope.inicioGlobalClienteModalFiltro = function () {
+                $('.clienteModalFiltro').off();
+                $('.clienteModalFiltro').on('shown.bs.modal', function (event) {
+                    $('input:text:visible:first', this).focus();
+                });
+                $('.clienteModalFiltro').on('show.bs.modal', function (event) {
+                    zeraBusca();
+                    $scope.getListaClienteAll(1);
+                });
+            };
+
         }]);
 })();
 
 (function () {
     'use strict';
     angular.module('www.geve.com.br').controller("filtroFornecedorController", ['$rootScope', '$scope', '$http', 'Factory', 'Utilitario', function ($rootScope, $scope, $http, Factory, Utilitario) {
-            $scope.buscaAvancadaCliente = {};
-            $scope.valorBuscaFornecedor = "";
+            $scope.valorBusca = "";
             $scope.listaFornecedor = [];
-
             $scope.maxSize = 3;
             $scope.totalItems = 0;
             $scope.currentPage = 1;
             $scope.itensPorPagina = 10;
-            $scope.tipoFuncao = 0;
 
             $scope.getListaFornecedorAll = function (pagina) {
                 if (Factory.verificaToken(true)) {
-                    var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaAvancada': $scope.buscaAvancadaCliente, 'buscaDescricao': $scope.valorBuscaCliente, 'limit': $scope.itensPorPagina};
+                    var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaDescricao': $scope.valorBusca, 'limit': $scope.itensPorPagina};
                     $rootScope.loading = $http({
                         method: 'POST',
                         data: envio,
@@ -2130,28 +2087,47 @@ $('#menu-lateral ul li').click(function () {
                     });
                 }
             };
-            
+
             $scope.selecionarFornecedor = function (fornecedor) {
                 $rootScope.fornecedorSelecionado = JSON.parse(JSON.stringify(fornecedor));
-                Utilitario.fecharDialog("#filtroFornecedor");
+                $(".fornecedorModalFiltro").modal('hide');
             };
-            
+
             $scope.fechar = function () {
-                Utilitario.fecharDialog("#filtroFornecedor");
+                $(".fornecedorModalFiltro").modal('hide');
             };
+
+            function zeraBusca() {
+                $scope.valorBusca = "";
+                $scope.listaFornecedor = [];
+                $scope.currentPage = 1;
+            }
             
-            $('#filtroFornecedor').on('show.bs.modal', function (event) {
-                $scope.valorBuscaCliente = "";
-                $scope.getListaFornecedorAll(1);
-            });
+            $scope.filtrar = function () {
+                $scope.listaFornecedor = [];
+                $scope.totalItems = 0;
+                $scope.currentPage = 1;
+                $scope.getListaFornecedorAll($scope.currentPage);
+            };
+
+            $rootScope.inicioGlobalFornecedorModalFiltro = function () {
+                $('.fornecedorModalFiltro').off();
+                $('.fornecedorModalFiltro').on('shown.bs.modal', function (event) {
+                    $('input:text:visible:first', this).focus();
+                });
+                $('.fornecedorModalFiltro').on('show.bs.modal', function (event) {
+                    zeraBusca();
+                    $scope.getListaFornecedorAll(1);
+                });
+            };
         }]);
 })();
 
 (function () {
     'use strict';
-    angular.module('www.geve.com.br').controller("filtroProdutoController", ['$rootScope', '$scope', '$http', 'Factory', 'Utilitario', function ($rootScope, $scope, $http, Factory, Utilitario) {
-            $scope.buscaAvancadaProduto = {};
-            $scope.valorBuscaProduto = "";
+    angular.module('www.geve.com.br').controller("produtoFiltroController", ['$rootScope', '$scope', '$http', 'Factory', 'Utilitario', 'FiltroService', function ($rootScope, $scope, $http, Factory, Utilitario, FiltroService) {
+            $scope.buscaAvancada = {};
+            $scope.valorBusca = "";
             $scope.listaProduto = [];
             $scope.maxSize = 3;
             $scope.totalItems = 0;
@@ -2165,21 +2141,26 @@ $('#menu-lateral ul li').click(function () {
                 }
             };
             $scope.limpaFiltroAvancado = function () {
-                $scope.buscaAvancadaProduto = {descricao: "", fornecedor: "", estoquePositivo: ""};
-                $scope.valorBuscaProduto = "";
+                $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
+                $scope.valorBusca = "";
             };
             $scope.filtroPorDescricao = function () {
-                $scope.buscaAvancadaProduto = {descricao: "", fornecedor: "", estoquePositivo: ""};
+                $scope.buscaAvancada = {descricao: "", fornecedor: "", estoquePositivo: ""};
                 $scope.getListaProdutoAll(1);
             };
             $scope.filtrarAvancado = function () {
-                $scope.valorBuscaProduto = "";
+                $scope.valorBusca = "";
                 $scope.getListaProdutoAll(1);
                 Utilitario.fecharDialog('#filtroProdutoAvancado');
             };
+
+            $scope.localizarFornecedor = function () {
+                FiltroService.localizarFornecedor($scope.buscaAvancada);
+            };
+
             $scope.getListaProdutoAll = function (pagina) {
                 if (Factory.verificaToken(true)) {
-                    var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaAvancada': $scope.buscaAvancadaProduto, 'buscaDescricao': $scope.valorBuscaProduto};
+                    var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBusca};
                     $rootScope.loading = $http({
                         method: 'POST',
                         data: envio,
@@ -2198,17 +2179,121 @@ $('#menu-lateral ul li').click(function () {
                     });
                 }
             };
+
             $scope.selecionarProduto = function (produto) {
                 $rootScope.produtoSelecionado = JSON.parse(JSON.stringify(produto));
-                Utilitario.fecharDialog("#filtroProduto");
+                $(".produtoModalFiltro").modal('hide');
             };
+
             $scope.fechar = function (idComponente) {
-                Utilitario.fecharDialog(idComponente);
+                $(".produtoModalFiltro").modal('hide');
             };
-            $('#filtroProduto').on('show.bs.modal', function (event) {
-                alert('a');
-                $scope.limpaFiltroAvancado();
-                $scope.getListaProdutoAll(1);
-            });
+
+            $scope.fecharDialog = function (idComponente) {
+                $(idComponente).modal('hide');
+            };
+
+            function zeraBusca() {
+                $scope.valorBusca = "";
+                $scope.listaProduto = [];
+                $scope.currentPage = 1;
+                $scope.buscaAvancada = {};
+            }
+
+            $scope.filtrar = function () {
+                $scope.listaProduto = [];
+                $scope.totalItems = 0;
+                $scope.currentPage = 1;
+                $scope.getListaProdutoAll($scope.currentPage);
+            };
+
+            $rootScope.inicioGlobalProdutoModalFiltro = function () {
+                $('.produtoModalFiltro').off();
+                $('.produtoModalFiltro').on('shown.bs.modal', function (event) {
+                    $('input:text:visible:first', this).focus();
+                });
+                $('.produtoModalFiltro').on('show.bs.modal', function (event) {
+                    zeraBusca();
+                    $scope.getListaProdutoAll(1);
+                });
+            };
         }]);
 })();
+(function () {
+    'use strict';
+    angular.module('www.geve.com.br').service('FiltroService', function ($rootScope) {
+
+        this.localizarFornecedor = function (objeto) {
+            $rootScope.inicioGlobalFornecedorModalFiltro();
+            $(".fornecedorModalFiltro").modal('show');
+            $('.fornecedorModalFiltro').on('hide.bs.modal', function (event) {
+                if (objeto === undefined || objeto === null) {
+                    objeto = {'fornecedor': null};
+                } else if (objeto.fornecedor === undefined) {
+                    objeto.fornecedor = null;
+                }
+
+                if ($rootScope.fornecedorSelecionado !== undefined && $rootScope.fornecedorSelecionado !== null && $rootScope.fornecedorSelecionado.id !== undefined) {
+                    var fornecedorAux = JSON.parse(JSON.stringify($rootScope.fornecedorSelecionado));
+                    fornecedorAux = {id: fornecedorAux.id, descricao: fornecedorAux.descricao};
+                    objeto.fornecedor = fornecedorAux;
+                }
+                $rootScope.fornecedorSelecionado = null;
+                $('.fornecedorModalFiltro').off('hide.bs.modal');
+            });
+        };
+
+        this.localizarProduto = function (objeto) {
+            $rootScope.inicioGlobalProdutoModalFiltro();
+            $(".produtoModalFiltro").modal('show');
+            $('.produtoModalFiltro').on('hide.bs.modal', function (event) {
+                if ($rootScope.produtoSelecionado !== undefined) {
+                    if (objeto.listaProduto === undefined) {
+                        objeto.listaProduto = [];
+                    }
+                    var encontrou = false;
+                    for (var i = objeto.listaProduto.length; i--; ) {
+                        if ($rootScope.produtoSelecionado.id !== undefined && objeto.listaProduto[i].id !== undefined &&
+                                $rootScope.produtoSelecionado.id === objeto.listaProduto[i].id) {
+                            objeto.listaProduto[i].quantidade++;
+                            encontrou = true;
+                            $rootScope.produtoSelecionado = {};
+                        }
+                    }
+                    if (encontrou === false) {
+                        var produtoAux = JSON.parse(JSON.stringify($rootScope.produtoSelecionado));
+                        produtoAux = {id: produtoAux.id, descricao: produtoAux.descricao, valor: produtoAux.valor};
+                        $rootScope.produtoSelecionado = {};
+                        if (produtoAux.id !== undefined) {
+                            produtoAux.quantidade = 1;
+                            objeto.listaProduto.push(produtoAux);
+                        }
+                    }
+                }
+                $('.produtoModalFiltro').off('hide.bs.modal');
+            });
+        };
+
+        this.localizarCliente = function (objeto) {
+            $rootScope.inicioGlobalClienteModalFiltro();
+            $(".clienteModalFiltro").modal('show');
+            $('.clienteModalFiltro').on('hide.bs.modal', function (event) {
+                if (objeto === undefined || objeto === null) {
+                    objeto = {'cliente': null};
+                } else if (objeto.cliente === undefined) {
+                    objeto.cliente = null;
+                }
+
+                if ($rootScope.clienteSelecionado !== undefined && $rootScope.clienteSelecionado !== null && $rootScope.clienteSelecionado.id !== undefined) {
+                    var clienteAux = JSON.parse(JSON.stringify($rootScope.clienteSelecionado));
+                    clienteAux = {id: clienteAux.id, nome: clienteAux.pessoa.nome + " " + clienteAux.pessoa.sobreNome};
+                    objeto.cliente = clienteAux;
+                }
+                $rootScope.fornecedorSelecionado = null;
+                $('.clienteModalFiltro').off('hide.bs.modal');
+            });
+        };
+
+    });
+})();
+
