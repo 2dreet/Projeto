@@ -1,4 +1,4 @@
-var app = angular.module('www.geve.com.br', ['ngRoute', 'ui.utils.masks', 'ui.mask', 'cgBusy', 'ui.bootstrap', 'ngMaterial']);
+var app = angular.module('www.geve.com.br', ['ngRoute', 'ui.utils.masks', 'ui.mask', 'cgBusy', 'ui.bootstrap', 'ngMaterial', 'chart.js']);
 app.config(function ($routeProvider, $locationProvider) {
     $routeProvider
             .when('/', {
@@ -31,36 +31,36 @@ app.config(function ($routeProvider, $locationProvider) {
 });
 
 app.filter('tel', function () {
-  return function (input) {
-    var str = input + '';
-    str = str.replace(/\D/g, '');
-    if (str.length === 11) {
-      str = str.replace(/^(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-    } else {
-      str = str.replace(/^(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
-    }
-    return str;
-  };
+    return function (input) {
+        var str = input + '';
+        str = str.replace(/\D/g, '');
+        if (str.length === 11) {
+            str = str.replace(/^(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+        } else {
+            str = str.replace(/^(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+        }
+        return str;
+    };
 });
 
 app.filter('cpf', function () {
-  return function (input) {
-    var str = input + '';
-    str = str.replace(/\D/g, '');
-    str = str.replace(/(\d{3})(\d)/, '$1.$2');
-    str = str.replace(/(\d{3})(\d)/, '$1.$2');
-    str = str.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-    return str;
-  };
+    return function (input) {
+        var str = input + '';
+        str = str.replace(/\D/g, '');
+        str = str.replace(/(\d{3})(\d)/, '$1.$2');
+        str = str.replace(/(\d{3})(\d)/, '$1.$2');
+        str = str.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        return str;
+    };
 });
 
 app.filter('cep', function () {
-  return function (input) {
-    var str = input + '';
-    str = str.replace(/\D/g, '');
-    str = str.replace(/^(\d{2})(\d{3})(\d)/, '$1.$2-$3');
-    return str;
-  };
+    return function (input) {
+        var str = input + '';
+        str = str.replace(/\D/g, '');
+        str = str.replace(/^(\d{2})(\d{3})(\d)/, '$1.$2-$3');
+        return str;
+    };
 });
 
 app.value('cgBusyDefaults', {
@@ -69,3 +69,10 @@ app.value('cgBusyDefaults', {
     delay: 0,
     minDuration: 0
 });
+
+app.config(['ChartJsProvider', function (ChartJsProvider) {
+        ChartJsProvider.setOptions({
+        });
+        ChartJsProvider.setOptions('line', {
+        });
+    }]);

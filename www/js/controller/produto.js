@@ -219,19 +219,9 @@
                             if (!response.data.token) {
                                 Factory.refazerLogin();
                             } else {
-                                if ($scope.tipoFuncao === "inserir" || $scope.tipoFuncao === "alterar") {
-                                    $scope.listaProduto = [];
-                                    $scope.produtoAtual = response.data.produto;
-                                    $scope.listaProduto.push($scope.produtoAtual);
-                                    $scope.totalItems = 1;
-                                    $scope.currentPage = 1;
-                                } else {
-                                    if ($scope.tipoFuncao === "deletar") {
-                                        $scope.limpaFiltro();
-                                    }
-                                }
                                 $scope.setModoView();
                                 Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgProdutoGeral');
+                                $scope.limpaFiltro();
                             }
                         }, function errorCallback(response) {
                             Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgManterProduto');

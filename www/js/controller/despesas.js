@@ -112,18 +112,9 @@
                         if (!response.data.token) {
                             Factory.refazerLogin();
                         } else {
-                            Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgDespesaGeral');
-                            if ($scope.tipoFuncao === "inserir" || $scope.tipoFuncao === "alterar") {
-                                $scope.listaDespesas = [];
-                                $scope.listaDespesas.push($scope.despesaAtual);
-                                $scope.totalItems = 1;
-                                $scope.valorTotal = $scope.despesaAtual.valor;
-                            } else {
-                                if ($scope.tipoFuncao === "deletar") {
-                                    $scope.limpaFiltro();
-                                }
-                            }
                             $scope.setModoView();
+                            Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgDespesaGeral');
+                            $scope.limpaFiltro();
                         }
                     }, function errorCallback(response) {
                         Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgManterDespesa');

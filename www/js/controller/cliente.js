@@ -122,17 +122,9 @@
                         if (!response.data.token) {
                             Factory.refazerLogin();
                         } else {
-                            if ($scope.tipoFuncao === "inserir" || $scope.tipoFuncao === "alterar") {
-                                $scope.listaCliente = [];
-                                $scope.listaCliente.push($scope.clienteAtual);
-                                $scope.totalItems = 1;
-                            } else {
-                                if ($scope.tipoFuncao === "deletar") {
-                                    $scope.limpaFiltro();
-                                }
-                            }
                             $scope.setModoView();
                             Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgClienteGeral');
+                            $scope.limpaFiltro();
                         }
                     }, function errorCallback(response) {
                         Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgManterCliente');

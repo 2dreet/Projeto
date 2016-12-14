@@ -8,6 +8,12 @@
             $scope.valorReceber = '0,00';
             $scope.valorRecebido = '0,00';
             $scope.valorDespesas = '0,00';
+            $scope.valorLucro = '0,00';
+
+            $scope.labels = ['Pago', 'Pago Parcial', 'Não Pago'];
+            $scope.data = [0,0,0];
+            $scope.options = {legend: {display: true}};
+
             var dataAtual = new Date();
             $scope.busca = {dataInicio: (new Date(dataAtual.getFullYear(), dataAtual.getMonth(), 1)), dataFim: (new Date(dataAtual.getFullYear(), dataAtual.getMonth() + 1, 0))};
             $scope.dataInicioDialog = {opened: false};
@@ -34,17 +40,19 @@
                             $scope.valorReceber = response.data.valorReceber;
                             $scope.valorRecebido = response.data.valorRecebido;
                             $scope.valorDespesas = response.data.valorDespesas;
+                            $scope.valorLucro = response.data.lucro;
+                            $scope.data = response.data.grafico;
                         }
                     }, function errorCallback(response) {
                         Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgInicioGeral');
                     });
                 }
             };
-            
+
             $scope.localizarCliente = function (entidade) {
                 FiltroService.localizarCliente(entidade);
             };
-            
+
             $scope.getDados();
         }]);
 })();

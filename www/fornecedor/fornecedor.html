@@ -45,6 +45,7 @@
                                     <th>Descrição</th>
                                     <th style="width: 220px;" class=" visible-sm visible-md visible-lg">Email</th>
                                     <th style="width: 140px;" class="" >Telefone</th>
+                                    <th style="width: 140px;" class="" >Porcentagem</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -52,6 +53,7 @@
                                     <td ng-bind="fornecedor.descricao"></td>
                                     <td class="visible-sm visible-md visible-lg" ng-bind="fornecedor.email"></td>
                                     <td class="" ng-bind="fornecedor.telefone | tel"> </td>
+                                    <td class="" ng-bind="fornecedor.porcentagem+' %'"> </td>
                                 </tr>
                             </tbody>
                         </table> 

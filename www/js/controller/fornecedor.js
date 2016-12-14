@@ -100,17 +100,9 @@
                         if (!response.data.token) {
                             Factory.refazerLogin();
                         } else {
-                            Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgFornecedorGeral');
-                            if ($scope.tipoFuncao === "inserir" || $scope.tipoFuncao === "alterar") {
-                                $scope.listaFornecedores = [];
-                                $scope.listaFornecedores.push($scope.fornecedorAtual);
-                                $scope.totalItems = 1;
-                            } else {
-                                if ($scope.tipoFuncao === "deletar") {
-                                    $scope.limpaFiltro();
-                                }
-                            }
                             $scope.setModoView();
+                            Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgFornecedorGeral');
+                            $scope.limpaFiltro();
                         }
                     }, function errorCallback(response) {
                         Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgManterFornecedor');
@@ -143,6 +135,14 @@
                     } else {
                         Factory.setMensagemTemporaria('erro', 'Informar Telefone!', '#msgManterFornecedor');
                         $('#fornecedorFone').focus();
+                        return false;
+                    }
+
+                    if ($scope.fornecedorAtual.porcentagem !== undefined && $scope.fornecedorAtual.porcentagem !== null && $scope.fornecedorAtual.porcentagem > 0) {
+                        retorno = true;
+                    } else {
+                        Factory.setMensagemTemporaria('erro', 'Informar Porcentagem!', '#msgManterFornecedor');
+                        $('#porcentagem').focus();
                         return false;
                     }
                 }

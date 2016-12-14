@@ -1,4 +1,4 @@
-var app = angular.module('www.geve.com.br', ['ngRoute', 'ui.utils.masks', 'ui.mask', 'cgBusy', 'ui.bootstrap', 'ngMaterial']);
+var app = angular.module('www.geve.com.br', ['ngRoute', 'ui.utils.masks', 'ui.mask', 'cgBusy', 'ui.bootstrap', 'ngMaterial', 'chart.js']);
 app.config(function ($routeProvider, $locationProvider) {
     $routeProvider
             .when('/', {
@@ -31,36 +31,36 @@ app.config(function ($routeProvider, $locationProvider) {
 });
 
 app.filter('tel', function () {
-  return function (input) {
-    var str = input + '';
-    str = str.replace(/\D/g, '');
-    if (str.length === 11) {
-      str = str.replace(/^(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-    } else {
-      str = str.replace(/^(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
-    }
-    return str;
-  };
+    return function (input) {
+        var str = input + '';
+        str = str.replace(/\D/g, '');
+        if (str.length === 11) {
+            str = str.replace(/^(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+        } else {
+            str = str.replace(/^(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+        }
+        return str;
+    };
 });
 
 app.filter('cpf', function () {
-  return function (input) {
-    var str = input + '';
-    str = str.replace(/\D/g, '');
-    str = str.replace(/(\d{3})(\d)/, '$1.$2');
-    str = str.replace(/(\d{3})(\d)/, '$1.$2');
-    str = str.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-    return str;
-  };
+    return function (input) {
+        var str = input + '';
+        str = str.replace(/\D/g, '');
+        str = str.replace(/(\d{3})(\d)/, '$1.$2');
+        str = str.replace(/(\d{3})(\d)/, '$1.$2');
+        str = str.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        return str;
+    };
 });
 
 app.filter('cep', function () {
-  return function (input) {
-    var str = input + '';
-    str = str.replace(/\D/g, '');
-    str = str.replace(/^(\d{2})(\d{3})(\d)/, '$1.$2-$3');
-    return str;
-  };
+    return function (input) {
+        var str = input + '';
+        str = str.replace(/\D/g, '');
+        str = str.replace(/^(\d{2})(\d{3})(\d)/, '$1.$2-$3');
+        return str;
+    };
 });
 
 app.value('cgBusyDefaults', {
@@ -69,6 +69,13 @@ app.value('cgBusyDefaults', {
     delay: 0,
     minDuration: 0
 });
+
+app.config(['ChartJsProvider', function (ChartJsProvider) {
+        ChartJsProvider.setOptions({
+        });
+        ChartJsProvider.setOptions('line', {
+        });
+    }]);
 
 (function () {
     'use strict';
@@ -95,7 +102,7 @@ app.value('cgBusyDefaults', {
 (function () {
     'use strict';
     angular.module('www.geve.com.br').service('Factory', function () {
-        this.urlWs = "http://localhost:8088/WsJosePhp/";
+        this.urlWs = "http://localhost:80/WsJosePhp/";
         this.urlImagem = this.urlWs + "produto/getProdutoImagem/";
         this.cookieNomeToken = "www.geve.com.br.token";
         this.debug = "?XDEBUG_SESSION_START=netbeans-xdebug";
@@ -236,7 +243,6 @@ $('#menu-lateral ul li').click(function () {
     $('#menu-lateral ul li').removeClass('active');
     $(this).addClass('active');
 });
-
 (function () {
     'use strict';
     angular.module('www.geve.com.br').service('Utilitario', function () {
@@ -427,17 +433,9 @@ $('#menu-lateral ul li').click(function () {
                         if (!response.data.token) {
                             Factory.refazerLogin();
                         } else {
-                            if ($scope.tipoFuncao === "inserir" || $scope.tipoFuncao === "alterar") {
-                                $scope.listaCliente = [];
-                                $scope.listaCliente.push($scope.clienteAtual);
-                                $scope.totalItems = 1;
-                            } else {
-                                if ($scope.tipoFuncao === "deletar") {
-                                    $scope.limpaFiltro();
-                                }
-                            }
                             $scope.setModoView();
                             Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgClienteGeral');
+                            $scope.limpaFiltro();
                         }
                     }, function errorCallback(response) {
                         Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgManterCliente');
@@ -801,18 +799,9 @@ $('#menu-lateral ul li').click(function () {
                         if (!response.data.token) {
                             Factory.refazerLogin();
                         } else {
-                            Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgDespesaGeral');
-                            if ($scope.tipoFuncao === "inserir" || $scope.tipoFuncao === "alterar") {
-                                $scope.listaDespesas = [];
-                                $scope.listaDespesas.push($scope.despesaAtual);
-                                $scope.totalItems = 1;
-                                $scope.valorTotal = $scope.despesaAtual.valor;
-                            } else {
-                                if ($scope.tipoFuncao === "deletar") {
-                                    $scope.limpaFiltro();
-                                }
-                            }
                             $scope.setModoView();
+                            Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgDespesaGeral');
+                            $scope.limpaFiltro();
                         }
                     }, function errorCallback(response) {
                         Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgManterDespesa');
@@ -977,17 +966,9 @@ $('#menu-lateral ul li').click(function () {
                         if (!response.data.token) {
                             Factory.refazerLogin();
                         } else {
-                            Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgFornecedorGeral');
-                            if ($scope.tipoFuncao === "inserir" || $scope.tipoFuncao === "alterar") {
-                                $scope.listaFornecedores = [];
-                                $scope.listaFornecedores.push($scope.fornecedorAtual);
-                                $scope.totalItems = 1;
-                            } else {
-                                if ($scope.tipoFuncao === "deletar") {
-                                    $scope.limpaFiltro();
-                                }
-                            }
                             $scope.setModoView();
+                            Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgFornecedorGeral');
+                            $scope.limpaFiltro();
                         }
                     }, function errorCallback(response) {
                         Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgManterFornecedor');
@@ -1020,6 +1001,14 @@ $('#menu-lateral ul li').click(function () {
                     } else {
                         Factory.setMensagemTemporaria('erro', 'Informar Telefone!', '#msgManterFornecedor');
                         $('#fornecedorFone').focus();
+                        return false;
+                    }
+
+                    if ($scope.fornecedorAtual.porcentagem !== undefined && $scope.fornecedorAtual.porcentagem !== null && $scope.fornecedorAtual.porcentagem > 0) {
+                        retorno = true;
+                    } else {
+                        Factory.setMensagemTemporaria('erro', 'Informar Porcentagem!', '#msgManterFornecedor');
+                        $('#porcentagem').focus();
                         return false;
                     }
                 }
@@ -1067,6 +1056,12 @@ $('#menu-lateral ul li').click(function () {
             $scope.valorReceber = '0,00';
             $scope.valorRecebido = '0,00';
             $scope.valorDespesas = '0,00';
+            $scope.valorLucro = '0,00';
+
+            $scope.labels = ['Pago', 'Pago Parcial', 'Não Pago'];
+            $scope.data = [0,0,0];
+            $scope.options = {legend: {display: true}};
+
             var dataAtual = new Date();
             $scope.busca = {dataInicio: (new Date(dataAtual.getFullYear(), dataAtual.getMonth(), 1)), dataFim: (new Date(dataAtual.getFullYear(), dataAtual.getMonth() + 1, 0))};
             $scope.dataInicioDialog = {opened: false};
@@ -1093,17 +1088,19 @@ $('#menu-lateral ul li').click(function () {
                             $scope.valorReceber = response.data.valorReceber;
                             $scope.valorRecebido = response.data.valorRecebido;
                             $scope.valorDespesas = response.data.valorDespesas;
+                            $scope.valorLucro = response.data.lucro;
+                            $scope.data = response.data.grafico;
                         }
                     }, function errorCallback(response) {
                         Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgInicioGeral');
                     });
                 }
             };
-            
+
             $scope.localizarCliente = function (entidade) {
                 FiltroService.localizarCliente(entidade);
             };
-            
+
             $scope.getDados();
         }]);
 })();
@@ -1379,18 +1376,8 @@ $('#menu-lateral ul li').click(function () {
                                 Factory.setMensagemTemporaria('alerta', msg, '#msgManterPedido');
                             } else {
                                 Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgPedidoGeral');
-                                if ($scope.tipoFuncao === "inserir" || $scope.tipoFuncao === "alterar") {
-                                    $scope.listaPedido = [];
-                                    $scope.listaPedido.push(response.data.pedido);
-                                    $scope.totalItems = 1;
-                                    $scope.valorTotal = response.data.pedido.valor;
-                                    $scope.descontoTotal = response.data.pedido.desconto;
-                                } else {
-                                    if ($scope.tipoFuncao === "deletar") {
-                                        $scope.limpaFiltro();
-                                    }
-                                }
                                 $scope.setModoView();
+                                $scope.limpaFiltro();
                             }
                         }
                     }, function errorCallback(response) {
@@ -1775,19 +1762,9 @@ $('#menu-lateral ul li').click(function () {
                             if (!response.data.token) {
                                 Factory.refazerLogin();
                             } else {
-                                if ($scope.tipoFuncao === "inserir" || $scope.tipoFuncao === "alterar") {
-                                    $scope.listaProduto = [];
-                                    $scope.produtoAtual = response.data.produto;
-                                    $scope.listaProduto.push($scope.produtoAtual);
-                                    $scope.totalItems = 1;
-                                    $scope.currentPage = 1;
-                                } else {
-                                    if ($scope.tipoFuncao === "deletar") {
-                                        $scope.limpaFiltro();
-                                    }
-                                }
                                 $scope.setModoView();
                                 Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgProdutoGeral');
+                                $scope.limpaFiltro();
                             }
                         }, function errorCallback(response) {
                             Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgManterProduto');

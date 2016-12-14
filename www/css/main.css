@@ -674,6 +674,35 @@ group.md-default-theme[disabled].md-primary .md-on, md-radio-group[disabled].md-
         width: calc(100%);
     }
 }
+
+.pointer{
+    cursor: pointer;
+}
+
+.homeBox{
+    height: 100px; 
+    text-align: center; 
+    font-size: 1em; 
+    color: #FFF;
+    padding: 10px;
+}
+
+.homeBox a{
+    color: #FFF;
+}
+
+.homeBoxNum{
+    font-size: 3em;
+    padding: 5px;
+}
+
+.homeBoxIcon{
+    font-size: 3em;
+}
+
+.lbRegistros{
+    color: #337ab7;
+}
 #tabela-produto{
     margin-top: 25px;
     height: calc(100% - 30px);

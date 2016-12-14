@@ -42,6 +42,11 @@
                                 <input ui-br-phone-number id="fornecedorFone" type="text"   class="form-control"  aria-describedby="fornecedorTelefone" ng-model="fornecedorAtual.telefone" ng-readonly="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'">
                             </div>
 
+                            <div class="form-group" style="width: 100%;">
+                                <label >Porcentagem %</label>
+                                <input type="text" id="porcentagem" class="form-control" ui-number-mask="decimals"  id="produtoValor" ng-model="fornecedorAtual.porcentagem" ng-readonly="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'">
+                            </div>
+                                
                         </div>
                         <div style="padding-left: 16px; padding-right: 16px; padding-bottom: 16px" ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar' || tipoFuncao == 'deletar'">
                             <div class="input-group" style="width: 100%;" >

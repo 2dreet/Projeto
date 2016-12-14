@@ -188,18 +188,8 @@
                                 Factory.setMensagemTemporaria('alerta', msg, '#msgManterPedido');
                             } else {
                                 Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgPedidoGeral');
-                                if ($scope.tipoFuncao === "inserir" || $scope.tipoFuncao === "alterar") {
-                                    $scope.listaPedido = [];
-                                    $scope.listaPedido.push(response.data.pedido);
-                                    $scope.totalItems = 1;
-                                    $scope.valorTotal = response.data.pedido.valor;
-                                    $scope.descontoTotal = response.data.pedido.desconto;
-                                } else {
-                                    if ($scope.tipoFuncao === "deletar") {
-                                        $scope.limpaFiltro();
-                                    }
-                                }
                                 $scope.setModoView();
+                                $scope.limpaFiltro();
                             }
                         }
                     }, function errorCallback(response) {
