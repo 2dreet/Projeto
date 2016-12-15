@@ -10,9 +10,11 @@
             $scope.valorDespesas = '0,00';
             $scope.valorLucro = '0,00';
             $scope.valorDesconto = '0,00';
+            $scope.lucroEstoque = '0,00';
+            $scope.valorEstoque = '0,00';
 
             $scope.labels = ['Pago', 'Pago Parcial', 'Não Pago'];
-            $scope.data = [0,0,0];
+            $scope.data = [0, 0, 0];
             $scope.options = {legend: {display: true}};
 
             var dataAtual = new Date();
@@ -32,7 +34,7 @@
                         method: 'POST',
                         data: envio,
                         crossDomain: true,
-                        url: Factory.urlWs + "inicio/getDados"+Factory.debug,
+                        url: Factory.urlWs + "inicio/getDados" + Factory.debug,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
                         if (!response.data.token) {
@@ -43,6 +45,8 @@
                             $scope.valorDespesas = response.data.valorDespesas;
                             $scope.valorLucro = response.data.lucro;
                             $scope.valorDesconto = response.data.desconto;
+                            $scope.lucroEstoque = response.data.lucroEstoque;
+                            $scope.valorEstoque = response.data.valorEstoque;
                             $scope.data = response.data.grafico;
                         }
                     }, function errorCallback(response) {

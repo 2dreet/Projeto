@@ -102,7 +102,7 @@ app.config(['ChartJsProvider', function (ChartJsProvider) {
 (function () {
     'use strict';
     angular.module('www.geve.com.br').service('Factory', function () {
-        this.urlWs = "http://localhost:80/WsJosePhp/";
+        this.urlWs = "http://localhost:8084/WsJosePhp/";
         this.urlImagem = this.urlWs + "produto/getProdutoImagem/";
         this.cookieNomeToken = "www.geve.com.br.token";
         this.debug = "?XDEBUG_SESSION_START=netbeans-xdebug";
@@ -623,13 +623,13 @@ $('#menu-lateral ul li').click(function () {
                         Factory.setMensagemTemporaria('erro', 'Sobrenome Inválido!', '#msgManterCliente');
                         return false;
                     }
-                    if ($scope.clienteAtual.pessoa.dataNascimento !== null && $scope.clienteAtual.pessoa.dataNascimento !== undefined) {
-                        retorno = true;
-                    } else {
-                        $('#clienteDataNascimento').focus();
-                        Factory.setMensagemTemporaria('erro', 'Informar Data Nascimento!', '#msgManterCliente');
-                        return false;
-                    }
+//                    if ($scope.clienteAtual.pessoa.dataNascimento !== null && $scope.clienteAtual.pessoa.dataNascimento !== undefined) {
+//                        retorno = true;
+//                    } else {
+//                        $('#clienteDataNascimento').focus();
+//                        Factory.setMensagemTemporaria('erro', 'Informar Data Nascimento!', '#msgManterCliente');
+//                        return false;
+//                    }
                     if ($scope.clienteAtual.cpf === null || $scope.clienteAtual.cpf === undefined || $scope.clienteAtual.cpf.trim() === "" || ($scope.clienteAtual.cpf !== null && $scope.clienteAtual.cpf !== undefined && $scope.clienteAtual.cpf.trim() !== "" && Utilitario.validaCPF($scope.clienteAtual.cpf))) {
                         retorno = true;
                     } else {
@@ -637,13 +637,13 @@ $('#menu-lateral ul li').click(function () {
                         Factory.setMensagemTemporaria('erro', 'CPF é Inválido!', '#msgManterCliente');
                         return false;
                     }
-                    if ($scope.clienteAtual.email !== null && $scope.clienteAtual.email !== undefined && $scope.clienteAtual.email.trim() !== "") {
-                        retorno = true;
-                    } else {
-                        $('#clienteEmail').focus();
-                        Factory.setMensagemTemporaria('erro', 'Email Inválido!', '#msgManterCliente');
-                        return false;
-                    }
+//                    if ($scope.clienteAtual.email !== null && $scope.clienteAtual.email !== undefined && $scope.clienteAtual.email.trim() !== "") {
+//                        retorno = true;
+//                    } else {
+//                        $('#clienteEmail').focus();
+//                        Factory.setMensagemTemporaria('erro', 'Email Inválido!', '#msgManterCliente');
+//                        return false;
+//                    }
                 }
                 return retorno;
             };
@@ -1058,9 +1058,11 @@ $('#menu-lateral ul li').click(function () {
             $scope.valorDespesas = '0,00';
             $scope.valorLucro = '0,00';
             $scope.valorDesconto = '0,00';
+            $scope.lucroEstoque = '0,00';
+            $scope.valorEstoque = '0,00';
 
             $scope.labels = ['Pago', 'Pago Parcial', 'Não Pago'];
-            $scope.data = [0,0,0];
+            $scope.data = [0, 0, 0];
             $scope.options = {legend: {display: true}};
 
             var dataAtual = new Date();
@@ -1080,7 +1082,7 @@ $('#menu-lateral ul li').click(function () {
                         method: 'POST',
                         data: envio,
                         crossDomain: true,
-                        url: Factory.urlWs + "inicio/getDados"+Factory.debug,
+                        url: Factory.urlWs + "inicio/getDados" + Factory.debug,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
                         if (!response.data.token) {
@@ -1091,6 +1093,8 @@ $('#menu-lateral ul li').click(function () {
                             $scope.valorDespesas = response.data.valorDespesas;
                             $scope.valorLucro = response.data.lucro;
                             $scope.valorDesconto = response.data.desconto;
+                            $scope.lucroEstoque = response.data.lucroEstoque;
+                            $scope.valorEstoque = response.data.valorEstoque;
                             $scope.data = response.data.grafico;
                         }
                     }, function errorCallback(response) {

@@ -65,7 +65,23 @@
                                     <div class="pull-right homeBoxNum">{{valorLucro - valorDespesas| currency}}</div>
                                 </div>            
                             </div>
+                            
+                            <div class="col-sm-6 col-md-4" >            
+                                <div class="panel panel-default homeBox" style="background-color: #007799;">
+                                    <div class="clearfix">Valor Estoque</div>
+                                    <div class="pull-right homeBoxNum">{{valorEstoque| currency}}</div>
+                                </div>            
+                            </div>
 
+                            
+                            <div class="col-sm-6 col-md-4" >            
+                                <div class="panel panel-default homeBox" style="background-color: #7ad67a;">
+                                    <div class="clearfix">Lucro Estoque</div>
+                                    <div class="pull-right homeBoxNum">{{lucroEstoque | currency}}</div>
+                                </div>            
+                            </div>
+                            
+                            
                             <div style="height: 500px; width: 500px; margin: auto; padding-top: 20px">
                                 <canvas class="chart chart-pie" chart-options="options" chart-data="data" chart-labels="labels" chart-options="options"> </canvas> 
                             </div>

@@ -312,13 +312,13 @@
                         Factory.setMensagemTemporaria('erro', 'Sobrenome Inválido!', '#msgManterCliente');
                         return false;
                     }
-                    if ($scope.clienteAtual.pessoa.dataNascimento !== null && $scope.clienteAtual.pessoa.dataNascimento !== undefined) {
-                        retorno = true;
-                    } else {
-                        $('#clienteDataNascimento').focus();
-                        Factory.setMensagemTemporaria('erro', 'Informar Data Nascimento!', '#msgManterCliente');
-                        return false;
-                    }
+//                    if ($scope.clienteAtual.pessoa.dataNascimento !== null && $scope.clienteAtual.pessoa.dataNascimento !== undefined) {
+//                        retorno = true;
+//                    } else {
+//                        $('#clienteDataNascimento').focus();
+//                        Factory.setMensagemTemporaria('erro', 'Informar Data Nascimento!', '#msgManterCliente');
+//                        return false;
+//                    }
                     if ($scope.clienteAtual.cpf === null || $scope.clienteAtual.cpf === undefined || $scope.clienteAtual.cpf.trim() === "" || ($scope.clienteAtual.cpf !== null && $scope.clienteAtual.cpf !== undefined && $scope.clienteAtual.cpf.trim() !== "" && Utilitario.validaCPF($scope.clienteAtual.cpf))) {
                         retorno = true;
                     } else {
@@ -326,13 +326,13 @@
                         Factory.setMensagemTemporaria('erro', 'CPF é Inválido!', '#msgManterCliente');
                         return false;
                     }
-                    if ($scope.clienteAtual.email !== null && $scope.clienteAtual.email !== undefined && $scope.clienteAtual.email.trim() !== "") {
-                        retorno = true;
-                    } else {
-                        $('#clienteEmail').focus();
-                        Factory.setMensagemTemporaria('erro', 'Email Inválido!', '#msgManterCliente');
-                        return false;
-                    }
+//                    if ($scope.clienteAtual.email !== null && $scope.clienteAtual.email !== undefined && $scope.clienteAtual.email.trim() !== "") {
+//                        retorno = true;
+//                    } else {
+//                        $('#clienteEmail').focus();
+//                        Factory.setMensagemTemporaria('erro', 'Email Inválido!', '#msgManterCliente');
+//                        return false;
+//                    }
                 }
                 return retorno;
             };
