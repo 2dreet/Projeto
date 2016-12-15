@@ -7,6 +7,7 @@
             $rootScope.paginaAtualClass = "fa fa-shopping-cart botaoComIconeMenuLateral";
             $scope.valorTotal = '0,00';
             $scope.descontoTotal = '0,00';
+            $scope.lucroTotal = '0,00';
             $scope.listaPedido = [];
             $scope.listaEntregue = [{'valor': true, 'descricao': 'Entregue'}, {'valor': false, 'descricao': 'Não Entregue'}];
             $scope.listaStatusPedido = Formulario.getStatusPedido();
@@ -118,6 +119,7 @@
                             $scope.totalItems = response.data.totalRegistro;
                             $scope.valorTotal = response.data.valorTotal;
                             $scope.descontoTotal = response.data.descontoTotal;
+                            $scope.lucroTotal = response.data.lucroTotal;
                         }
                     }, function errorCallback(response) {
                         Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgPedidoGeral');
@@ -280,6 +282,15 @@
                 if ($scope.pedidoAtual.listaProduto !== undefined) {
                     for (var i = $scope.pedidoAtual.listaProduto.length; i--; ) {
                         valorTotal = valorTotal + ($scope.pedidoAtual.listaProduto[i].valor * $scope.pedidoAtual.listaProduto[i].quantidade);
+                    }
+                }
+                return valorTotal;
+            };
+            $scope.getValorLucroPedido = function () {
+                var valorTotal = 0;
+                if ($scope.pedidoAtual.listaProduto !== undefined) {
+                    for (var i = $scope.pedidoAtual.listaProduto.length; i--; ) {
+                        valorTotal = valorTotal + ($scope.pedidoAtual.listaProduto[i].lucro * $scope.pedidoAtual.listaProduto[i].quantidade);
                     }
                 }
                 return valorTotal;

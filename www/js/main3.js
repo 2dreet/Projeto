@@ -1057,6 +1057,7 @@ $('#menu-lateral ul li').click(function () {
             $scope.valorRecebido = '0,00';
             $scope.valorDespesas = '0,00';
             $scope.valorLucro = '0,00';
+            $scope.valorDesconto = '0,00';
 
             $scope.labels = ['Pago', 'Pago Parcial', 'Não Pago'];
             $scope.data = [0,0,0];
@@ -1079,7 +1080,7 @@ $('#menu-lateral ul li').click(function () {
                         method: 'POST',
                         data: envio,
                         crossDomain: true,
-                        url: Factory.urlWs + "inicio/getDados",
+                        url: Factory.urlWs + "inicio/getDados"+Factory.debug,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
                         if (!response.data.token) {
@@ -1089,6 +1090,7 @@ $('#menu-lateral ul li').click(function () {
                             $scope.valorRecebido = response.data.valorRecebido;
                             $scope.valorDespesas = response.data.valorDespesas;
                             $scope.valorLucro = response.data.lucro;
+                            $scope.valorDesconto = response.data.desconto;
                             $scope.data = response.data.grafico;
                         }
                     }, function errorCallback(response) {
@@ -1147,8 +1149,9 @@ $('#menu-lateral ul li').click(function () {
 })();
 (function () {
     'use strict';
-    angular.module('www.geve.com.br').controller("masterPageControler", ['$scope', '$http', 'Factory', '$mdSidenav', function ($scope, $http, Factory, $mdSidenav) {
+    angular.module('www.geve.com.br').controller("masterPageControler", ['$scope', '$http', 'Factory', '$mdSidenav', 'Utilitario', function ($scope, $http, Factory, $mdSidenav, Utilitario) {
             $scope.pessoa = {nome: ''};
+            $scope.pessoaEnvio = {};
             $scope.sair = function () {
                 Factory.refazerLogin();
             };
@@ -1172,14 +1175,83 @@ $('#menu-lateral ul li').click(function () {
                     });
                 }
             };
-//            $scope.open = function () {
-//                // Component lookup should always be available since we are not using `ng-if`
-//                $mdSidenav('left').open();
-//            };
-//            $scope.close = function () {
-//                // Component lookup should always be available since we are not using `ng-if`
-//                $mdSidenav('left').close();
-//            };
+
+            $scope.enviarNovaSenha = function () {
+                if (Factory.verificaToken(true)) {
+                    var senhaEnvio = JSON.parse(JSON.stringify($scope.pessoaEnvio));
+                    var envio = {'token': Factory.getToken(true), 'dados': senhaEnvio};
+                    $scope.send = $http({
+                        method: 'POST',
+                        crossDomain: true,
+                        url: Factory.urlWs + "usuario/trocaSenha",
+                        data: envio,
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        if (!response.data.token) {
+                            Factory.refazerLogin();
+                        } else {
+                            if (response.data.msgErro !== undefined) {
+                                Factory.setMensagemTemporaria('erro', response.data.msgErro, '#msgUsuarioTrocaSenha');
+                                if (response.data.focus !== undefined) {
+                                    $(response.data.focus).focus();
+                                }
+                            } else {
+                                $scope.fechar("#alterarSenhaDialog");
+                                Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgGlobalGeral');
+                            }
+                        }
+                    }, function errorCallback(response) {
+                        Factory.setMensagemTemporaria('erro', "Erro de comunicação", '#msgUsuarioTrocaSenha');
+                    });
+                }
+            };
+
+            $scope.iniciarTrocaSenha = function () {
+                $scope.pessoaEnvio = {};
+                $scope.abrir("#alterarSenhaDialog");
+            };
+
+            $scope.confirmarEnvio = function () {
+                var retorno = true;
+                var focus = null;
+                if ($scope.pessoaEnvio.senha_atual === undefined || $scope.pessoaEnvio.senha_atual === null || $scope.pessoaEnvio.senha_atual.trim() === '') {
+                    retorno = false;
+                    focus = '#senha_atual';
+                    $('#senha_atual').popover('show');
+                }
+                if ($scope.pessoaEnvio.nova_senha === undefined || $scope.pessoaEnvio.nova_senha === null || $scope.pessoaEnvio.nova_senha.trim() === '') {
+                    retorno = false;
+                    if (focus === null) {
+                        focus = '#nova_senha';
+                    }
+                    $('#nova_senha').popover('show');
+                }
+                if ($scope.pessoaEnvio.confirma_nova_senha === undefined || $scope.pessoaEnvio.confirma_nova_senha === null || $scope.pessoaEnvio.confirma_nova_senha.trim() === '') {
+                    retorno = false;
+                    if (focus === null) {
+                        focus = '#confirma_nova_senha';
+                    }
+                    $('#confirma_nova_senha').popover('show');
+                }
+
+                if (focus != null) {
+                    $(focus).focus();
+                }
+
+                if (retorno === true) {
+                    $scope.enviarNovaSenha();
+                }
+            };
+            $scope.esconderPopover = function (campo) {
+                $(campo).popover('hide');
+            };
+            $scope.fechar = function (idComponente) {
+                Utilitario.fecharDialog(idComponente);
+            };
+            $scope.abrir = function (idComponente) {
+                Utilitario.abrirDialog(idComponente);
+            };
+
             $scope.verifica();
             onload = function () {
                 document.body.style.visibility = "visible";
@@ -1195,6 +1267,7 @@ $('#menu-lateral ul li').click(function () {
             $rootScope.paginaAtualClass = "fa fa-shopping-cart botaoComIconeMenuLateral";
             $scope.valorTotal = '0,00';
             $scope.descontoTotal = '0,00';
+            $scope.lucroTotal = '0,00';
             $scope.listaPedido = [];
             $scope.listaEntregue = [{'valor': true, 'descricao': 'Entregue'}, {'valor': false, 'descricao': 'Não Entregue'}];
             $scope.listaStatusPedido = Formulario.getStatusPedido();
@@ -1306,6 +1379,7 @@ $('#menu-lateral ul li').click(function () {
                             $scope.totalItems = response.data.totalRegistro;
                             $scope.valorTotal = response.data.valorTotal;
                             $scope.descontoTotal = response.data.descontoTotal;
+                            $scope.lucroTotal = response.data.lucroTotal;
                         }
                     }, function errorCallback(response) {
                         Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgPedidoGeral');
@@ -1468,6 +1542,15 @@ $('#menu-lateral ul li').click(function () {
                 if ($scope.pedidoAtual.listaProduto !== undefined) {
                     for (var i = $scope.pedidoAtual.listaProduto.length; i--; ) {
                         valorTotal = valorTotal + ($scope.pedidoAtual.listaProduto[i].valor * $scope.pedidoAtual.listaProduto[i].quantidade);
+                    }
+                }
+                return valorTotal;
+            };
+            $scope.getValorLucroPedido = function () {
+                var valorTotal = 0;
+                if ($scope.pedidoAtual.listaProduto !== undefined) {
+                    for (var i = $scope.pedidoAtual.listaProduto.length; i--; ) {
+                        valorTotal = valorTotal + ($scope.pedidoAtual.listaProduto[i].lucro * $scope.pedidoAtual.listaProduto[i].quantidade);
                     }
                 }
                 return valorTotal;
@@ -2239,7 +2322,6 @@ $('#menu-lateral ul li').click(function () {
                     }
                     if (encontrou === false) {
                         var produtoAux = JSON.parse(JSON.stringify($rootScope.produtoSelecionado));
-                        produtoAux = {id: produtoAux.id, descricao: produtoAux.descricao, valor: produtoAux.valor};
                         $rootScope.produtoSelecionado = {};
                         if (produtoAux.id !== undefined) {
                             produtoAux.quantidade = 1;

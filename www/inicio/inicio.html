@@ -7,13 +7,13 @@
     <body>
         <div ng-controller="inicioControler" style="min-width: 500px; ">
             <div class="panel panel-default no-border-bottom">
-                <div class="panel-body" >
-                    <div style="text-align: center; padding-top: 10px; overflow-y: auto; overflow-x: hidden">
+                <div class="panel-body"  >
+                    <div style="text-align: center; padding-top: 10px; overflow-x: hidden;">
                         <div id="msgInicioGeral" class="row" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"></div>
                         <div class="row" style="width: 400px; padding-bottom: 20px">
                             <div class="form-group col-sm-6 col-md-6 col-lg-6">
-                                <label>Data Inicial</label>
-                                <p class="input-group" style="width: 140px;"  >
+                                <label>Data vencimento inicial</label>
+                                <p class="input-group" style="width: 180px;"  >
                                     <input type="text" class="form-control" ui-mask="99/99/9999" ng-change="getDados()" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="busca.dataInicio"  uib-datepicker-popup="ddMMyyyy" is-open="dataInicioDialog.opened"  alt-input-formats="['d!/M!/yyyy']"  />
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-default" ng-click="openDataInicioDialog()" style="height: 34px" aria-label=""><i class="glyphicon glyphicon-calendar"></i></button>
@@ -21,8 +21,8 @@
                                 </p>
                             </div>
                             <div class="form-group col-sm-6 col-md-6 col-lg-6">
-                                <label>Data Final</label>
-                                <p class="input-group" style="width: 140px;"  >
+                                <label>Data vencimento final</label>
+                                <p class="input-group" style="width: 170px;"  >
                                     <input type="text" class="form-control" ui-mask="99/99/9999" ng-change="getDados()" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="busca.dataFim"  uib-datepicker-popup="ddMMyyyy" is-open="dataFimDialog.opened"  alt-input-formats="['d!/M!/yyyy']"  />
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-default" ng-click="openDataFimDialog()" style="height: 34px" aria-label=""><i class="glyphicon glyphicon-calendar"></i></button>
@@ -31,33 +31,41 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-3" >            
+                            <div class="col-sm-6 col-md-4" >            
                                 <div class="panel panel-default homeBox" style="background-color: #007799;">
                                     <div class="clearfix">Valor recebido</div>
                                     <div class="pull-right homeBoxNum">{{valorRecebido| currency}}</div>
                                 </div>            
                             </div>
 
-                            <div class="col-md-3" >            
-                                <div class="panel panel-default homeBox" style="background-color: #16a085;">
-                                    <div class="clearfix">Valor Lucro</div>
-                                    <div class="pull-right homeBoxNum">{{valorLucro - valorDespesas| currency}}</div>
-                                </div>            
-                            </div>
-
-                            <div class="col-md-3" >            
+                            <div class="col-sm-6 col-md-4" >            
                                 <div class="panel panel-default homeBox" style="background-color: #FF5E5E;">
                                     <div class="clearfix">Valor receber</div>
                                     <div class="pull-right homeBoxNum">{{valorReceber| currency}}</div>
                                 </div>            
                             </div>
+                            
+                            <div class="col-sm-6 col-md-4" >            
+                                <div class="panel panel-default homeBox" style="background-color: #ff9999;">
+                                    <div class="clearfix">Valor desconto</div>
+                                    <div class="pull-right homeBoxNum">{{valorDesconto| currency}}</div>
+                                </div>            
+                            </div>
 
-                            <div class="col-md-3" >            
+                            <div class="col-sm-6 col-md-4" >            
                                 <div class="panel panel-default homeBox" style="background-color: #ffb357;">
                                     <div class="clearfix">Valor despesas</div>
                                     <div class="pull-right homeBoxNum">{{valorDespesas| currency}}</div>
                                 </div>            
                             </div>
+                            
+                            <div class="col-sm-6 col-md-4" >            
+                                <div class="panel panel-default homeBox" style="background-color: #00cc99;">
+                                    <div class="clearfix">Valor Lucro</div>
+                                    <div class="pull-right homeBoxNum">{{valorLucro - valorDespesas| currency}}</div>
+                                </div>            
+                            </div>
+
                             <div style="height: 500px; width: 500px; margin: auto; padding-top: 20px">
                                 <canvas class="chart chart-pie" chart-options="options" chart-data="data" chart-labels="labels" chart-options="options"> </canvas> 
                             </div>

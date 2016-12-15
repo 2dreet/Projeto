@@ -41,7 +41,6 @@
                     }
                     if (encontrou === false) {
                         var produtoAux = JSON.parse(JSON.stringify($rootScope.produtoSelecionado));
-                        produtoAux = {id: produtoAux.id, descricao: produtoAux.descricao, valor: produtoAux.valor};
                         $rootScope.produtoSelecionado = {};
                         if (produtoAux.id !== undefined) {
                             produtoAux.quantidade = 1;
