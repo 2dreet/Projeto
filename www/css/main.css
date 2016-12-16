@@ -680,7 +680,7 @@ group.md-default-theme[disabled].md-primary .md-on, md-radio-group[disabled].md-
 }
 
 .homeBox{
-    height: 100px; 
+    height: 70px; 
     text-align: center; 
     font-size: 1em; 
     color: #FFF;
@@ -692,12 +692,12 @@ group.md-default-theme[disabled].md-primary .md-on, md-radio-group[disabled].md-
 }
 
 .homeBoxNum{
-    font-size: 3em;
+    font-size: 2em;
     padding: 5px;
 }
 
 .homeBoxIcon{
-    font-size: 3em;
+    font-size: 2em;
 }
 
 .lbRegistros{

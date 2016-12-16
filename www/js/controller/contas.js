@@ -1,99 +1,120 @@
 (function () {
     'use strict';
-
-    angular.module('www.geve.com.br').controller("fornecedorControler", ['$rootScope', '$scope', '$http', 'Factory', 'Utilitario', function ($rootScope, $scope, $http, Factory, Utilitario) {
+    angular.module('www.geve.com.br').controller("contasController", ['$rootScope', '$scope', '$http', 'Factory', 'Utilitario', function ($rootScope, $scope, $http, Factory, Utilitario) {
             Factory.verificaToken(true);
-            Factory.ajustaMenuLateral('#btnFornecedor');
-            $rootScope.paginaAtual = "Fornecedores";
-            $rootScope.paginaAtualClass = "fa fa-university botaoComIconeMenuLateral";
-
-            $scope.fornecedorAtual = {};
-            $scope.listaFornecedores = [];
+            Factory.ajustaMenuLateral('#btnContas');
+            $rootScope.paginaAtual = "Contas";
+            $rootScope.paginaAtualClass = "fa fa-briefcase botaoComIconeMenuLateral";
+            
+            $scope.valorTotal = '0,00';
+            $scope.contaAtual = {};
+            $scope.listaContas = [];
+            
             $scope.valorBusca = "";
-            $scope.buscaAvancada = {descricao: "", email: "", telefone: ""};
+            $scope.buscaAvancada = {};
+            
             $scope.modoManter = false;
             $scope.modoView = true;
             $scope.maxSize = 3;
             $scope.totalItems = 0;
             $scope.currentPage = 1;
             $scope.itensPorPagina = 15;
-
+            
+            $scope.data = {opened: true};
+            $scope.openData = function () {
+                $scope.data.opened = true;
+            };
+            
+            $scope.dataInicioFiltro = {opened: true};
+            $scope.openDataInicioFiltro = function () {
+                $scope.dataInicioFiltro.opened = true;
+            };
+            $scope.dataFimFiltro = {opened: true};
+            $scope.openDataFimFiltro = function () {
+                $scope.dataFimFiltro.opened = true;
+            };
+            
             $scope.setModoManter = function (isNovo) {
                 $scope.modoManter = true;
                 $scope.modoView = false;
                 if (isNovo) {
                     $scope.tipoFuncao = "inserir";
-                    $scope.novoFornecedor();
+                    $scope.novaContas();
                 }
             };
+            
             $scope.setModoView = function () {
                 $scope.indice = 0;
                 $scope.modoManter = false;
                 $scope.modoView = true;
-                $scope.fornecedorAtual = {};
+                $scope.contaAtual = {};
             };
+            
             $scope.preparaFiltrar = function () {
-                $scope.abrir("#localizarFornecedorDialog");
+                $scope.abrir("#localizarContasDialog");
             };
+            
             $scope.filtrar = function (porDescricao) {
                 if (porDescricao) {
                     $scope.buscaAvancada = {};
                 } else {
                     $scope.valorBusca = "";
-                    Utilitario.fecharDialog("#localizarFornecedorDialog");
+                    Utilitario.fecharDialog("#localizarContasDialog");
                 }
                 $scope.currentPage = 1;
-                $scope.getListaFornecedorAll(1);
+                $scope.getListaContasAll(1);
             };
 
             $scope.limpaFiltro = function () {
                 $scope.buscaAvancada = {};
                 $scope.valorBusca = "";
                 $scope.currentPage = 1;
-                $scope.getListaFornecedorAll(1);
+                $scope.getListaContasAll(1);
             };
 
             $scope.getTituloCrud = function () {
                 if ($scope.tipoFuncao === "inserir") {
-                    return  "Cadastrar Fornecedor";
+                    return  "Cadastrar Contas";
                 } else if ($scope.tipoFuncao === "alterar") {
-                    return  "Alterar Fornecedor";
+                    return  "Alterar Contas";
                 } else if ($scope.tipoFuncao === "deletar") {
-                    return  "Deletar Fornecedor";
+                    return  "Deletar Contas";
                 } else if ($scope.tipoFuncao === "vizualizar") {
-                    return  "Vizualizar Fornecedor";
+                    return  "Vizualizar Contas";
                 }
             };
 
-            $scope.getListaFornecedorAll = function (pagina) {
+            $scope.getListaContasAll = function (pagina) {
                 if (Factory.verificaToken(true)) {
                     var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBusca, 'limit': $scope.itensPorPagina};
                     $rootScope.loading = $http({
                         method: 'POST',
                         crossDomain: true,
-                        url: Factory.urlWs + "fornecedor/getAllfornecedor/",
+                        url: Factory.urlWs + "conta/getAllContas",
                         data: envio,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
+                        $scope.valorTotal = '0,00';
                         if (!response.data.token) {
                             Factory.refazerLogin();
                         } else {
-                            $scope.listaFornecedores = response.data.dados;
+                            $scope.listaContas = response.data.dados;
                             $scope.totalItems = response.data.totalRegistro;
+                            $scope.valorTotal = response.data.valorTotal;
                         }
                     }, function errorCallback(response) {
-                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgFornecedorGeral');
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgContasGeral');
                     });
                 }
             };
 
-            $scope.enviarFornecedor = function () {
-                if (Factory.verificaToken(true) && validaFornecedor()) {
-                    var envio = {'dados': $scope.fornecedorAtual, 'token': Factory.getToken(), 'tipoFuncao': $scope.tipoFuncao};
+            $scope.enviarContas = function () {
+                if (Factory.verificaToken(true) && validaContas()) {
+                    var envio = {'dados': $scope.contaAtual, 'token': Factory.getToken(), 'tipoFuncao': $scope.tipoFuncao};
                     $scope.send = $http({
                         method: 'POST',
                         crossDomain: true,
-                        url: Factory.urlWs + "fornecedor/enviarFornecedor",
+                        url: Factory.urlWs + "conta/enviarContas",
                         data: envio,
                         headers: {'Content-Type': 'application/json'}
                     }).then(function successCallback(response) {
@@ -101,60 +122,53 @@
                             Factory.refazerLogin();
                         } else {
                             $scope.setModoView();
-                            Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgFornecedorGeral');
+                            Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgContasGeral');
                             $scope.limpaFiltro();
                         }
                     }, function errorCallback(response) {
-                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgManterFornecedor');
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgManterContas');
                     });
                 }
             };
 
-            var validaFornecedor = function () {
+            var validaContas = function () {
                 var retorno = false;
-                if ($scope.fornecedorAtual !== null) {
+                if ($scope.contaAtual !== null) {
 
-                    if ($scope.fornecedorAtual.descricao !== undefined && $scope.fornecedorAtual.descricao !== null && $scope.fornecedorAtual.descricao.trim() !== "") {
+                    if ($scope.contaAtual.descricao !== undefined && $scope.contaAtual.descricao !== null && $scope.contaAtual.descricao.trim() !== "") {
                         retorno = true;
                     } else {
-                        Factory.setMensagemTemporaria('erro', 'Informar Fornecedor!', '#msgManterFornecedor');
-                        $('#fornecedor').focus();
+                        Factory.setMensagemTemporaria('erro', 'Informar Descrição!', '#msgManterContas');
+                        $('#descricao').focus();
                         return false;
                     }
 
-                    if ($scope.fornecedorAtual.email !== undefined && $scope.fornecedorAtual.email !== null && $scope.fornecedorAtual.email.trim() !== "") {
+                    if ($scope.contaAtual.valor !== undefined && $scope.contaAtual.valor !== null && $scope.contaAtual.valor > 0) {
                         retorno = true;
                     } else {
-                        Factory.setMensagemTemporaria('erro', 'Informar Email!', '#msgManterFornecedor');
-                        $('#fornecedorEmail').focus();
+                        Factory.setMensagemTemporaria('erro', 'Informar Valor!', '#msgManterContas');
+                        $('#valor').focus();
                         return false;
                     }
 
-                    if ($scope.fornecedorAtual.telefone !== undefined && $scope.fornecedorAtual.telefone !== null && $scope.fornecedorAtual.telefone.trim() !== "" && ($scope.fornecedorAtual.telefone.length === 10 || $scope.fornecedorAtual.telefone.length === 11)) {
+                    if ($scope.contaAtual.data_lancamento !== undefined && $scope.contaAtual.data_lancamento !== null) {
                         retorno = true;
                     } else {
-                        Factory.setMensagemTemporaria('erro', 'Informar Telefone!', '#msgManterFornecedor');
-                        $('#fornecedorFone').focus();
-                        return false;
-                    }
-
-                    if ($scope.fornecedorAtual.porcentagem !== undefined && $scope.fornecedorAtual.porcentagem !== null && $scope.fornecedorAtual.porcentagem > 0) {
-                        retorno = true;
-                    } else {
-                        Factory.setMensagemTemporaria('erro', 'Informar Porcentagem!', '#msgManterFornecedor');
-                        $('#porcentagem').focus();
+                        Factory.setMensagemTemporaria('erro', 'Informar Data!', '#msgManterContas');
+                        $('#data').focus();
                         return false;
                     }
                 }
                 return retorno;
             };
 
-            $scope.novoFornecedor = function () {
-                $scope.fornecedorAtual = {};
+            $scope.novaContas = function () {
+                $scope.contaAtual = {};
             };
 
-            $scope.preparaFornecedor = function (fornecedor) {
-                $scope.fornecedorAtual = JSON.parse(JSON.stringify(fornecedor));
+            $scope.preparaContas = function (conta) {
+                $scope.contaAtual = JSON.parse(JSON.stringify(conta));
+                $scope.contaAtual.data_lancamento = Utilitario.dataDbToJS($scope.contaAtual.data_lancamento);
             };
 
             $scope.fechar = function (idComponente) {
@@ -169,7 +183,6 @@
                 $(idModal).modal('hide');
             };
 
-            $scope.getListaFornecedorAll(1);
+            $scope.getListaContasAll(1);
         }]);
-
 })();

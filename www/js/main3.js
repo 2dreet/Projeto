@@ -19,6 +19,9 @@ app.config(function ($routeProvider, $locationProvider) {
             .when('/despesas', {
                 templateUrl: 'despesas/despesas.html'
             })
+            .when('/contas', {
+                templateUrl: 'contas/contas.html'
+            })
             .when('/usuario', {
                 templateUrl: 'usuario/usuario.html'
             })
@@ -102,7 +105,7 @@ app.config(['ChartJsProvider', function (ChartJsProvider) {
 (function () {
     'use strict';
     angular.module('www.geve.com.br').service('Factory', function () {
-        this.urlWs = "http://localhost:8084/WsJosePhp/";
+        this.urlWs = "http://localhost:80/WsJosePhp/";
         this.urlImagem = this.urlWs + "produto/getProdutoImagem/";
         this.cookieNomeToken = "www.geve.com.br.token";
         this.debug = "?XDEBUG_SESSION_START=netbeans-xdebug";
@@ -234,6 +237,26 @@ app.config(['ChartJsProvider', function (ChartJsProvider) {
         };
     });
 })();
+angular.module('www.geve.com.br').service('httpPostService', [function () {
+
+            this.redirect = function (url, obj) {
+
+                var mapForm = document.createElement("form");
+                mapForm.target = "_blank";
+                mapForm.method = "POST";
+                mapForm.action = url;
+                var mapInput = document.createElement("input");
+
+                mapInput.type = "text";
+                mapInput.name = "json";
+                mapInput.value = JSON.stringify(obj);
+
+                mapForm.appendChild(mapInput);
+                document.body.appendChild(mapForm);
+                mapForm.submit();
+
+            }
+        }]);
 $('#btn-menu-lateral').click(function () {
     $('.row-offcanvas').toggleClass('active');
 });
@@ -309,6 +332,190 @@ $('#menu-lateral ul li').click(function () {
         };
     });
 })();
+//'use strict';
+//
+//angular.module('www.daidellein.com.br')
+//        .controller("arquivoCtrl", ['$rootScope', '$scope', '$http', '$routeParams', 'factoryService', 'formularioService', 'utilitarioService', 'filtroService', 'uploadService', 'httpPostService',
+//            function ($rootScope, $scope, $http, $routeParams, factoryService, formularioService, utilitarioService, filtroService, uploadService, httpPostService) {
+//
+//                $rootScope.cgBusyMessage = undefined;
+//                $rootScope.paginaAtual = "Repositório de Arquivos";
+//                $scope.tituloDialog;
+//                $rootScope.paginaAtualClass = "fa fa-file-archive-o botaoComIconeMenuLateral";
+//                utilitarioService.ajustaMenuLateral('#btnAssociados');
+//
+//                $scope.selecionado = {};
+//                $scope.listaArquivo = [];
+//                $scope.tipoFuncao = null;
+//                $scope.modoManter = false;
+//                $scope.modoView = true;
+//                $scope.maxSize = 3;
+//                $scope.totalItems = 0;
+//                $scope.currentPage = 1;
+//                $scope.itensPorPagina = 15;
+//                $scope.valorBusca = "";
+//                $scope.nomeLabel = "";
+//                $scope.nome = "";
+//                $scope.contrato = "";
+//
+//                $scope.getLista = function (pagina) {
+//                    if (factoryService.verificaToken(true)) {
+//                        var envio = {'pagina': (pagina - 1), 'token': factoryService.getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBusca,
+//                            'limit': $scope.itensPorPagina, 'orderBy': $scope.orderBy, 'orderByTipo': $scope.orderByTipo};
+//                        $rootScope.loading = $http({
+//                            method: 'POST',
+//                            crossDomain: true,
+//                            url: factoryService.urlWs + "arquivo/getLista" + factoryService.debug,
+//                            data: envio,
+//                            headers: {'Content-Type': 'application/json'}
+//                        }).then(function successCallback(response) {
+//                            if (!response.data.token) {
+//                                factoryService.refazerLogin();
+//                            } else {
+//                                $scope.listaArquivo = response.data.dados;
+//                                $scope.totalItems = response.data.totalRegistro;
+//                                $scope.nome = response.data.nome;
+//                                $scope.contrato = response.data.contrato;
+//                            }
+//                        }, function errorCallback(response) {
+//                            utilitarioService.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgGeral');
+//                        });
+//                    }
+//                };
+//
+//                $scope.ordenar = function (order) {
+//                    if ($scope.orderBy === order) {
+//                        if ($scope.orderByTipo === "ASC") {
+//                            $scope.orderByTipo = "DESC";
+//                        } else {
+//                            $scope.orderByTipo = "ASC";
+//                        }
+//                    } else {
+//                        $scope.orderByTipo = "ASC";
+//                    }
+//                    $scope.orderBy = order;
+//                    $scope.getLista($scope.currentPage);
+//                };
+//
+//                $scope.deletar = function () {
+//                    $scope.fechar('#deletarArquivoDialog')
+//                    if (factoryService.verificaToken(true)) {
+//                        var envio = {'dados': $scope.selecionado, 'token': factoryService.getToken()};
+//                        $rootScope.loading = $http({
+//                            method: 'POST',
+//                            crossDomain: true,
+//                            url: factoryService.urlWs + "arquivo/deletarArquivo"+factoryService.debug,
+//                            data: envio,
+//                            headers: {'Content-Type': 'application/json'}
+//                        }).then(function successCallback(response) {
+//                            if (!response.data.token) {
+//                                factoryService.refazerLogin();
+//                            } else {
+//                                $scope.currentPage = 1;
+//                                $scope.getLista($scope.currentPage);
+//                                utilitarioService.setMensagem('sucesso', response.data.msg, '#msgGeral');
+//                            }
+//                        }, function errorCallback(response) {
+//                            utilitarioService.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgGeral');
+////                            console.log(response.);
+//                        });
+//                    }
+//                };
+//
+//                $scope.localizarPorEnter = function (event) {
+//                    if (event.which === 13) {
+//                        $scope.filtrar();
+//                    }
+//                };
+//
+//                $scope.filtrar = function () {
+//                    $scope.buscaAvancada = {};
+//                    $scope.currentPage = 1;
+//                    $scope.getLista($scope.currentPage);
+//                };
+//
+//                $scope.limpaFiltro = function () {
+//                    $scope.buscaAvancada = {};
+//                    $scope.valorBusca = "";
+//                    $scope.currentPage = 1;
+//                    $scope.getLista($scope.currentPage);
+//                };
+//
+//                $scope.deletarArquivo = function (arquivoNome, arquivoID, descricao) {
+//                    $scope.selecionado = {nome: arquivoNome, arquivoID: arquivoID, descricao: descricao};
+//                    $scope.abrir('#deletarArquivoDialog');
+//                };
+//
+//                $scope.baixarArquivo = function (arquivoNome, descricao) {
+//                    httpPostService.redirect(factoryService.urlWs + "arquivo/baixarArquivo", {'descricao': descricao, 'arquivoNome': arquivoNome, 'token': factoryService.getToken()});
+//                };
+//
+//                $scope.preparaSelecionarArquivo = function () {
+//                    document.getElementById('selectedFile').value = null;
+//                    document.getElementById('selectedFile').click();
+//                };
+//
+//                $scope.voltarTabAssociado = function () {
+//                    window.location = "#/associado";
+//                };
+//
+//                $scope.getIcone = function (extencao) {
+//                    return utilitarioService.getIconeArquivo(extencao);
+//                };
+//
+//                $scope.uploadFile = function (element) {
+//                    var file = element.files[0];
+//                    var fileSize = 0;
+//                    if (file != undefined) {
+//                        fileSize = JSON.parse(JSON.stringify(file.size));
+//                        if (fileSize <= 20971520) {
+//                            var fd = new FormData();
+//                            fd.append('file', file);
+//                            fd.append('id', $routeParams.id);
+//                            fd.append('token', factoryService.getToken());
+//                            $rootScope.loading = $http({
+//                                method: 'POST',
+//                                crossDomain: true,
+//                                url: factoryService.urlWs + 'arquivo/upload',
+//                                data: fd,
+//                                headers: {'Content-Type': undefined}
+//                            }).then(function successCallback(response) {
+//                                if (response.data.valido) {
+//                                    utilitarioService.setMensagemTemporaria('info', response.data.msg, '#msgGeral');
+//                                    $scope.currentPage = 1;
+//                                    $scope.getLista($scope.currentPage);
+//                                } else {
+//                                    utilitarioService.setMensagemTemporaria('erro', response.data.msg, '#msgGeral');
+//                                }
+//                            }, function errorCallback(response) {
+//                                utilitarioService.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgGeral');
+//                            });
+//                        } else {
+//                            utilitarioService.setMensagemTemporaria('erro', "Tamanho do arquivo maior que o limite, Selecionar um arquivo até 20 Megabyte ", '#msgGeral');
+//                        }
+//                    } else {
+//                        utilitarioService.setMensagemTemporaria('erro', "Selecionar o arquivo", '#msgGeral');
+//                    }
+//                };
+//
+//                var getContatoByAssociadoOrEmpresaByID = function () {
+//                    if ($routeParams.id !== undefined && $routeParams.id !== null && $routeParams.tipoId !== undefined && $routeParams.tipoId !== null) {
+//                        if ($routeParams.tipoId === 'associado') {
+//                            $scope.nomeLabel = "Associado";
+//                            $scope.buscaAvancada = {'associado': {'id': $routeParams.id}};
+//                        } else if ($routeParams.tipoId === 'empresa') {
+//                            $scope.nomeLabel = "Empresa";
+//                            $scope.buscaAvancada = {'empresa': {'id': $routeParams.id}};
+//                        }
+//                        $scope.currentPage = 1;
+//                        $scope.getLista($scope.currentPage);
+//                    } else {
+//                        $scope.voltarTabAssociado();
+//                    }
+//                };
+//
+//                getContatoByAssociadoOrEmpresaByID();
+//            }]);      
 (function () {
     'use strict';
     angular.module('www.geve.com.br').controller("clienteControler", ['$rootScope', '$scope', '$http', 'BuscaCep', 'Formulario', 'Utilitario', 'Factory',
@@ -687,6 +894,194 @@ $('#menu-lateral ul li').click(function () {
 })();
 (function () {
     'use strict';
+    angular.module('www.geve.com.br').controller("contasController", ['$rootScope', '$scope', '$http', 'Factory', 'Utilitario', function ($rootScope, $scope, $http, Factory, Utilitario) {
+            Factory.verificaToken(true);
+            Factory.ajustaMenuLateral('#btnContas');
+            $rootScope.paginaAtual = "Contas";
+            $rootScope.paginaAtualClass = "fa fa-briefcase botaoComIconeMenuLateral";
+            
+            $scope.valorTotal = '0,00';
+            $scope.contaAtual = {};
+            $scope.listaContas = [];
+            
+            $scope.valorBusca = "";
+            $scope.buscaAvancada = {};
+            
+            $scope.modoManter = false;
+            $scope.modoView = true;
+            $scope.maxSize = 3;
+            $scope.totalItems = 0;
+            $scope.currentPage = 1;
+            $scope.itensPorPagina = 15;
+            
+            $scope.data = {opened: true};
+            $scope.openData = function () {
+                $scope.data.opened = true;
+            };
+            
+            $scope.dataInicioFiltro = {opened: true};
+            $scope.openDataInicioFiltro = function () {
+                $scope.dataInicioFiltro.opened = true;
+            };
+            $scope.dataFimFiltro = {opened: true};
+            $scope.openDataFimFiltro = function () {
+                $scope.dataFimFiltro.opened = true;
+            };
+            
+            $scope.setModoManter = function (isNovo) {
+                $scope.modoManter = true;
+                $scope.modoView = false;
+                if (isNovo) {
+                    $scope.tipoFuncao = "inserir";
+                    $scope.novaContas();
+                }
+            };
+            
+            $scope.setModoView = function () {
+                $scope.indice = 0;
+                $scope.modoManter = false;
+                $scope.modoView = true;
+                $scope.contaAtual = {};
+            };
+            
+            $scope.preparaFiltrar = function () {
+                $scope.abrir("#localizarContasDialog");
+            };
+            
+            $scope.filtrar = function (porDescricao) {
+                if (porDescricao) {
+                    $scope.buscaAvancada = {};
+                } else {
+                    $scope.valorBusca = "";
+                    Utilitario.fecharDialog("#localizarContasDialog");
+                }
+                $scope.currentPage = 1;
+                $scope.getListaContasAll(1);
+            };
+
+            $scope.limpaFiltro = function () {
+                $scope.buscaAvancada = {};
+                $scope.valorBusca = "";
+                $scope.currentPage = 1;
+                $scope.getListaContasAll(1);
+            };
+
+            $scope.getTituloCrud = function () {
+                if ($scope.tipoFuncao === "inserir") {
+                    return  "Cadastrar Contas";
+                } else if ($scope.tipoFuncao === "alterar") {
+                    return  "Alterar Contas";
+                } else if ($scope.tipoFuncao === "deletar") {
+                    return  "Deletar Contas";
+                } else if ($scope.tipoFuncao === "vizualizar") {
+                    return  "Vizualizar Contas";
+                }
+            };
+
+            $scope.getListaContasAll = function (pagina) {
+                if (Factory.verificaToken(true)) {
+                    var envio = {'pagina': (pagina - 1), 'token': Factory.getToken(), 'buscaAvancada': $scope.buscaAvancada, 'buscaDescricao': $scope.valorBusca, 'limit': $scope.itensPorPagina};
+                    $rootScope.loading = $http({
+                        method: 'POST',
+                        crossDomain: true,
+                        url: Factory.urlWs + "conta/getAllContas",
+                        data: envio,
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        $scope.valorTotal = '0,00';
+                        if (!response.data.token) {
+                            Factory.refazerLogin();
+                        } else {
+                            $scope.listaContas = response.data.dados;
+                            $scope.totalItems = response.data.totalRegistro;
+                            $scope.valorTotal = response.data.valorTotal;
+                        }
+                    }, function errorCallback(response) {
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgContasGeral');
+                    });
+                }
+            };
+
+            $scope.enviarContas = function () {
+                if (Factory.verificaToken(true) && validaContas()) {
+                    var envio = {'dados': $scope.contaAtual, 'token': Factory.getToken(), 'tipoFuncao': $scope.tipoFuncao};
+                    $scope.send = $http({
+                        method: 'POST',
+                        crossDomain: true,
+                        url: Factory.urlWs + "conta/enviarContas",
+                        data: envio,
+                        headers: {'Content-Type': 'application/json'}
+                    }).then(function successCallback(response) {
+                        if (!response.data.token) {
+                            Factory.refazerLogin();
+                        } else {
+                            $scope.setModoView();
+                            Factory.setMensagemTemporaria('sucesso', response.data.msgRetorno, '#msgContasGeral');
+                            $scope.limpaFiltro();
+                        }
+                    }, function errorCallback(response) {
+                        Factory.setMensagemTemporaria('erro', 'Erro de comunicação!', '#msgManterContas');
+                    });
+                }
+            };
+
+            var validaContas = function () {
+                var retorno = false;
+                if ($scope.contaAtual !== null) {
+
+                    if ($scope.contaAtual.descricao !== undefined && $scope.contaAtual.descricao !== null && $scope.contaAtual.descricao.trim() !== "") {
+                        retorno = true;
+                    } else {
+                        Factory.setMensagemTemporaria('erro', 'Informar Descrição!', '#msgManterContas');
+                        $('#descricao').focus();
+                        return false;
+                    }
+
+                    if ($scope.contaAtual.valor !== undefined && $scope.contaAtual.valor !== null && $scope.contaAtual.valor > 0) {
+                        retorno = true;
+                    } else {
+                        Factory.setMensagemTemporaria('erro', 'Informar Valor!', '#msgManterContas');
+                        $('#valor').focus();
+                        return false;
+                    }
+
+                    if ($scope.contaAtual.data_lancamento !== undefined && $scope.contaAtual.data_lancamento !== null) {
+                        retorno = true;
+                    } else {
+                        Factory.setMensagemTemporaria('erro', 'Informar Data!', '#msgManterContas');
+                        $('#data').focus();
+                        return false;
+                    }
+                }
+                return retorno;
+            };
+
+            $scope.novaContas = function () {
+                $scope.contaAtual = {};
+            };
+
+            $scope.preparaContas = function (conta) {
+                $scope.contaAtual = JSON.parse(JSON.stringify(conta));
+                $scope.contaAtual.data_lancamento = Utilitario.dataDbToJS($scope.contaAtual.data_lancamento);
+            };
+
+            $scope.fechar = function (idComponente) {
+                Utilitario.fecharDialog(idComponente);
+            };
+            $scope.abrir = function (idComponente) {
+                Utilitario.abrirDialog(idComponente);
+            };
+
+            $scope.preparaCrud = function (idModal, tipoFuncao) {
+                $scope.tipoFuncao = tipoFuncao;
+                $(idModal).modal('hide');
+            };
+
+            $scope.getListaContasAll(1);
+        }]);
+})();
+(function () {
+    'use strict';
     angular.module('www.geve.com.br').controller("despesasController", ['$rootScope', '$scope', '$http', 'Factory', 'Utilitario', function ($rootScope, $scope, $http, Factory, Utilitario) {
             Factory.verificaToken(true);
             Factory.ajustaMenuLateral('#btnDespesas');
@@ -871,7 +1266,7 @@ $('#menu-lateral ul li').click(function () {
             Factory.verificaToken(true);
             Factory.ajustaMenuLateral('#btnFornecedor');
             $rootScope.paginaAtual = "Fornecedores";
-            $rootScope.paginaAtualClass = "fa fa-briefcase botaoComIconeMenuLateral";
+            $rootScope.paginaAtualClass = "fa fa-university botaoComIconeMenuLateral";
 
             $scope.fornecedorAtual = {};
             $scope.listaFornecedores = [];

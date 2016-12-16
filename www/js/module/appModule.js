@@ -19,6 +19,9 @@ app.config(function ($routeProvider, $locationProvider) {
             .when('/despesas', {
                 templateUrl: 'despesas/despesas.html'
             })
+            .when('/contas', {
+                templateUrl: 'contas/contas.html'
+            })
             .when('/usuario', {
                 templateUrl: 'usuario/usuario.html'
             })
