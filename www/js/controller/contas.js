@@ -40,7 +40,7 @@
             $scope.setModoManter = function (isNovo) {
                 $scope.modoManter = true;
                 $scope.modoView = false;
-                
+
                 if (isNovo) {
                     $scope.tipoFuncao = "inserir";
                     $scope.novaContas();
@@ -114,13 +114,20 @@
 
             $scope.enviarContas = function () {
                 if (Factory.verificaToken(true) && validaContas()) {
-                    var envio = {'dados': $scope.contaAtual, 'token': Factory.getToken(), 'tipoFuncao': $scope.tipoFuncao};
+                    var fd = new FormData();
+                    var campoArquivo = $('#arquivo').prop('files');
+                    var arquivo = campoArquivo[0];
+                    fd.append('arquivo', arquivo);
+                    fd.append('token', Factory.getToken());
+                    fd.append('tipoFuncao', $scope.tipoFuncao);
+                    fd.append('dados', angular.toJson($scope.contaAtual));
+
                     $scope.send = $http({
+                        url: Factory.urlWs + 'contas/enviarContas' + Factory.debug,
                         method: 'POST',
-                        crossDomain: true,
-                        url: Factory.urlWs + "conta/enviarContas",
-                        data: envio,
-                        headers: {'Content-Type': 'application/json'}
+                        data: fd,
+                        transformRequest: angular.identity,
+                        headers: {'Content-Type': undefined}
                     }).then(function successCallback(response) {
                         if (!response.data.token) {
                             Factory.refazerLogin();
@@ -138,7 +145,6 @@
             var validaContas = function () {
                 var retorno = false;
                 if ($scope.contaAtual !== null) {
-
                     if ($scope.contaAtual.descricao !== undefined && $scope.contaAtual.descricao !== null && $scope.contaAtual.descricao.trim() !== "") {
                         retorno = true;
                     } else {
@@ -155,7 +161,7 @@
                         return false;
                     }
 
-                    if ($scope.contaAtual.data_lancamento !== undefined && $scope.contaAtual.data_lancamento !== null) {
+                    if ($scope.contaAtual.data_vencimento !== undefined && $scope.contaAtual.data_vencimento !== null) {
                         retorno = true;
                     } else {
                         Factory.setMensagemTemporaria('erro', 'Informar Data!', '#msgManterContas');

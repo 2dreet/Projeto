@@ -64,9 +64,9 @@
                                 <div class="form-group col-sm-6 col-md-6 col-lg-6">
                                     <div class="form-group" style="padding-top: 0px; width: 100%;">
                                         <label>Data Vencimento</label>
-                                        <input type="text"  class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="contaAtual.data_lancamento"  uib-datepicker-popup="ddMMyyyy"  alt-input-formats="['d!/M!/yyyy']" readonly ng-show="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'" />
+                                        <input type="text"  class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="contaAtual.data_vencimento"  uib-datepicker-popup="ddMMyyyy"  alt-input-formats="['d!/M!/yyyy']" readonly ng-show="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'" />
                                         <p class="input-group" style="width: 140px;"  ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'">
-                                            <input type="text" id="data" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="contaAtual.data_lancamento"  uib-datepicker-popup="ddMMyyyy" is-open="data.opened"  alt-input-formats="['d!/M!/yyyy']"  />
+                                            <input type="text" id="data" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="contaAtual.data_vencimento"  uib-datepicker-popup="ddMMyyyy" is-open="data.opened"  alt-input-formats="['d!/M!/yyyy']"  />
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default" ng-click="openData()"><i class="glyphicon glyphicon-calendar"></i></button>
                                             </span>
@@ -80,8 +80,8 @@
                             <div class="input-group" style="width: 100%;" >
                                 <div class="alert alert-warning" role="alert" ng-show="tipoFuncao == 'deletar'" style="text-align: center"><span class="glyphicon glyphicon-warning-sign botaoComIcone" aria-hidden="true"></span> Deseja Deletar a Despesa ?</div>
                                 <button type="button" class="btn btn-default pull-left btn-warning " ng-click="setModoView()"><span class="glyphicon glyphicon-remove botaoComIcone" aria-hidden="true"></span>Cancelar</button>
-                                <button type="submit" class="btn btn-default pull-right btn-success " ng-click="enviarDespesa()" ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'"><span class="glyphicon glyphicon-floppy-disk botaoComIcone" aria-hidden="true"></span>Salvar</button>
-                                <button type="submit" class="btn btn-default pull-right btn-danger " ng-click="enviarDespesa()" ng-show="tipoFuncao == 'deletar'"><span class="glyphicon glyphicon-floppy-disk botaoComIcone" aria-hidden="true"></span>Deletar</button>
+                                <button type="submit" class="btn btn-default pull-right btn-success " ng-click="enviarContas()" ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'"><span class="glyphicon glyphicon-floppy-disk botaoComIcone" aria-hidden="true"></span>Salvar</button>
+                                <button type="submit" class="btn btn-default pull-right btn-danger " ng-click="enviarContas()" ng-show="tipoFuncao == 'deletar'"><span class="glyphicon glyphicon-floppy-disk botaoComIcone" aria-hidden="true"></span>Deletar</button>
                             </div>
                         </div>
                     </form>   
