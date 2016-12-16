@@ -27,25 +27,52 @@
                             <div id="msgManterDespesa" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;"></div>
                         </div>
                         <div class="modal-body" style="overflow-y: auto">
-                            <div class="form-group" style="width: 100%;">
-                                <label>Descrição</label>
-                                <input type="text" id="descricao" class="form-control" maxlength="50" ng-model="despesaAtual.descricao" ng-readonly="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'">
+                            <div class="row" style="padding-left: 0px; padding-right: 0px">
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label>Descrição</label>
+                                        <input type="text" id="descricao" class="form-control" maxlength="50" ng-model="contaAtual.descricao" ng-readonly="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'">
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label>Valor</label>
+                                        <input type="text" id="valor"  class="form-control"  maxlength="50" ui-number-mask="decimals" ng-model="contaAtual.valor" ng-readonly="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'">
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="form-group" style="padding-top: 0px; width: 100%;">
-                                <label>Valor</label>
-                                <input type="text" id="valor"  class="form-control"  maxlength="50" ui-number-mask="decimals" ng-model="despesaAtual.valor" ng-readonly="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'">
+                            <div class="row" style="padding-left: 0px; padding-right: 0px">
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <label>Tipo Conta</label>
+                                    <select class="form-control" ng-model="contaAtual.tipo" 
+                                            ng-options="option.descricao for option in listaTipo track by option.id" > </select>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <label>Status Conta</label>
+                                    <select class="form-control" ng-model="contaAtual.status" 
+                                            ng-options="option.descricao for option in listaStatus track by option.id" > </select>
+                                </div>
                             </div>
-
-                            <div class="form-group" style="padding-top: 0px; width: 100%;">
-                                <label>Data</label>
-                                <input type="text"  class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="despesaAtual.data_lancamento"  uib-datepicker-popup="ddMMyyyy"  alt-input-formats="['d!/M!/yyyy']" readonly ng-show="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'" />
-                                <p class="input-group" style="width: 140px;"  ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'">
-                                    <input type="text" id="data" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="despesaAtual.data_lancamento"  uib-datepicker-popup="ddMMyyyy" is-open="data.opened"  alt-input-formats="['d!/M!/yyyy']"  />
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-click="openData()"><i class="glyphicon glyphicon-calendar"></i></button>
-                                    </span>
-                                </p>
+                            <div class="row" style="padding-left: 0px; padding-right: 0px">
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <div class="form-group" style="width: 100%;" >
+                                        <label>Arquivo</label>
+                                        <input type="file" class="filestyle" data-buttonText="Localizar" data-buttonBefore="true" id="arquivo" name="arquivo" ng-model="contaAtual.arquivo">
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-lg-6">
+                                    <div class="form-group" style="padding-top: 0px; width: 100%;">
+                                        <label>Data Vencimento</label>
+                                        <input type="text"  class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="contaAtual.data_lancamento"  uib-datepicker-popup="ddMMyyyy"  alt-input-formats="['d!/M!/yyyy']" readonly ng-show="tipoFuncao == 'vizualizar' || tipoFuncao == 'deletar'" />
+                                        <p class="input-group" style="width: 140px;"  ng-show="tipoFuncao == 'inserir' || tipoFuncao == 'alterar'">
+                                            <input type="text" id="data" class="form-control" ui-mask="99/99/9999" clear-text="Limpar" close-text="Fechar"  current-text="Hoje" ng-model="contaAtual.data_lancamento"  uib-datepicker-popup="ddMMyyyy" is-open="data.opened"  alt-input-formats="['d!/M!/yyyy']"  />
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="openData()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
 
                         </div>

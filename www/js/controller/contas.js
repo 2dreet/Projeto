@@ -5,26 +5,29 @@
             Factory.ajustaMenuLateral('#btnContas');
             $rootScope.paginaAtual = "Contas";
             $rootScope.paginaAtualClass = "fa fa-briefcase botaoComIconeMenuLateral";
-            
+            $(":file").filestyle({buttonBefore: true, buttonText: "Localizar"});
+
+            $scope.listaTipo = [{'id': '1', 'descricao': 'Boleto'}, {'id': '2', 'descricao': 'Cartão Crédito'}];
+            $scope.listaStatus = [{'id': '3', 'descricao': 'Pago'}, {'id': '4', 'descricao': 'Não Pago'}];
             $scope.valorTotal = '0,00';
             $scope.contaAtual = {};
             $scope.listaContas = [];
-            
+
             $scope.valorBusca = "";
             $scope.buscaAvancada = {};
-            
+
             $scope.modoManter = false;
             $scope.modoView = true;
             $scope.maxSize = 3;
             $scope.totalItems = 0;
             $scope.currentPage = 1;
             $scope.itensPorPagina = 15;
-            
+
             $scope.data = {opened: true};
             $scope.openData = function () {
                 $scope.data.opened = true;
             };
-            
+
             $scope.dataInicioFiltro = {opened: true};
             $scope.openDataInicioFiltro = function () {
                 $scope.dataInicioFiltro.opened = true;
@@ -33,27 +36,28 @@
             $scope.openDataFimFiltro = function () {
                 $scope.dataFimFiltro.opened = true;
             };
-            
+
             $scope.setModoManter = function (isNovo) {
                 $scope.modoManter = true;
                 $scope.modoView = false;
+                
                 if (isNovo) {
                     $scope.tipoFuncao = "inserir";
                     $scope.novaContas();
                 }
             };
-            
+
             $scope.setModoView = function () {
                 $scope.indice = 0;
                 $scope.modoManter = false;
                 $scope.modoView = true;
                 $scope.contaAtual = {};
             };
-            
+
             $scope.preparaFiltrar = function () {
                 $scope.abrir("#localizarContasDialog");
             };
-            
+
             $scope.filtrar = function (porDescricao) {
                 if (porDescricao) {
                     $scope.buscaAvancada = {};
@@ -163,7 +167,9 @@
             };
 
             $scope.novaContas = function () {
-                $scope.contaAtual = {};
+                $scope.contaAtual = {'status': $scope.listaStatus[1], 'tipo': $scope.listaTipo[0]};
+                $(":file").val(null);
+                $(":file").filestyle('clear');
             };
 
             $scope.preparaContas = function (conta) {
